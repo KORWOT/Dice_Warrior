@@ -1,0 +1,340 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e05959c12dbb4ed4fbcfc21d9b3e18d9, type: 3}
+  m_Name: DefaultFateDiceVisuals
+  m_EditorClassIdentifier: FateDice.Runtime::FateDice.FateDiceVisualCatalog
+  actions:
+  - contentId: strike
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uACF5"
+  - contentId: guard
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBC29"
+  - contentId: heavy
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uAC15"
+  - contentId: fireball
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD654"
+  - contentId: bastion
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uCCA0"
+  events:
+  - contentId: combat_0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC804"
+  - contentId: combat_1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC804"
+  - contentId: combat_2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC804"
+  - contentId: combat_3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC804"
+  - contentId: combat_4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC804"
+  - contentId: event_0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - contentId: event_1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - contentId: event_2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - contentId: event_3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - contentId: event_4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - contentId: treasure_0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - contentId: treasure_1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - contentId: treasure_2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - contentId: treasure_3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - contentId: treasure_4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - contentId: shop_0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - contentId: shop_1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - contentId: shop_2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - contentId: shop_3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - contentId: shop_4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - contentId: rest_0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD734"
+  - contentId: rest_1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD734"
+  - contentId: rest_2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD734"
+  - contentId: rest_3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD734"
+  - contentId: rest_4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD734"
+  nodes:
+  - type: 0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC804"
+  - type: 1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - type: 2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - type: 3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - type: 4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uD734"
+  - type: 5
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      fallbackGlyph: "\uB300"
+  fates:
+  - type: 0
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 1, g: 1, b: 1, a: 1}
+      fallbackGlyph: "\uC804"
+  - type: 1
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 1, g: 1, b: 1, a: 1}
+      fallbackGlyph: "\uC0AC"
+  - type: 2
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 1, g: 1, b: 1, a: 1}
+      fallbackGlyph: "\uBCF4"
+  - type: 3
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 1, g: 1, b: 1, a: 1}
+      fallbackGlyph: "\uC0C1"
+  - type: 4
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 1, g: 1, b: 1, a: 1}
+      fallbackGlyph: "\uD734"
+  - type: 5
+    visual:
+      icon: {fileID: 0}
+      artwork: {fileID: 0}
+      tint: {r: 1, g: 1, b: 1, a: 1}
+      fallbackGlyph: "\uB300"
+  grades:
+  - grade: 0
+    border: {fileID: 0}
+    badge: {fileID: 0}
+  - grade: 1
+    border: {fileID: 0}
+    badge: {fileID: 0}
+  - grade: 2
+    border: {fileID: 0}
+    badge: {fileID: 0}
+  - grade: 3
+    border: {fileID: 0}
+    badge: {fileID: 0}
+  - grade: 4
+    border: {fileID: 0}
+    badge: {fileID: 0}
+  buttons:
+  - purpose: 0
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  - purpose: 1
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  - purpose: 2
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  - purpose: 3
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  - purpose: 4
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  - purpose: 5
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  - purpose: 6
+    icon: {fileID: 0}
+    normal: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+    selected: {r: 0.12, g: 0.3, b: 0.3, a: 1}
+    pressed: {r: 0.18, g: 0.4, b: 0.42, a: 1}
+    disabled: {r: 0.07, g: 0.09, b: 0.13, a: 1}
+  defaultAction:
+    icon: {fileID: 0}
+    artwork: {fileID: 0}
+    tint: {r: 1, g: 1, b: 1, a: 1}
+    fallbackGlyph: '?'
+  defaultEvent:
+    icon: {fileID: 0}
+    artwork: {fileID: 0}
+    tint: {r: 1, g: 1, b: 1, a: 1}
+    fallbackGlyph: '?'
+  nodeFadeSeconds: 0.18

@@ -1,0 +1,793 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08722927c1aaebc42b734edf2955379c, type: 3}
+  m_Name: DefaultFateDice
+  m_EditorClassIdentifier: FateDice.Runtime::FateDice.FateDiceConfig
+  data:
+    version: prototype-1
+    dice:
+      basicDieId: plain
+      replacementDieId: ember
+      dice:
+      - id: plain
+        label: Plain D6
+        values: 010000000200000003000000040000000500000006000000i
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+        - 1
+      - id: ember
+        label: Ember D6
+        values: 010000000200000003000000040000000500000006000000i
+        weights:
+        - 1
+        - 1
+        - 1
+        - 1
+        - 2
+        - 3
+      hands:
+      - kind: 0
+        label: Pair
+        priority: 0
+        fatePower: 1
+      - kind: 1
+        label: Two pairs
+        priority: 1
+        fatePower: 2
+      - kind: 2
+        label: Triple
+        priority: 2
+        fatePower: 3
+      - kind: 6
+        label: Straight
+        priority: 3
+        fatePower: 4
+      - kind: 4
+        label: Full house
+        priority: 4
+        fatePower: 5
+      - kind: 3
+        label: Three pairs
+        priority: 5
+        fatePower: 5
+      - kind: 5
+        label: Four of a kind
+        priority: 6
+        fatePower: 6
+      - kind: 7
+        label: Full straight
+        priority: 7
+        fatePower: 7
+      - kind: 8
+        label: Five of a kind
+        priority: 8
+        fatePower: 8
+      - kind: 9
+        label: Six of a kind
+        priority: 9
+        fatePower: 9
+      minimumFatePower: 1
+      maximumFatePower: 9
+    fate:
+      exploration:
+      - minimumPower: 1
+        weights:
+        - 65
+        - 25
+        - 8
+        - 1.8
+        - 0.2
+      - minimumPower: 3
+        weights:
+        - 45
+        - 32
+        - 18
+        - 4
+        - 1
+      - minimumPower: 5
+        weights:
+        - 25
+        - 32
+        - 28
+        - 12
+        - 3
+      - minimumPower: 7
+        weights:
+        - 10
+        - 20
+        - 35
+        - 25
+        - 10
+      - minimumPower: 9
+        weights:
+        - 3
+        - 12
+        - 30
+        - 35
+        - 20
+      combat:
+      - minimumPower: 1
+        weights:
+        - 58
+        - 31
+        - 9
+        - 1.8
+        - 0.2
+      - minimumPower: 3
+        weights:
+        - 43
+        - 34
+        - 18
+        - 4
+        - 1
+      - minimumPower: 5
+        weights:
+        - 25
+        - 32
+        - 30
+        - 10
+        - 3
+      - minimumPower: 7
+        weights:
+        - 12
+        - 23
+        - 35
+        - 22
+        - 8
+      - minimumPower: 9
+        weights:
+        - 5
+        - 15
+        - 35
+        - 30
+        - 15
+      gradeMultipliers:
+      - 1
+      - 1.2
+      - 1.5
+      - 1.9
+      - 2.4
+      nodeWeights:
+      - 34
+      - 22
+      - 17
+      - 12
+      - 15
+      selectedTypeBias: 3
+      capRewardMultipliers:
+      - 1.35
+      - 1.25
+      - 1.15
+      - 1.05
+      - 1
+    combat:
+      actions:
+      - id: strike
+        label: Strike
+        grade: 0
+        damageCoefficient: 1.1
+        blockCoefficient: 0
+        tags:
+        - attack
+        - physical
+      - id: guard
+        label: Guard
+        grade: 0
+        damageCoefficient: 0
+        blockCoefficient: 1.5
+        tags:
+        - defense
+      - id: heavy
+        label: Heavy strike
+        grade: 1
+        damageCoefficient: 1.8
+        blockCoefficient: 0
+        tags:
+        - attack
+        - physical
+      - id: fireball
+        label: Fireball
+        grade: 2
+        damageCoefficient: 2.3
+        blockCoefficient: 0
+        tags:
+        - attack
+        - fire
+        - magic
+        - projectile
+      - id: bastion
+        label: Bastion
+        grade: 2
+        damageCoefficient: 0
+        blockCoefficient: 2.5
+        tags:
+        - defense
+        - magic
+      startingActionIds:
+      - strike
+      - guard
+      - heavy
+      trialActionIds:
+      - fireball
+      - bastion
+      enemies:
+      - id: road_bandit
+        label: Road bandit
+        maxHp: 26
+        power: 6
+        guard: 5
+        intents:
+        - id: attack
+          label: Attack
+          kind: 0
+          weight: 55
+          coefficient: 1
+        - id: defend
+          label: Defend
+          kind: 1
+          weight: 25
+          coefficient: 1.5
+        - id: heavy
+          label: Heavy attack
+          kind: 2
+          weight: 20
+          coefficient: 1.5
+      - id: stone_sentry
+        label: Stone sentry
+        maxHp: 36
+        power: 7
+        guard: 8
+        intents:
+        - id: attack
+          label: Attack
+          kind: 0
+          weight: 40
+          coefficient: 1
+        - id: defend
+          label: Defend
+          kind: 1
+          weight: 35
+          coefficient: 1.5
+        - id: heavy
+          label: Heavy attack
+          kind: 2
+          weight: 25
+          coefficient: 1.5
+      - id: fate_keeper
+        label: Fate keeper
+        maxHp: 130
+        power: 13
+        guard: 9
+        intents:
+        - id: attack
+          label: Attack
+          kind: 0
+          weight: 50
+          coefficient: 1
+        - id: defend
+          label: Defend
+          kind: 1
+          weight: 20
+          coefficient: 1.5
+        - id: heavy
+          label: Heavy attack
+          kind: 2
+          weight: 30
+          coefficient: 1.5
+      bossEnemyId: fate_keeper
+      minimumEffect: 1
+    growth:
+      characterId: wanderer
+      characterName: Wanderer
+      startingMaxHp: 90
+      startingPower: 12
+      startingGuard: 10
+      startingGold: 12
+      levels:
+      - xpRequired: 12
+        maxHp: 8
+        power: 2
+        guard: 1
+      - xpRequired: 18
+        maxHp: 8
+        power: 2
+        guard: 1
+      - xpRequired: 26
+        maxHp: 10
+        power: 2
+        guard: 2
+      - xpRequired: 40
+        maxHp: 10
+        power: 3
+        guard: 2
+      - xpRequired: 60
+        maxHp: 12
+        power: 3
+        guard: 2
+      tags:
+      - id: attack
+        label: attack
+      - id: physical
+        label: physical
+      - id: defense
+        label: defense
+      - id: fire
+        label: fire
+      - id: magic
+        label: magic
+      - id: projectile
+        label: projectile
+      - id: steel
+        label: steel
+      - id: luck
+        label: luck
+      equipment:
+      - id: ember_blade
+        label: Ember blade
+        slot: 0
+        maxHp: 0
+        power: 3
+        guard: 0
+        tags:
+        - fire
+        modifiers:
+        - match: 0
+          source: 0
+          value: 0
+          requiredTags:
+          - fire
+          bonus: 0.25
+      - id: guard_plate
+        label: Guard plate
+        slot: 1
+        maxHp: 0
+        power: 0
+        guard: 3
+        tags:
+        - steel
+        modifiers:
+        - match: 1
+          source: 0
+          value: 1
+          requiredTags:
+          - defense
+          bonus: 0.2
+      - id: traveler_charm
+        label: Traveler charm
+        slot: 2
+        maxHp: 5
+        power: 0
+        guard: 0
+        tags:
+        - luck
+        modifiers:
+        - match: 2
+          source: 0
+          value: 0
+          requiredTags:
+          - magic
+          bonus: 0.1
+        - match: 1
+          source: 1
+          value: 1
+          requiredTags:
+          - luck
+          bonus: 0.1
+      rerollCost: 1
+    world:
+      eventsToBoss: 10
+      offeredCards: 3
+      previewDepth: 2
+      branchCount: 3
+      events:
+      - id: combat_0
+        label: Road encounter
+        description: Defeat the enemy to claim the spoils.
+        type: 0
+        grade: 0
+        enemyId: road_bandit
+        reward:
+          gold: 5
+          xp: 8
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: combat_1
+        label: Road encounter
+        description: Defeat the enemy to claim the spoils.
+        type: 0
+        grade: 1
+        enemyId: road_bandit
+        reward:
+          gold: 6
+          xp: 10
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: combat_2
+        label: Road encounter
+        description: Defeat the enemy to claim the spoils.
+        type: 0
+        grade: 2
+        enemyId: stone_sentry
+        reward:
+          gold: 8
+          xp: 12
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: combat_3
+        label: Road encounter
+        description: Defeat the enemy to claim the spoils.
+        type: 0
+        grade: 3
+        enemyId: stone_sentry
+        reward:
+          gold: 10
+          xp: 15
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: combat_4
+        label: Road encounter
+        description: Defeat the enemy to claim the spoils.
+        type: 0
+        grade: 4
+        enemyId: stone_sentry
+        reward:
+          gold: 12
+          xp: 19
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: event_0
+        label: The wishing stone
+        description: A sharp toll buys insight and the power to reroll.
+        type: 1
+        grade: 0
+        enemyId: 
+        reward:
+          gold: 5
+          xp: 8
+          health: -4
+          equipmentId: 
+          rerollCharges: 2
+          dieId: 
+      - id: event_1
+        label: The wishing stone
+        description: A sharp toll buys insight and the power to reroll.
+        type: 1
+        grade: 1
+        enemyId: 
+        reward:
+          gold: 6
+          xp: 10
+          health: -4
+          equipmentId: 
+          rerollCharges: 2
+          dieId: 
+      - id: event_2
+        label: The wishing stone
+        description: A sharp toll buys insight and the power to reroll.
+        type: 1
+        grade: 2
+        enemyId: 
+        reward:
+          gold: 8
+          xp: 12
+          health: -4
+          equipmentId: 
+          rerollCharges: 2
+          dieId: 
+      - id: event_3
+        label: The wishing stone
+        description: A sharp toll buys insight and the power to reroll.
+        type: 1
+        grade: 3
+        enemyId: 
+        reward:
+          gold: 10
+          xp: 15
+          health: -4
+          equipmentId: 
+          rerollCharges: 2
+          dieId: 
+      - id: event_4
+        label: The wishing stone
+        description: A sharp toll buys insight and the power to reroll.
+        type: 1
+        grade: 4
+        enemyId: 
+        reward:
+          gold: 12
+          xp: 19
+          health: -4
+          equipmentId: 
+          rerollCharges: 2
+          dieId: 
+      - id: treasure_0
+        label: Abandoned cache
+        description: Take the coins and inspect a piece of equipment.
+        type: 2
+        grade: 0
+        enemyId: 
+        reward:
+          gold: 12
+          xp: 4
+          health: 0
+          equipmentId: ember_blade
+          rerollCharges: 0
+          dieId: 
+      - id: treasure_1
+        label: Abandoned cache
+        description: Take the coins and inspect a piece of equipment.
+        type: 2
+        grade: 1
+        enemyId: 
+        reward:
+          gold: 14
+          xp: 5
+          health: 0
+          equipmentId: guard_plate
+          rerollCharges: 0
+          dieId: 
+      - id: treasure_2
+        label: Abandoned cache
+        description: Take the coins and inspect a piece of equipment.
+        type: 2
+        grade: 2
+        enemyId: 
+        reward:
+          gold: 18
+          xp: 6
+          health: 0
+          equipmentId: traveler_charm
+          rerollCharges: 0
+          dieId: ember
+      - id: treasure_3
+        label: Abandoned cache
+        description: Take the coins and inspect a piece of equipment.
+        type: 2
+        grade: 3
+        enemyId: 
+        reward:
+          gold: 23
+          xp: 8
+          health: 0
+          equipmentId: ember_blade
+          rerollCharges: 0
+          dieId: ember
+      - id: treasure_4
+        label: Abandoned cache
+        description: Take the coins and inspect a piece of equipment.
+        type: 2
+        grade: 4
+        enemyId: 
+        reward:
+          gold: 29
+          xp: 10
+          health: 0
+          equipmentId: guard_plate
+          rerollCharges: 0
+          dieId: ember
+      - id: shop_0
+        label: Wayfarer's stall
+        description: Spend run coins, or leave when ready.
+        type: 3
+        grade: 0
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: shop_1
+        label: Wayfarer's stall
+        description: Spend run coins, or leave when ready.
+        type: 3
+        grade: 1
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: shop_2
+        label: Wayfarer's stall
+        description: Spend run coins, or leave when ready.
+        type: 3
+        grade: 2
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: shop_3
+        label: Wayfarer's stall
+        description: Spend run coins, or leave when ready.
+        type: 3
+        grade: 3
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: shop_4
+        label: Wayfarer's stall
+        description: Spend run coins, or leave when ready.
+        type: 3
+        grade: 4
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: rest_0
+        label: Quiet camp
+        description: Recover health or train for experience and a reroll charge.
+        type: 4
+        grade: 0
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 4
+          health: 24
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: rest_1
+        label: Quiet camp
+        description: Recover health or train for experience and a reroll charge.
+        type: 4
+        grade: 1
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 5
+          health: 29
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: rest_2
+        label: Quiet camp
+        description: Recover health or train for experience and a reroll charge.
+        type: 4
+        grade: 2
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 6
+          health: 36
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: rest_3
+        label: Quiet camp
+        description: Recover health or train for experience and a reroll charge.
+        type: 4
+        grade: 3
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 8
+          health: 46
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: rest_4
+        label: Quiet camp
+        description: Recover health or train for experience and a reroll charge.
+        type: 4
+        grade: 4
+        enemyId: 
+        reward:
+          gold: 0
+          xp: 10
+          health: 58
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      bossReward:
+        gold: 50
+        xp: 30
+        health: 0
+        equipmentId: 
+        rerollCharges: 0
+        dieId: 
+      shop:
+      - id: potion
+        label: Healing draught
+        price: 10
+        reward:
+          gold: 0
+          xp: 0
+          health: 25
+          equipmentId: 
+          rerollCharges: 0
+          dieId: 
+      - id: reroll
+        label: Reroll training + 3 charges
+        price: 12
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 3
+          dieId: 
+      - id: die
+        label: Ember die (replace one)
+        price: 16
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: 
+          rerollCharges: 0
+          dieId: ember
+      - id: blade
+        label: Ember blade
+        price: 18
+        reward:
+          gold: 0
+          xp: 0
+          health: 0
+          equipmentId: ember_blade
+          rerollCharges: 0
+          dieId: 
+      restTraining:
+        gold: 0
+        xp: 12
+        health: 0
+        equipmentId: 
+        rerollCharges: 1
+        dieId: 
+    presentation:
+      actionSeconds: 0.18
+      rollSeconds: 0.35
+      referenceResolution: {x: 720, y: 1280}
+      bodyFontSize: 25
+      titleFontSize: 38
+      buttonHeight: 102
+      background: {r: 0.035, g: 0.047, b: 0.075, a: 1}
+      panel: {r: 0.09, g: 0.12, b: 0.18, a: 1}
+      accent: {r: 0.34, g: 0.84, b: 0.72, a: 1}
+      text: {r: 0.92, g: 0.94, b: 0.97, a: 1}
+      danger: {r: 0.96, g: 0.39, b: 0.39, a: 1}
+      gradeColors:
+      - {r: 0.72, g: 0.76, b: 0.81, a: 1}
+      - {r: 0.42, g: 0.8, b: 0.5, a: 1}
+      - {r: 0.42, g: 0.66, b: 1, a: 1}
+      - {r: 0.75, g: 0.48, b: 1, a: 1}
+      - {r: 1, g: 0.72, b: 0.28, a: 1}

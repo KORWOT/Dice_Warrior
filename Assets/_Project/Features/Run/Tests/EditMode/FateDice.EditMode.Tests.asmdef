@@ -1,0 +1,16 @@
+{
+  "name": "FateDice.EditMode.Tests",
+  "rootNamespace": "FateDice.Tests",
+  "references": [
+    "FateDice.Runtime",
+    "FateDice.Editor", "Unity.ugui",
+    "FateDice.SharedUI"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

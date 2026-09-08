@@ -1,0 +1,14 @@
+{
+  "name": "FateDice.Editor",
+  "rootNamespace": "FateDice.Editor",
+  "references": [
+    "FateDice.Runtime",
+    "Unity.ugui",
+    "FateDice.SharedUI",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "autoReferenced": true
+}

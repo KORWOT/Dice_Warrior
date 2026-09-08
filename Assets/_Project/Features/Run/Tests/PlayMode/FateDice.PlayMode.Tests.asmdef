@@ -1,0 +1,13 @@
+{
+  "name": "FateDice.PlayMode.Tests",
+  "rootNamespace": "FateDice.Tests",
+  "references": [
+    "FateDice.Runtime",
+    "Unity.ugui",
+    "FateDice.SharedUI"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false
+}

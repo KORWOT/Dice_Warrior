@@ -1,0 +1,10 @@
+{
+  "name": "FateDice.Runtime",
+  "rootNamespace": "FateDice",
+  "references": [
+    "Unity.ugui",
+    "Unity.InputSystem",
+    "FateDice.SharedUI"
+  ],
+  "autoReferenced": true
+}

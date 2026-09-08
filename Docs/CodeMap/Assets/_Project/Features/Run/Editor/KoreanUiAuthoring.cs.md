@@ -1,0 +1,12 @@
+# KoreanUiAuthoring.cs
+- COMBAT_FEEDBACK 변경: 정확한 기본 TRIAL WILDCARD와 기존 시련 카드 heading을 와일드 카드로 변환한다. 사용자 지정 heading·trialHeading 참조·enum/ID는 유지한다. 이번 실행은 새 CombatFeedbackAuthoring의 허용된 세 원본만 대상으로 하며, 이 기존 도구의 넓은 자산 목록을 자동 실행하지 않는다. 검증 증거는 Docs/Reports/COMBAT_FEEDBACK_REPORT.md를 따른다.
+- 역할: 허용된 기존 UI 자산에 Pretendard Regular와 기본 한국어 고정 문구를 적용하는 Editor 전용 저작 도구다.
+- 입력/출력: FontPath는 프로젝트의 TTF 경로, Apply()는 적용한 prefab/Text/controller/glyph/scene/import 횟수를 반환한다.
+- 핵심 동작: stopped/clean saved scene/closed Prefab Stage를 요구한다. Dynamic/includeFontData 폰트 설정을 확인하고 Common 원본을 먼저 저장한 뒤 파생/화면 prefab을 새로 로드한다. 기존 참조와 다른 Text.font/controller.uiFont만 변경하고 차이 있는 prefab만 저장한다.
+- 자산 관계: 명시된15개 prefab, DefaultFateDiceVisuals의 정확한 기본 fallback glyph, legacy FateDicePrototype의 controller.uiFont만 대상으로 한다. 기존 스프라이트·색상·ID·custom glyph는 보존한다. catalog SaveAssetIfDirty, scene additive open/finally restore 사용; broad SaveAssets 없음.
+- 사용하는 대상: AssetDatabase/PrefabUtility/EditorSceneManager/TrueTypeFontImporter, KoreanText, UI Text/RunUIController/MenuUI/TitleUI 및 시각 카탈로그.
+- 사용하는 쪽: Unity CLI eval 또는 수동 Editor 호출. Runtime 자동 실행/시작 hook 없음.
+- 상태/수명: 로드한 prefab contents는 finally Unload, 원래 scene setup을 복원한다. 동일 상태 재실행은 저장0이어야 한다.
+- 검수 주의: 허용 자산 목록을 먼저 확인한다. 신규 화면을 이전 저작 도구로 만들었다면 이 도구로 한국어 폰트를 적용한다. OFL 원문은 Assets/StreamingAssets/ThirdParty에 별도 포함된다.
+- 실행 증거: Docs/Reports/KOREAN_UI_REPORT.md.
+- KUI-01: Pretendard에서 기존 플레이어 체력 영역(22px)에 19pt 글자 높이(23px)가 넘치는 문제를 해당 기본 fontSize=18로 좁게 보정한다. bar 배치·수치는 유지한다.

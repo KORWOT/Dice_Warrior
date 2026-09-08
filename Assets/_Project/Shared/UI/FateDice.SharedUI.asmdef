@@ -1,0 +1,6 @@
+{
+  "name": "FateDice.SharedUI",
+  "rootNamespace": "FateDice",
+  "references": ["Unity.ugui"],
+  "autoReferenced": true
+}
