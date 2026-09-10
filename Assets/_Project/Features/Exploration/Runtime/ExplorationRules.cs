@@ -7,6 +7,11 @@ namespace FateDice
     {
         public static void Initialize(RunStateData state)
         {
+            if(state.Rules.world.mapGenerationVersion==1)
+            {
+                ProceduralMapGenerator.Initialize(state);
+                return;
+            }
             state.nodes.Clear();state.availableNodeIds.Clear();
             state.nodeHistory = new List<NodeState>();
             for(var i=0;i<state.Rules.world.branchCount;i++)state.availableNodeIds.Add(CreateNode(state,false).id);
@@ -28,6 +33,14 @@ namespace FateDice
         public static void Advance(RunStateData state)
         {
             state.availableNodeIds=new List<string>(state.selectedNode.childIds);
+            if(state.Rules.world.mapGenerationVersion==1)
+            {
+                // The complete map and single boss already exist. Never replenish or retag saved nodes.
+                PruneTo(state,state.availableNodeIds);
+                state.selectedNode=null;
+                state.phase=RunPhase.Map;
+                return;
+            }
             var boss=state.eventsResolved>=state.Rules.world.eventsToBoss;
             if(state.availableNodeIds.Count==0)
                 for(var i=0;i<state.Rules.world.branchCount;i++)state.availableNodeIds.Add(CreateNode(state,boss).id);

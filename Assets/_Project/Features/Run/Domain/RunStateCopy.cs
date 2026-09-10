@@ -18,7 +18,7 @@ namespace FateDice
 
         public static NodeState Node(NodeState source) => source == null ? null : new NodeState
         {
-            id = source.id, type = source.type, childIds = Ids(source.childIds)
+            id = source.id, type = source.type, childIds = Ids(source.childIds), floor = source.floor, lane = source.lane
         };
 
         public static OfferedCard Card(OfferedCard source) => source == null ? null : new OfferedCard

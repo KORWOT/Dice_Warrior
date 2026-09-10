@@ -1,13 +1,9 @@
 # ExplorationNodeView.cs
 
-추가 UI f91fba13 / FateDice.Runtime / C 담당.
-- 역할: 공개 노드 ID/유형/레이블/VisualArtwork를 공통 프레임에 연결하고 선택/페이드를 표현한다. 노드 도달 가능성/합류/진척/보상을 계산하거나 변경하지 않는다.
-- API: Bind(nodeId,type,label,visual,style,selectable,selected,callback), Unbind(), FadeOut(seconds), NodeId/Type/IsFading.
-- 직접 관계: CommonButtonView.Bind/Unbind, NodeType, VisualArtwork/ButtonAppearance, 코루틴/Time.unscaledDeltaTime. 선택은 주입한 개별 nodeId 콜백으로만 전달한다. 그림 우선순위는 icon → artwork → glyph, tint는 그림/기호에만 적용한다.
-- 수명: Bind/Unbind/OnDisable은 이전 코루틴을 취소하고 바인딩 세대를 증가시킨다. 페이드 시작 즉시 Button과 CanvasGroup 입력을 차단한다. 유한 비음수 시간만 허용하고, 0초는 즉시 숨긴다. 각 프레임/완료의 세대 검사로 늦은 작업이 새 바인딩을 숨기지 못한다.
-- 완료: alpha0 및 GameObject 숨김만 수행하며 NodeId/Type은 유지한다. 실제 런 노드 기록은 이 View에 전달되지 않는다. Unbind는 ID/유형을 비우고 재Bind는 active/alpha1/새 입력 허용을 복원한다.
-- 관계 근거: frame 필드와 호출, 제공된 ID/유형/그림만 사용한다. 실제 ExplorationNodeView.prefab 및 Widgets의 사라지는 노드 결정은 메인 통합 범위다.
-- 검증: initial-play-red.json의 두 페이드 테스트를 포함한 View7개 RED 후 구현. 즉시 입력 차단/늦은 완료 취소/완료 ID 보존/재사용 GREEN은 메인 실제 실행에서 PASS 확인다.
-
-
-- 메인 최종 실행: EditMode122/122(매핑19 포함), PlayMode21/21(View7+실제 GUI14 포함) PASS. 실제 원본/이미지 편집·복원과 합류/저장 결과는 REPORT 추가 UI 절 참조.
+- 역할: 개별 공개 노드 ID/유형/그림과 입력·선택·fade를 공통 프레임에 연결한다. 진행/도달성/보상/RNG를 계산하지 않는다.
+- 입력/API: 기존 Bind(nodeId,type,label,visual,style,selectable,selected,callback)와 새 BindCampaign(publicNode,current,selected,visual,style,preview). 출력은 NodeId, legacy Type, nullable PublicType, Revealed, IsFading이다. 신규 화면은 PublicType만 소비하며 미공개 type에서 기존 Type의 enum 기본값을 표시하지 않는다.
+- 핵심 동작: 기존 artwork 우선순위 icon→artwork를 보존한다. 그림이 없으면 authored MapNodeGraphic이 실제 공개 유형 아이콘을 그린다. 미공개는 점선 빈 원/다이아몬드/미발견이며 Event의 물음표와 구별한다. 이동 가능 발광 링, 미리보기 ticks, 파란 현재 상태, 완료 체크, 접근불가 자물쇠를 별도 표시한다.
+- authored 대상: CommonButtonView frame, MapNodeGraphic mapGraphic, 원본별 layoutVersion. CommonButtonView listener 소유와 색상/폰트 복원 계약을 유지한다. ApplyMapAppearance는 같은 어셈블리의 CampaignMapView가 legacy 완료 상태를 추가 표시할 때만 호출한다.
+- 상태/수명: Bind/Unbind/OnDisable은 이전 fade를 취소하고 generation을 올린다. fade 시작 즉시 Button/CanvasGroup 입력 차단, 유한 비음수 초만 허용, 0초는 즉시 숨김. 완료는 alpha0/숨김만 수행하여 ID를 유지한다. Unbind는 ID/공개 유형을 비운다.
+- 직접 관계: CampaignMapView → ExplorationNodeView → CommonButtonView, MapNodeGraphic, VisualArtwork/ButtonAppearance. 실제 이벤트 ID나 RunState가 전달되지 않는다.
+- 검수 주의: 불가 노드도 화면에는 남지만 입력 불가여야 한다. Rebind 후 이전 listener/그림/코루틴이 남으면 안 된다. 실제 원본, fade, 좌표·입력 회귀는 Main 통합 실행 증거로 판정한다.

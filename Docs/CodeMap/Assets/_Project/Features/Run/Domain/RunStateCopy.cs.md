@@ -8,3 +8,8 @@
 
 - RA-D: ShopOffer 원소와 목록을 독립 복제한다. 규칙 effects/addActionId/가격배율도 RulesCopy를 통해 복제한다.
 - 검수 근거: 직접 호출 소스와 RA-D 계약 시험. 실제 실행 상태는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
+
+## 절차 지도 좌표 복사 (2026-09-10)
+- Node 복사는 floor/lane도 보존한다. active/history/selectedNode 모두 같은 복사 경로로 전달하므로 Core 후보와 Runtime 디스크 snapshot 간 좌표가 사라지지 않는다.
+- 자식 ID 목록과 원소의 독립 복사를 유지한다. 규칙 모드·열/경로 개수는 RulesCopy.World의 saved rule 복사를 따른다. ProceduralMapTests가 좌표/설정/child list 격리와 저장 왕복을 검사한다.

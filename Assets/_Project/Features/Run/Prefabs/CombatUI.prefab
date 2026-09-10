@@ -3131,6 +3131,9 @@ MonoBehaviour:
   shakePixels: 9
   feedbackHoldSeconds: 0.25
   feedbackVersion: 1
+  entryVersion: 1
+  entrySeconds: 0.7
+  entryIntensity: 0.06
 --- !u!225 &734915929737483245
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -19,3 +19,10 @@
 - CampaignMapView는 이 DTO와 활성 그래프를 단일 ID로 배치하고 전달된 실제 연결선으로 분기/합류를 표현한다. 완료 노드는 비선택 스타일로 남고, 보상 이후 및 저장 재개에도 컨트롤러가 같은 기록에서 표시 데이터를 재구성한다. 맵 자체는 RunState/nodeHistory/RNG를 조회하지 않는다.
 - 세로 배치·현재 위치·도착/fade·preview 레이아웃은 Presentation 책임이다. Initialize/PruneTo/Advance의 공개 깊이, 합류 보존, Boss 전환과 노드 생성 RNG는 기존 RunSession 명령 경계에서 실행된다.
 - 문서 범위: 실제 소스와 이번 작업의 staged DTO/컨트롤러/맵 직접 관계를 확인한 초안이다. 이 문서 갱신에서는 Unity를 실행하지 않았으며 최종 통합 실행 증거는 메인 기록을 따른다.
+
+
+## 절차 지도 버전1 (2026-09-10)
+- Initialize는 saved world.mapGenerationVersion==1일 때 ProceduralMapGenerator.Initialize로 전체 지도를 만든다. 0은 기존 branchCount/previewDepth 증분 생성 및 게임 RNG 소비 순서를 유지한다.
+- Advance의 버전1은 선택 노드의 기존 childIds를 다음 available로 사용하고 PruneTo로 선택/버린 가지를 이력에 보존한다. 노드 생성·유형 재추첨·다중 보스 전환은 하지 않는다. 최종 보스는 런 시작부터 단일 노드로 고정된다.
+- PruneTo의 합류 도달성/이력 책임은 동일하다. RunApplication의 사건당+1 및 checkpoint 순서는 바꾸지 않는다. 버전1 전체 지도는 nodes+nodeHistory 합집합이며 완료 여부는 resolvedEventIds로 판단한다.
+- 직접 호출 관계: RunApplication.New/ChooseNode/FinishEvent → ExplorationRules → ProceduralMapGenerator(version1 only). 실제 새 모드 실행 결과는 PROCEDURAL_CAMPAIGN_REPORT를 따른다.

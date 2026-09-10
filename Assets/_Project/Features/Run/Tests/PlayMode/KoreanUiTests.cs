@@ -27,6 +27,7 @@ namespace FateDice.Tests
             { "Bastion", "철벽" }, { "Attack", "공격" }, { "Defend", "방어" }, { "Heavy attack", "강공격" }
         };
         GameApplication app;
+        FateDiceConfig legacyConfig;
         LocalRunStore store;
         string directory;
         RunUIController Controller => app.controller;
@@ -50,6 +51,8 @@ namespace FateDice.Tests
         {
             if (app) Object.Destroy(app.gameObject);
             app = null;
+            if (legacyConfig) Object.Destroy(legacyConfig);
+            legacyConfig = null;
             yield return null;
             Assert.That(GameApplication.Current, Is.Null);
         }
@@ -81,6 +84,9 @@ namespace FateDice.Tests
         {
             Assert.That(app, Is.Null);
             app = GameApplication.Bootstrap(Prefab(), store);
+            legacyConfig = Object.Instantiate(Controller.config);
+            legacyConfig.data.world.mapGenerationVersion = 0;
+            Controller.config = legacyConfig;
             Assert.That(Controller.Store, Is.SameAs(store), "The isolated store must precede controller initialization.");
             yield return SceneManager.LoadSceneAsync(SceneFolder + role + ".unity", LoadSceneMode.Single);
             yield return WaitScene(role);
@@ -199,7 +205,7 @@ namespace FateDice.Tests
             yield return Press("roll");
             yield return Unlocked();
             AssertState(oracle.State);
-            Assert.That(Controller.Widgets.Buttons["fate-" + State.cards[0].id].GetComponent<FateCardView>().frame.label.text,
+            Assert.That(((FateChoiceUI)Controller.UI.Popups.Last()).Cards.Single(card => card.OfferedId == State.cards[0].id).frame.label.text,
                 Is.EqualTo("전투  /  일반"));
             AssertKoreanSurface();
             LogAssert.NoUnexpectedReceived();
@@ -342,6 +348,7 @@ namespace FateDice.Tests
         static RunSession Encounter(NodeType type, Action<GameConfigData> customize = null)
         {
             var config = Prefab().controller.config.Snapshot();
+            config.world.mapGenerationVersion = 0;
             config.fate.nodeWeights = Enumerable.Range(0, 5).Select(i => i == (int)type ? 1f : 0f).ToArray();
             customize?.Invoke(config);
             var run = RunSession.New(config, 33, "fireball", Grade.Common);
@@ -375,13 +382,13 @@ namespace FateDice.Tests
             return run;
         }
 
-        string AllText() => string.Join("\n", Controller.UI.ActiveScreen.GetComponentsInChildren<Text>()
-            .Where(t => t.isActiveAndEnabled).Select(t => t.text));
+        IEnumerable<Text> SurfaceText() => new[] { Controller.UI.ActiveScreen }.Concat(Controller.UI.Popups)
+            .SelectMany(view => view.GetComponentsInChildren<Text>()).Where(text => text.isActiveAndEnabled);
+        string AllText() => string.Join("\n", SurfaceText().Select(t => t.text));
         void AssertKoreanSurface(params string[] customText)
         {
             Canvas.ForceUpdateCanvases();
-            var texts = Controller.UI.ActiveScreen.GetComponentsInChildren<Text>().Where(t => t.isActiveAndEnabled &&
-                !string.IsNullOrWhiteSpace(t.text)).ToArray();
+            var texts = SurfaceText().Where(t => !string.IsNullOrWhiteSpace(t.text)).ToArray();
             Assert.That(texts.Length, Is.GreaterThan(1));
             var font = KoreanFont();
             string combined = string.Join("\n", texts.Select(t => t.text));
@@ -429,10 +436,18 @@ namespace FateDice.Tests
         {
             if ((key.StartsWith("trial-") || key.StartsWith("cap-")) && Controller.UI.ActiveScreen is MenuUI menu && !menu.settingsPanel.gameObject.activeSelf)
                 yield return PressButton(menu.settingsTab);
-            if (key == "menu" && Controller.UI.Popups.LastOrDefault() is DiceRollUI) Controller.UI.CloseTopPopup();
+            if (key == "menu" && Controller.UI.Popups.Count > 0) Controller.UI.CloseTopPopup();
             if (key == "roll" && Controller.UI.Popups.LastOrDefault() is DiceRollUI popup)
             {
                 yield return PressButton(popup.rollButton.button);
+                yield break;
+            }
+            if (key.StartsWith("fate-") && Controller.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                string before = Stable(State);
+                yield return PressButton(fate.Cards.Single(card => card.OfferedId == key.Substring(5)).frame.button);
+                Assert.That(Stable(State), Is.EqualTo(before));
+                yield return PressButton(fate.confirmButton.button);
                 yield break;
             }
             Assert.That(Controller.Widgets.Buttons.TryGetValue(key, out var button), Is.True, key);

@@ -40,6 +40,7 @@ namespace FateDice
         Vector3 originalCardScale;
         Image pulsingImage;
         Color originalCardColor;
+        SelectionFeedback selectionFeedback;
 
         public FateDiceWidgets(RunScreenLayout layout, RunUIContext context)
         {
@@ -134,14 +135,36 @@ namespace FateDice
                 if (campaignMap.Nodes.TryGetValue(id, out var view)) Buttons["node-" + id] = view.frame.button;
         }
 
-        public IEnumerator AnimateNodeArrival(string id, float seconds)
+        public IEnumerator AnimateNodeArrival(string id)
         {
-            if (campaignMap) yield return campaignMap.AnimateNodeArrival(id, seconds);
+            if (campaignMap) yield return campaignMap.AnimateNodeArrival(id, campaignMap.arrivalSeconds);
         }
-        public IEnumerator AnimateCardSelection(string key, float seconds)
+        public void ShowCampaignMap(RectTransform parent, IReadOnlyList<CampaignNodeUIData> nodes,
+            string currentId, string selectedId, Action<string> preview)
+        {
+            if (!parent) throw new InvalidOperationException("The authored map container is missing.");
+            var authored = parent.GetComponent<CampaignMapView>();
+            if (!authored) throw new InvalidOperationException("The map container requires its authored CampaignMapView.");
+            if (campaignMap && campaignMap != authored) ClearMap();
+            campaignMap = authored;
+            campaignMap.BindCampaign(nodes, currentId, selectedId, context.prefabs.explorationNode, context.visuals, preview);
+            foreach (var node in nodes)
+                if (node.available && campaignMap.Nodes.TryGetValue(node.id, out var view))
+                    Buttons["node-" + node.id] = view.frame.button;
+        }
+        public IEnumerator AnimateCardSelection(string key)
         {
             ResetSelectionFeedback();
             if (!Buttons.TryGetValue(key, out var button) || !button) yield break;
+            selectionFeedback = button.GetComponent<SelectionFeedback>();
+            if (selectionFeedback)
+            {
+                try { yield return selectionFeedback.Play(); }
+                finally { ResetSelectionFeedback(); }
+                yield break;
+            }
+            // Non-feedback choices keep a short locally owned pulse; no controller wait guesses its completion.
+            float seconds = context.presentation.actionSeconds;
             pulsingCard = button.transform as RectTransform;
             if (!pulsingCard) yield break;
             originalCardScale = pulsingCard.localScale;
@@ -162,6 +185,8 @@ namespace FateDice
         }
         public void ResetSelectionFeedback()
         {
+            if (selectionFeedback) selectionFeedback.ResetFeedback();
+            selectionFeedback = null;
             if (pulsingCard) pulsingCard.localScale = originalCardScale;
             if (pulsingImage) pulsingImage.color = originalCardColor;
             pulsingCard = null; pulsingImage = null;

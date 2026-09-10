@@ -8,3 +8,9 @@
 
 - RA-D: shopOffers 목록은 상점 입장 때 고정한 productId/price를 저장하며 보상·장비선택 중에도 동일 상점 수명을 유지한다.
 - 검수 근거: 직접 호출 소스와 RA-D 계약 시험. 실제 실행 상태는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
+
+## 절차 지도 좌표 (2026-09-10)
+- NodeState에 floor/lane int를 추가한다. 버전1은 일반층1..N/보스N+1 및 lane0..columns-1의 런 고정 좌표다. 구형 schema1 누락은0이며 mapGenerationVersion0에서 원래 그래프 의미를 유지한다.
+- nodes/nodeHistory/selectedNode는 같은 ID/좌표를 보존한다. 새 필드는 RunStateCopy.Node가 복제하고 RunStateValidator가 버전별로 검사한다. 표현 좌표 공개와 먼 노드의 유형 숨김은 Main의 표시 DTO 투영 책임이다.
+- CurrentSchema는1을 유지한다. 새 영구 저장/별도 map RNG 상태는 추가하지 않는다. 완성 그래프는 저장되고 생성 난수는 initialSeed로부터 지역적으로 파생된다.

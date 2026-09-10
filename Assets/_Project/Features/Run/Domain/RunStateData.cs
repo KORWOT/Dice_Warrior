@@ -7,6 +7,9 @@ namespace FateDice
         public string id;
         public NodeType type;
         public List<string> childIds = new List<string>();
+        // Version1 map positions are immutable for the run; zero fields preserve legacy saves.
+        public int floor;
+        public int lane;
     }
     [Serializable] public sealed class OfferedCard
     {

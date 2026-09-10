@@ -1,4 +1,4 @@
-﻿# FateDiceGuiTests.cs
+# FateDiceGuiTests.cs
 
 ## RA-B 상태 경계 fixture 전환 (2026-09-09)
 
@@ -44,3 +44,24 @@ LoadProductScene에서 Seed=33을 명시 주입한다. 일반 새 여정이 시�
 - 완주/패배/보상/재굴림/저장·자산 원본 전파/두 화면 비율 검증은 유지한다.
 
 - 이번 변경 검수 상태: 최종 실행 증거는 Docs/Reports/LOBBY_MAP_DICE_REPORT.md를 참조한다.
+
+
+## 절차형 지도·운명 팝업 직접 회귀 (2026-09-10)
+
+일반 완주·보상·수제 합류 경로의 고정 seed oracle를 유지하도록 테스트 소유 FateDiceConfig clone에 mapGenerationVersion=0을 명시하고 teardown에서 제거한다. 노드와 운명 카드 첫 포인터 탭 후 전체 상태/저장이 그대로인지 확인한 뒤 move 또는 FateChoiceUI.confirmButton을 실제 포인터로 누른다. 카드와 유료 주사위는 열린 FateChoiceUI의 실제 참조를 조회한다. 두 비율의 탐험 검사는 공개 HP/골드/수호 필드와 실제 중첩 scroll viewport를 사용한다.
+
+이번 갱신은 Unity 미실행(NOT_RUN)이며 과거 PASS를 새 계약의 실행 증거로 재사용하지 않는다. 실제 통합 실행/판정은 Main의 PROCEDURAL_CAMPAIGN_REPORT에 기록한다.
+
+
+## PROCEDURAL_CAMPAIGN 보완 묶음 2 직접 회귀
+
+EarnedReroll은 Widgets의 옛 die-2 키 대신 실제 FateChoiceUI 버튼 조회를 사용한다. 첫 입력 후 DiceRollUI로 바뀌어도 같은 이전 버튼 callback을 다시 호출해 중복 비용/명령 방어 oracle를 유지한다. 비공개 event artwork 금지 검사는 유지하면서 공개 유형의 visible typeSymbol 또는 기존의 비어 있지 않은 artworkFallback glyph 중 하나를 요구한다.
+
+근거: artifacts/procedural-campaign/play-initial.json의 실제 실패. 이번 담당은 Unity를 실행하지 않았으며 수정 후 검증은 Main의 마지막 통합 실행 대기다. 기존 EventSystem 경고를 기대 로그로 등록하거나 전역 객체를 삭제하지 않는다.
+
+
+## CAMPAIGN_FLOW_POLISH 현재 입력·진입 계약 (2026-09-10)
+
+실제 노드 포인터를 한 번만 보내며 더 이상 별도 move 입력을 만들지 않는다. fate 카드의 강조 선택 뒤 상태/디스크 불변과 confirm 포인터는 유지한다. WaitUnlocked는 CanvasGroup 상태뿐 아니라 screen.Busy=false까지 기다려 실제 전투 진입 연출이 끝난 뒤 다음 roll을 누른다. 기존 14개 검사의 저장·RNG·단일 재굴림·중복 callback·원본/좌표/가시성 oracle를 유지한다.
+
+이 새 사용자 계약이 위 절차형 지도 작업의 노드 preview→move 입력 기록을 대체한다. 검사 추가/삭제는 없고 기존 EventSystem 6실패를 완화하지 않는다. Main의 신규 RED2 실패 확인 후 작성했으며 담당 Unity/컴파일 실행은 NOT_RUN이다. 현재 실행/최종 판정은 CAMPAIGN_FLOW_POLISH_REPORT의 실제 증거를 따른다.

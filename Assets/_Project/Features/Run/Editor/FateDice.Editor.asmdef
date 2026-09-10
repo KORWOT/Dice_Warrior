@@ -6,7 +6,11 @@
     "Unity.ugui",
     "FateDice.SharedUI",
     "Unity.InputSystem",
-    "FateDice.Core"
+    "FateDice.Core",
+    "Unity.TextMeshPro",
+    "Febucci.TextAnimatorForUnity.Runtime",
+    "Febucci.TextAnimatorForUnity.TMP.Runtime",
+    "MoreMountains.Tools"
   ],
   "includePlatforms": [
     "Editor"

@@ -144,6 +144,10 @@ namespace FateDice
         /* Authoring range: 1,5. */ public int offeredCards;
         /* Authoring range: 1,3. */ public int previewDepth;
         /* Authoring range: 2,3. */ public int branchCount;
+        // Absent/zero keeps the original incremental tree in schema1 checkpoints.
+        public int mapGenerationVersion;
+        /* Version1 authoring range: 2,7. */ public int mapColumns;
+        /* Version1 authoring range: 2,12. */ public int mapPathCount;
         public EventDefinition[] events;
         public RewardDefinition bossReward;
         public ShopProduct[] shop;
@@ -295,6 +299,12 @@ namespace FateDice
             Check(world.eventsToBoss>=1&&world.eventsToBoss<=100,"world.eventsToBoss: 1..100");
             Check(world.offeredCards>=1&&world.offeredCards<=5,"world.offeredCards: 1..5");
             Check(world.previewDepth>=1&&world.previewDepth<=3&&world.branchCount>=2&&world.branchCount<=3,"world.tree: depth1..3 branches2..3");
+            Check(world.mapGenerationVersion==0||world.mapGenerationVersion==1,"world.mapGenerationVersion: supported versions are 0 and 1");
+            if(world.mapGenerationVersion==1)
+            {
+                Check(world.mapColumns>=2&&world.mapColumns<=7,"world.mapColumns: 2..7");
+                Check(world.mapPathCount>=2&&world.mapPathCount<=12,"world.mapPathCount: 2..12");
+            }
             Ids(world.events,x=>x.id,"world.events");
             foreach(var encounter in world.events??Array.Empty<EventDefinition>())if(encounter!=null)
             {

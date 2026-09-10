@@ -409,6 +409,9 @@ MonoBehaviour:
       offeredCards: 3
       previewDepth: 2
       branchCount: 3
+      mapGenerationVersion: 1
+      mapColumns: 5
+      mapPathCount: 5
       events:
       - id: combat_0
         label: Road encounter

@@ -19,3 +19,5 @@
 ## 한글 UI 적용 (2026-09-08)
 - gradeLabel만 KoreanText.Grade로 표시한다. 직접 입력한 이름/효과/태그 문구는 View에서 재해석하지 않는다. 폰트는 CommonButtonView 상속과 KoreanUiAuthoring을 통해 Pretendard를 참조한다.
 - 현재 실행 증거: Docs/Reports/KOREAN_UI_REPORT.md.
+
+- 주사위 조합 연출: 이 원본의 CommonButtonView 버튼에 SelectionFeedback을 작성했다. 실제 선택 시 FateDiceWidgets가 재생하며 View의 게임 callback/등급 표시 계약은 그대로다.

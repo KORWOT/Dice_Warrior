@@ -18,6 +18,28 @@ namespace FateDice.Tests
             if(token is JArray array)return new JArray(array.Select(Canonical));
             return token.DeepClone();
         }
+        static void RequireLegacyZerosAndRemove(JObject owner,params string[] names)
+        {
+            foreach(var name in names)
+            {
+                var field=owner.Property(name);
+                Assert.That(field,Is.Not.Null,"New legacy field is missing: "+owner.Path+"."+name);
+                Assert.That(field.Value.Type,Is.EqualTo(JTokenType.Integer),field.Path+" must remain an integer");
+                Assert.That((int)field.Value,Is.Zero,field.Path+" must remain zero in the historical mode-0 replay");
+                field.Remove();
+            }
+        }
+        static void ProjectHistoricalMapFields(JObject json)
+        {
+            // These fixtures predate procedural maps. A nonzero new field is a regression,
+            // not permission to normalize a mode-1 map into the unchanged legacy golden hash.
+            RequireLegacyZerosAndRemove((JObject)json["config"]["world"],
+                "mapGenerationVersion","mapColumns","mapPathCount");
+            foreach(var node in json["nodes"].Concat(json["nodeHistory"]).Cast<JObject>())
+                RequireLegacyZerosAndRemove(node,"floor","lane");
+            // JsonUtility can serialize an absent selected node as an empty object.
+            if(json["selectedNode"] is JObject selected)RequireLegacyZerosAndRemove(selected,"floor","lane");
+        }
         static string Hash(RunState state)
         {
             // D adds optional fields. Require legacy semantics before projecting ONLY those new fields.
@@ -34,7 +56,8 @@ namespace FateDice.Tests
             { Assert.That(string.IsNullOrEmpty((string)field.Value),Is.True);field.Remove(); }
             foreach(var action in json["config"]["combat"]["actions"].Cast<JObject>())action.Property("effects")?.Remove();
             ((JObject)json["config"]["world"]).Property("shopPriceMultipliers")?.Remove();json.Property("shopOffers")?.Remove();
-            // Every pre-D field, ID, RNG and time remains in the original complete-state hash.
+            ProjectHistoricalMapFields(json);
+            // Every original field, ID, RNG and time remains in the unchanged complete-state golden hash.
             var text=Canonical(json).ToString(Formatting.None);
             using(var sha=SHA256.Create())return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-","");
         }

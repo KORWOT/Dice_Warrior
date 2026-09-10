@@ -19,17 +19,26 @@ namespace FateDice
         public int layoutVersion;
         public Text actionFeedback, damageFeedback;
         public Image hitFlash;
-        [Range(.1f, 2)] public float actionFeedbackSeconds = .38f;
+        [Min(0)] public float actionFeedbackSeconds = .38f;
         [Range(0, 24)] public float shakePixels = 9;
-        [Range(0, 2)] public float feedbackHoldSeconds = .25f;
+        [Min(0)] public float feedbackHoldSeconds = .25f;
         public int feedbackVersion;
+        public int entryVersion;
         public bool IsFeedbackPlaying { get; private set; }
+        [Min(0)] public float entrySeconds = .7f;
+        [Range(0, .25f)] public float entryIntensity = .06f;
+        public bool IsEntryPlaying { get; private set; }
+        public int EntryBindingVersion { get; private set; }
+        Vector3 restingEntryArenaScale, restingEntryTextScale;
+        Color restingEntryStageColor, restingEntryArtworkColor, restingEntryTextColor, restingEntryFlashColor;
+        int entryGeneration;
         Vector2 restingArena;
         Vector3 restingArenaLocalPosition;
         Vector3 restingDamageScale;
         Vector2 restingDamagePosition;
         Color restingDamageColor, restingActionColor;
         int actionCount;
+        int feedbackGeneration;
 
         static readonly Color Red = new Color(.77f, .27f, .23f);
         static readonly Color Blue = new Color(.25f, .56f, .76f);
@@ -50,6 +59,8 @@ namespace FateDice
 
         protected override void BindHUD(CombatUIData data)
         {
+            ResetEntry();
+            EntryBindingVersion++;
             ResetFeedback();
             if (!menuButton || !diePrefab || !enemyHealthFill || !playerHealthFill || !arena)
                 throw new InvalidOperationException("CombatUI requires its dedicated header, health bars, arena and dice prefab.");
@@ -117,12 +128,86 @@ namespace FateDice
             rect.anchorMax = new Vector2(Mathf.Clamp01(value), 1);
             rect.offsetMin = rect.offsetMax = Vector2.zero;
         }
+        public IEnumerator PlayEntry() => EntryRoutine(EntryBindingVersion);
+
+        IEnumerator EntryRoutine(int binding)
+        {
+            // Calling an iterator need not run it immediately. Do not enter a newer binding.
+            if (binding != EntryBindingVersion || !IsOpen || !isActiveAndEnabled) yield break;
+            if (float.IsNaN(entrySeconds) || float.IsInfinity(entrySeconds) || entrySeconds < 0 ||
+                float.IsNaN(entryIntensity) || float.IsInfinity(entryIntensity) || entryIntensity < 0 || entryIntensity > .25f)
+                throw new InvalidOperationException("Combat entry duration must be finite and nonnegative; intensity must be between 0 and 0.25.");
+            if (!arena || !stageGraphic || !artwork || !actionFeedback || !hitFlash || Data == null)
+                throw new InvalidOperationException("Combat entry requires its authored arena, stage, artwork, text and flash.");
+            ResetEntry();
+            ResetFeedback();
+            int generation = entryGeneration;
+            float seconds = entrySeconds, intensity = entryIntensity;
+            if (seconds == 0) yield break;
+            restingEntryArenaScale = arena.localScale;
+            restingEntryTextScale = actionFeedback.rectTransform.localScale;
+            restingEntryStageColor = stageGraphic.color;
+            restingEntryArtworkColor = artwork.color;
+            restingEntryTextColor = actionFeedback.color;
+            restingEntryFlashColor = hitFlash.color;
+            IsEntryPlaying = true;
+            try
+            {
+                SetText(actionFeedback, "전투 시작\n" + Data.enemyName);
+                double began = Time.realtimeSinceStartupAsDouble;
+                while (generation == entryGeneration && binding == EntryBindingVersion && IsEntryPlaying && isActiveAndEnabled && IsOpen)
+                {
+                    float t = Mathf.Clamp01((float)((Time.realtimeSinceStartupAsDouble - began) / seconds));
+                    float appear = Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / .35f));
+                    float settle = Mathf.SmoothStep(0, 1, t);
+                    float textFade = Mathf.Clamp01(t / .12f) * (1 - Mathf.Clamp01((t - .75f) / .25f));
+                    arena.localScale = restingEntryArenaScale * Mathf.Lerp(1 - intensity, 1, settle);
+                    stageGraphic.color = EntryAlpha(restingEntryStageColor, appear);
+                    artwork.color = EntryAlpha(restingEntryArtworkColor, appear);
+                    actionFeedback.rectTransform.localScale = restingEntryTextScale * (1 + intensity * (1 - settle));
+                    actionFeedback.color = EntryAlpha(restingEntryTextColor, textFade);
+                    hitFlash.color = new Color(1, .82f, .48f, intensity * 1.5f * Mathf.Sin(t * Mathf.PI));
+                    if (t >= 1) break;
+                    yield return null;
+                }
+            }
+            finally
+            {
+                if (generation == entryGeneration && binding == EntryBindingVersion) ResetEntry();
+            }
+        }
+
+        static Color EntryAlpha(Color original, float multiplier) =>
+            new Color(original.r, original.g, original.b, original.a * multiplier);
+
+        public void ResetEntry()
+        {
+            entryGeneration++;
+            if (!IsEntryPlaying) return;
+            IsEntryPlaying = false;
+            if (arena) arena.localScale = restingEntryArenaScale;
+            if (stageGraphic) stageGraphic.color = restingEntryStageColor;
+            if (artwork) artwork.color = restingEntryArtworkColor;
+            if (actionFeedback)
+            {
+                actionFeedback.rectTransform.localScale = restingEntryTextScale;
+                actionFeedback.color = restingEntryTextColor;
+                ClearText(actionFeedback);
+            }
+            if (hitFlash) hitFlash.color = restingEntryFlashColor;
+        }
+
         public IEnumerator PlayFeedback(CombatFeedbackData data)
         {
+            if (float.IsNaN(actionFeedbackSeconds) || float.IsInfinity(actionFeedbackSeconds) || actionFeedbackSeconds < 0 ||
+                float.IsNaN(feedbackHoldSeconds) || float.IsInfinity(feedbackHoldSeconds) || feedbackHoldSeconds < 0)
+                throw new InvalidOperationException("Combat feedback durations must be finite and nonnegative.");
             if (!actionFeedback || !damageFeedback || !hitFlash || !arena)
                 throw new InvalidOperationException("Combat feedback requires its authored texts, flash and arena.");
+            ResetEntry();
             ResetFeedback();
             // anchoredPosition can resolve a pending RectTransform layout. Preserve local first.
+            int generation = feedbackGeneration;
             restingArenaLocalPosition = arena.localPosition;
             restingArena = arena.anchoredPosition;
             restingDamageScale = damageFeedback.rectTransform.localScale;
@@ -140,7 +225,8 @@ namespace FateDice
                 SetHealth(enemyHealthFill, (float)data.enemyHpAfter / data.enemyMaxHp);
                 ClearText(enemyShield);
                 if (data.blockGained > 0) SetText(playerShield, "수호 +" + data.blockGained);
-                yield return Impact(data.attack > 0 ? Red : Blue, data.attack > 0, data.enemyHpLost, data.enemyMaxHp);
+                yield return Impact(data.attack > 0 ? Red : Blue, data.attack > 0, data.enemyHpLost, data.enemyMaxHp, generation);
+                if (generation != feedbackGeneration) yield break;
                 if (data.retaliates)
                 {
                     actionFeedback.color = restingActionColor;
@@ -151,19 +237,21 @@ namespace FateDice
                     SetText(layout.stats, "체력 " + data.playerHpAfter + "/" + data.playerMaxHp);
                     SetHealth(playerHealthFill, (float)data.playerHpAfter / data.playerMaxHp);
                     SetText(playerShield, "수호 0");
-                    yield return Impact(data.enemyDefends ? Blue : Red, !data.enemyDefends, data.playerHpLost, data.playerMaxHp);
+                    yield return Impact(data.enemyDefends ? Blue : Red, !data.enemyDefends, data.playerHpLost, data.playerMaxHp, generation);
+                    if (generation != feedbackGeneration) yield break;
                 }
-                yield return new WaitForSecondsRealtime(Mathf.Clamp(feedbackHoldSeconds, 0, 2));
+                double holdStarted = Time.realtimeSinceStartupAsDouble;
+                while (generation == feedbackGeneration && IsFeedbackPlaying && Time.realtimeSinceStartupAsDouble - holdStarted < feedbackHoldSeconds) yield return null;
             }
-            finally { ResetFeedback(); }
+            finally { if (generation == feedbackGeneration) ResetFeedback(); }
         }
-        IEnumerator Impact(Color color, bool shake, int hpLost, int maxHp)
+        IEnumerator Impact(Color color, bool shake, int hpLost, int maxHp, int generation)
         {
             damageFeedback.color = Color.Lerp(color, Color.white, .48f);
             float began = Time.unscaledTime;
-            float seconds = Mathf.Clamp(actionFeedbackSeconds, .1f, 2);
+            float seconds = actionFeedbackSeconds;
             float strength = Mathf.Lerp(.45f, 1, Mathf.Clamp01((float)hpLost / Math.Max(1, maxHp) * 3));
-            while (IsFeedbackPlaying && Time.unscaledTime - began < seconds)
+            while (generation == feedbackGeneration && IsFeedbackPlaying && Time.unscaledTime - began < seconds)
             {
                 float t = Mathf.Clamp01((Time.unscaledTime - began) / seconds);
                 float falloff = 1 - t;
@@ -173,6 +261,7 @@ namespace FateDice
                 damageFeedback.rectTransform.anchoredPosition = restingDamagePosition + Vector2.up * 12 * t;
                 yield return null;
             }
+            if (generation != feedbackGeneration) yield break;
             arena.localPosition = restingArenaLocalPosition;
             hitFlash.color = Color.clear;
             damageFeedback.rectTransform.localScale = restingDamageScale;
@@ -180,6 +269,7 @@ namespace FateDice
         }
         public void ResetFeedback()
         {
+            feedbackGeneration++;
             if (IsFeedbackPlaying)
             {
                 if (arena) arena.localPosition = restingArenaLocalPosition;
@@ -195,9 +285,14 @@ namespace FateDice
             if (hitFlash) hitFlash.color = Color.clear;
             ClearText(actionFeedback); ClearText(damageFeedback);
         }
-        void OnDisable() => ResetFeedback();
+        void OnDisable()
+        {
+            ResetEntry();
+            ResetFeedback();
+        }
         protected override void UnbindScreen()
         {
+            ResetEntry();
             ResetFeedback();
             if (menuButton) menuButton.Unbind();
             if (artworkRoot && artwork && artworkFallback) SetArtwork(artworkRoot, artwork, artworkFallback, null);

@@ -94,9 +94,28 @@ namespace FateDice.Tests
                 Assert.That(prefab.GetComponentsInChildren<ScrollRect>(true).Length, Is.EqualTo(1));
                 Assert.That(prefab.GetComponentsInChildren<Text>(true).Length, Is.GreaterThanOrEqualTo(6));
                 Assert.That(prefab.GetComponentsInChildren<Canvas>(true), Is.Empty, "One shared canvas owns screen ordering.");
-                foreach (var row in prefab.GetComponentsInChildren<HorizontalLayoutGroup>(true))
-                    Assert.That(row.GetComponent<LayoutElement>().minHeight, Is.GreaterThanOrEqualTo(minimumButtonHeight),
-                        name + "/" + row.name + " must contain the common prefab's minimum touch height.");
+                var layout = prefab.GetComponentInChildren<RunScreenLayout>(true);
+                Assert.That(layout, Is.Not.Null);
+                RectTransform[] choices = prefab.GetComponent(name) switch
+                {
+                    MenuUI view => new[] { view.trialChoices, view.capChoices, view.mainChoices },
+                    ExplorationUI view => new[] { view.rollChoices, view.fateChoices },
+                    CombatUI view => new[] { view.rollChoices, view.actionChoices },
+                    EncounterUI view => new[] { view.choices },
+                    RewardUI view => new[] { view.choices },
+                    EquipmentUI view => new[] { view.choices },
+                    ResultUI view => new[] { view.choices },
+                    _ => throw new System.InvalidOperationException("Missing authored choice contract for " + name)
+                };
+                foreach (var container in choices.Concat(new[] { layout.diceRow, layout.footer }).Distinct())
+                {
+                    Assert.That(container, Is.Not.Null, name + " must reference its authored choice containers.");
+                    if (!container.GetComponent<HorizontalLayoutGroup>()) continue;
+                    var element = container.GetComponent<LayoutElement>();
+                    Assert.That(element, Is.Not.Null, name + "/" + container.name);
+                    Assert.That(element.minHeight, Is.GreaterThanOrEqualTo(minimumButtonHeight),
+                        name + "/" + container.name + " must contain the common prefab's minimum touch height.");
+                }
                 Assert.That(prefab.GetComponentsInChildren<Transform>(true).Sum(t => UnityEditor.GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject)), Is.Zero);
             }
             var menu = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(ScreenFolder + "MenuUI.prefab");

@@ -13,3 +13,17 @@
 - B-02 추가 수정3: 정상 종료는 RectTransform 초기 layout을 완료하고 local(.125,59.125,0)을 독립 exact assertion으로 확인한 뒤 실제 coroutine을 실행한다. 초기 미확정 좌표를 종료 oracle로 쓰지 않는다. 별도 InterruptedFeedback 회귀는 기존 tiny fractional 값을 유지하며 같은 프레임에 실제 IEnumerator/Impact를 한 단계 진행한 뒤 ResetFeedback의 local/anchored 완전동등 복원을 검사한다. 진단으로 무연출 ForceUpdate만으로도 초기 좌표가 바뀜을 확인했으며 테스트 허용오차는 추가하지 않았다.
 
 - 중단 회귀는 anchored getter의 관측 부작용을 피하려고 fixture의 정확 anchored 기대값(360,-441)을 독립 상수로 둔다. 제품 PlayFeedback이 local을 캡처하기 전에 시험 코드가 anchored를 읽지 않는다. 실제 Impact로 변위가 생긴 뒤 ResetFeedback의 exact local/anchored 복원을 확인한다.
+
+
+## 절차형 지도·운명 팝업 직접 회귀 (2026-09-10)
+
+저장 실패 후 재시도 성공의 운명 카드 raycast는 인라인 Widgets 대신 top FateChoiceUI.Cards의 실제 frame.button을 사용한다. 기존 실패 원자성·저장 호출 횟수·전체 state/RNG/disk oracle와 전투 입력 검사는 유지한다.
+
+이번 갱신은 Unity 미실행(NOT_RUN)이며 과거 PASS를 새 계약의 실행 증거로 재사용하지 않는다. 실제 통합 실행/판정은 Main의 PROCEDURAL_CAMPAIGN_REPORT에 기록한다.
+
+
+## PROCEDURAL_CAMPAIGN 보완 묶음 2 직접 회귀
+
+지연된 옛 Map callback 검사는 정보 마스킹으로 비어 있는 legacy nodes 대신 campaignNodes 공개 DTO의 childIds 배열을 변경한다. session 전체 상태/sequence/checkpoint 수/저장 bytes 불변 oracle는 그대로 유지한다.
+
+근거: artifacts/procedural-campaign/play-initial.json의 실제 실패. 이번 담당은 Unity를 실행하지 않았으며 수정 후 검증은 Main의 마지막 통합 실행 대기다. 기존 EventSystem 경고를 기대 로그로 등록하거나 전역 객체를 삭제하지 않는다.

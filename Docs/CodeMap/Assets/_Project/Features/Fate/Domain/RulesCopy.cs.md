@@ -8,3 +8,8 @@
 
 - RA-D: Effect 원소/effects 배열/addActionId/가격배율 배열을 명시 복사하며 기존 null/빈 값 의미와 순서를 유지한다.
 - 검수 근거: 직접 호출 소스와 RA-D 계약 시험. 실제 실행 상태는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
+
+## 절차 지도 설정 복사 (2026-09-10)
+- World 복사는 mapGenerationVersion/mapColumns/mapPathCount도 값 그대로 전달한다. 0 legacy와 1 절차 모드를 기본값으로 보정하지 않는다.
+- RunRulesCatalog.CopyRulesTo 및 Runtime/Core 왕복 저장 스냅샷이 세 필드를 보존한다. ProceduralMapTests의 외부 설정 변경 격리/동일 seed 재현/디스크 재개로 검증하며 실행 상태는 PROCEDURAL_CAMPAIGN_REPORT를 따른다.

@@ -205,7 +205,10 @@ namespace FateDice.Tests
             Assert.That(Stable(State),Is.EqualTo(committed));Assert.That(store.Saves,Is.EqualTo(1));
             CollectionAssert.AreEqual(bytes,File.ReadAllBytes(disk.Path));
             // Editing public display DTO data itself also cannot change session rules or path state.
-            oldData.nodes[0].childIds.Clear();oldData.context.presentation.explorationDice.rollSeconds=99;
+            Assert.That(oldData.campaignNodes,Is.Not.Empty,"The procedural map exposes only its masked display DTO.");
+            var publicChildren=oldData.campaignNodes.First(node=>node.childIds.Length>0).childIds;
+            Array.Clear(publicChildren,0,publicChildren.Length);
+            oldData.context.presentation.explorationDice.rollSeconds=99;
             Assert.That(Stable(State),Is.EqualTo(committed));
             LogAssert.NoUnexpectedReceived();
         }
@@ -230,6 +233,11 @@ namespace FateDice.Tests
         }
         Button Button(string key)
         {
+            if (Controller.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                if (key.StartsWith("fate-")) return fate.Cards.Single(card => card.OfferedId == key.Substring(5)).frame.button;
+                if (key.StartsWith("die-")) return fate.rerollButtons[int.Parse(key.Substring(4))].button;
+            }
             Assert.That(Controller.Widgets.Buttons.TryGetValue(key,out var value),Is.True,"Missing command: "+key);return value;
         }
         void Click(Button button)

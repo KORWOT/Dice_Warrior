@@ -1,16 +1,18 @@
 # CampaignMapView.cs
 
-- 역할: Controller가 전달한 공개 NodeState/available/selected 스냅샷만 세로 지도에 표시한다. 게임 상태, 이력, Session, 저장소, 규칙 RNG를 읽거나 변경하지 않는다.
-- authored 필드: edgeLayer, nodeLayer, playerMarker, currentLocation, rowSpacing, availableColor/futureColor/arrivedColor/completedColor. 씬의 고정 지도 구성을 runtime에서 다시 만들지 않는다.
-- Bind: roots가 바뀌면 소유 동적 항목을 재구성하고 NodeId별 한 ExplorationNodeView를 만든다. DAG의 위상 순서/최장 층 깊이와 안정적인 부모 평균 순서로 합류를 한 지점에 배치한다. 실제 childIds만 연결하며 공유 자식의 선은 부모별 유지한다.
-- 상태: available만 입력 가능, selected는 도착 색상, 미래는 비활성 표시다. Prune 후 전달 집합에서 빠진 노드만 기존 NodeView.FadeOut으로 숨기고 해당 선의 alpha도 끝점과 함께 줄인다. Controller가 resolvedEventIds 순서로 확인해 전달한 completed 목록만 완료 경로로 병합한다. nodeHistory에서 방문 경로를 추측하지 않으며 미선택 가지는 포함하지 않는다.
-- 배치: 현재 위치 아래, 선택 노드 그 위, 다음 노드 위쪽. 한 줄 9개까지 기존 viewport 폭에 배치하고 10개 이상에서만 같은 ScrollRect의 가로 pan을 연다. 선택 노드 기본 116×106, 미래 최대64×80, 글자19/16. 실제 표시/터치 검증은 Main 통합 검수 대상이다.
-- AnimateNodeArrival(string,float): 저장 성공 후 Controller가 호출하는 표시 전용 IEnumerator. marker만 부드럽게 이동하며 generation/비활성/닫기 시 중단된다. 종료 후 Controller Render가 새로운 선택 스냅샷을 바인딩한다.
-- 수명: Clear는 자신이 만든 노드와 선만 Unbind/제거한다. Play에서는 Destroy, 정지 Editor에서는 DestroyImmediate. Inspector 고정 layers/marker/text는 보존한다.
-- 관계: FateDiceWidgets.ShowMap/AnimateNodeArrival → 이 View → ExplorationNodeView/CommonButtonView. CampaignMapAuthoring이 기존 ExplorationUI mapContainer에 구성 요소와 참조를 만든다.
-- 검증: 초기 자산 계약 RED 이후 실제 통합 결과는 Docs/Reports/LOBBY_MAP_DICE_REPORT.md를 참조한다.
-## LMD-C02 첫 수정 묶음
-- Bind 마지막 optional IReadOnlyList<NodeState> completed 입력 추가. 활성 노드는 연결 완전성을 검증하고, 완료 노드는 현재/완료 ID에 포함되지 않은 archived child 연결만 제외한 복사본을 표시한다.
-- completed 순서의 indegree0 노드부터 위상 층을 시작하여 완료 경로는 아래, 다음 available과 미래는 위에 배치한다. completed-only ID는 1회/비선택/낮은채도와 완료 문구로 표시한다.
-- 현재 마커는 마지막 완료 지점에 위치한다. 완료 목록이 늘거나 선택이 바뀌면 배치 후 available 근처로 스크롤하며, available 터치 크기는 깊이에 관계없이 유지한다.
-- 저장 스키마/Session/규칙 RNG 변경 없음. 실제 완료2개·버린가지제외·ID유일·저장재개 동일성 검증은 LOBBY_MAP_DICE_REPORT의 실행 결과를 참조한다.
+- 역할: 주입된 공개 지도 DTO만 반복 노드와 경로로 표시한다. RunState/Session/저장/RNG를 조회하거나 게임 진행을 계산하지 않는다.
+- 입력/API: BindCampaign(IReadOnlyList<CampaignNodeUIData>, currentId, selectedId, ExplorationNodeView, FateDiceVisualCatalog, Action<string>). 미공개 유형은 null을 유지하며 실제 floor/lane/childIds의 공개 복사본만 보유한다. 기존 Bind(active, available, selectedId, prefab, visuals, choose, completed)는 legacy 짧은 그래프와 archived 대안 fade를 지원한다.
+- 핵심 동작: 신규 경로는 합집합의 노드를 ID당 한 번 만들고 실제 childIds만 점선으로 연결한다. 고정 floor/lane으로 배치하므로 노드 탭과 완료/접근불가 변경이 좌표를 재정렬하지 않는다. currentId는 파란 플레이어 위치를 지정한다. 버려진 가지도 잠금·낮은 채도의 경로로 남는다.
+- authored 참조: edgeLayer/nodeLayer/playerMarker/currentLocation, rowSpacing, arrivalSeconds, 색상. 고정 화면 구조는 원본에 남고 이 View는 자신이 만든 노드/연결선만 소유한다.
+- 출력/관계: FateDiceWidgets.ShowCampaignMap/ShowMap → 이 View → ExplorationNodeView/CommonButtonView/MapNodeGraphic/CampaignPathGraphic. legacy 연결은 Image를 유지한다. 노드 callback은 ExplorationUI의 단일 탭 이동 요청이며 이 View가 게임 명령을 직접 실행하지 않는다.
+- 상태/수명: 공개 snapshot topology가 달라질 때만 반복 자식을 재작성한다. rebind/Clear/disable의 generation은 이전 도착 코루틴이 새 표시를 변경하지 못하게 한다. AnimateNodeArrival은 marker만 unscaled 시간으로 이동하고 비유한/음수 시간을 거절한다. Clear는 소유 자식만 Unbind/Destroy(정지 Editor는 DestroyImmediate)한다.
+- 검수 주의: 같은 seed의 위치 안정성은 생성기 저장 좌표 계약과 함께 검증한다. 미공개 타입을 ResolveNode에 넘기지 않는다. legacy 위상 배치/완료 경로/fade는 기존 경로로 보존한다. 실제 자산 두 비율·입력·도착 수명·스크롤 검증은 Main의 PROCEDURAL_CAMPAIGN_REPORT 증거가 기준이며 소스 구조 확인은 실행 PASS가 아니다.
+- 최종 회귀 보완: legacy 미래 노드 높이를92로 두어 새 원본의 하단25% 레이블에서 한글16px의 실제19px 선높이가 잘리지 않게 한다. 좌표/연결/RNG/공개 범위는 변경하지 않는다.
+
+## CAMPAIGN_FLOW_POLISH 복귀 초점 계약
+
+- OnEnable, 새 그래프, current/legacy 완료 경로 변경에만 focus를 요청한다. 캐시 화면이 다른 화면에서 돌아올 때도 활성화 시점에 새 요청을 잡는다.
+- Runtime LateUpdate는 요청 프레임이 지난 뒤 Canvas 갱신→맵 좌표 갱신→Canvas 갱신을 거쳐 실제 viewport/content 크기가 있을 때 초점을 한 번 소비한다. 준비되지 않은 레이아웃에서 요청을 없애지 않는다.
+- 초점 영역은 현재 노드·플레이어와 다음 available 노드의 높이 범위다. 이후 같은 데이터의 재바인딩·수동 스크롤·일반 크기 갱신은 초점을 다시 요청하지 않는다. 매 프레임 스크롤을 강제하지 않는다.
+- 앵커 기준 노드 높이는 nodeLayer.rect.yMin을 더해 로컬 좌표로 바꾼 뒤 content 공간으로 변환한다. 중앙 pivot의 절반 높이를 초점에 잘못 더하지 않는다.
+- 정지 Workbench는 LateUpdate를 받지 않으므로 최종 활성 원본에서 명시 호출되는 RefreshLayout에 한해 편집기 초점을 적용·소비한다. 실제 복귀/수동 스크롤/두 비율 판정은 CAMPAIGN_FLOW_POLISH_REPORT의 Main 실행 증거를 따른다.

@@ -2,6 +2,8 @@
 
 ## RA-A 현재 계약 (2026-09-09)
 
+2026-09-10 연출 수명 확장: 결과 pulse 확인 대상은 legacy summary Text의 고정 .3초 확대에서 실제 DiceResultFeedback 배너 scale/참여 오라 phase 변화로 이동했다. 두 세로 비율에서 가시적인 모션이 반드시 있어야 하며, 읽기 시간·여섯 면·저장1회·원래 scale 복원 검사는 유지한다. 실제 실행 상태는 PRESENTATION_LIFECYCLE_REPORT.
+
 AuthoredFeedback 검사는 실제 DefaultFateDice SO의 두 phase 결과 유지 설정이 .8초 이상인지 요구한다. 기존 prefab의 미사용 legacy 필드 반사 검사를 실제 runtime 설정 경계로 이동했다. 나머지 면/텍스트/피드백/저장/중단 assertion 유지. 고정 Combat fixture도 두 RollPresentationSettings를 명시한다.
 
 검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.

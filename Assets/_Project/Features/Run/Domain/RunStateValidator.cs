@@ -159,7 +159,7 @@ namespace FateDice
             }
         }
         static bool EmptyNode(NodeState node)=>node==null||(string.IsNullOrEmpty(node.id)&&node.type==default&&
-            (node.childIds==null||node.childIds.Count==0));
+            (node.childIds==null||node.childIds.Count==0)&&node.floor==0&&node.lane==0);
         static bool EmptyReward(RewardDefinition reward)=>reward==null||(reward.gold==0&&reward.xp==0&&reward.health==0&&
             reward.rerollCharges==0&&string.IsNullOrEmpty(reward.equipmentId)&&string.IsNullOrEmpty(reward.dieId)&&string.IsNullOrEmpty(reward.addActionId));
         static void ValidateGraph(RunStateData state)
@@ -202,22 +202,31 @@ namespace FateDice
                     foreach(var child in all[step.Key].childIds)traversal.Push(new KeyValuePair<string,bool>(child,false));
                 }
             }
+            var procedural=state.Rules.world.mapGenerationVersion==1;
             var available=Ids(state.availableNodeIds,"Available paths");
             Require(available.All(ids.Contains),"An available path ID is missing from the graph.");
+            if(procedural)ValidateProceduralGraph(state,all);
             IEnumerable<string> roots;
             if(state.phase==RunPhase.Map)
             {
-                Require(EmptyNode(state.selectedNode)&&available.Count==state.Rules.world.branchCount,"A map requires available branches and no selected path.");
+                Require(EmptyNode(state.selectedNode)&&(procedural?available.Count>0:available.Count==state.Rules.world.branchCount),"A map requires available branches and no selected path.");
                 var boss=state.eventsResolved>=state.Rules.world.eventsToBoss;
                 Require(available.All(id=>(nodes[id].type==NodeType.Boss)==boss),"The next paths disagree with the Great Fate threshold.");
+                if(procedural)Require(available.All(id=>nodes[id].floor==state.eventsResolved+1),"The next paths disagree with the completed campaign floor.");
                 roots=state.availableNodeIds;
             }
             else
             {
                 Require(state.selectedNode!=null&&ids.Contains(state.selectedNode.id)&&available.Count==0,"The active phase requires exactly one selected path.");
                 var selected=nodes[state.selectedNode.id];
-                Require(state.selectedNode.type==selected.type&&state.selectedNode.childIds!=null&&state.selectedNode.childIds.SequenceEqual(selected.childIds),"The selected path copy disagrees with the graph.");
+                Require(state.selectedNode.type==selected.type&&state.selectedNode.floor==selected.floor&&state.selectedNode.lane==selected.lane&&
+                    state.selectedNode.childIds!=null&&state.selectedNode.childIds.SequenceEqual(selected.childIds),"The selected path copy disagrees with the graph.");
                 Require(state.boss==(selected.type==NodeType.Boss),"The boss flag disagrees with the selected path.");
+                if(procedural)
+                {
+                    var expectedFloor=state.eventsResolved+(state.resolvedEventIds.Contains(selected.id)?0:1);
+                    Require(selected.floor==expectedFloor,"The selected path disagrees with campaign progress.");
+                }
                 roots=new[]{selected.id};
             }
             var seen=new HashSet<string>();var pending=new Stack<string>(roots);
@@ -228,6 +237,61 @@ namespace FateDice
                 foreach(var child in nodes[id].childIds)pending.Push(child);
             }
             Require(seen.Count==nodes.Count,"The path graph contains unreachable branches.");
+        }
+
+        static void ValidateProceduralGraph(RunStateData state,Dictionary<string,NodeState> all)
+        {
+            var world=state.Rules.world;
+            var positions=new HashSet<int>();
+            var parents=new HashSet<string>();
+            var bosses=0;
+            foreach(var node in all.Values)
+            {
+                Require(node.floor>=1&&node.floor<=world.eventsToBoss+1&&node.lane>=0&&node.lane<world.mapColumns,"A procedural node has an invalid floor or lane.");
+                Require(positions.Add(node.floor*world.mapColumns+node.lane),"Procedural nodes overlap the same floor and lane.");
+                if(node.type==NodeType.Boss)
+                {
+                    bosses++;
+                    Require(node.floor==world.eventsToBoss+1&&node.childIds.Count==0,"The sole boss must terminate the last campaign floor.");
+                }
+                else
+                {
+                    Require(node.floor<=world.eventsToBoss&&node.childIds.Count>=1&&node.childIds.Count<=3,"A normal procedural node must lead to the next floor.");
+                    foreach(var childId in node.childIds)
+                    {
+                        var child=all[childId];parents.Add(childId);
+                        Require(child.floor==node.floor+1,"A procedural edge must advance exactly one floor.");
+                        Require(child.type==NodeType.Boss||Math.Abs(child.lane-node.lane)<=1,"A normal procedural edge must use the same or adjacent lane.");
+                    }
+                }
+            }
+            Require(bosses==1,"A procedural campaign requires exactly one boss.");
+            var roots=all.Values.Count(n=>n.floor==1);
+            Require(roots>=2&&roots<=Math.Min(world.mapColumns,world.mapPathCount),"The procedural starting paths are invalid.");
+            Require(all.Values.All(n=>n.floor==1||parents.Contains(n.id)),"A procedural node is disconnected from the starting paths.");
+            foreach(var layer in all.Values.GroupBy(n=>n.floor))
+            {
+                var ordered=layer.OrderBy(n=>n.lane).ToArray();
+                for(var left=0;left<ordered.Length;left++)
+                    for(var right=left+1;right<ordered.Length;right++)
+                        foreach(var leftId in ordered[left].childIds)
+                            foreach(var rightId in ordered[right].childIds)
+                                Require(all[leftId].lane<=all[rightId].lane,"Procedural path edges cross between lanes.");
+            }
+            for(var index=0;index<state.resolvedEventIds.Count;index++)
+            {
+                Require(all.TryGetValue(state.resolvedEventIds[index],out var resolved)&&resolved.type!=NodeType.Boss&&resolved.floor==index+1,
+                    "Resolved events must record one normal node per completed campaign floor.");
+                if(index>0)Require(all[state.resolvedEventIds[index-1]].childIds.Contains(resolved.id),"The completed campaign path is not connected.");
+            }
+            if(state.resolvedEventIds.Count>0)
+            {
+                var last=all[state.resolvedEventIds[state.resolvedEventIds.Count-1]];
+                if(state.phase==RunPhase.Map)
+                    Require(last.childIds.SequenceEqual(state.availableNodeIds),"Available campaign paths disagree with the last completed node.");
+                else if(state.selectedNode!=null&&!string.IsNullOrEmpty(state.selectedNode.id)&&state.selectedNode.id!=last.id)
+                    Require(last.childIds.Contains(state.selectedNode.id),"The selected campaign node is not connected to the completed path.");
+            }
         }
     }
 }

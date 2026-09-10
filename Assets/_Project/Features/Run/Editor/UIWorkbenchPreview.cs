@@ -65,6 +65,12 @@ namespace FateDice.Editor
                 if (!registered || !AssetDatabase.Contains(registered))
                     throw new InvalidOperationException("6주사위 창의 원본 프리팹 등록을 확인해 주세요.");
             }
+            else if (state.phase == RunPhase.ExplorationCards)
+            {
+                registered = rootPrefab.GetComponent<UIManager>().prefabs.SingleOrDefault(view => view is FateChoiceUI);
+                if (!registered || !AssetDatabase.Contains(registered))
+                    throw new InvalidOperationException("운명 선택 창의 원본 프리팹 등록을 확인해 주세요.");
+            }
             if (StageUtility.GetCurrentStage() is UIWorkbenchPreview) StageUtility.GoToMainStage();
             var stage = CreateInstance<UIWorkbenchPreview>();
             stage.SourcePrefabPath = AssetDatabase.GetAssetPath(registered);
@@ -156,6 +162,7 @@ namespace FateDice.Editor
             if (showDice)
             {
                 bool combat = state.phase == RunPhase.CombatCards || state.phase == RunPhase.CombatRoll;
+                var hand = state.dice == null ? null : state.config.dice.hands.Single(x => x.kind == state.hand);
                 manager.ShowPopup<DiceRollUI>(new DiceRollUIData
                 {
                     title = combat ? "전투 주사위" : "운명의 주사위",
@@ -163,6 +170,9 @@ namespace FateDice.Editor
                     values = state.dice == null ? null : (int[])state.dice.Clone(),
                     result = KoreanText.HandSummary(state, true),
                     rolling = false, duration = state.config.presentation.DiceTiming(combat).rollSeconds,
+                    comboName = hand == null ? "" : KoreanText.Content(hand.label), hand = state.hand,
+                    comboStrength = hand == null ? 0 : state.config.dice.hands.Count(x => x.priority < hand.priority) / (float)Math.Max(1, state.config.dice.hands.Length - 1),
+                    holdSeconds = 0,
                     roll = Choice("roll", "주사위 6개 굴리기"),
                     appearance = context.visuals.ResolveButton(ButtonPurpose.Primary)
                 });
@@ -178,7 +188,7 @@ namespace FateDice.Editor
             }
             PreviewRoot.SetActive(true);
             RebuildLayout(root, manager);
-            Selection.activeGameObject = showDice ? manager.Popups.Last().gameObject : manager.ActiveScreen.gameObject;
+            Selection.activeGameObject = manager.Popups.Count > 0 ? manager.Popups.Last().gameObject : manager.ActiveScreen.gameObject;
         }
 
         private static void RebuildLayout(UIRoot root, UIManager manager)
@@ -210,6 +220,7 @@ namespace FateDice.Editor
             // Edit-mode previews do not receive the map's runtime LateUpdate.
             // Measure its node positions only after the authored viewport has its final width.
             foreach (var map in root.GetComponentsInChildren<CampaignMapView>(true)) map.RefreshLayout();
+            foreach (var popup in root.GetComponentsInChildren<FateChoiceUI>(true)) popup.RefreshLayout();
             LayoutRebuilder.ForceRebuildLayoutImmediate(canvasRect);
             Canvas.ForceUpdateCanvases();
         }
@@ -303,7 +314,7 @@ namespace FateDice.Editor
                 case RunPhase.ExplorationCards:
                     hud.situation = state.phase == RunPhase.Map ? "갈림길 선택" :
                         "선택한 길  /  " + KoreanText.Node(state.selectedNode.type);
-                    manager.Show<ExplorationUI>(new ExplorationUIData
+                    var mapData = new ExplorationUIData
                     {
                         context = context, hud = hud,
                         nodes = state.nodes.Select(n => new NodeState { id = n.id, type = n.type, childIds = n.childIds.ToList() }).ToArray(),
@@ -315,9 +326,17 @@ namespace FateDice.Editor
                         roll = state.phase == RunPhase.ExplorationRoll ? Choice("roll", "주사위 여섯 개 굴리기") : null,
                         cap = state.phase == RunPhase.Map ? Choice("cap-cycle", "등급 상한: " +
                             KoreanText.Grade(state.explorationCap), ButtonPurpose.Navigation) : null,
-                        fates = state.phase == RunPhase.ExplorationCards ? state.cards.Select(card =>
-                            new FateOfferUIData { id = card.id, type = card.type, grade = card.grade }).ToArray() : Array.Empty<FateOfferUIData>()
-                    });
+                        fates = Array.Empty<FateOfferUIData>()
+                    };
+                    CampaignMapProjection.Apply(mapData, state);
+                    manager.Show<ExplorationUI>(mapData);
+                    if (state.phase == RunPhase.ExplorationCards)
+                        manager.ShowPopup<FateChoiceUI>(new FateChoiceUIData
+                        {
+                            context = context, hud = hud,
+                            offers = state.cards.Select(card => new FateOfferUIData
+                            { id = card.id, type = card.type, grade = card.grade }).ToArray()
+                        });
                     break;
                 case RunPhase.CombatRoll:
                 case RunPhase.CombatCards:

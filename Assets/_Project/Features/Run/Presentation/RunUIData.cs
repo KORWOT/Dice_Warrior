@@ -56,6 +56,9 @@ namespace FateDice
     public sealed class DiceRollUIData : UIData
     {
         public string title, detail, result;
+        public string comboName;
+        public HandKind hand;
+        public float comboStrength, holdSeconds;
         public int[] values;
         public bool rolling;
         public float duration;
@@ -64,6 +67,10 @@ namespace FateDice
     }
     public sealed class ExplorationUIData : RunUIData
     {
+        public CampaignNodeUIData[] campaignNodes;
+        public string currentNodeId;
+        public int mapFloors;
+        public string mapProgressLabel, mapGoldLabel, mapHealthLabel, mapWardLabel;
         public NodeState[] nodes;
         public NodeState[] completedNodes;
         public string[] available;
@@ -71,6 +78,15 @@ namespace FateDice
         public Action<string> chooseNode;
         public UIChoiceData roll, cap;
         public FateOfferUIData[] fates;
+    }
+    // Distant types are omitted before reaching the view, rather than merely dimmed by it.
+    public sealed class CampaignNodeUIData
+    {
+        public string id;
+        public NodeType? type;
+        public int floor, lane;
+        public string[] childIds;
+        public bool revealed, available, completed, unreachable;
     }
     public sealed class CombatUIData : RunUIData
     {

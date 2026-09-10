@@ -112,3 +112,19 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# Locally installed third-party presentation assets (install from owned packages).
+/Assets/Feel/
+/Assets/Feel.meta
+/Assets/Plugins/AllIn1SpriteShader/
+/Assets/Plugins/AllIn1SpriteShader.meta
+/Assets/Plugins/Febucci/
+/Assets/Plugins/Febucci.meta
+/Assets/Plugins.meta
+/Packages/com.febucci.text-animator-unity/
+/Assets/Samples/Text Animator for Unity by Febucci/
+/Assets/Samples/Text Animator for Unity by Febucci.meta
+/Assets/Samples.meta
+
+# Local execution evidence and scratch helpers.
+/artifacts/

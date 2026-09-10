@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -133,7 +133,7 @@ namespace FateDice.Tests
             Assert.That(State.rngState, Is.EqualTo(original.rngState));
             Assert.That(Stable(State), Is.EqualTo(Stable(original)));
             CollectionAssert.AreEqual(bytes, File.ReadAllBytes(store.Path));
-            Assert.That(Controller.UI.Popups, Is.Empty, "A restored card phase must not roll or open a new dice modal.");
+            AssertCardsPopup(combat); // Restore fate choices directly; never open a new dice modal.
             AssertCardsVisible(combat, original);
         }
 
@@ -213,8 +213,10 @@ namespace FateDice.Tests
             yield return Until(() => !Controller.Busy, "The result hold did not release input.");
             float finished = Time.unscaledTime;
             Assert.That(finished - revealed, Is.GreaterThanOrEqualTo(hold - .08f));
-            Assert.That(finished - revealed, Is.LessThan(hold + .25f), "The other phase or prefab legacy hold overrode the saved hold duration.");
-            Assert.That(Controller.UI.Popups, Is.Empty);
+            float resultDuration = ResultDuration(popup, oracle.State, hold);
+            Assert.That(finished - revealed, Is.InRange(resultDuration - .08f, resultDuration + .35f),
+                "The controller must wait for the full authored result, preserving this phase's minimum reading time.");
+            AssertCardsPopup(combat);
             Assert.That(checkpoints, Is.EqualTo(1));
             Assert.That(source.Calls, Is.Zero);
             AssertOracle(oracle.State);
@@ -251,7 +253,7 @@ namespace FateDice.Tests
             yield return null; yield return null;
             Assert.That(Controller.Busy, Is.False, "Zero timing left an input delay or hidden .65-second floor.");
             Assert.That(Time.unscaledTime - began, Is.LessThan(.5f), "Zero timing must finish before the old minimum.");
-            Assert.That(Controller.UI.Popups, Is.Empty);
+            AssertCardsPopup(combat);
             Assert.That(checkpoints, Is.EqualTo(1));
             Assert.That(source.Calls, Is.Zero);
             AssertOracle(oracle.State);
@@ -291,13 +293,22 @@ namespace FateDice.Tests
             var bytes = File.ReadAllBytes(store.Path);
             yield return Until(() => !Controller.Busy, "The phase with one zero duration did not finish.");
             Assert.That(Time.unscaledTime - began, Is.GreaterThanOrEqualTo(.28f));
-            Assert.That(Time.unscaledTime - began, Is.LessThan(.55f), "The zero component gained a hidden roll floor or legacy hold.");
-            Assert.That(Controller.UI.Popups, Is.Empty);
+            float expectedDuration = zeroRoll ? ResultDuration(popup, oracle.State, .3f) : .3f;
+            Assert.That(Time.unscaledTime - began, Is.InRange(expectedDuration - .06f, expectedDuration + .3f),
+                "The zero component gained a hidden roll floor or the actual result timeline was cut short.");
+            AssertCardsPopup(combat);
             Assert.That(source.Calls, Is.Zero);
             AssertOracle(oracle.State);
             CollectionAssert.AreEqual(bytes, File.ReadAllBytes(store.Path));
             yield return Settled();
             AssertCardsVisible(combat, oracle.State);
+        }
+
+        static float ResultDuration(DiceRollUI popup, RunState state, float hold)
+        {
+            int priority = state.config.dice.hands.Single(h => h.kind == state.hand).priority;
+            float strength = state.config.dice.hands.Count(h => h.priority < priority) / (float)(state.config.dice.hands.Length - 1);
+            return hold <= 0 ? 0 : popup.resultFeedback.catalog.ResolveTimeline(strength).Duration(hold);
         }
 
         void SaveRollBoundary(bool combat, bool cards, bool zero)
@@ -366,9 +377,24 @@ namespace FateDice.Tests
         }
         Button Command(string key)
         {
+            if (Controller.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                if (key.StartsWith("fate-")) return fate.Cards.Single(card => card.OfferedId == key.Substring(5)).frame.button;
+                if (key.StartsWith("die-")) return fate.rerollButtons[int.Parse(key.Substring(4))].button;
+            }
             Assert.That(Controller.Widgets.Buttons.TryGetValue(key, out var button), Is.True, "Missing visible command: " + key);
             return button;
         }
+        void AssertCardsPopup(bool combat)
+        {
+            if (combat) Assert.That(Controller.UI.Popups, Is.Empty);
+            else
+            {
+                Assert.That(Controller.UI.Popups, Has.Count.EqualTo(1));
+                Assert.That(Controller.UI.Popups[0], Is.TypeOf<FateChoiceUI>());
+            }
+        }
+
         void Click(Button button)
         {
             Assert.That(Controller.Busy, Is.False);

@@ -9,3 +9,9 @@
 
 - RA-D: Action.effects/Reward.addActionId/World.shopPriceMultipliers 필드를 정의한다. 효과는 EffectResolver.IsValid, 보상은 기존 actionId 참조, 가격은 선택적5개 양수유한값을 검증한다. null/빈 effects와 배율은 구형 의미를 유지한다.
 - 검수 근거: 직접 호출 소스와 RA-D 계약 시험. 실제 실행 상태는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
+
+## 절차 지도 규칙 스냅샷 (2026-09-10)
+- WorldSettings에 mapGenerationVersion/mapColumns/mapPathCount int 필드를 추가했다. 누락/0은 기존 schema1 증분 트리, 1은 절차 지도다. 버전1만 columns2..7/pathCount2..12를 요구하며 eventsToBoss1..100 기존 제한을 일반층 수로 사용한다.
+- 기존 branchCount2..3/previewDepth1..3 필드는 legacy의 의미와 기존 검증을 유지한다. 새 필드는 기본 초기값0이므로 PrototypeAuthoring.CreateDefaults와 구형 저장이 자동으로 새 모드가 되지 않는다.
+- RulesCopy.World가 세 필드를 복제하고 RunStateValidator/ExplorationRules가 저장된 생성 버전을 사용한다. 최신 SO로 이어하기 규칙을 바꾸지 않는다. 실제 제작 asset의 새 모드 작성은 Main의 Editor API 책임이다.

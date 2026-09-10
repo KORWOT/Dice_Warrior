@@ -9,3 +9,10 @@
 - 실제 화면은 UIManager.ActiveScreen의 MenuUI와 layout/trialHeading을 읽는다. settingsTab을 열어 heading이 활성 상태인지 확인한 뒤 원본의 문자열·Italic 편집이 표시되는지 검사한다. 캐시 재진입 후에도 동일 인스턴스·padding·활성 heading 문자열/스타일을 확인한다.
 - 기존 실제 scene 로드/격리 저장, 메뉴→탐험→메뉴, 단일 Canvas/EventSystem, playedSeconds만 정규화한 저장 state 비교, finally의 Editor API 원본 복구 및 원본 prefab bytes 일치 검사를 모두 유지한다. 자산7종/modal/global lock 테스트의 검증 내용은 바꾸지 않는다.
 - 최종 수정 묶음 2 실행 결과 대기. 이 문서 갱신은 실행 통과 주장이 아니다.
+
+
+## PROCEDURAL_CAMPAIGN 보완 묶음 2 직접 회귀
+
+일반 HorizontalLayoutGroup 모두를 버튼 행으로 간주하지 않는다. 각 실제 View의 명시된 choice 컨테이너와 공통 diceRow/footer 중 HorizontalLayoutGroup인 행에만 기존 CommonButtonView minHeight 기준을 적용한다. 선택지 참조와 LayoutElement 존재를 함께 요구하고 HUD 진행/골드 문구 행의 별도 높이는 허용한다. 원본·ScrollRect·Text·Canvas·missing script·modal·캐시 검사는 유지한다.
+
+근거: artifacts/procedural-campaign/play-initial.json의 실제 실패. 이번 담당은 Unity를 실행하지 않았으며 수정 후 검증은 Main의 마지막 통합 실행 대기다. 기존 EventSystem 경고를 기대 로그로 등록하거나 전역 객체를 삭제하지 않는다.

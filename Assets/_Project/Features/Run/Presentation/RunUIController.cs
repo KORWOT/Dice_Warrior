@@ -42,6 +42,15 @@ namespace FateDice
         private RunState savedPreview;
         private bool invalidSave;
         private bool actionBusy;
+        private FateChoiceUI presentingFate;
+        private int presentingFateBinding;
+        private FateChoiceUI shownFate;
+        private int shownFateBinding;
+        private CombatUI presentingEntry;
+        private int presentingEntryBinding;
+        private CombatUI shownCombat;
+        private int shownCombatBinding;
+        public PresentationPlayback Playback { get; } = new PresentationPlayback();
         private bool atTitle;
         private Action enterLobby;
         private IRunSceneNavigation navigation;
@@ -150,13 +159,31 @@ namespace FateDice
         protected virtual void OnDestroy() { if (UI) UI.CloseAll(); }
         protected virtual void OnDisable()
         {
+            // Cancellation disposes the command iterator and clears its fields. Capture ownership first.
+            var ownedFate = presentingFate ? presentingFate : shownFate;
+            int ownedBinding = presentingFate ? presentingFateBinding : shownFateBinding;
+            var ownedEntry = presentingEntry ? presentingEntry : shownCombat;
+            int ownedEntryBinding = presentingEntry ? presentingEntryBinding : shownCombatBinding;
+            bool newerEntryBinding = ownedEntry && ownedEntry.IsOpen && UI && UI.ActiveScreen == ownedEntry &&
+                ownedEntry.EntryBindingVersion != ownedEntryBinding;
+            Playback.Cancel();
             StopAllCoroutines();
             Widgets?.ResetSelectionFeedback();
-            if (UI && UI.ActiveScreen is CombatUI combat) combat.ResetFeedback();
-            if (UI && UI.Popups.LastOrDefault() is DiceRollUI) UI.CloseTopPopup();
+            if (!newerEntryBinding && UI && UI.ActiveScreen is CombatUI combat) combat.ResetFeedback();
+            if (ownedEntry && ownedEntry.EntryBindingVersion == ownedEntryBinding) ownedEntry.ResetEntry();
+            if (!newerEntryBinding && UI && UI.Popups.LastOrDefault() is DiceRollUI) UI.CloseTopPopup();
+            if (UI && ownedFate && ownedFate.BindingVersion == ownedBinding && UI.Popups.LastOrDefault() == ownedFate)
+            {
+                ownedFate.ResetPresentation();
+                UI.CloseTopPopup();
+            }
             actionBusy = false; SyncInputLock();
         }
-        protected virtual void OnEnable() { if (UI) Render(); }
+        protected virtual void OnEnable()
+        {
+            if (UI && !(shownFate && shownFate.IsOpen && shownFate.BindingVersion != shownFateBinding) &&
+                !(shownCombat && shownCombat.IsOpen && shownCombat.EntryBindingVersion != shownCombatBinding)) Render();
+        }
         private bool SaveElapsedTime()
         {
             if (Session == null || Store == null) return true;
@@ -180,15 +207,15 @@ namespace FateDice
         private static UIChoiceData Choice(string key, string text, Action clicked, bool interactable = true,
             ButtonPurpose purpose = ButtonPurpose.Primary, bool selected = false) => new UIChoiceData
         { key = key, text = text, clicked = clicked, interactable = interactable, purpose = purpose, selected = selected };
-        private void Show<T>(RunUIData data) where T : BaseUI
+        private void Show<T>(RunUIData data, bool openDice = true) where T : BaseUI
         {
             UI.Show<T>(data);
-            if (!menu && Session != null && (Session.Phase == RunPhase.ExplorationRoll || Session.Phase == RunPhase.CombatRoll))
+            if (openDice && !menu && Session != null && (Session.Phase == RunPhase.ExplorationRoll || Session.Phase == RunPhase.CombatRoll))
                 ShowDiceWindow(false);
             UI.SetInputLocked(Busy);
         }
 
-        private void Render()
+        private void Render(bool deferCombatDice = false)
         {
             if (atTitle)
             {
@@ -258,10 +285,35 @@ namespace FateDice
                     else
                     {
                         hud.situation = "운명 선택  /  " + KoreanText.Node(state.selectedNode.type) + " 경로";
-                        exploration.fates = state.cards.Select(c => new FateOfferUIData
-                        { id = c.id, type = c.type, grade = c.grade, clicked = id => Command(() => Session.ChooseFate(id, token), selectionKey: "fate-" + id) }).ToArray();
+                        exploration.instructions = "운명 카드에서 다음 사건을 선택하세요.";
+                        exploration.roll = Choice("open-fate", "운명 선택 열기", () => { if (!Busy) Render(); });
                     }
-                    Show<ExplorationUI>(exploration); break;
+                    CampaignMapProjection.Apply(exploration, state);
+                    Show<ExplorationUI>(exploration);
+                    if (state.phase == RunPhase.ExplorationCards)
+                    {
+                        FateChoiceUI popup = null;
+                        int popupBinding = 0;
+                        popup = UI.ShowPopup<FateChoiceUI>(new FateChoiceUIData
+                        {
+                            context = context, hud = hud,
+                            offers = state.cards.Select(c => new FateOfferUIData { id = c.id, type = c.type, grade = c.grade }).ToArray(),
+                            confirm = id =>
+                            {
+                                if (!Busy && popup && popup.BindingVersion == popupBinding && UI.Popups.LastOrDefault() == popup)
+                                    Command(() => Session.ChooseFate(id, token), selectionKey: "fate-" + id);
+                            },
+                            close = () =>
+                            {
+                                if (!Busy && popup && popup.BindingVersion == popupBinding && UI.Popups.LastOrDefault() == popup)
+                                    UI.CloseTopPopup();
+                            }
+                        });
+                        popupBinding = popup.BindingVersion;
+                        shownFate = popup; shownFateBinding = popupBinding;
+                        SyncInputLock();
+                    }
+                    break;
                 case RunPhase.CombatRoll:
                 case RunPhase.CombatCards:
                     var enemy = rules.Enemy(state.activeEnemyId);
@@ -294,7 +346,13 @@ namespace FateDice
                             effect = "피해 " + effect.damage + " / 수호 " + effect.block, tags = (string[])action.tags.Clone(),
                             visual = visuals.ResolveAction(rules, c.contentId), clicked = id => Command(() => Session.ChooseAction(id, token), selectionKey: "card-" + id, actionId: id) };
                     }).ToArray();
-                    Show<CombatUI>(combat); break;
+                    bool enterCombat = state.phase == RunPhase.CombatRoll && !deferCombatDice &&
+                        !actionBusy && !(UI.ActiveScreen is CombatUI);
+                    Show<CombatUI>(combat, !deferCombatDice && !enterCombat);
+                    shownCombat = UI.ActiveScreen as CombatUI;
+                    shownCombatBinding = shownCombat.EntryBindingVersion;
+                    if (enterCombat) StartCoroutine(EnterCombatScreen());
+                    break;
                 case RunPhase.Encounter:
                     var encounter = rules.Event(state.activeEventId);
                     hud.situation = KoreanText.Grade(state.activeGrade) + "  /  " + KoreanText.Content(encounter.label);
@@ -353,6 +411,7 @@ namespace FateDice
             var token = new RunCommandToken(state.runId, state.sequence);
             bool combat = state.phase == RunPhase.CombatRoll || state.phase == RunPhase.CombatCards;
             float duration = state.config.presentation.DiceTiming(combat).rollSeconds;
+            var hand = rolling ? state.config.dice.hands.Single(x => x.kind == state.hand) : null;
             UI.ShowPopup<DiceRollUI>(new DiceRollUIData
             {
                 title = combat ? "전투 주사위" : "운명의 주사위",
@@ -362,6 +421,9 @@ namespace FateDice
                 values = rolling ? (int[])state.dice.Clone() : null,
                 result = rolling ? KoreanText.HandSummary(state, true) : "6개의 주사위가 준비되었습니다",
                 rolling = rolling, duration = duration,
+                comboName = hand == null ? "" : KoreanText.Content(hand.label), hand = state.hand,
+                comboStrength = hand == null ? 0 : state.config.dice.hands.Count(x => x.priority < hand.priority) / (float)Math.Max(1, state.config.dice.hands.Length - 1),
+                holdSeconds = state.config.presentation.DiceTiming(combat).resultHoldSeconds,
                 roll = rolling ? null : Choice("roll", "주사위 6개 굴리기", () => Command(() => Session.Roll(token), true)),
                 appearance = visuals.ResolveButton(ButtonPurpose.Primary)
             });
@@ -382,10 +444,44 @@ namespace FateDice
             {
                 try { moved = Session.ChooseNode(id, token); }
                 catch (Exception e) { error = "이동을 저장하지 못했습니다. " + PlayerError(e); }
-                if (moved && Widgets != null) yield return PresentSafely(Widgets.AnimateNodeArrival(id, .35f));
-                RefreshView();
+                yield return PresentSafely(PresentNodeArrival(id, moved), "노드 도착 " + id);
             }
-            finally { actionBusy = false; SyncInputLock(); }
+            finally { ResetOwnedEntry(); actionBusy = false; SyncInputLock(); }
+        }
+        private IEnumerator PresentNodeArrival(string id, bool moved)
+        {
+            if (moved && Widgets != null) yield return Widgets.AnimateNodeArrival(id);
+            bool entersBattle = moved && Session.Phase == RunPhase.CombatRoll;
+            Render(entersBattle);
+            if (entersBattle) yield return PlayCombatEntry();
+        }
+
+        // Cold CombatRoll saves enter through Render, outside an existing command presentation.
+        private IEnumerator EnterCombatScreen()
+        {
+            actionBusy = true; SyncInputLock();
+            try { yield return PresentSafely(PlayCombatEntry(), "전투 진입 / 저장 재개"); }
+            finally { ResetOwnedEntry(); actionBusy = false; SyncInputLock(); }
+        }
+        private IEnumerator PlayCombatEntry()
+        {
+            var view = UI.ActiveScreen as CombatUI;
+            if (!view) throw new InvalidOperationException("Combat entry requires the authored combat view.");
+            int binding = view.EntryBindingVersion;
+            var state = Session.ReadSnapshot();
+            presentingEntry = view; presentingEntryBinding = binding;
+            yield return view.PlayEntry();
+            if (!this || !isActiveAndEnabled || !view || !view.isActiveAndEnabled || UI.ActiveScreen != view ||
+                view.EntryBindingVersion != binding || !view.IsOpen) yield break;
+            var current = Session.ReadSnapshot();
+            if (current.phase == RunPhase.CombatRoll && current.runId == state.runId && current.sequence == state.sequence)
+                ShowDiceWindow(false);
+        }
+        private void ResetOwnedEntry()
+        {
+            if (presentingEntry && presentingEntry.EntryBindingVersion == presentingEntryBinding)
+                presentingEntry.ResetEntry();
+            presentingEntry = null;
         }
         private void RenderMenu()
         {
@@ -444,83 +540,93 @@ namespace FateDice
             bool changed = false;
             var before = Session.ReadSnapshot();
             var combatView = UI.ActiveScreen as CombatUI;
+            var fateView = UI.Popups.LastOrDefault() as FateChoiceUI;
+            int fateBinding = fateView ? fateView.BindingVersion : 0;
+            presentingFate = fateView;
+            presentingFateBinding = fateBinding;
             try
             {
                 try { changed = command(); }
                 catch (Exception e) { error = "행동을 저장하지 못했습니다. " + PlayerError(e); }
-                yield return PresentSafely(PresentChange(before, combatView, changed, roll, selectionKey, actionId));
+                string label = (roll ? "주사위" : actionId != null ? "전투 " + actionId : "선택 " + selectionKey) +
+                    " / " + before.phase + " / sequence " + before.sequence;
+                yield return PresentSafely(PresentChange(before, combatView, fateView, fateBinding, changed, roll, selectionKey, actionId), label);
             }
             finally
             {
                 Widgets?.ResetSelectionFeedback();
                 if (combatView) combatView.ResetFeedback();
+                if (fateView && fateView.BindingVersion == fateBinding) fateView.ResetPresentation();
+                presentingFate = null;
+                ResetOwnedEntry();
                 actionBusy = false; SyncInputLock();
             }
         }
-        private IEnumerator PresentChange(RunState before, CombatUI combatView, bool changed, bool roll, string selectionKey, string actionId)
+        private IEnumerator PresentChange(RunState before, CombatUI combatView, FateChoiceUI fateView, int fateBinding,
+            bool changed, bool roll, string selectionKey, string actionId)
         {
             var after = Session.ReadSnapshot();
-            var style = after.config.presentation;
             var feedback = changed && actionId != null ? CaptureFeedback(before, after, actionId) : null;
             if (roll && changed)
             {
                 ShowDiceWindow(true);
                 var popup = UI.Popups.LastOrDefault() as DiceRollUI;
-                bool combat = before.phase == RunPhase.CombatRoll || before.phase == RunPhase.CombatCards;
-                var timing = style.DiceTiming(combat);
-                if (timing.rollSeconds > 0) yield return new WaitForSecondsRealtime(timing.rollSeconds);
-                if (popup) popup.CompleteRoll();
-                if (timing.resultHoldSeconds > 0) yield return new WaitForSecondsRealtime(timing.resultHoldSeconds);
+                if (!popup) throw new InvalidOperationException("The dice popup did not open.");
+                int binding = popup.BindingVersion;
+                yield return popup.PlayPresentation();
+                // Pooled instance identity is insufficient: a newer binding belongs to its new presenter.
+                if (!popup || popup.BindingVersion != binding) yield break;
                 if (UI.Popups.LastOrDefault() == popup) UI.CloseTopPopup();
+                if (fateView && fateView.BindingVersion != fateBinding) yield break;
             }
             if (changed && selectionKey != null)
             {
-                if (Widgets != null) yield return Widgets.AnimateCardSelection(selectionKey, .22f);
+                if (fateView && selectionKey.StartsWith("fate-", StringComparison.Ordinal))
+                {
+                    yield return fateView.PlaySelection(selectionKey.Substring(5));
+                    if (!fateView || fateView.BindingVersion != fateBinding || UI.Popups.LastOrDefault() != fateView) yield break;
+                    UI.CloseTopPopup();
+                }
+                else if (Widgets != null) yield return Widgets.AnimateCardSelection(selectionKey);
                 if (feedback != null && combatView) yield return combatView.PlayFeedback(feedback);
-                else yield return new WaitForSecondsRealtime(Mathf.Max(.18f, style.actionSeconds));
             }
-            Render();
-            if (!roll && selectionKey == null) yield return new WaitForSecondsRealtime(style.actionSeconds);
+            bool entersBattle = changed && after.phase == RunPhase.CombatRoll &&
+                before.phase != RunPhase.CombatRoll && before.phase != RunPhase.CombatCards;
+            Render(entersBattle);
+            if (entersBattle) yield return PlayCombatEntry();
         }
         // Unity normally drives nested iterators separately. Drive them here so a nested
         // presentation failure is caught at the same boundary as a failed screen rebind.
-        private IEnumerator PresentSafely(IEnumerator presentation)
+        private IEnumerator PresentSafely(IEnumerator presentation, string label = "Run presentation")
         {
-            var stack = new System.Collections.Generic.Stack<IEnumerator>();
-            stack.Push(presentation);
-            bool failed = false;
-            try
+            yield return Playback.Play(presentation, label);
+            if (Playback.State == PresentationPlaybackState.TimedOut || Playback.State == PresentationPlaybackState.Faulted ||
+                Playback.State == PresentationPlaybackState.Cancelled)
             {
-                while (stack.Count > 0)
+                if (Playback.State == PresentationPlaybackState.TimedOut)
                 {
-                    bool next = false;
-                    object current = null;
-                    try
-                    {
-                        next = stack.Peek().MoveNext();
-                        if (next) current = stack.Peek().Current;
-                        else (stack.Pop() as IDisposable)?.Dispose();
-                    }
-                    catch (Exception e) { ReportPresentationFailure(e); failed = true; }
-                    if (failed) break;
-                    if (!next) continue;
-                    if (current is IEnumerator nested) stack.Push(nested);
-                    else yield return current;
+                    Debug.LogError($"Run presentation timeout: {Playback.Label}; elapsed={Playback.EndedAt - Playback.StartedAt:F3}s; limit={PresentationPlayback.TimeoutSeconds:F1}s. 연출을 강제 종료하고 확정 상태를 복구합니다.", this);
+                    error = "연출 응답이 늦어 종료했습니다. 확정된 진행 상태에서 계속합니다.";
                 }
-            }
-            finally
-            {
-                while (stack.Count > 0)
+                else if (Playback.State == PresentationPlaybackState.Faulted) ReportPresentationFailure(Playback.Error);
+                Widgets?.ResetSelectionFeedback();
+                bool newerEntryBinding = presentingEntry && presentingEntry.EntryBindingVersion != presentingEntryBinding;
+                if (!newerEntryBinding && UI && UI.ActiveScreen is CombatUI combat) combat.ResetFeedback();
+                if (presentingEntry && !newerEntryBinding) presentingEntry.ResetEntry();
+                if (!newerEntryBinding && UI && UI.Popups.LastOrDefault() is DiceRollUI) UI.CloseTopPopup();
+                bool newerFateBinding = presentingFate && presentingFate.BindingVersion != presentingFateBinding;
+                if (presentingFate && !newerFateBinding)
                 {
-                    try { (stack.Pop() as IDisposable)?.Dispose(); }
-                    catch (Exception e) { if (!failed) ReportPresentationFailure(e); failed = true; }
+                    presentingFate.ResetPresentation();
+                    if (UI && UI.Popups.LastOrDefault() == presentingFate) UI.CloseTopPopup();
                 }
+                if (isActiveAndEnabled && !newerFateBinding && !newerEntryBinding) TryRefreshView(false);
             }
-            if (failed) TryRefreshView(false);
         }
         public bool RefreshView() => TryRefreshView(true);
         private bool TryRefreshView(bool reportFailure)
         {
+            if (reportFailure && presentingEntry && presentingEntry.IsEntryPlaying) return false;
             try { Render(); return true; }
             catch (Exception e) { if (reportFailure) ReportPresentationFailure(e); return false; }
         }

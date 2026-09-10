@@ -86,7 +86,7 @@ namespace FateDice.Tests
 
         void Prepare(NodeType type)
         {
-            var config=Prefab().controller.config.Snapshot();
+            var config=Prefab().controller.config.Snapshot();config.world.mapGenerationVersion=0;
             foreach(var row in config.fate.exploration)row.weights=type==NodeType.Shop?new float[]{0,0,1,0,0}:new float[]{1,0,0,0,0};
             foreach(var row in config.fate.combat)row.weights=new float[]{0,1,0,0,0};
             foreach(var enemy in config.combat.enemies){enemy.maxHp=100000;enemy.power=0;}
@@ -113,7 +113,15 @@ namespace FateDice.Tests
             var target=Button(key);EnsureVisible(target);var hits=new List<RaycastResult>();Controller.UI.Root.GetComponent<GraphicRaycaster>().Raycast(Pointer(target),hits);
             var first=hits.Select(hit=>ExecuteEvents.GetEventHandler<IPointerClickHandler>(hit.gameObject)).FirstOrDefault(value=>value!=null);
             Assert.That(first,Is.SameAs(target.gameObject),"Press "+key+" was blocked by "+(first?string.Join(" ",first.GetComponentsInChildren<Text>().Select(t=>t.text)):"nothing"));
-            Click(Button(key));yield return Until(()=>!Controller.Busy,"Command did not settle: "+key);yield return Settled();
+            string before=key.StartsWith("fate-")?Stable(State):null;
+            Click(Button(key));
+            if(before!=null)
+            {
+                Assert.That(Stable(State),Is.EqualTo(before));
+                yield return Press("confirm-fate");
+                yield break;
+            }
+            yield return Until(()=>!Controller.Busy,"Command did not settle: "+key);yield return Settled();
         }
         IEnumerator Roll()
         {
@@ -168,6 +176,11 @@ namespace FateDice.Tests
         }
         Button Button(string key)
         {
+            if(Controller.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                if(key=="confirm-fate")return fate.confirmButton.button;
+                if(key.StartsWith("fate-"))return fate.Cards.Single(card=>card.OfferedId==key.Substring(5)).frame.button;
+            }
             Assert.That(Controller.Widgets.Buttons.TryGetValue(key,out var value),Is.True,"Missing command: "+key);return value;
         }
         void Click(Button button)

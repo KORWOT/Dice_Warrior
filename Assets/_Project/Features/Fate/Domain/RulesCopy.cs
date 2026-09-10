@@ -126,6 +126,7 @@ namespace FateDice
         {
             eventsToBoss = source.eventsToBoss, offeredCards = source.offeredCards,
             previewDepth = source.previewDepth, branchCount = source.branchCount,
+            mapGenerationVersion = source.mapGenerationVersion, mapColumns = source.mapColumns, mapPathCount = source.mapPathCount,
             events = Entries(source.events, Event), bossReward = Reward(source.bossReward),
             shop = Entries(source.shop, Product), shopPriceMultipliers = Values(source.shopPriceMultipliers), restTraining = Reward(source.restTraining)
         };

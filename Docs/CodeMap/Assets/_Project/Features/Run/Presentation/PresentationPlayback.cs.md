@@ -1,0 +1,12 @@
+# PresentationPlayback.cs
+
+- 역할: 한 연출 시퀀스 및 모든 중첩 IEnumerator의 시작·종료·취소·오류·실시간 제한을 감독하는 순수 C# 수명 객체다. 게임 판정·저장·난수·로그 출력을 소유하지 않는다.
+- 입력/출력: PresentationPlayback(Func<double> clock=null), Play(IEnumerator sequence, string label), Cancel(). 공개 State는 Idle/Playing/Completed/Cancelled/Faulted/TimedOut, Label/StartedAt/EndedAt/Error/IsPlaying을 노출한다. Started/Ended는 Action<PresentationPlayback>이며 각 재생별 한 번 발생한다. 초기 시각과 종료 전 EndedAt은 NaN, Error는 Exception 또는 null이다.
+- 핵심 동작: Play가 동기적으로 Playing과 시작 시각을 설정하고 Started를 알린다. 반환 IEnumerator를 Unity가 매 프레임 구동하면 감독기가 중첩 iterator를 스택으로 직접 진행한다. 바깥으로는 null 프레임만 반환한다. CustomYieldInstruction(WaitForSecondsRealtime 포함)은 중첩 IEnumerator 경로로, AsyncOperation은 내부 isDone 대기로 감시한다. WaitForSeconds 같은 해석 불가능한 yield는 NotSupportedException으로 명시 실패한다.
+- 종료/제한: 실제 기본 시계는 Time.realtimeSinceStartupAsDouble이며 timeScale과 무관하다. TimeoutSeconds=10, 경과 >=10초면 TimedOut이다. 중첩 MoveNext 전후 모두 시각을 확인해 동기 단계가 경계를 넘고 false를 반환해도 정상 완료로 오판하지 않는다. 동기 중첩 작업도 MoveNext당 최대128단계 뒤 프레임을 반환해 반복 체인이 watchdog을 막지 못한다. 단일 사용자 MoveNext 함수 자체를 선점 중단할 수는 없으므로 반환하지 않는 C# 무한루프는 적용 범위 밖이다.
+- 정리/재사용: 정상·취소·시간 초과·실패 모두 스택을 안쪽부터 IDisposable.Dispose해 finally를 수행한 뒤 Ended를 발생시킨다. 현재 MoveNext 내부에서 Cancel하면 반환 직후 정리한다. 반환 감독 iterator 자체의 Dispose도 Cancel과 같다. 종료된 iterator 재개/Dispose는 새 재생의 상태나 이벤트를 바꾸지 않는다. 새 Play는 기존 재생을 취소하고 시작하며 null 입력은 기존 재생에 영향을 주기 전에 거부한다.
+- 오류: MoveNext/Current/Dispose/이벤트 예외를 보관한다. 정리 실패도 남은 부모 정리를 계속한다. 정상 종료 중 정리 실패는 Faulted이며 Cancelled/TimedOut의 종료 원인은 유지하고 Error에 원인들을 묶는다. 최종 컨트롤러가 context/elapsed/limit과 함께 한 번 로그를 남기고 확정 snapshot을 복구한다.
+- 사용하는 대상: System IEnumerator/IDisposable/Stack/Exception, Unity의 실시간 시계와 AsyncOperation만 직접 사용한다. MonoBehaviour·Coroutine 실행·GameApplication·RunSession·전역 서비스 탐색에 의존하지 않는다.
+- 사용하는 쪽/관계 근거: RunUIController가 확정 명령 이후의 주사위·조합·카드·전투 연출 시퀀스를 이 객체로 감독하도록 공개한 계약이다. PresentationPlaybackTests는 공개 API로 fake clock 및 중첩 iterator를 주입한다. 직접 실제 연결·오류 복구는 메인 통합 범위다.
+- 검수 주의: 상태 객체는 동시에 한 연출만 소유한다. 현재 자기 MoveNext나 cleanup 안에서 새 Play를 직접 호출하는 것은 명시 거부하며 반환 후 다음 프레임에 시작해야 한다. 기존 재생의 Ended observer가 새 재생을 시작했다면 바깥 교체 Play는 명시 거부해 새 runner를 조용히 잃지 않는다. Started/Ended의 임의 사용자 코드가 끝나지 않는 경우 또한 C# 선점 중단은 하지 않는다. Unity StopCoroutine만 믿지 않고 컨트롤러가 Cancel을 호출해야 수명 종료가 확실하다.
+- 검증: artifacts/presentation-lifecycle/playback-red.json의 missing-type1건 RED를 메인이 확인한 뒤 작성했다. playback-initial.json은16개 중14PASS, 동기 단계 시간 경계/Ended 재진입2건의 기대 FAIL이며 두 직접 원인을 수정했다. 보조는 Unity 실행 금지 범위를 유지했다. 최종 검사·통합 판정은 PRESENTATION_LIFECYCLE_REPORT를 따른다.

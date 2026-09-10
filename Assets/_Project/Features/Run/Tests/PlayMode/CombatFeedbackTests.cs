@@ -148,17 +148,21 @@ namespace FateDice.Tests
             Assert.That(popup.result.text, Does.Contain("조합 단계 " + ordinal + "/10"));
             Assert.That(popup.result.text, Does.Match(@"운명력\s+" + oracle.State.fatePower + @"(?!\d)"));
             float revealed = Time.realtimeSinceStartup;
-            bool pulsed = popup.result.transform.localScale != resultScale;
+            var feedback = popup.resultFeedback;
+            var initialPhases = feedback.dieAuras.Select(aura => aura.Phase).ToArray();
+            var initialBannerScale = feedback.transform.localScale;
+            bool pulsed = false;
             while (popup.IsOpen && Time.realtimeSinceStartup - revealed < .7f)
             {
-                pulsed |= popup.result.transform.localScale != resultScale;
+                pulsed |= feedback.transform.localScale != initialBannerScale ||
+                    feedback.dieAuras.Where((aura, index) => aura.Visible && aura.Phase != initialPhases[index]).Any();
                 Assert.That(Controller.Busy, Is.True);
                 Assert.That(File.ReadAllBytes(store.Path), Is.EqualTo(bytes), "Result animation must not create another checkpoint.");
                 yield return null;
             }
             Assert.That(Time.realtimeSinceStartup - revealed, Is.GreaterThanOrEqualTo(.65f), "The popup closed before the result could be read.");
             Assert.That(popup.IsOpen, Is.True);
-            Assert.That(pulsed, Is.True, "The final combination should receive a visible pulse.");
+            Assert.That(pulsed, Is.True, "The dedicated combo banner or participating auras must visibly animate.");
             AssertReadable(popup.result);
             yield return Unlocked();
             Assert.That(saves, Is.EqualTo(1));

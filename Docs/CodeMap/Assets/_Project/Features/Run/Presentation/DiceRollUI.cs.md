@@ -19,3 +19,15 @@ duration의 음수/NaN/무한은 Bind에서 거절한다. 0은 Bind 중 즉시 �
 
 - resultHoldSeconds 기본 .9초 및 feedbackVersion을 추가했다. Controller가 결과 읽기 시간을 기다리며, View는 정확한 여섯 면 정착 후 조합 결과 텍스트를 .3초 동안 작게 확대했다 복원한다. 텍스트의 원래 scale을 바인딩에서 보관하고 Unbind에서 복구한다. 추가 난수·굴림·체크포인트는 없다.
 - 실제 검증 및 한계: Docs/Reports/COMBAT_FEEDBACK_REPORT.md.
+
+
+## 주사위 조합 연출 (2026-09-10)
+
+6개를 한 행으로 작성한 원본을 바인딩한다. 원래 위치/회전을 캐시해 재바인딩·닫기에서 정확 복원한다. CompleteRoll은 기존 전체 result Text와 별도 DiceResultFeedback을 동시에 갱신한다. 외부 연출 시간은 DTO holdSeconds; 기존 duration/0초/저장 이후 표시 계약을 유지한다. presentationVersion은 새 원본 migration 구분이다.
+검증 상태: DICE_PRESENTATION_EFFECTS_REPORT의 실제 결과를 따른다.
+
+
+## 등급별 연출 수명 (2026-09-10)
+
+PlayPresentation이 IsRolling/IsPresenting의 실제 종료를 기다린다. FinishFaces 표현 오류는 PresentationError로 전달한다. BindingVersion은 Bind/Unbind마다 증가하며 Controller가 이전 iterator의 Close/Render 소유권을 확인한다. 이전 summary .3초 확대는 전용 timeline으로 대체했다. 값/순서/RNG/저장에 영향 없다.
+실제 증거/판정은 PRESENTATION_LIFECYCLE_REPORT를 따른다. 위의 이전 고정 대기 계약은 이번 사용자 요청 범위에서 대체한다.

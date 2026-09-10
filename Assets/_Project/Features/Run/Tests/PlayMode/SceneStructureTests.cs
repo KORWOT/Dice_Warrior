@@ -17,6 +17,7 @@ namespace FateDice.Tests
         const string Folder = "Assets/_Project/Scenes/";
         const string AppPath = "Assets/_Project/Features/Run/Prefabs/GameApplication.prefab";
         GameApplication app;
+        FateDiceConfig legacyConfig;
         LocalRunStore store;
         string directory;
         RunUIController Controller => app.controller;
@@ -35,6 +36,7 @@ namespace FateDice.Tests
         [UnityTearDown] public IEnumerator TearDown()
         {
             if (app) Object.Destroy(app.gameObject);
+            if (legacyConfig) Object.Destroy(legacyConfig);
             yield return null;
             Assert.That(GameApplication.Current, Is.Null);
             if (Directory.Exists(directory)) Directory.Delete(directory, true);
@@ -51,6 +53,9 @@ namespace FateDice.Tests
         {
             var prefab = Prefab(); Assert.That(prefab, Is.Not.Null);
             app = GameApplication.Bootstrap(prefab, store);
+            if (!legacyConfig) legacyConfig = Object.Instantiate(prefab.controller.config);
+            legacyConfig.data.world.mapGenerationVersion = 0;
+            Controller.config = legacyConfig;
             Assert.That(app.controller.Store, Is.SameAs(store));
         }
         IEnumerator Load(string scene, string accepted = null)
@@ -84,9 +89,21 @@ namespace FateDice.Tests
             if ((key.StartsWith("trial-") || key.StartsWith("cap-")) && Controller.UI.ActiveScreen is MenuUI menu)
                 menu.settingsTab.onClick.Invoke();
             // These navigation fixtures explicitly dismiss the modal before returning to Lobby.
-            if (key == "menu" && Controller.UI.Popups.LastOrDefault() is DiceRollUI) Controller.UI.CloseTopPopup();
+            if (key == "menu" && Controller.UI.Popups.Count > 0) Controller.UI.CloseTopPopup();
             var popup = key == "roll" ? Controller.UI.Popups.LastOrDefault() as DiceRollUI : null;
             if (popup) { popup.rollButton.button.onClick.Invoke(); return; }
+            if (Controller.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                if (key.StartsWith("fate-"))
+                {
+                    string before = StableState(Controller.Session.State);
+                    fate.Cards.Single(card => card.OfferedId == key.Substring(5)).frame.button.onClick.Invoke();
+                    Assert.That(StableState(Controller.Session.State), Is.EqualTo(before));
+                    fate.confirmButton.button.onClick.Invoke();
+                    return;
+                }
+                if (key.StartsWith("die-")) { fate.rerollButtons[int.Parse(key.Substring(4))].button.onClick.Invoke(); return; }
+            }
             Assert.That(Controller.Widgets.Buttons.ContainsKey(key), Is.True, key);
             Controller.Widgets.Buttons[key].onClick.Invoke();
         }
@@ -117,7 +134,7 @@ namespace FateDice.Tests
             Assert.That(prefab.controller.initializeOnAwake, Is.False);
             Assert.That(prefab.sceneFlow, Is.Not.Null);
             var manager = prefab.controller.uiRootPrefab.GetComponent<UIManager>();
-            Assert.That(manager.prefabs.Select(p => p.GetType()).Distinct().Count(), Is.EqualTo(9));
+            Assert.That(manager.prefabs.Select(p => p.GetType()).Distinct().Count(), Is.EqualTo(10));
             Assert.That(manager.prefabs.OfType<TitleUI>().Single().enterButton, Is.Not.Null);
             Assert.That(manager.prefabs.OfType<DiceRollUI>().Single().dice, Has.Length.EqualTo(6));
 #endif
@@ -174,6 +191,7 @@ namespace FateDice.Tests
         [UnityTest] public IEnumerator DirectInGameRestoresExactSavedOffersAndPaidReroll()
         {
             var config = Prefab().controller.config.Snapshot();
+            config.world.mapGenerationVersion = 0;
             var run = RunSession.New(config, 33, "fireball", Grade.Legendary);
             var node = run.State.nodes.Single(n => run.State.availableNodeIds.Contains(n.id) && n.type == NodeType.Event);
             Assert.That(run.ChooseNode(node.id) && run.Roll() && run.ChooseFate(run.State.cards[0].id), Is.True);
@@ -186,7 +204,13 @@ namespace FateDice.Tests
             Press("menu"); yield return WaitScene("Lobby"); Press("continue"); yield return WaitScene("InGame"); AssertStoredState(run.State);
             var expected = new RunSession(store.Load());
             Assert.That(expected.Reroll(2), Is.True);
-            Press("die-2"); Press("die-2"); yield return Unlocked(); AssertStoredState(expected.State);
+            var fate = Controller.UI.Popups.LastOrDefault() as FateChoiceUI;
+            Assert.That(fate, Is.Not.Null);
+            var reroll = fate.rerollButtons[2].button;
+            Press("die-2");
+            // Replay the same button callback after the one-die DiceRollUI has replaced the fate popup.
+            reroll.onClick.Invoke();
+            yield return Unlocked(); AssertStoredState(expected.State);
             LogAssert.NoUnexpectedReceived();
         }
         [UnityTest] public IEnumerator DamagedDirectInGameFallsBackAndPreservesBytesUntilArchive()

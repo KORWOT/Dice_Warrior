@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -13,6 +13,7 @@ namespace FateDice.Tests
     public sealed class FateDiceGuiTests
     {
         private FateDiceScreen screen;
+        private FateDiceConfig legacyConfig;
         private string saveDirectory;
         [UnitySetUp] public IEnumerator LoadProductScene()
         {
@@ -23,6 +24,7 @@ namespace FateDice.Tests
             yield return null;yield return null;
             screen=SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x=>x.GetComponentsInChildren<FateDiceScreen>()).Single();
             Assert.That(screen.enabled,Is.True);Assert.That(screen.Widgets,Is.Not.Null);
+            legacyConfig=Object.Instantiate(screen.config);legacyConfig.data.world.mapGenerationVersion=0;screen.config=legacyConfig;
             screen.Seed=33; // Reproducible fixture; ordinary journeys request a system seed.
             saveDirectory=Path.Combine(Path.GetTempPath(),"FateDiceGuiTests",System.Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(saveDirectory);screen.UseStore(new LocalRunStore(Path.Combine(saveDirectory,"run.json")));
@@ -47,7 +49,7 @@ namespace FateDice.Tests
                     case RunPhase.ExplorationCards:
                         foreach(var card in state.cards)
                         {
-                            var label=screen.Widgets.Buttons["fate-"+card.id].GetComponentInChildren<Text>().text;
+                            var label=FindButton("fate-"+card.id).GetComponent<FateCardView>().frame.label.text;
                             Assert.That(label,Is.EqualTo(KoreanText.Node(card.type)+"  /  "+KoreanText.Grade(card.grade)),"Exploration must reveal type and grade only.");
                         }
                         key="fate-"+state.cards.OrderBy(x=>Preference(x.type)).First().id;break;
@@ -94,8 +96,10 @@ namespace FateDice.Tests
             Press("node-"+Session().State.availableNodeIds[0]);yield return WaitUnlocked();
             Press("roll");yield return WaitUnlocked();
             var before=(int[])Session().State.dice.Clone();var charges=Session().State.rerollCharges;var progress=Session().State.eventsResolved;
-            Assert.That(screen.Widgets.Buttons["die-2"].interactable,Is.True,"Earned reroll must be connected to the displayed dice.");
-            Press("die-2");Press("die-2");yield return WaitUnlocked();
+            var reroll=FindButton("die-2");
+            Assert.That(reroll,Is.Not.Null,"Earned reroll must be connected to the fate popup's displayed dice.");
+            Assert.That(reroll.IsInteractable(),Is.True);
+            Press("die-2");reroll.onClick.Invoke();yield return WaitUnlocked();
             Assert.That(Session().State.rerollCharges,Is.EqualTo(charges-Session().State.config.growth.rerollCost));
             for(var i=0;i<6;i++)if(i!=2)Assert.That(Session().State.dice[i],Is.EqualTo(before[i]));
             Assert.That(Session().State.eventsResolved,Is.EqualTo(progress));
@@ -145,11 +149,13 @@ namespace FateDice.Tests
 #endif
             yield return null;yield return null;
             screen=SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x=>x.GetComponentsInChildren<FateDiceScreen>()).Single();
+            screen.config=legacyConfig;
             screen.UseStore(new LocalRunStore(Path.Combine(saveDirectory,"run.json")));yield return null;
         }
         [UnityTearDown] public IEnumerator RemoveIsolatedTestSave()
         {
-            if(screen)Object.Destroy(screen.gameObject);yield return null;
+            if(screen)Object.Destroy(screen.gameObject);
+            if(legacyConfig)Object.Destroy(legacyConfig);legacyConfig=null;yield return null;
             if(!string.IsNullOrEmpty(saveDirectory)&&Directory.Exists(saveDirectory))Directory.Delete(saveDirectory,true);
         }
 
@@ -230,10 +236,11 @@ namespace FateDice.Tests
                 Assert.That(root.xMax,Is.EqualTo(safe.xMax).Within(2));Assert.That(root.yMax,Is.EqualTo(safe.yMax).Within(2));
                 foreach(var id in Session().State.availableNodeIds)EnsureVisible(screen.Widgets.Buttons["node-"+id]);
                 EnsureVisible(screen.Widgets.Buttons["menu"]);EnsureVisible(screen.Widgets.Buttons["cap-cycle"]);
-                foreach(var label in new[]{screen.Widgets.Header,screen.Widgets.Stats,screen.Widgets.Situation,screen.Widgets.Fate})
+                var exploration=(ExplorationUI)screen.UI.ActiveScreen;
+                foreach(var label in new[]{exploration.progressLabel,exploration.goldLabel,exploration.healthLabel,exploration.wardLabel,screen.Widgets.Fate})
                     Assert.That(label.preferredHeight,Is.LessThanOrEqualTo(label.rectTransform.rect.height+1),"Truncated primary text: "+label.text);
                 Press("node-"+Session().State.availableNodeIds[0]);yield return WaitUnlocked();Press("roll");yield return WaitUnlocked();
-                foreach(var card in Session().State.cards)EnsureVisible(screen.Widgets.Buttons["fate-"+card.id]);
+                foreach(var card in Session().State.cards)EnsureVisible(FindButton("fate-"+card.id));
                 AssertDisplayedStats();
             }
             LogAssert.NoUnexpectedReceived();
@@ -241,6 +248,14 @@ namespace FateDice.Tests
         private void AssertDisplayedStats()
         {
             var state=Session().State;var stats=GrowthRules.Stats(state);
+            if(screen.UI.ActiveScreen is ExplorationUI exploration)
+            {
+                Assert.That(exploration.healthLabel.gameObject.activeInHierarchy,Is.True);
+                Assert.That(exploration.healthLabel.text,Does.Contain("체력 "+state.hp+" / "+stats.maxHp));
+                Assert.That(exploration.goldLabel.text,Is.EqualTo("골드  "+state.gold.ToString("N0")));
+                Assert.That(exploration.wardLabel.text,Does.Contain("수호 "+state.shield));
+                return;
+            }
             Assert.That(screen.Widgets.Stats.text,Does.Contain("체력 "+state.hp+"/"+stats.maxHp));
             Assert.That(screen.Widgets.Stats.text,Does.Contain("위력 "+stats.power));
             Assert.That(screen.Widgets.Stats.text,Does.Contain("방어력 "+stats.guard));
@@ -256,11 +271,15 @@ namespace FateDice.Tests
         private Vector2 EnsureVisible(Button button)
         {
             Canvas.ForceUpdateCanvases();var rect=button.GetComponent<RectTransform>();
-            if(rect.IsChildOf(screen.Widgets.Body))
+            foreach(var scroll in rect.GetComponentsInParent<ScrollRect>())
             {
-                var scroll=screen.Widgets.Body.GetComponentInParent<ScrollRect>();scroll.StopMovement();
+                scroll.StopMovement();
                 for(var i=0;i<=40&&!ContainsRect(ScreenRect(scroll.viewport),ScreenRect(rect));i++)
-                {scroll.verticalNormalizedPosition=1-i/40f;Canvas.ForceUpdateCanvases();}
+                {
+                    if(scroll.vertical)scroll.verticalNormalizedPosition=1-i/40f;
+                    if(scroll.horizontal)scroll.horizontalNormalizedPosition=i/40f;
+                    Canvas.ForceUpdateCanvases();
+                }
                 Assert.That(ContainsRect(ScreenRect(scroll.viewport),ScreenRect(rect)),Is.True,"Clipped or unreachable button "+button.name);
             }
             Assert.That(rect.rect.height,Is.GreaterThanOrEqualTo(48),"Small touch height "+button.name);
@@ -278,7 +297,7 @@ namespace FateDice.Tests
                 Assert.That(screen.Widgets.Buttons["node-"+id].GetComponent<ExplorationNodeView>(),Is.Not.Null);
             Press("node-"+first);yield return WaitUnlocked();Press("roll");yield return WaitUnlocked();
             foreach(var card in Session().State.cards)
-                Assert.That(screen.Widgets.Buttons["fate-"+card.id].GetComponent<FateCardView>(),Is.Not.Null);
+                Assert.That(FindButton("fate-"+card.id).GetComponent<FateCardView>(),Is.Not.Null);
             var guaranteed=Session().State.cards[0];Assert.That(guaranteed.type,Is.EqualTo(NodeType.Combat));
             Press("fate-"+guaranteed.id);yield return WaitUnlocked();Press("roll");yield return WaitUnlocked();
             foreach(var card in Session().State.cards)
@@ -340,9 +359,11 @@ namespace FateDice.Tests
                 Assert.That(StateWithoutTime(Session().State),Is.EqualTo(StateWithoutTime(oracle.State)));
                 foreach(var card in Session().State.cards)
                 {
-                    var view=screen.Widgets.Buttons["fate-"+card.id].GetComponent<FateCardView>();
+                    var view=FindButton("fate-"+card.id).GetComponent<FateCardView>();
                     Assert.That(view.artwork.sprite,Is.Null,"Secret event art leaked before selection.");
-                    Assert.That(view.artworkFallback.gameObject.activeSelf,Is.True);
+                    Assert.That((view.typeSymbol&&view.typeSymbol.gameObject.activeInHierarchy)||
+                        (view.artworkFallback.gameObject.activeInHierarchy&&!string.IsNullOrEmpty(view.artworkFallback.text)),
+                        Is.True,"The public type needs a visible authored symbol or its legacy glyph fallback.");
                     Assert.That(view.frame.label.text,Is.EqualTo(KoreanText.Node(card.type)+"  /  "+KoreanText.Grade(card.grade)));
                     Assert.That(view.GetComponentsInChildren<Image>(true).Any(x=>x.sprite==tall),Is.False);
                     var secret=Session().State.config.Event(card.contentId).label;
@@ -394,7 +415,7 @@ namespace FateDice.Tests
                 Assert.That(screen.Widgets.Buttons["node-"+id].GetComponent<CommonButtonView>().label.fontStyle,Is.EqualTo(FontStyle.Bold));
                 Press("node-"+id);yield return WaitUnlocked();Press("roll");yield return WaitUnlocked();
                 foreach(var card in Session().State.cards)
-                    Assert.That(screen.Widgets.Buttons["fate-"+card.id].GetComponent<CommonButtonView>().label.fontStyle,Is.EqualTo(FontStyle.Bold));
+                    Assert.That(FindButton("fate-"+card.id).GetComponent<CommonButtonView>().label.fontStyle,Is.EqualTo(FontStyle.Bold));
                 Press("fate-"+Session().State.cards[0].id);yield return WaitUnlocked();Press("roll");yield return WaitUnlocked();
                 foreach(var card in Session().State.cards)
                     Assert.That(screen.Widgets.Buttons["card-"+card.id].GetComponent<CommonButtonView>().label.fontStyle,Is.EqualTo(FontStyle.Bold));
@@ -493,13 +514,20 @@ namespace FateDice.Tests
         private Button FindButton(string key)
         {
             if(key=="roll"&&screen.UI.Popups.LastOrDefault() is DiceRollUI popup)return popup.rollButton.button;
+            if(screen.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                if(key.StartsWith("fate-"))return fate.Cards.Single(card=>card.OfferedId==key.Substring(5)).frame.button;
+                if(key.StartsWith("die-"))return fate.rerollButtons[int.Parse(key.Substring(4))].button;
+                if(key=="confirm-fate")return fate.confirmButton.button;
+            }
             return screen.Widgets.Buttons.TryGetValue(key,out var button)?button:null;
         }
         private void Press(string key)
         {
             if(screen.Busy)return;
-            // Navigation tests dismiss the roll modal first; the new modal test checks underneath input blocking.
-            if(key=="menu"&&screen.UI.Popups.LastOrDefault() is DiceRollUI)screen.UI.CloseTopPopup();
+            // Navigation fixtures explicitly dismiss the active modal before returning to the menu.
+            if(key=="menu"&&screen.UI.Popups.Count>0)screen.UI.CloseTopPopup();
+            string before=key.StartsWith("fate-")?StateWithoutTime(Session().State):null;
             var button=FindButton(key);
             if(!button||!button.IsInteractable())return;
             var data=new PointerEventData(EventSystem.current){button=PointerEventData.InputButton.Left,position=EnsureVisible(button)};
@@ -510,6 +538,12 @@ namespace FateDice.Tests
             ExecuteEvents.Execute(target,data,ExecuteEvents.pointerDownHandler);
             ExecuteEvents.Execute(target,data,ExecuteEvents.pointerUpHandler);
             ExecuteEvents.Execute(target,data,ExecuteEvents.pointerClickHandler);
+            if(before!=null)
+            {
+                Assert.That(StateWithoutTime(Session().State),Is.EqualTo(before),"Selecting a fate card must not issue a game command.");
+                Assert.That(StateWithoutTime(screen.Store.Load()),Is.EqualTo(before));
+                Press("confirm-fate");
+            }
         }
 
         private IEnumerator WaitUnlocked()
@@ -519,7 +553,7 @@ namespace FateDice.Tests
             while(Time.realtimeSinceStartup<end)
             {
                 var group=screen.Widgets.SafeRoot.GetComponent<CanvasGroup>();
-                if(group==null||group.interactable){yield return null;yield break;}
+                if(!screen.Busy&&(group==null||group.interactable)){yield return null;yield break;}
                 yield return null;
             }
             Assert.Fail("Product input lock did not recover.");

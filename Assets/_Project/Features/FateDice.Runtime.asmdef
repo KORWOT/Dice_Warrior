@@ -5,7 +5,11 @@
     "Unity.ugui",
     "Unity.InputSystem",
     "FateDice.SharedUI",
-    "FateDice.Core"
+    "FateDice.Core",
+    "Unity.TextMeshPro",
+    "Febucci.TextAnimatorForUnity.Runtime",
+    "Febucci.TextAnimatorForUnity.TMP.Runtime",
+    "MoreMountains.Tools"
   ],
   "autoReferenced": true
 }

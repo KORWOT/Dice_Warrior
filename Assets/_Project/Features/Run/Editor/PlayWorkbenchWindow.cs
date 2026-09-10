@@ -185,8 +185,8 @@ namespace FateDice.Editor
             {
                 case WorkbenchStartPoint.Title: type = typeof(TitleUI); break;
                 case WorkbenchStartPoint.Lobby: type = typeof(MenuUI); break;
-                case WorkbenchStartPoint.Map:
-                case WorkbenchStartPoint.ExplorationCards: type = typeof(ExplorationUI); break;
+                case WorkbenchStartPoint.Map: type = typeof(ExplorationUI); break;
+                case WorkbenchStartPoint.ExplorationCards: type = typeof(FateChoiceUI); break;
                 case WorkbenchStartPoint.Combat: type = typeof(CombatUI); break;
                 case WorkbenchStartPoint.Shop: type = typeof(EncounterUI); break;
                 case WorkbenchStartPoint.Reward: type = typeof(RewardUI); break;

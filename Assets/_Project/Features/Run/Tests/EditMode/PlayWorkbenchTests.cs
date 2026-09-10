@@ -169,6 +169,7 @@ namespace FateDice.Tests
                 var manager = AssertPreview(preview, point, height);
                 seen.Add(manager.ActiveScreen.GetType());
                 AssertRenderedText(manager.ActiveScreen, manager.Root.canvas);
+                foreach (var popup in manager.Popups) AssertRenderedText(popup, manager.Root.canvas);
                 var root = preview.PreviewRoot;
                 var scene = root.scene;
                 StageUtility.GoToMainStage();
@@ -233,12 +234,46 @@ namespace FateDice.Tests
             expected = PlayWorkbenchSession.Build(options);
             preview = UIWorkbenchPreview.Open(options, 1600);
             yield return Settle();
-            var exploration = (ExplorationUI)AssertPreview(preview, WorkbenchStartPoint.ExplorationCards, 1600).ActiveScreen;
-            var fates = exploration.fateChoices.GetComponentsInChildren<FateCardView>();
+            var manager = AssertPreview(preview, WorkbenchStartPoint.ExplorationCards, 1600);
+            var popup = (FateChoiceUI)manager.Popups.Single();
+            popup.RefreshLayout();
+            var fates = popup.Cards.ToArray();
             Assert.That(fates.Length, Is.EqualTo(expected.cards.Count));
             for (int i = 0; i < fates.Length; i++)
                 Assert.That(fates[i].frame.label.text,
                     Is.EqualTo(NodeNames[(int)expected.cards[i].type] + "  /  " + GradeNames[(int)expected.cards[i].grade]));
+        }
+
+        [UnityTest]
+        public IEnumerator DicePreviewRendersStaticComboAndSixDiceInOneRowWithoutStartingEffects()
+        {
+            foreach (int height in new[] { 1280, 1600 })
+            {
+                var options = Options(WorkbenchStartPoint.Combat);
+                var expected = PlayWorkbenchSession.Build(options);
+                var preview = UIWorkbenchPreview.OpenDice(options, height);
+                yield return Settle();
+                var popup = preview.PreviewRoot.GetComponentInChildren<DiceRollUI>();
+                Assert.That(popup, Is.Not.Null);
+                Assert.That(popup.IsRolling, Is.False);
+                Assert.That(popup.resultFeedback.IsPlaying, Is.False);
+                Assert.That(popup.result.text, Is.EqualTo(KoreanText.HandSummary(expected, true)));
+                // Inspect the actual TMP mesh without adding vendor dependencies to this test assembly.
+                var text = (Component)typeof(DiceResultFeedback).GetField("comboName").GetValue(popup.resultFeedback);
+                var expectedName = KoreanText.Content(expected.config.dice.hands.Single(hand => hand.kind == expected.hand).label);
+                Assert.That(text.GetType().GetProperty("text").GetValue(text), Is.EqualTo(expectedName));
+                var mesh = (Mesh)text.GetType().GetProperty("mesh").GetValue(text);
+                Assert.That(mesh, Is.Not.Null);
+                Assert.That(mesh.vertexCount, Is.GreaterThan(0), "Static combo glyphs must be visible.");
+                var dice = popup.dice;
+                Assert.That(dice.Length, Is.EqualTo(6));
+                var positions = dice.Select(die => ((RectTransform)die.transform).anchoredPosition).ToArray();
+                Assert.That(positions.Select(p => p.y).Distinct().Count(), Is.EqualTo(1));
+                Assert.That(positions.Select(p => p.x).Distinct().Count(), Is.EqualTo(6));
+                var root = preview.PreviewRoot;
+                StageUtility.GoToMainStage();
+                Assert.That(root == null, Is.True);
+            }
         }
 
         static UIManager AssertPreview(UIWorkbenchPreview preview, WorkbenchStartPoint point, int height)
@@ -257,8 +292,17 @@ namespace FateDice.Tests
             Assert.That(canvasRect.rect.height, Is.EqualTo(height).Within(.1f));
             Assert.That(manager.ActiveScreen, Is.TypeOf(ExpectedScreen(point)));
             Assert.That(manager.ActiveScreen.IsOpen && manager.ActiveScreen.gameObject.activeInHierarchy, Is.True);
-            Assert.That(preview.SourcePrefabPath, Is.EqualTo(ScreenFolder + ExpectedScreen(point).Name + ".prefab"));
-            Assert.That(root.GetComponentsInChildren<BaseUI>(true).Length, Is.EqualTo(1));
+            bool fateChoices = point == WorkbenchStartPoint.ExplorationCards;
+            string expectedSource = fateChoices ? "Assets/_Project/Features/Fate/Prefabs/FateChoiceUI.prefab" :
+                ScreenFolder + ExpectedScreen(point).Name + ".prefab";
+            Assert.That(preview.SourcePrefabPath, Is.EqualTo(expectedSource));
+            Assert.That(root.GetComponentsInChildren<BaseUI>(true).Length, Is.EqualTo(fateChoices ? 2 : 1));
+            if (fateChoices)
+            {
+                Assert.That(manager.Popups.Single(), Is.TypeOf<FateChoiceUI>());
+                Assert.That(manager.Popups[0].IsOpen, Is.True);
+            }
+            else Assert.That(manager.Popups, Is.Empty);
             Assert.That(root.GetComponentsInChildren<GameApplication>(true), Is.Empty);
             Assert.That(root.GetComponentsInChildren<RunUIController>(true), Is.Empty);
             Assert.That(root.GetComponentsInChildren<EventSystem>(true), Is.Empty);

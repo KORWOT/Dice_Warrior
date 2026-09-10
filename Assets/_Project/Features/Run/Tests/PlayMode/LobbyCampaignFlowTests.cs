@@ -69,12 +69,12 @@ namespace FateDice.Tests
             Assert.That(lobby.layoutVersion, Is.EqualTo(1));
             var exploration = UnityEditor.AssetDatabase.LoadAssetAtPath<ExplorationUI>(PrefabFolder + "ExplorationUI.prefab");
             Assert.That(exploration, Is.Not.Null);
-            Assert.That(exploration.layoutVersion, Is.EqualTo(1));
+            Assert.That(exploration.layoutVersion, Is.EqualTo(2));
             Assert.That(exploration.campaignMap, Is.Not.Null);
             Assert.That(exploration.campaignMap.transform, Is.SameAs(exploration.mapContainer));
             foreach (string field in new[] { "edgeLayer", "nodeLayer", "playerMarker", "currentLocation" })
                 AssertAuthoredReference(exploration.campaignMap, field);
-            Assert.That(typeof(FateDiceWidgets).GetMethod("AnimateNodeArrival", new[] { typeof(string), typeof(float) }),
+            Assert.That(typeof(FateDiceWidgets).GetMethod("AnimateNodeArrival", new[] { typeof(string) }),
                 Is.Not.Null, "The campaign map must expose arrival animation without adding a game command.");
 #else
             Assert.Ignore("Authored prefab contracts run in the Unity Editor.");
@@ -183,10 +183,10 @@ namespace FateDice.Tests
                 }
                 CollectionAssert.AreEqual(oracle.State.dice, popup.dice.Select(d => d.Value).ToArray());
                 yield return Unlocked();
-                Assert.That(Controller.UI.Popups, Is.Empty);
+                AssertCardsPopup(false);
                 AssertState(oracle.State);
                 CollectionAssert.AreEquivalent(State.cards.Select(c => c.id),
-                    Controller.Widgets.Body.GetComponentsInChildren<FateCardView>().Select(view => view.OfferedId));
+                    ((FateChoiceUI)Controller.UI.Popups.Last()).Cards.Select(view => view.OfferedId));
                 foreach (var card in State.cards) EnsureVisible(Command("fate-" + card.id));
                 yield return CloseOwner();
             }
@@ -212,7 +212,8 @@ namespace FateDice.Tests
                 AssertState(run.State);
                 Assert.That(File.ReadAllBytes(store.Path), Is.EqualTo(originalBytes));
                 bool pending = phase == RunPhase.ExplorationRoll || phase == RunPhase.CombatRoll;
-                Assert.That(Controller.UI.Popups.Count, Is.EqualTo(pending ? 1 : 0));
+                Assert.That(Controller.UI.Popups.Count, Is.EqualTo(pending || phase == RunPhase.ExplorationCards ? 1 : 0));
+                if (!pending) AssertCardsPopup(phase == RunPhase.CombatCards);
                 if (pending)
                 {
                     var popup = RollPopup();
@@ -221,7 +222,7 @@ namespace FateDice.Tests
                     Click(popup.rollButton.button);
                     AssertState(run.State);
                     yield return Unlocked();
-                    Assert.That(Controller.UI.Popups, Is.Empty);
+                    AssertCardsPopup(run.State.phase == RunPhase.CombatCards);
                     AssertState(run.State);
                 }
                 yield return CloseOwner();
@@ -246,7 +247,7 @@ namespace FateDice.Tests
             AssertState(run.State);
             Assert.That(State.rerollCharges, Is.EqualTo(charges - State.config.growth.rerollCost));
             for (int i = 0; i < 6; i++) if (i != 2) Assert.That(State.dice[i], Is.EqualTo(before[i]));
-            Assert.That(Controller.UI.Popups, Is.Empty, "Paid reroll must not reopen the free six-dice roll.");
+            AssertCardsPopup(false); // Paid reroll returns to the fate choices after its one-die presentation.
             LogAssert.NoUnexpectedReceived();
         }
 
@@ -334,6 +335,7 @@ namespace FateDice.Tests
         RunSession NewRun(NodeType type)
         {
             var config = Prefab().controller.config.Snapshot();
+            config.world.mapGenerationVersion = 0; // Preserve this suite's legacy path and reward oracles.
             config.fate.nodeWeights = new float[config.fate.nodeWeights.Length];
             config.fate.nodeWeights[(int)type] = 1;
             return RunSession.New(config, 33, config.combat.trialActionIds[0], Grade.Common);
@@ -395,8 +397,23 @@ namespace FateDice.Tests
 
         Button Command(string key)
         {
+            if (Controller.UI.Popups.LastOrDefault() is FateChoiceUI fate)
+            {
+                if (key.StartsWith("fate-")) return fate.Cards.Single(card => card.OfferedId == key.Substring(5)).frame.button;
+                if (key.StartsWith("die-")) return fate.rerollButtons[int.Parse(key.Substring(4))].button;
+            }
             Assert.That(Controller.Widgets.Buttons.TryGetValue(key, out var button), Is.True, key);
             return button;
+        }
+
+        void AssertCardsPopup(bool combat)
+        {
+            if (combat) Assert.That(Controller.UI.Popups, Is.Empty);
+            else
+            {
+                Assert.That(Controller.UI.Popups, Has.Count.EqualTo(1));
+                Assert.That(Controller.UI.Popups[0], Is.TypeOf<FateChoiceUI>());
+            }
         }
 
         void Click(Button button)
