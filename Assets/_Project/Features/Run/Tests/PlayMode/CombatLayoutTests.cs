@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -63,16 +63,18 @@ namespace FateDice.Tests
             Assert.That(run.ChooseNode(node.id) && run.Roll(), Is.True);
             Assert.That(run.ChooseFate(run.State.cards.First(c => c.type == NodeType.Combat).id), Is.True);
             Assert.That(run.State.phase, Is.EqualTo(RunPhase.CombatRoll));
-            // Valid saved fixture values make fractional HP/shield and a paid reroll observable.
-            run.State.hp = Math.Max(1, GrowthRules.Stats(run.State).maxHp - 7);
-            run.State.enemyHp = Math.Max(1, run.State.config.Enemy(run.State.activeEnemyId).maxHp - 5);
-            run.State.shield = 4;
-            run.State.enemyShield = 2;
+            // Valid detached fixture values make fractional HP/shield and a paid reroll observable.
+            var prepared = run.State;
+            prepared.hp = Math.Max(1, GrowthRules.Stats(run.State).maxHp - 7);
+            prepared.enemyHp = Math.Max(1, prepared.config.Enemy(prepared.activeEnemyId).maxHp - 5);
+            prepared.shield = 4;
+            prepared.enemyShield = 2;
             if (paidReroll)
             {
-                run.State.rerollUnlocked = true;
-                run.State.rerollCharges = run.State.config.growth.rerollCost * 3;
+                prepared.rerollUnlocked = true;
+                prepared.rerollCharges = prepared.config.growth.rerollCost * 3;
             }
+            run = new RunSession(prepared);
             if (rolled) Assert.That(run.Roll(), Is.True);
             store.Save(run.State); // Full save validation must accept the isolated fixture.
             return run;

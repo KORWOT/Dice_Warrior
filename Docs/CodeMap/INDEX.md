@@ -1,14 +1,32 @@
 # CodeMap 기능 색인
 
-실제 로컬 플레이 루프, 저장/이어하기, 전용 Scene과 설정 SO의 직접 연결을 구현했다. 아래 68개 프로젝트 소유 C#은 각각 같은 상대 경로의 요약 문서와 대응한다. 실행 증거와 조작·밸런싱 안내는 [REPORT](../Reports/FATE_DICE_PROTOTYPE_REPORT.md), 고정 단계와 Finding 이력은 [PLAN](../Plans/FATE_DICE_PROTOTYPE_PLAN.md)에 있다.
+실제 로컬 플레이 루프, 저장/이어하기, 전용 Scene과 설정 SO의 직접 연결을 구현했다. 아래 86개 프로젝트 소유 C#은 각각 같은 상대 경로의 요약 문서와 대응한다. 실행 증거와 조작·밸런싱 안내는 [REPORT](../Reports/FATE_DICE_PROTOTYPE_REPORT.md), 고정 단계와 Finding 이력은 [PLAN](../Plans/FATE_DICE_PROTOTYPE_PLAN.md)에 있다.
 
 | 기능 / 스크립트 | 한국어 역할과 직접 관계 | 요약 |
 |---|---|---|
+| RA-C / RunRulesCatalog.cs | 순수 규칙 정의/조회/검증 및 런 규칙 복사 | [요약](Assets/_Project/Features/Fate/Domain/RunRulesCatalog.cs.md) |
+| RA-C / RulesCopy.cs | 정의의 모든 중첩 필드 명시 깊은 복제 | [요약](Assets/_Project/Features/Fate/Domain/RulesCopy.cs.md) |
+| RA-C / RunStateData.cs | Core/Runtime 어댑터의 공통 런 상태 필드 | [요약](Assets/_Project/Features/Run/Domain/RunStateData.cs.md) |
+| RA-C / CoreRunState.cs | 순수 Core 규칙/가변 런 상태 | [요약](Assets/_Project/Features/Run/Domain/CoreRunState.cs.md) |
+| RA-C / RunStateCopy.cs | 상태/기록/노드/카드의 명시 깊은 복제 | [요약](Assets/_Project/Features/Run/Domain/RunStateCopy.cs.md) |
+| RA-C / RunApplication.cs | 순수 상태 소유·직렬 명령·검증·체크포인트 확정 | [요약](Assets/_Project/Features/Run/Application/RunApplication.cs.md) |
+| RA-C / CoreBoundaryTests.cs | 실제 Core 참조 차단/복제/후보 소유권 검사 | [요약](Assets/_Project/Features/Run/Tests/EditMode/CoreBoundaryTests.cs.md) |
+| RA-C / CoreReplayTests.cs | 분리 전 273명령의 고정 전체 상태/복원 재연 | [요약](Assets/_Project/Features/Run/Tests/EditMode/CoreReplayTests.cs.md) |
+| RA-B / IRunStore.cs | 로컬 체크포인트 계약, 파일/실패 주입 저장소 | [요약](Assets/_Project/Features/Save/Runtime/IRunStore.cs.md) |
+| RA-B / RunCommandToken.cs | 표시 시점 runId/sequence로 오래된 명령 거절 | [요약](Assets/_Project/Features/Run/Application/RunCommandToken.cs.md) |
+| RA-B / RunStateValidator.cs | 세션 후보와 저장 경계가 공유하는 순수 상태 검증 | [요약](Assets/_Project/Features/Run/Domain/RunStateValidator.cs.md) |
+| RA-B Tests / RunBoundaryTests.cs | 깊은 상태 소유·실패 원자성·시간·재진입·ID/토큰 | [요약](Assets/_Project/Features/Run/Tests/EditMode/RunBoundaryTests.cs.md) |
+| RA-B Tests / RunBoundaryFlowTests.cs | 실제 UI 저장 후 오류 복구·재표시 및 전투 연출의 정확 위치/중단 복원 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/RunBoundaryFlowTests.cs.md) |
+| RA-A / ISeedSource.cs | 새 여정에만 시드 요청. Controller 소비, GameApplication 조립 | [요약](Assets/_Project/Features/Run/Runtime/ISeedSource.cs.md) |
+| RA-A / FixedSeedSource.cs | nonzero 고정 재연/작업실 공급자 | [요약](Assets/_Project/Features/Run/Runtime/FixedSeedSource.cs.md) |
+| RA-A / SystemSeedSource.cs | 일반 새 여정 OS 난수 시드, 게임 RNG 독립 | [요약](Assets/_Project/Features/Run/Runtime/SystemSeedSource.cs.md) |
+| RA-A Tests / SeedAndPresentationTests.cs | 시드/시간/구형 저장/동일 명령열의 규칙 보존 | [요약](Assets/_Project/Features/Run/Tests/EditMode/SeedAndPresentationTests.cs.md) |
+| RA-A Tests / SeedPresentationFlowTests.cs | 실제 UI 공급자 호출/재개/각 phase 시간과 0/재굴림 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/SeedPresentationFlowTests.cs.md) |
 | Fate / FateDiceConfig.cs | SO의 모든 규칙·콘텐츠·표시 설정을 검증하고 새 런 스냅샷을 제공. Screen·RunSession·저장 검사가 사용 | [요약](Assets/_Project/Features/Fate/Configs/FateDiceConfig.cs.md) |
 | Dice / DiceRules.cs | 단일 규칙 RNG, 가중 추첨, 6D6와 10패 판정. RunSession·카드 생성·저장 검사가 사용 | [요약](Assets/_Project/Features/Dice/Runtime/DiceRules.cs.md) |
-| Fate / FateCardRules.cs | 탐험·행동 카드 3장의 독립 등급과 콘텐츠 확정. RunSession이 호출, 전투 평가와 저장이 결과 사용 | [요약](Assets/_Project/Features/Fate/Runtime/FateCardRules.cs.md) |
+| Fate / FateCardRules.cs | 탐험·행동 카드 3장의 독립 등급과 콘텐츠 확정. RunApplication이 호출, 전투 평가와 저장이 결과 사용 | [요약](Assets/_Project/Features/Fate/Runtime/FateCardRules.cs.md) |
 | Run / RunState.cs | 런 전체 상태·설정 스냅샷·노드 ID·보상·최종 기록·저장 봉투 DTO. 모든 규칙과 저장이 공유 | [요약](Assets/_Project/Features/Run/Runtime/RunState.cs.md) |
-| Run / RunSession.cs | 명령별 상태 복제→규칙 적용→저장→확정. Screen의 행동을 Combat·Exploration·Growth에 전달 | [요약](Assets/_Project/Features/Run/Runtime/RunSession.cs.md) |
+| Run / RunSession.cs | 공개 API facade. Core RunApplication에 명령 위임, 표시·저장 DTO 조합 | [요약](Assets/_Project/Features/Run/Runtime/RunSession.cs.md) |
 | Combat / CombatRules.cs | 의도·행동의 실제 피해/보호량과 생존 순서. Growth의 스탯/태그 보정을 사용하며 Screen과 평가식 공유 | [요약](Assets/_Project/Features/Combat/Runtime/CombatRules.cs.md) |
 | Exploration / ExplorationRules.cs | 연결된 분기 노드와 2단계 앞길 생성·정리, 임계값 다음 보스 경로. RunSession이 진행시 호출 | [요약](Assets/_Project/Features/Exploration/Runtime/ExplorationRules.cs.md) |
 | Growth / GrowthRules.cs | XP/레벨·장비 교체·태그 조건·보상 자원. Combat과 Screen에 같은 파생 스탯 제공 | [요약](Assets/_Project/Features/Growth/Runtime/GrowthRules.cs.md) |
@@ -114,3 +132,11 @@ UI 구조 개선: [PLAN](../Plans/UI_STRUCTURE_PLAN.md), [REPORT](../Reports/UI_
 |---|---|---|
 | CombatFeedbackAuthoring.cs | 세 원본의 문구·결과 영역·피드백 참조를 버전 1로 작성 | [요약](Assets/_Project/Features/Run/Editor/CombatFeedbackAuthoring.cs.md) |
 | CombatFeedbackTests.cs | 실제 포인터·저장 oracle·피해/수호·시간·두 세로 비율·중단 복원 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/CombatFeedbackTests.cs.md) |
+
+## RA-D 효과·획득·상점 가격
+
+- [ActionEffects.cs](Assets/_Project/Features/Combat/Runtime/ActionEffects.cs.md): ActionEffectDefinition과 Damage/Block 명시 처리기, EffectResolver가 기존 태그·등급·반올림으로 계산해 합산한다. CombatRules.Evaluate/Resolve가 같은 평가를 사용한다. null/빈 effects는 구형 두 계수, 명시 배열이 권위이며 IsValid가 미지원/음수/비유한/전체0을 거절한다. 규칙 RNG/상태를 쓰지 않고 결과 ActionEffect만 반환한다.
+- [ShopRules.cs](Assets/_Project/Features/Shop/Domain/ShopRules.cs.md): ShopOffer(productId,price) 및 ShopRules가 저장된 기본가격×등급배율을 AwayFromZero로 정수화해 입장 snapshot을 만든다. RunApplication이 입장/구매/퇴장 수명을 소유하고 UI는 Offer의 가격으로 표시·가능 여부를 판정한다. LocalRunStore/RunApplication의 RestoreLegacy는 유효한 구형 상점만 당시 기본가격으로 복원한다. 최신 SO를 참조하지 않고 RNG를 쓰지 않는다.
+- [ContentExtensionTests.cs](Assets/_Project/Features/Run/Tests/EditMode/ContentExtensionTests.cs.md): RA-D 콘텐츠/효과/가격 계약 EditMode 검사. 독립 30피해·23수호, 명시효과 검증, 실제 보물획득→장비→Roll추첨→사용→디스크재개, 중복 소유/RNG, 등급별 정확가격/실패저장/구형JSON/복사 독립성을 검증한다. 격리 TEMP 저장만 사용하고 사용자 저장은 접근하지 않는다.
+- [DiceDistributionTests.cs](Assets/_Project/Features/Run/Tests/EditMode/DiceDistributionTests.cs.md): 독립 수학 분포와 실제 200만 RNG 표본 검증
+- [ContentExtensionFlowTests.cs](Assets/_Project/Features/Run/Tests/PlayMode/ContentExtensionFlowTests.cs.md): 실제 보상·장비·지도·굴림·카드·상점 버튼의 획득/피해/표시가격/결제/저장재개를 검증한다.

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -23,6 +23,7 @@ namespace FateDice.Tests
             yield return null;yield return null;
             screen=SceneManager.GetActiveScene().GetRootGameObjects().SelectMany(x=>x.GetComponentsInChildren<FateDiceScreen>()).Single();
             Assert.That(screen.enabled,Is.True);Assert.That(screen.Widgets,Is.Not.Null);
+            screen.Seed=33; // Reproducible fixture; ordinary journeys request a system seed.
             saveDirectory=Path.Combine(Path.GetTempPath(),"FateDiceGuiTests",System.Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(saveDirectory);screen.UseStore(new LocalRunStore(Path.Combine(saveDirectory,"run.json")));
         }
@@ -413,11 +414,13 @@ namespace FateDice.Tests
         {
             Press("new");yield return WaitUnlocked();Press("node-"+Session().State.availableNodeIds[0]);yield return WaitUnlocked();
             Press("roll");yield return WaitUnlocked();Press("fate-"+Session().State.cards[0].id);yield return WaitUnlocked();Press("roll");yield return WaitUnlocked();
-            var cards=Session().State.cards;
+            var prepared=Session().State;var cards=prepared.cards;
             cards[0].contentId="strike";cards[0].grade=Grade.Common;
             cards[1].contentId="strike";cards[1].grade=Grade.Epic;
             cards[2].contentId="guard";cards[2].grade=Grade.Rare;
-            Press("menu");yield return WaitUnlocked();Press("continue");yield return WaitUnlocked();
+            Press("menu");yield return WaitUnlocked();
+            screen.Store.Save(prepared);screen.UseStore(screen.Store);yield return null;
+            Press("continue");yield return WaitUnlocked();
             cards=Session().State.cards;
             var views=cards.Select(card=>screen.Widgets.Buttons["card-"+card.id].GetComponent<ActionCardView>()).ToArray();
             Assert.That(views.Select(x=>x.OriginalId),Is.EqualTo(new[]{"strike","strike","guard"}));
@@ -432,13 +435,13 @@ namespace FateDice.Tests
         [UnityTest] public IEnumerator ActualMergedPathFadesOnlyUnreachableNodesAndRestoresSavedHistory()
         {
             var data=screen.config.Snapshot();data.world.branchCount=2;data.world.previewDepth=1;data.fate.nodeWeights=new float[]{0,0,0,0,1};
-            var run=RunSession.New(data,33,"fireball",Grade.Common);
-            run.State.nodes=new System.Collections.Generic.List<NodeState>{
+            var prepared=RunSession.New(data,33,"fireball",Grade.Common).State;
+            prepared.nodes=new System.Collections.Generic.List<NodeState>{
                 new NodeState{id="A",type=NodeType.Rest,childIds=new System.Collections.Generic.List<string>{"C","D"}},
                 new NodeState{id="B",type=NodeType.Combat,childIds=new System.Collections.Generic.List<string>{"C","E"}},
                 new NodeState{id="C",type=NodeType.Shop},new NodeState{id="D",type=NodeType.Treasure},new NodeState{id="E",type=NodeType.Event}};
-            run.State.availableNodeIds=new System.Collections.Generic.List<string>{"A","B"};
-            screen.Store.Save(run.State);screen.UseStore(screen.Store);yield return null;yield return null;
+            prepared.availableNodeIds=new System.Collections.Generic.List<string>{"A","B"};
+            screen.Store.Save(prepared);screen.UseStore(screen.Store);yield return null;yield return null;
             Press("continue");yield return WaitUnlocked();
             var views=screen.Widgets.Body.GetComponentsInChildren<ExplorationNodeView>();
             var a=views.Single(x=>x.NodeId=="A");var b=views.Single(x=>x.NodeId=="B");var e=views.Single(x=>x.NodeId=="E");

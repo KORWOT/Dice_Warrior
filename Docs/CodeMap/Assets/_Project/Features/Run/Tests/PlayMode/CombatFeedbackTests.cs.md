@@ -1,4 +1,11 @@
 # CombatFeedbackTests.cs
+
+## RA-A 현재 계약 (2026-09-09)
+
+AuthoredFeedback 검사는 실제 DefaultFateDice SO의 두 phase 결과 유지 설정이 .8초 이상인지 요구한다. 기존 prefab의 미사용 legacy 필드 반사 검사를 실제 runtime 설정 경계로 이동했다. 나머지 면/텍스트/피드백/저장/중단 assertion 유지. 고정 Combat fixture도 두 RollPresentationSettings를 명시한다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
 - 역할: COMBAT_FEEDBACK의 실제 원본·표시·입력/저장 경계를 검사하는 PlayMode 테스트 14개.
 - 최소 RED: 실제 CombatUI/DiceRollUI 프리팹을 읽고 public actionFeedback/damageFeedback Text, hitFlash Image 연결 및 읽을 수 있는 결과 유지 시간을 검사한다. reflection을 사용해 새 필드가 없는 기존 코드도 컴파일한 뒤 명확한 assertion으로 실패한다.
 - 입력/출력: 실제 GameApplication prefab/config snapshot과 InGame Scene, 고유 Temp LocalRunStore를 Bootstrap 전에 주입한다. 소유 app을 폐기하고 자기 임시 폴더만 삭제한다. 사용자 기본 저장의 존재/bytes를 앞뒤 비교한다. 원본 SO/프리팹/씬·기본 저장에는 쓰지 않는다.
@@ -13,3 +20,7 @@
 - CFB-B01(수정 묶음1): 초기12개 실행은 11 PASS/1 FAIL이었다. 1600 높이의 닫힌 주사위 좌표를 Vector3 정확 동등으로 비교해 expected/actual이 둘 다 (-174.00,-93.00,0.00)인 상태에서 실패했다. baseline은 실제 Canvas 정리 후이며 비교는 rolling 재바인딩·CloseToCache 재부모화 후다. 720×1600의 비정수 Canvas 배율 아래 RectTransform 재계산의 비트 일치 대신 0.001 이하 거리와 G9 진단을 요구한다. 닫힌 뒤 기존 검사에 더해 결과가 보이는 동안에도 여섯 좌표가 복원되어야 한다. 값·hold·저장·회전·scale 검사는 유지한다.
 - CF-A01(수정 묶음1): 굴림 중 및 IsRolling=false인 결과 유지 중 두 시점에 Controller.enabled=false→true를 실행한다. 실제 Roll 직후 이미 확정한 RunSession/디스크 bytes를 대조하며, 재활성화 후 Busy=false/남은 popup 없음/CombatCards와 실제 제시 ID·raycast/상호작용 가능/Checkpoint1회를 요구한다. 재활성화가 RNG·상태·디스크를 변경하거나 이전 popup으로 카드를 가리는 회귀를 검사한다.
 - 검수 상태: 초기 authored 검사 실제 RED 1/1 실패(Missing authored feedback reference actionFeedback), 초기 확장12개 11 PASS/1 FAIL을 Main이 확인했다. 동일 작업 최초 검토 묶음의 CFB-B01/CF-A01만 수정 묶음1에 반영해 14개 통합 후 최종 전체 PlayMode 77/77 PASS(신규 14개 포함, 182.88초), EditMode 128/128 PASS(12.67초)를 확인했다. 실제 증거는 Docs/Reports/COMBAT_FEEDBACK_REPORT.md 및 artifacts/combat-feedback/play-final.json, edit-final.json에 있다. Editor 포인터 검사는 Android 기기/사용자 직접 클릭 증거를 대체하지 않는다.
+
+## RA-B 상태 소유권 호환 (2026-09-09)
+CombatSave는 HP/적HP/양쪽 보호막을 독립 ReadSnapshot에 설정한 뒤 new RunSession으로 구성한다. State 표시 복사에 직접 쓰지 않는다. 실제 피해량/피드백/시각/레이캐스트 oracle는 유지하며 RA-B-01 회귀와 실행 상태는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+

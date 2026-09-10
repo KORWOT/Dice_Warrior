@@ -4,7 +4,8 @@
   "references": [
     "Unity.ugui",
     "Unity.InputSystem",
-    "FateDice.SharedUI"
+    "FateDice.SharedUI",
+    "FateDice.Core"
   ],
   "autoReferenced": true
 }

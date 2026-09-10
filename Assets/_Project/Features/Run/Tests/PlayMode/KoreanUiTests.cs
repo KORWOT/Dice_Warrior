@@ -183,6 +183,7 @@ namespace FateDice.Tests
             yield return Unlocked();
             Assert.That(File.ReadAllText(Directory.GetFiles(directory, "*.bak").Single()), Is.EqualTo("legacy damaged save evidence"));
             yield return Press("cap-Common");
+            Controller.Seed = 33; // Preserve this fixture's expected first combat path.
             yield return Press("new");
             yield return WaitScene(GameSceneRole.InGame);
             Assert.That(Controller.UI.ActiveScreen, Is.TypeOf<ExplorationUI>());
@@ -316,7 +317,7 @@ namespace FateDice.Tests
             const string customPlayer = "Mira";
             var names = new Dictionary<string, string> {
                 { "strike", "Strike / 사용자 검" }, { "guard", "Azure Ward" },
-                { "heavy", "Titan Cut" }, { "fireball", "Nova Arc" }, { "bastion", "Custom Bastion" }
+                { "heavy", "Titan Cut" }, { "fireball", "Nova Arc" }, { "bastion", "Custom Bastion" }, { "ember_slash", "Ember Cut / 사용자 잔불" }
             };
             var combat = Encounter(NodeType.Combat, config =>
             {

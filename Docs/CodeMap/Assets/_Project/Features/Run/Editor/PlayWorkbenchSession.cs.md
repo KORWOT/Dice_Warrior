@@ -1,5 +1,12 @@
 # PlayWorkbenchSession.cs
 
+## RA-A 현재 계약 (2026-09-09)
+
+BootstrapPending이 FixedSeedSource(request.seed)를 GameApplication에 명시 주입한다. 기존 seed 0 오류, Build의 직접 RunSession.New 고정 재연, 격리 저장/BeforeSceneLoad/원래 씬 복원은 유지한다. 일반 게임의 SystemSeedSource 선택과 분리한다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
+
 - COMBAT_FEEDBACK 변경: 등록되지 않은 출전 카드의 오류 메시지를 와일드 카드로 정정한다. trialId 필드·허용 목록·검증 조건·격리 저장 및 수명 계약은 변경하지 않는다. 실행 증거는 Docs/Reports/COMBAT_FEEDBACK_REPORT.md를 따른다.
 
 - 역할: Editor 전용 시작 옵션과 실제 RunSession 명령으로 만든 시작 상황, 한 번만 소비하는 격리 Play 요청을 소유한다. 제작 GameApplication/SceneEntry의 기본 초기화 코드는 수정하지 않는다.

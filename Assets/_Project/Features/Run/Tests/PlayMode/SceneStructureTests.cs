@@ -232,7 +232,7 @@ namespace FateDice.Tests
         }
         [UnityTest] public IEnumerator ProductionJourneyUsesRealViewsThroughResultAndReturnsToLobby()
         {
-            Bootstrap(); yield return Load("Lobby"); Press("new"); yield return WaitScene("InGame");
+            Bootstrap(); Controller.Seed = 33; yield return Load("Lobby"); Press("new"); yield return WaitScene("InGame");
             var steps = 0; var combatSeen = false; var rewardSeen = false; var equipmentSeen = false;
             while (Controller.Session.State.phase != RunPhase.Result)
             {

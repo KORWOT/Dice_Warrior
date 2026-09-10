@@ -228,8 +228,7 @@ namespace FateDice.Editor
                 var store = new LocalRunStore(request.storePath);
                 store.Load();
                 var prefab = AssetDatabase.LoadAssetAtPath<GameApplication>(request.applicationPath);
-                var app = GameApplication.Bootstrap(prefab, store);
-                app.controller.Seed = request.seed;
+                var app = GameApplication.Bootstrap(prefab, store, new FixedSeedSource(request.seed));
                 // Existing menu selections update only UI settings; they do not save, roll or change scenes.
                 var menu = app.controller.UI.ActiveScreen as MenuUI;
                 if (!menu || !menu.settingsTab || !menu.characterTab)

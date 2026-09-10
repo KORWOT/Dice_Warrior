@@ -1,4 +1,16 @@
-# FateDiceGuiTests.cs
+﻿# FateDiceGuiTests.cs
+
+## RA-B 상태 경계 fixture 전환 (2026-09-09)
+
+세션의 State는 독립 표시 복사다. 준비 상태를 지역 RunState DTO에 구성한 뒤 새 RunSession 또는 격리 저장소에 전달한다. 규칙 기대값과 기존 버튼/저장/재연 assertion은 유지한다. 잘못된 저장 검사는 동일한 수정 DTO를 LocalRunStore.Save에 전달한다. 실제 실행 증거는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
+
+## RA-A 현재 계약 (2026-09-09)
+
+LoadProductScene에서 Seed=33을 명시 주입한다. 일반 새 여정이 시스템 시드로 바뀐 뒤에도 기존 완주·보상·승리 재연의 독립 기대값을 보존한다. 기존 모든 버튼/레이캐스트/저장 assertion은 유지한다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
 - 책임: 실제제품Scene에서실제uGUI포인터/레이캐스트로플레이·저장·화면비를검증하는PlayMode8건.
 - LoadProductScene은720x1280설정/전용Scene로드/명시루트에서테스트대상확인/Guid별Temp저장주입. TearDown은소유Screen파괴후자체임시저장폴더정리. 제품기본저장을쓰지않는다.
 - Press는Busy/개별비활성거부→EnsureVisible본문스크롤→SafeArea/터치높이검사→GraphicRaycaster로클릭대상확인→pointerDown/up/click. 화면밖버튼을직접성공시키는검증이아니다.

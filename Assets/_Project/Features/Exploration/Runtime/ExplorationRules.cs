@@ -5,14 +5,14 @@ namespace FateDice
 {
     public static class ExplorationRules
     {
-        public static void Initialize(RunState state)
+        public static void Initialize(RunStateData state)
         {
             state.nodes.Clear();state.availableNodeIds.Clear();
             state.nodeHistory = new List<NodeState>();
-            for(var i=0;i<state.config.world.branchCount;i++)state.availableNodeIds.Add(CreateNode(state,false).id);
+            for(var i=0;i<state.Rules.world.branchCount;i++)state.availableNodeIds.Add(CreateNode(state,false).id);
             FillPreview(state);state.phase=RunPhase.Map;
         }
-        public static void PruneTo(RunState state,IEnumerable<string> roots)
+        public static void PruneTo(RunStateData state,IEnumerable<string> roots)
         {
             var keep=new HashSet<string>();var pending=new Stack<string>(roots);
             while(pending.Count>0)
@@ -25,12 +25,12 @@ namespace FateDice
             state.nodeHistory.AddRange(state.nodes.Where(x=>!keep.Contains(x.id)));
             state.nodes.RemoveAll(x=>!keep.Contains(x.id));
         }
-        public static void Advance(RunState state)
+        public static void Advance(RunStateData state)
         {
             state.availableNodeIds=new List<string>(state.selectedNode.childIds);
-            var boss=state.eventsResolved>=state.config.world.eventsToBoss;
+            var boss=state.eventsResolved>=state.Rules.world.eventsToBoss;
             if(state.availableNodeIds.Count==0)
-                for(var i=0;i<state.config.world.branchCount;i++)state.availableNodeIds.Add(CreateNode(state,boss).id);
+                for(var i=0;i<state.Rules.world.branchCount;i++)state.availableNodeIds.Add(CreateNode(state,boss).id);
             PruneTo(state,state.availableNodeIds);
             state.selectedNode=null;
             if(boss)
@@ -41,22 +41,22 @@ namespace FateDice
             else FillPreview(state);
             state.phase=RunPhase.Map;
         }
-        private static NodeState CreateNode(RunState state,bool boss)
+        private static NodeState CreateNode(RunStateData state,bool boss)
         {
             var node=new NodeState{id=state.runId+":node:"+(state.nextNodeId++),
-                type=boss?NodeType.Boss:(NodeType)DiceRules.WeightedIndex(state.config.fate.nodeWeights,ref state.rngState)};
+                type=boss?NodeType.Boss:(NodeType)DiceRules.WeightedIndex(state.Rules.fate.nodeWeights,ref state.rngState)};
             state.nodes.Add(node);return node;
         }
-        private static void FillPreview(RunState state)
+        private static void FillPreview(RunStateData state)
         {
-            foreach(var root in state.availableNodeIds.ToArray())Fill(state,root,state.config.world.previewDepth);
+            foreach(var root in state.availableNodeIds.ToArray())Fill(state,root,state.Rules.world.previewDepth);
         }
-        private static void Fill(RunState state,string id,int depth)
+        private static void Fill(RunStateData state,string id,int depth)
         {
             if(depth<=1)return;
             var node=state.nodes.Single(x=>x.id==id);
             if(node.childIds.Count==0)
-                for(var i=0;i<state.config.world.branchCount;i++)node.childIds.Add(CreateNode(state,false).id);
+                for(var i=0;i<state.Rules.world.branchCount;i++)node.childIds.Add(CreateNode(state,false).id);
             foreach(var child in node.childIds.ToArray())Fill(state,child,depth-1);
         }
     }

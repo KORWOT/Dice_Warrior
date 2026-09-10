@@ -1,4 +1,18 @@
 # GameApplication.cs
+
+## RA-B 현재 계약 (2026-09-09)
+
+Bootstrap의 저장 인자를 IRunStore로 일반화하여 파일/실패 주입 어댑터를 같은 조립 경계로 전달한다. 기본 구현 LocalRunStore와 경로, 기존 앱의 다른 저장소/시드 공급자 거절, inactive 조립→지속 수명은 유지한다. Controller가 직접 파일 구현에 의존하지 않게 연결한다.
+
+실행 상태는 Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md를 따른다. 기존 기록은 이번 실행 증거를 대신하지 않는다.
+
+
+## RA-A 현재 계약 (2026-09-09)
+
+Bootstrap(prefab, store, seedSource)의 마지막 선택 인자로 ISeedSource를 Controller.Initialize에 전달한다. 이미 살아 있는 앱에 다른 store 또는 명시 공급자를 주입하면 거절한다. 새 전역 서비스 없음. 기존 inactive 조립→DontDestroyOnLoad→활성 수명과 SceneEntry 조립 진입을 유지한다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
 - 역할: 제작용 씬 전체에서 RunUIController/SceneFlowController/UIRoot/세션 수명을 소유하는 명시적 앱 루트.
 - 입력: inactive authored GameApplication prefab, optional LocalRunStore. 기본 경로는 persistentDataPath/FateDiceLocal/run.json.
 - 동작: 자기 루트 참조 검증 → inactive Instantiate → flow.Initialize(controller) → controller.Initialize(store,flow) → DontDestroyOnLoad → 활성화. 초기화 전에 저장소를 주입하며 로드 자체는 저장하지 않는다.

@@ -7,7 +7,7 @@ namespace FateDice
     /// <summary>Generates resolved, stable-ID offers. Presentation owns what is revealed.</summary>
     public static class FateCardRules
     {
-        public static Grade DrawGrade(GameConfigData config, int power, bool combat, Grade cap, ref uint state)
+        public static Grade DrawGrade(RunRulesCatalog config, int power, bool combat, Grade cap, ref uint state)
         {
             if (config == null || config.dice == null || config.fate == null)
                 throw new ArgumentException("Missing fate configuration.", nameof(config));
@@ -39,16 +39,16 @@ namespace FateDice
             return (Grade)DiceRules.WeightedIndex(weights, ref state);
         }
 
-        public static List<OfferedCard> GenerateExploration(RunState state)
+        public static List<OfferedCard> GenerateExploration(RunStateData state)
         {
             CheckState(state);
             if (state.selectedNode == null || (int)state.selectedNode.type < 0 || (int)state.selectedNode.type >= 5)
                 throw new InvalidOperationException("Exploration cards require a selected normal node.");
-            if (state.config.world.events == null) throw new InvalidOperationException("Exploration content is missing.");
-            var sourceWeights = state.config.fate.nodeWeights;
+            if (state.Rules.world.events == null) throw new InvalidOperationException("Exploration content is missing.");
+            var sourceWeights = state.Rules.fate.nodeWeights;
             if (sourceWeights == null || sourceWeights.Length != 5)
                 throw new InvalidOperationException("Five normal node type weights are required.");
-            float bias = state.config.fate.selectedTypeBias;
+            float bias = state.Rules.fate.selectedTypeBias;
             if (float.IsNaN(bias) || float.IsInfinity(bias) || bias < 0)
                 throw new ArgumentException("Selected node bias must be finite and nonnegative.", nameof(state));
             // Finite relative weights may overflow float when multiplied by a finite bias.
@@ -65,13 +65,13 @@ namespace FateDice
             if (largest <= 0) throw new ArgumentException("Biased node weight sum must be positive.", nameof(state));
             var weights = mass.Select(weight => (float)(weight / largest)).ToArray();
             uint rng = state.rngState;
-            var result = new List<OfferedCard>(state.config.world.offeredCards);
-            for (int slot = 0; slot < state.config.world.offeredCards; slot++)
+            var result = new List<OfferedCard>(state.Rules.world.offeredCards);
+            for (int slot = 0; slot < state.Rules.world.offeredCards; slot++)
             {
                 // Only this type slot is guaranteed; each slot has its own grade and content samples.
                 var type = slot == 0 ? state.selectedNode.type : (NodeType)DiceRules.WeightedIndex(weights, ref rng);
-                Grade grade = DrawGrade(state.config, state.fatePower, false, state.explorationCap, ref rng);
-                var pool = state.config.world.events.Where(x => x != null && x.type == type && x.grade == grade).ToArray();
+                Grade grade = DrawGrade(state.Rules, state.fatePower, false, state.explorationCap, ref rng);
+                var pool = state.Rules.world.events.Where(x => x != null && x.type == type && x.grade == grade).ToArray();
                 if (pool.Length == 0) throw new InvalidOperationException("Missing exploration pool: " + type + "/" + grade + ".");
                 var content = pool[UniformIndex(pool.Length, ref rng)];
                 result.Add(Offer(state, slot, type, grade, content.id));
@@ -80,18 +80,18 @@ namespace FateDice
             return result;
         }
 
-        public static List<OfferedCard> GenerateActions(RunState state)
+        public static List<OfferedCard> GenerateActions(RunStateData state)
         {
             CheckState(state);
             if (state.actionIds == null || state.actionIds.Count == 0)
                 throw new InvalidOperationException("The run must own at least one action.");
             // Ownership is a set of stable IDs, so choosing an already-owned trial card cannot add draw bias.
-            var owned = state.actionIds.Distinct().Select(state.config.Action).ToArray();
+            var owned = state.actionIds.Distinct().Select(state.Rules.Action).ToArray();
             uint rng = state.rngState;
-            var result = new List<OfferedCard>(state.config.world.offeredCards);
-            for (int slot = 0; slot < state.config.world.offeredCards; slot++)
+            var result = new List<OfferedCard>(state.Rules.world.offeredCards);
+            for (int slot = 0; slot < state.Rules.world.offeredCards; slot++)
             {
-                Grade grade = DrawGrade(state.config, state.fatePower, true, state.explorationCap, ref rng);
+                Grade grade = DrawGrade(state.Rules, state.fatePower, true, state.explorationCap, ref rng);
                 var exact = owned.Where(x => x.grade == grade).ToArray();
                 var pool = exact.Length > 0 ? exact : owned;
                 var action = pool[UniformIndex(pool.Length, ref rng)];
@@ -109,14 +109,14 @@ namespace FateDice
             return DiceRules.WeightedIndex(weights, ref state);
         }
 
-        static OfferedCard Offer(RunState state, int slot, NodeType type, Grade grade, string contentId) =>
+        static OfferedCard Offer(RunStateData state, int slot, NodeType type, Grade grade, string contentId) =>
             new OfferedCard { id = state.runId + ":card:" + state.sequence + ":" + slot, type = type, grade = grade, contentId = contentId };
 
-        static void CheckState(RunState state)
+        static void CheckState(RunStateData state)
         {
-            if (state == null || state.config == null || state.config.world == null || state.config.fate == null)
+            if (state == null || state.Rules == null || state.Rules.world == null || state.Rules.fate == null)
                 throw new ArgumentException("Card generation requires a configured run.", nameof(state));
-            if (state.config.world.offeredCards < 1 || state.config.world.offeredCards > 5)
+            if (state.Rules.world.offeredCards < 1 || state.Rules.world.offeredCards > 5)
                 throw new ArgumentException("The configured card count must be 1..5.", nameof(state));
         }
     }

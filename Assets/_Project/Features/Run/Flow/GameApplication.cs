@@ -11,12 +11,14 @@ namespace FateDice
         static GameApplication current;
         public static GameApplication Current => current ? current : null;
 
-        public static GameApplication Bootstrap(GameApplication prefab, LocalRunStore store = null)
+        public static GameApplication Bootstrap(GameApplication prefab, IRunStore store = null, ISeedSource seedSource = null)
         {
             if (current)
             {
                 if (store != null && !ReferenceEquals(store, current.controller.Store))
                     throw new InvalidOperationException("The running application already owns a different save store.");
+                if (seedSource != null && !ReferenceEquals(seedSource, current.controller.SeedSource))
+                    throw new InvalidOperationException("The running application already owns a different seed source.");
                 return current;
             }
             if (!prefab) throw new ArgumentNullException(nameof(prefab));
@@ -34,7 +36,7 @@ namespace FateDice
                 // Inject all dependencies before activating any controller, UI or EventSystem.
                 instance.sceneFlow.Initialize(instance.controller);
                 instance.controller.Initialize(store ?? new LocalRunStore(Path.Combine(
-                    Application.persistentDataPath, "FateDiceLocal", "run.json")), instance.sceneFlow);
+                    Application.persistentDataPath, "FateDiceLocal", "run.json")), instance.sceneFlow, seedSource);
                 DontDestroyOnLoad(instance.gameObject);
                 current = instance;
                 instance.gameObject.SetActive(true);

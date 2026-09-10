@@ -47,7 +47,9 @@ namespace FateDice.Editor
                         Action("guard","Guard",Grade.Common,0,1.5f,"defense"),
                         Action("heavy","Heavy strike",Grade.Uncommon,1.8f,0,"attack","physical"),
                         Action("fireball","Fireball",Grade.Rare,2.3f,0,"attack","fire","magic","projectile"),
-                        Action("bastion","Bastion",Grade.Rare,0,2.5f,"defense","magic")
+                        Action("bastion","Bastion",Grade.Rare,0,2.5f,"defense","magic"),
+                        new ActionDefinition{id="ember_slash",label="잔불 베기",grade=Grade.Uncommon,tags=new[]{"attack","fire","physical"},
+                            effects=new[]{new ActionEffectDefinition{kind=ActionEffectKind.Damage,coefficient=1.6f}}}
                     },
                     enemies = new[]{
                         Enemy("road_bandit","Road bandit",26,6,5, new[]{55f,25f,20f}),
@@ -72,6 +74,7 @@ namespace FateDice.Editor
                     eventsToBoss=10,offeredCards=3,previewDepth=2,branchCount=3,
                     bossReward = new RewardDefinition {gold=50,xp=30},
                     restTraining = new RewardDefinition {xp=12,rerollCharges=1},
+                    shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f},
                     shop = new[]{
                         new ShopProduct{id="potion",label="Healing draught",price=10,reward=new RewardDefinition{health=25}},
                         new ShopProduct{id="reroll",label="Reroll training + 3 charges",price=12,reward=new RewardDefinition{rerollCharges=3}},
@@ -81,7 +84,9 @@ namespace FateDice.Editor
                 },
                 presentation = new PresentationSettings
                 {
-                    actionSeconds=.18f,rollSeconds=.35f,referenceResolution=new Vector2(720,1280),
+                    actionSeconds=.18f,rollSeconds=.35f,
+                    explorationDice=new RollPresentationSettings(),combatDice=new RollPresentationSettings(),
+                    referenceResolution=new Vector2(720,1280),
                     bodyFontSize=25,titleFontSize=38,buttonHeight=102,
                     background=new Color(.035f,.047f,.075f),panel=new Color(.09f,.12f,.18f),
                     accent=new Color(.34f,.84f,.72f),text=new Color(.92f,.94f,.97f),danger=new Color(.96f,.39f,.39f),
@@ -104,6 +109,7 @@ namespace FateDice.Editor
                 return new EventDefinition{id=((NodeType)type).ToString().ToLowerInvariant()+"_"+grade,label=name,description=description,type=(NodeType)type,grade=(Grade)grade,
                     enemyId=type==0?(grade>=2?"stone_sentry":"road_bandit"):"",reward=reward};
             })).ToArray();
+            data.world.events.Single(x=>x.id=="treasure_0").reward.addActionId="ember_slash";
             return data;
         }
 

@@ -9,7 +9,7 @@ namespace FateDice
         public Text title, detail, result;
         public DiceFaceView[] dice;
         public CommonButtonView rollButton;
-        [Range(0, 3)] public float resultHoldSeconds = .9f;
+        [HideInInspector] public float resultHoldSeconds = .9f; // Legacy prefab data; timing now comes from presentation settings.
         public int feedbackVersion;
         public bool IsRolling { get; private set; }
         float began;
@@ -23,6 +23,8 @@ namespace FateDice
                 throw new InvalidOperationException("DiceRollUI requires six authored dice and its text/button references.");
             if (data.values != null && data.values.Length != 6)
                 throw new ArgumentException("A dice presentation requires exactly six results.");
+            if (float.IsNaN(data.duration) || float.IsInfinity(data.duration) || data.duration < 0)
+                throw new ArgumentOutOfRangeException(nameof(data.duration));
             title.text = data.title ?? "주사위 굴리기";
             detail.text = data.detail ?? "";
             result.text = data.rolling ? "굴리는 중…" : data.result ?? "";
@@ -45,6 +47,7 @@ namespace FateDice
             }
             IsRolling = data.rolling;
             began = Time.unscaledTime;
+            if (IsRolling && data.duration == 0) CompleteRoll();
         }
 
         void Update()
@@ -56,7 +59,7 @@ namespace FateDice
                 if (remaining <= 0) resultRevealedAt = -1;
             }
             if (!IsRolling || Data == null) return;
-            var progress = Mathf.Clamp01((Time.unscaledTime - began) / Mathf.Max(.01f, Data.duration));
+            var progress = Data.duration == 0 ? 1 : Mathf.Clamp01((Time.unscaledTime - began) / Data.duration);
             if (progress >= 1)
             {
                 FinishFaces();
@@ -70,6 +73,11 @@ namespace FateDice
                 dice[i].rectTransform.localRotation = Quaternion.Euler(0, 0, Mathf.Sin(progress * 29 + i) * 24 * decay);
                 dice[i].rectTransform.localPosition = positions[i] + Vector3.up * Mathf.Abs(Mathf.Sin(progress * 19 + i)) * 18 * decay;
             }
+        }
+
+        public void CompleteRoll()
+        {
+            if (IsRolling && Data != null) FinishFaces();
         }
 
         void FinishFaces()

@@ -1,4 +1,11 @@
 # KoreanUiTests.cs
+
+## RA-A 현재 계약 (2026-09-09)
+
+한국어 Title/Lobby 흐름의 새 여정에 Seed=33을 명시하여 기존 Combat 첫 노드/첫 운명카드 기대를 보존한다. 로컬 저장·한국어 glyph·레이캐스트·상태 불변 검사는 유지한다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
 - 역할: 실제 제작 GameApplication/Title/Lobby/InGame과 기존 영어 저장 파일에서 한국어 표시·폰트·입력·상태 불변을 검증하는 PlayMode 통합 테스트6개다.
 - 입력/출력: 실제 GameApplication prefab/config snapshot, 임시 LocalRunStore, 720x1280/720x1600 Game View. NUnit/UnityTest assertions로 결과를 보고한다.
 - 핵심 검사: 모든 화면/반복 원본 Text의 Pretendard 참조와 includeFontData/dynamic; 실제 한글 glyph 생성/advance; 활성 기본 문구의 영문 잔존과 보이는 Text 높이; Title/Lobby/탐험 포인터·손상 저장·이동 오류; legacy Combat의 카드 ID/실제 효과·재바인딩; 사건/상점/휴식/보물/보상/장비; 승리·패배/lastResult; 사용자 영문·혼합 문구 보존.
@@ -14,3 +21,4 @@
 - 한국어 텍스트/폰트/보이는 mesh·높이/legacy content/custom passthrough/전체 상태·디스크 bytes 검증은 유지한다.
 
 - 이번 변경 검수 상태: 최종 실행 증거는 Docs/Reports/LOBBY_MAP_DICE_REPORT.md를 참조한다.
+- RA-D-01 수정1: 사용자명 원문보존 fixture의 고정 ID dictionary에 신규 ember_slash의 Ember Cut / 사용자 잔불을 추가한다. 기존 5개 이름·모든 표시/상태/디스크 assertion을 유지하며 신규 실제 정의 6개를 순회해도 누락 ID 예외가 없어야 한다. 실제 검증은 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.

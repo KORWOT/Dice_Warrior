@@ -1,5 +1,12 @@
 # UIWorkbenchPreview.cs
 
+## RA-A 현재 계약 (2026-09-09)
+
+OpenDice의 duration은 state.config.presentation.DiceTiming(combat).rollSeconds를 사용한다. runtime과 같은 탐험/전투 표시 설정 선택이며 숨은 .65 최소값 없음. 정지 미리보기는 rolling=false이고 RNG/저장/게임 명령 없음.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
+
 - COMBAT_FEEDBACK 변경: 로비 안내의 시련 카드를 와일드 카드로 수정했다. Hand(state)는 KoreanText.HandSummary를 사용하고 주사위 popup은 multiline=true의 두 줄 조합 단계/운명력을 표시한다. 전투 handLabel은 폭이 제한된 HUD용 HandStage를 사용하고 운명력은 기존 별도 표시를 유지한다. 이미 확정된 예시 상태만 읽고 새 추첨·저장을 추가하지 않는다. 실제 실행 증거는 Docs/Reports/COMBAT_FEEDBACK_REPORT.md를 따른다.
 
 - 역할: 정지한 Editor에서 실제 UIRoot와 선택한 화면 원본을 복제해 한 번 표시하는 폐기용 PreviewSceneStage다. 미리보기 편집은 저장하지 않으며 원본 Prefab Stage 편집과 분리한다.
@@ -25,3 +32,6 @@
 - 직접 관계 추가: CampaignMapView/ExplorationUI, DiceRollUI/DiceRollUIData. 이번 변경 실행 증거는 Docs/Reports/LOBBY_MAP_DICE_REPORT.md를 참조한다.
 
 - 이번 변경 검수 상태: 최종 실행 증거는 Docs/Reports/LOBBY_MAP_DICE_REPORT.md를 참조한다.
+
+## RA-C 직접 관계
+기존 GameConfigData와 PresentationSettings 표시 API 유지. GameConfigData.DeepCopy는 규칙/표시를 각각 명시 복사하며 Core에 표시 타입이 들어가지 않는다.

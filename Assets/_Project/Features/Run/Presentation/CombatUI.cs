@@ -25,6 +25,7 @@ namespace FateDice
         public int feedbackVersion;
         public bool IsFeedbackPlaying { get; private set; }
         Vector2 restingArena;
+        Vector3 restingArenaLocalPosition;
         Vector3 restingDamageScale;
         Vector2 restingDamagePosition;
         Color restingDamageColor, restingActionColor;
@@ -121,6 +122,8 @@ namespace FateDice
             if (!actionFeedback || !damageFeedback || !hitFlash || !arena)
                 throw new InvalidOperationException("Combat feedback requires its authored texts, flash and arena.");
             ResetFeedback();
+            // anchoredPosition can resolve a pending RectTransform layout. Preserve local first.
+            restingArenaLocalPosition = arena.localPosition;
             restingArena = arena.anchoredPosition;
             restingDamageScale = damageFeedback.rectTransform.localScale;
             restingDamagePosition = damageFeedback.rectTransform.anchoredPosition;
@@ -170,7 +173,7 @@ namespace FateDice
                 damageFeedback.rectTransform.anchoredPosition = restingDamagePosition + Vector2.up * 12 * t;
                 yield return null;
             }
-            arena.anchoredPosition = restingArena;
+            arena.localPosition = restingArenaLocalPosition;
             hitFlash.color = Color.clear;
             damageFeedback.rectTransform.localScale = restingDamageScale;
             damageFeedback.rectTransform.anchoredPosition = restingDamagePosition;
@@ -179,7 +182,7 @@ namespace FateDice
         {
             if (IsFeedbackPlaying)
             {
-                if (arena) arena.anchoredPosition = restingArena;
+                if (arena) arena.localPosition = restingArenaLocalPosition;
                 if (damageFeedback)
                 {
                     damageFeedback.rectTransform.localScale = restingDamageScale;

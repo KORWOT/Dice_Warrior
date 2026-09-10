@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FateDice
 {
-    /// <summary>Pure rules with one caller-owned xorshift32 stream. No UnityEngine.Random or global state.</summary>
+    /// <summary>Pure rules with one caller-owned xorshift32 stream. No global random state.</summary>
     public static class DiceRules
     {
         public static uint Next(ref uint state)
@@ -48,7 +48,7 @@ namespace FateDice
             return total;
         }
 
-        public static int[] Roll(GameConfigData config, string[] dieIds, ref uint state)
+        public static int[] Roll(RunRulesCatalog config, string[] dieIds, ref uint state)
         {
             if (config == null || config.dice == null) throw new ArgumentException("Missing dice configuration.", nameof(config));
             if (dieIds == null || dieIds.Length != 6) throw new ArgumentException("A roll requires six owned dice.", nameof(dieIds));

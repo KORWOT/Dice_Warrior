@@ -162,7 +162,7 @@ namespace FateDice.Editor
                     detail = state.dice == null ? "노드에 도착했습니다.\n굴리기를 눌러 운명을 확인하세요." : "고정된 실제 결과 미리보기",
                     values = state.dice == null ? null : (int[])state.dice.Clone(),
                     result = KoreanText.HandSummary(state, true),
-                    rolling = false, duration = Mathf.Max(.65f, state.config.presentation.rollSeconds),
+                    rolling = false, duration = state.config.presentation.DiceTiming(combat).rollSeconds,
                     roll = Choice("roll", "주사위 6개 굴리기"),
                     appearance = context.visuals.ResolveButton(ButtonPurpose.Primary)
                 });

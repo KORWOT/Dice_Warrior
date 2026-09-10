@@ -1,5 +1,12 @@
 # DiceRules.cs
 
+## RA-C 현재 경계 (2026-09-09)
+
+Roll의 설정 인자가 RunRulesCatalog로 변경되고 Core asmref에 소속된다. 게임 난수·가중치·패 판정의 계산식, 입력검사, 소비 순서는 그대로다. RunApplication/FateCardRules/CombatRules/ExplorationRules와 기존 테스트가 호출한다. 정의 타입은 Fate/Domain/RunRulesCatalog.cs, 상태 난수의 소유는 호출자에게 있다.
+
+기존 수식/행동 보존 및 Core 컴파일/전체 패·명령 재연은 ROGUELIKE_ARCHITECTURE_REPORT의 새 실행 증거를 따른다. 아래 기존 단계 증거를 RA-C PASS로 재사용하지 않는다.
+
+
 - 원본: `Assets/_Project/Features/Dice/Runtime/DiceRules.cs`
 - 기능/어셈블리: Dice / FateDice.Runtime
 - Task: FATE_DICE_PROTOTYPE M1

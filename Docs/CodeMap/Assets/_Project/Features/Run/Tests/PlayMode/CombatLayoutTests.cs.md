@@ -1,4 +1,9 @@
-# CombatLayoutTests.cs
+﻿# CombatLayoutTests.cs
+
+## RA-B 상태 경계 fixture 전환 (2026-09-09)
+
+세션의 State는 독립 표시 복사다. 준비 상태를 지역 RunState DTO에 구성한 뒤 새 RunSession 또는 격리 저장소에 전달한다. 규칙 기대값과 기존 버튼/저장/재연 assertion은 유지한다. 잘못된 저장 검사는 동일한 수정 DTO를 LocalRunStore.Save에 전달한다. 실제 실행 증거는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
 - 역할: 실제 GameApplication.prefab/InGame.unity/CombatUI를 사용하는 전투 통합 PlayMode5개.
 - 입력: 실제 config Snapshot/RunSession Seed33 경로로 공개 전투를 만들고 고유 Temp LocalRunStore를 Bootstrap 전에 주입한다. fractional HP/shield/earned paid reroll/offeredCards=5는 저장 검증을 통과하는 격리 fixture다. 기본 사용자 저장/SO를 바꾸지 않는다.
 - 검사: authored header/arena/가로 Grid/ScrollRect/장식 renderer·raycast;720x1280/720x1600 실제 HPfill/예고/누적턴, arena 공간, 주사위6/카드3 동시표시·48px·안전영역·실제 raycast roll/menu.

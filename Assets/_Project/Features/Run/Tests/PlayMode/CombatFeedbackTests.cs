@@ -68,11 +68,13 @@ namespace FateDice.Tests
             AssertPublicReference<Text>(combat, "actionFeedback");
             AssertPublicReference<Text>(combat, "damageFeedback");
             AssertPublicReference<Image>(combat, "hitFlash");
-            var hold = typeof(DiceRollUI).GetField("resultHoldSeconds");
-            Assert.That(hold, Is.Not.Null, "The result presentation needs an authored resultHoldSeconds duration.");
-            Assert.That(hold.FieldType, Is.EqualTo(typeof(float)));
-            Assert.That((float)hold.GetValue(dice), Is.GreaterThanOrEqualTo(.8f),
-                "The six final faces and their combination must remain readable before the popup closes.");
+            var config = UnityEditor.AssetDatabase.LoadAssetAtPath<FateDiceConfig>(FateDiceConfig.DefaultAssetPath);
+            Assert.That(config, Is.Not.Null);
+            Assert.That(config.data.presentation.explorationDice, Is.Not.Null);
+            Assert.That(config.data.presentation.combatDice, Is.Not.Null);
+            foreach (bool inCombat in new[] { false, true })
+                Assert.That(config.data.presentation.DiceTiming(inCombat).resultHoldSeconds, Is.GreaterThanOrEqualTo(.8f),
+                    "The authored default keeps the six final faces and combination readable in both phases.");
 #else
             Assert.Fail("Authored prefab integration tests run in the Editor.");
 #endif
@@ -444,7 +446,8 @@ namespace FateDice.Tests
             config.growth.startingPower = 10;
             config.growth.startingGuard = 6;
             config.presentation.actionSeconds = .22f;
-            config.presentation.rollSeconds = .65f;
+            config.presentation.explorationDice = new RollPresentationSettings();
+            config.presentation.combatDice = new RollPresentationSettings();
             foreach (var action in config.combat.actions)
             {
                 action.label = "시험 타격";
@@ -466,10 +469,12 @@ namespace FateDice.Tests
             Assert.That(run.ChooseNode(run.State.availableNodeIds[0]) && run.Roll(), Is.True);
             Assert.That(run.ChooseFate(run.State.cards[0].id), Is.True);
             Assert.That(run.State.phase, Is.EqualTo(RunPhase.CombatRoll));
-            run.State.hp = outcome == Outcome.Defeat ? 4 : 30;
-            run.State.enemyHp = outcome == Outcome.Kill ? 3 : 20;
-            run.State.shield = outcome == Outcome.FullBlock ? 20 : 2;
-            run.State.enemyShield = outcome == Outcome.FullBlock ? 12 : 4;
+            var prepared = run.ReadSnapshot();
+            prepared.hp = outcome == Outcome.Defeat ? 4 : 30;
+            prepared.enemyHp = outcome == Outcome.Kill ? 3 : 20;
+            prepared.shield = outcome == Outcome.FullBlock ? 20 : 2;
+            prepared.enemyShield = outcome == Outcome.FullBlock ? 12 : 4;
+            run = new RunSession(prepared);
             if (rolled) Assert.That(run.Roll(), Is.True);
             store.Save(run.State);
             return run;
@@ -630,3 +635,4 @@ namespace FateDice.Tests
         }
     }
 }
+

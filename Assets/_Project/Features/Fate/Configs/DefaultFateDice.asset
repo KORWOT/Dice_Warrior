@@ -180,6 +180,7 @@ MonoBehaviour:
         grade: 0
         damageCoefficient: 1.1
         blockCoefficient: 0
+        effects: []
         tags:
         - attack
         - physical
@@ -188,6 +189,7 @@ MonoBehaviour:
         grade: 0
         damageCoefficient: 0
         blockCoefficient: 1.5
+        effects: []
         tags:
         - defense
       - id: heavy
@@ -195,6 +197,7 @@ MonoBehaviour:
         grade: 1
         damageCoefficient: 1.8
         blockCoefficient: 0
+        effects: []
         tags:
         - attack
         - physical
@@ -203,6 +206,7 @@ MonoBehaviour:
         grade: 2
         damageCoefficient: 2.3
         blockCoefficient: 0
+        effects: []
         tags:
         - attack
         - fire
@@ -213,9 +217,22 @@ MonoBehaviour:
         grade: 2
         damageCoefficient: 0
         blockCoefficient: 2.5
+        effects: []
         tags:
         - defense
         - magic
+      - id: ember_slash
+        label: "\uC794\uBD88 \uBCA0\uAE30"
+        grade: 1
+        damageCoefficient: 0
+        blockCoefficient: 0
+        effects:
+        - kind: 0
+          coefficient: 1.6
+        tags:
+        - attack
+        - fire
+        - physical
       startingActionIds:
       - strike
       - guard
@@ -406,6 +423,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: combat_1
         label: Road encounter
         description: Defeat the enemy to claim the spoils.
@@ -419,6 +437,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: combat_2
         label: Road encounter
         description: Defeat the enemy to claim the spoils.
@@ -432,6 +451,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: combat_3
         label: Road encounter
         description: Defeat the enemy to claim the spoils.
@@ -445,6 +465,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: combat_4
         label: Road encounter
         description: Defeat the enemy to claim the spoils.
@@ -458,6 +479,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: event_0
         label: The wishing stone
         description: A sharp toll buys insight and the power to reroll.
@@ -471,6 +493,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 2
           dieId: 
+          addActionId: 
       - id: event_1
         label: The wishing stone
         description: A sharp toll buys insight and the power to reroll.
@@ -484,6 +507,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 2
           dieId: 
+          addActionId: 
       - id: event_2
         label: The wishing stone
         description: A sharp toll buys insight and the power to reroll.
@@ -497,6 +521,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 2
           dieId: 
+          addActionId: 
       - id: event_3
         label: The wishing stone
         description: A sharp toll buys insight and the power to reroll.
@@ -510,6 +535,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 2
           dieId: 
+          addActionId: 
       - id: event_4
         label: The wishing stone
         description: A sharp toll buys insight and the power to reroll.
@@ -523,6 +549,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 2
           dieId: 
+          addActionId: 
       - id: treasure_0
         label: Abandoned cache
         description: Take the coins and inspect a piece of equipment.
@@ -536,6 +563,7 @@ MonoBehaviour:
           equipmentId: ember_blade
           rerollCharges: 0
           dieId: 
+          addActionId: ember_slash
       - id: treasure_1
         label: Abandoned cache
         description: Take the coins and inspect a piece of equipment.
@@ -549,6 +577,7 @@ MonoBehaviour:
           equipmentId: guard_plate
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: treasure_2
         label: Abandoned cache
         description: Take the coins and inspect a piece of equipment.
@@ -562,6 +591,7 @@ MonoBehaviour:
           equipmentId: traveler_charm
           rerollCharges: 0
           dieId: ember
+          addActionId: 
       - id: treasure_3
         label: Abandoned cache
         description: Take the coins and inspect a piece of equipment.
@@ -575,6 +605,7 @@ MonoBehaviour:
           equipmentId: ember_blade
           rerollCharges: 0
           dieId: ember
+          addActionId: 
       - id: treasure_4
         label: Abandoned cache
         description: Take the coins and inspect a piece of equipment.
@@ -588,6 +619,7 @@ MonoBehaviour:
           equipmentId: guard_plate
           rerollCharges: 0
           dieId: ember
+          addActionId: 
       - id: shop_0
         label: Wayfarer's stall
         description: Spend run coins, or leave when ready.
@@ -601,6 +633,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: shop_1
         label: Wayfarer's stall
         description: Spend run coins, or leave when ready.
@@ -614,6 +647,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: shop_2
         label: Wayfarer's stall
         description: Spend run coins, or leave when ready.
@@ -627,6 +661,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: shop_3
         label: Wayfarer's stall
         description: Spend run coins, or leave when ready.
@@ -640,6 +675,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: shop_4
         label: Wayfarer's stall
         description: Spend run coins, or leave when ready.
@@ -653,6 +689,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: rest_0
         label: Quiet camp
         description: Recover health or train for experience and a reroll charge.
@@ -666,6 +703,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: rest_1
         label: Quiet camp
         description: Recover health or train for experience and a reroll charge.
@@ -679,6 +717,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: rest_2
         label: Quiet camp
         description: Recover health or train for experience and a reroll charge.
@@ -692,6 +731,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: rest_3
         label: Quiet camp
         description: Recover health or train for experience and a reroll charge.
@@ -705,6 +745,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: rest_4
         label: Quiet camp
         description: Recover health or train for experience and a reroll charge.
@@ -718,6 +759,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       bossReward:
         gold: 50
         xp: 30
@@ -725,6 +767,7 @@ MonoBehaviour:
         equipmentId: 
         rerollCharges: 0
         dieId: 
+        addActionId: 
       shop:
       - id: potion
         label: Healing draught
@@ -736,6 +779,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: 
+          addActionId: 
       - id: reroll
         label: Reroll training + 3 charges
         price: 12
@@ -746,6 +790,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 3
           dieId: 
+          addActionId: 
       - id: die
         label: Ember die (replace one)
         price: 16
@@ -756,6 +801,7 @@ MonoBehaviour:
           equipmentId: 
           rerollCharges: 0
           dieId: ember
+          addActionId: 
       - id: blade
         label: Ember blade
         price: 18
@@ -766,6 +812,13 @@ MonoBehaviour:
           equipmentId: ember_blade
           rerollCharges: 0
           dieId: 
+          addActionId: 
+      shopPriceMultipliers:
+      - 1
+      - 1.1
+      - 1.25
+      - 1.5
+      - 1.75
       restTraining:
         gold: 0
         xp: 12
@@ -773,9 +826,16 @@ MonoBehaviour:
         equipmentId: 
         rerollCharges: 1
         dieId: 
+        addActionId: 
     presentation:
       actionSeconds: 0.18
       rollSeconds: 0.35
+      explorationDice:
+        rollSeconds: 0.65
+        resultHoldSeconds: 0.9
+      combatDice:
+        rollSeconds: 0.65
+        resultHoldSeconds: 0.9
       referenceResolution: {x: 720, y: 1280}
       bodyFontSize: 25
       titleFontSize: 38

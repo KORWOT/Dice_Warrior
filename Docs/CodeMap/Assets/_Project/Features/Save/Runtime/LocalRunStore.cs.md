@@ -1,5 +1,19 @@
 # LocalRunStore.cs
 
+## RA-B 현재 계약 (2026-09-09)
+
+IRunStore 구현. 파일 원자 교체·checksum·schema1·JObject 기반 구형 시간 누락 처리와 원본 보존은 유지한다. 게임 상태 검사는 RunStateValidator.Validate에 위임하며 RunStateValidationException을 기존 경로 포함 InvalidDataException으로 변환한다. 입력 상태나 RNG를 변경하지 않고 최신 SO를 읽지 않는다. 후보 검증은 Session에서도 독립 실행된다.
+
+실행 상태는 Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md를 따른다. 기존 기록은 이번 실행 증거를 대신하지 않는다.
+
+
+## RA-A 현재 계약 (2026-09-09)
+
+Load의 체크섬 확인 후 기존 설치된 Newtonsoft.Json의 JObject로 payload의 실제 config.presentation 경로에 새 시간 그룹이 있는지 읽는다. Unity가 없는 inline 객체도 생성하기 때문에 별도 존재 판별을 한다. 누락/null인 그룹만 저장 legacy rollSeconds 실제값(max .65)과 .9 hold로 복원한다. 새 그룹은 그대로 유지하고 파일·schema·체크섬·게임 상태는 바꾸지 않는다. 파싱 오류는 기존 InvalidDataException 경계로 보고한다. 순수 게임 검증기 분리는 RA-C 대상이다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
+
 M5 / FateDice.Runtime / 독립 위임 C. 저장 단위32/32 PASS, 제품 디스크 GUI 연결 완료 및 PlayMode8/8 PASS.
 
 - 역할: 생성자에 주입한 단일 경로에서 실제 RunState와 GameConfigData 스냅샷을 저장·복원한다. Path는 정규화한 절대 경로이며 인스턴스가 보유하는 유일한 값이다.
@@ -31,3 +45,12 @@ M5 / FateDice.Runtime / 독립 위임 C. 저장 단위32/32 PASS, 제품 디스�
 - 추가 RunTests 5개 및 UiVisualCatalogTests 19개를 포함한 EditMode 초기 구현 실행은 122/122 PASS. GUI 합류/fade/이어하기는 메인 수용 실행 결과를 REPORT에 기록한다.
 
 - UI 구조 변경 관계(2026-09-08): FateDiceScreen은 RunUIController 파생 Scene 진입점이다. 설정/표시 평가/저장 명령 호출은 RunUIController가 담당하고, typed 화면 View와 UIManager는 게임 규칙·저장을 직접 호출하지 않는다. 기존 규칙과 저장 C# bytes는 변경하지 않았다. 현재 관련 회귀는 UI_STRUCTURE_REPORT의 Edit122/Play37 실행 결과를 따른다.
+
+## RA-C 직접 관계
+상태/파일 API는 그대로다. RunState는 Runtime schema1 어댑터이고 순수 RunStateValidator는 Core Domain에 소속된다. 실제 규칙 스냅샷+표시 설정 JSON과 checksum을 보존하며 최신 SO를 읽지 않는다.
+
+## RA-C 시간 경계
+C의 명시 복제 전환으로 드러난 JSON double 반올림을 방지한다. 검증된 원본 payload에서 playedSeconds와 lastResult.playedSeconds를 기존 Newtonsoft 파서로 정확히 읽는다. schema/체크섬/원본 파일은 그대로 유지한다. LocalCheckpointKeepsDurationBitsAcrossSaveAndResume의 bit 동일성 RED→GREEN과 고정 재연으로 검사한다.
+
+- RA-D: 유효성 검사 뒤 ShopRules.RestoreLegacy로 구형 저장의 누락 상점 목록만 saved base prices로 구성한다. 파일 bytes/체크섬/schema1/최신 SO는 변경하지 않는다.
+- 검수 근거: 직접 호출 소스와 RA-D 계약 시험. 실제 실행 상태는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.

@@ -1,4 +1,11 @@
 # SceneStructureTests.cs
+
+## RA-A 현재 계약 (2026-09-09)
+
+ProductionJourneyUsesRealViewsThroughResultAndReturnsToLobby만 Seed=33을 명시하여 기존 완주·전투/장비/보상 관측 기대를 보존한다. 다른 씬/저장/중복 bootstrap 검사는 유지한다.
+
+검증 상태/실제 증거: Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md. 아래 과거 기록은 이번 PASS를 대신하지 않는다.
+
 - 역할: 실제 Title/Lobby/InGame assets와 GameApplication prefab를 사용하는 제작용 씬 구조 통합 검증.
 - 입력: Editor AssetDatabase의 authored prefab/씬, 테스트마다 Temp 아래 고유 LocalRunStore를 Bootstrap 전에 주입. 기본 사용자 저장에 gameplay를 실행하지 않는다.
 - 검사: assets/9종 registry/build첫Title, Title→Lobby→new→InGame, 반복menu/continue의 동일 UI owner, 단일 Canvas/EventSystem, 중복/실패 load lock, 다른store 재주입 거절.

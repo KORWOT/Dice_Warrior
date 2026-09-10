@@ -3,8 +3,10 @@
   "rootNamespace": "FateDice.Tests",
   "references": [
     "FateDice.Runtime",
-    "FateDice.Editor", "Unity.ugui",
-    "FateDice.SharedUI"
+    "FateDice.Editor",
+    "Unity.ugui",
+    "FateDice.SharedUI",
+    "FateDice.Core"
   ],
   "includePlatforms": [
     "Editor"
@@ -12,5 +14,10 @@
   "optionalUnityReferences": [
     "TestAssemblies"
   ],
-  "autoReferenced": false
+  "autoReferenced": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Newtonsoft.Json.dll"
+  ]
 }

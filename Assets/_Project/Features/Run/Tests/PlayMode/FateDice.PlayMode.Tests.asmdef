@@ -4,7 +4,8 @@
   "references": [
     "FateDice.Runtime",
     "Unity.ugui",
-    "FateDice.SharedUI"
+    "FateDice.SharedUI",
+    "FateDice.Core"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"

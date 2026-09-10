@@ -1,5 +1,12 @@
 # FateCardRules.cs
 
+## RA-C 현재 경계 (2026-09-09)
+
+DrawGrade는 RunRulesCatalog, 상태를 받는 생성/검사는 RunStateData와 Rules를 사용한다. Core asmref에 소속되며 Runtime/표시 타입을 참조하지 않는다. 보장 유형·슬롯별 추첨·ID 생성·중복/빈 등급 대체·단일 RNG 소비 및 성공 때만 RNG를 확정하는 순서는 그대로다. RunApplication과 기존 규칙/재연 테스트가 호출한다.
+
+기존 수식/행동 보존 및 Core 컴파일/전체 패·명령 재연은 ROGUELIKE_ARCHITECTURE_REPORT의 새 실행 증거를 따른다. 아래 기존 단계 증거를 RA-C PASS로 재사용하지 않는다.
+
+
 - 원본: `Assets/_Project/Features/Fate/Runtime/FateCardRules.cs`
 - 기능/어셈블리: Fate / FateDice.Runtime
 - Task: FATE_DICE_PROTOTYPE M1
@@ -37,4 +44,4 @@ M1 마지막 수정묶음 2/2: 메인 m1-weight-overflow-red.json에서 유한 �
 - m4-save-regression.json: EditMode completed, 98/98 PASS, 실패/건너뜀/미확정0, 6.9초. RuleTests32 원본 코드는 변경되지 않았다.
 - m5-gui-acceptance-check.json: PlayMode completed, 8/8 PASS, 실패/건너뜀/미확정0, 29.4초. 위 M2 GUI 결과는 초기 검증 이력이다.
 - m5-so-edit-evidence.json: 실제 SO의 탐험/전투 등급 행을 제어된 100% Legendary 가중치로 변경하자 새 런 등급이 Uncommon,Common,Uncommon에서 Legendary,Legendary,Legendary로 바뀌었다. 이전 저장 스냅샷과 동일 RNG 재실행 상태가 유지됐고 SO 원본 복원도 확인됐다. 이 결과는 한 번의 표본으로 일반 확률 분포를 추정한 결과가 아니다.
-- M1 검토1/1·수정2/2·필수 결함 해결 상태를 유지한다. 이번 동기화는 위 3개 규칙/테스트 C#의 변경 없이 실제 연결과 후속 검증 증거만 반영했다. Android 빌드·기기 검증 범위는 이 문서의 증거로 판단하지 않는다.
+- M1 검토1/1·수정2/2·필수 결함 해결 상태를 유지한다. 이번 동기화는 위 3개 규칙/테스트 C#의 변경 없이 실제 연결과 후속 검증 증거만 반영했다. Android 빌드·기기 검증 범위는 이 문서의 증거로 판단하지 않는다.- RA-D 직접 관계: GrowthRules.Grant의 addActionId로 늘어난 런 소유 집합도 GenerateActions의 동일 등급/균등/중복제거 경로를 사용한다. ID별 분기·가중치 변경 없이 신규 콘텐츠 시험에서 실제 Roll 추첨을 확인한다.

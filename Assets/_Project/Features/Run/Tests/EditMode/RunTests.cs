@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
@@ -16,6 +16,14 @@ namespace FateDice.Tests
                 hp=90,baseMaxHp=90,basePower=12,baseGuard=10,level=1,activeEnemyId="road_bandit",enemyHp=26,activeIntentId="attack",
                 activeEventId="combat_0",selectedNode=new NodeState{id="node-1",type=NodeType.Combat},pendingReward=new RewardDefinition{gold=8,xp=8},
                 actionIds=data.combat.startingActionIds.Concat(new[]{"fireball"}).ToList(),dieIds=Enumerable.Repeat("plain",6).ToArray()};
+        }
+        // Pure combat oracles above intentionally use a minimal state. Session commands require a valid checkpoint graph.
+        static RunState CommandBattle()
+        {
+            var state=Battle();state.phase=RunPhase.CombatRoll;
+            state.nodes.Add(state.selectedNode);state.nextNodeId=2;
+            state.pendingRewardId=state.selectedNode.id+":reward";
+            return state;
         }
         static OfferedCard Card(string id="strike",Grade grade=Grade.Common)=>new OfferedCard{id="offer-1",contentId=id,grade=grade,type=NodeType.Combat};
         [Test] public void NewRunOwnsValidatedDeepSnapshotAndNoRerollPermission()
@@ -66,7 +74,7 @@ namespace FateDice.Tests
         }
         [Test] public void RollOffersThreeUsableActionsAndDuplicateInputDoesNothing()
         {
-            var state=Battle();state.phase=RunPhase.CombatRoll;var run=new RunSession(state);int checkpoints=0;
+            var state=CommandBattle();var run=new RunSession(state);int checkpoints=0;
             run.Checkpoint=_=>checkpoints++;
             Assert.That(run.Roll(),Is.True);Assert.That(run.State.dice.Length,Is.EqualTo(6));Assert.That(run.State.cards.Count,Is.EqualTo(3));
             var id=run.State.cards[0].id;
@@ -76,7 +84,7 @@ namespace FateDice.Tests
         }
         [Test] public void EveryOfferedCardIsExecutableWithoutResources()
         {
-            var source=Battle();source.phase=RunPhase.CombatRoll;var initial=new RunSession(source);initial.Roll();
+            var source=CommandBattle();var initial=new RunSession(source);initial.Roll();
             foreach(var offer in initial.State.cards)
             {
                 var copy=JsonUtility.FromJson<RunState>(JsonUtility.ToJson(initial.State));
@@ -85,7 +93,7 @@ namespace FateDice.Tests
         }
         [Test] public void FailedCheckpointPreservesPriorStateAndRandomStream()
         {
-            var state=Battle();state.phase=RunPhase.CombatRoll;var run=new RunSession(state);var before=JsonUtility.ToJson(state);
+            var state=CommandBattle();var run=new RunSession(state);var before=JsonUtility.ToJson(run.State);
             run.Checkpoint=_=>throw new IOException("controlled disk failure");
             Assert.Throws<IOException>(()=>run.Roll());Assert.That(JsonUtility.ToJson(run.State),Is.EqualTo(before));
         }
@@ -118,8 +126,9 @@ namespace FateDice.Tests
             GrowthRules.Equip(state,"ember_blade");Assert.That(GrowthRules.Stats(state).power,Is.EqualTo(15));
             GrowthRules.Equip(state,"plain_blade");Assert.That(GrowthRules.Stats(state).power,Is.EqualTo(13));
             Assert.That(state.basePower,Is.EqualTo(12));
-            var run=Journey(NodeType.Treasure);run.State.equipmentIds[0]="plain_blade";
-            run.State.config.growth.equipment=state.config.growth.equipment;
+            var prepared=Journey(NodeType.Treasure).State;prepared.equipmentIds[0]="plain_blade";
+            prepared.config.growth.equipment=state.config.growth.equipment;
+            var run=new RunSession(prepared);
             EnterGuaranteedEvent(run);run.ResolveEncounter(false);run.ClaimReward();
             Assert.That(run.Equip(false),Is.True);Assert.That(run.State.equipmentIds[0],Is.EqualTo("plain_blade"));
             Assert.That(GrowthRules.Stats(run.State).power,Is.EqualTo(13));
@@ -168,9 +177,12 @@ namespace FateDice.Tests
             var run=Journey(NodeType.Event);run.ChooseNode(run.State.availableNodeIds[0]);run.Roll();
             var before=JsonUtility.ToJson(run.State);
             Assert.That(run.Reroll(2),Is.False);Assert.That(JsonUtility.ToJson(run.State),Is.EqualTo(before));
-            run.State.rerollUnlocked=true;Assert.That(run.Reroll(2),Is.False);
-            run.State.rerollCharges=1;Assert.That(run.Reroll(-1),Is.False);Assert.That(run.Reroll(6),Is.False);
-            run.State.phase=RunPhase.Map;Assert.That(run.Reroll(2),Is.False);
+            var prepared=run.State;prepared.rerollUnlocked=true;run=new RunSession(prepared);
+            Assert.That(run.Reroll(2),Is.False);
+            prepared=run.State;prepared.rerollCharges=1;run=new RunSession(prepared);
+            Assert.That(run.Reroll(-1),Is.False);Assert.That(run.Reroll(6),Is.False);
+            prepared=Journey(NodeType.Event).State;prepared.rerollUnlocked=true;prepared.rerollCharges=1;
+            run=new RunSession(prepared);Assert.That(run.Reroll(2),Is.False);
         }
         [Test] public void EarnedRerollReplacesOnlyOneFaceAndCommitsChargeChoicesAndRngTogether()
         {
@@ -191,7 +203,7 @@ namespace FateDice.Tests
         [Test] public void FailedRerollCheckpointDoesNotConsumeTheEarnedResource()
         {
             var run=Journey(NodeType.Event);run.ChooseNode(run.State.availableNodeIds[0]);run.Roll();
-            run.State.rerollUnlocked=true;run.State.rerollCharges=1;var before=JsonUtility.ToJson(run.State);
+            var prepared=run.State;prepared.rerollUnlocked=true;prepared.rerollCharges=1;run=new RunSession(prepared);var before=JsonUtility.ToJson(run.State);
             run.Checkpoint=_=>throw new IOException("controlled reroll save failure");
             Assert.Throws<IOException>(()=>run.Reroll(4));Assert.That(JsonUtility.ToJson(run.State),Is.EqualTo(before));
         }
@@ -224,13 +236,13 @@ namespace FateDice.Tests
             var data=PrototypeAuthoring.CreateDefaults();
             data.world.branchCount=2;data.world.previewDepth=1;
             data.fate.nodeWeights=new float[]{0,0,0,0,1};
-            var run=RunSession.New(data,33,"fireball",Grade.Common);
-            run.State.nodes=new System.Collections.Generic.List<NodeState>{
+            var prepared=RunSession.New(data,33,"fireball",Grade.Common).State;
+            prepared.nodes=new System.Collections.Generic.List<NodeState>{
                 new NodeState{id="A",type=NodeType.Rest,childIds=new System.Collections.Generic.List<string>{"C","D"}},
                 new NodeState{id="B",type=NodeType.Rest,childIds=new System.Collections.Generic.List<string>{"C","E"}},
                 new NodeState{id="C",type=NodeType.Rest},new NodeState{id="D",type=NodeType.Rest},new NodeState{id="E",type=NodeType.Rest}};
-            run.State.availableNodeIds=new System.Collections.Generic.List<string>{"A","B"};
-            return run;
+            prepared.availableNodeIds=new System.Collections.Generic.List<string>{"A","B"};
+            return new RunSession(prepared);
         }
         static System.Collections.Generic.List<NodeState> NodeHistory(RunState state)
         {
@@ -248,8 +260,8 @@ namespace FateDice.Tests
             Assert.That(run.State.availableNodeIds,Is.Empty,"Reachable future nodes are not yet selectable.");
             Assert.That(run.State.rngState,Is.EqualTo(rng));Assert.That(run.State.eventsResolved,Is.Zero);
             Assert.That(run.State.sequence,Is.EqualTo(sequence+1));Assert.That(run.State.nextNodeId,Is.EqualTo(nextId));
-            ExplorationRules.PruneTo(run.State,new[]{"A"});
-            Assert.That(NodeHistory(run.State).Count,Is.EqualTo(2),"Repeated visual/path cleanup must not duplicate history.");
+            var exported=run.State;ExplorationRules.PruneTo(exported,new[]{"A"});
+            Assert.That(NodeHistory(exported).Count,Is.EqualTo(2),"Repeated visual/path cleanup must not duplicate history.");
         }
         [Test] public void MergedGraphAndArchivedCrossReferencesRoundTripAtEveryPathBoundary()
         {
@@ -271,19 +283,19 @@ namespace FateDice.Tests
         }
         [Test] public void ARealCycleStillCannotBeSavedAsAMergedGraph()
         {
-            var run=MergingJourney();run.State.nodes.Single(x=>x.id=="C").childIds.Add("A");
+            var invalid=MergingJourney().State;invalid.nodes.Single(x=>x.id=="C").childIds.Add("A");
             var path=Path.Combine(Path.GetTempPath(),"FateDicePathTests",Guid.NewGuid().ToString("N"),"cycle.json");
-            Assert.Throws<InvalidDataException>(()=>new LocalRunStore(path).Save(run.State));
+            Assert.Throws<InvalidDataException>(()=>new LocalRunStore(path).Save(invalid));
             Assert.That(File.Exists(path),Is.False);
         }
         [Test] public void ArchivedIdsCannotCollideOrReferenceMissingNodes()
         {
             var run=MergingJourney();run.ChooseNode("A");
-            var history=NodeHistory(run.State);history.Add(new NodeState{id="A",type=NodeType.Rest});
+            var invalid=run.State;var history=NodeHistory(invalid);history.Add(new NodeState{id="A",type=NodeType.Rest});
             var path=Path.Combine(Path.GetTempPath(),"FateDicePathTests",Guid.NewGuid().ToString("N"),"bad.json");
-            Assert.Throws<InvalidDataException>(()=>new LocalRunStore(path).Save(run.State));
+            Assert.Throws<InvalidDataException>(()=>new LocalRunStore(path).Save(invalid));
             history.RemoveAt(history.Count-1);history[0].childIds.Add("missing");
-            Assert.Throws<InvalidDataException>(()=>new LocalRunStore(path).Save(run.State));
+            Assert.Throws<InvalidDataException>(()=>new LocalRunStore(path).Save(invalid));
             Assert.That(File.Exists(path),Is.False);
         }
         [Test] public void SchemaOneWithoutHistoryCanContinueAndSave()

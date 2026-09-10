@@ -5,7 +5,8 @@
     "FateDice.Runtime",
     "Unity.ugui",
     "FateDice.SharedUI",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "FateDice.Core"
   ],
   "includePlatforms": [
     "Editor"

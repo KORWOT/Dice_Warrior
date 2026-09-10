@@ -20,8 +20,21 @@ namespace FateDice
         public GameConfigData PreviewConfig { get; private set; }
         public RunSession Session { get; private set; }
         public bool Busy => actionBusy || (navigation?.IsTransitioning ?? false);
-        public LocalRunStore Store { get; private set; }
-        public uint Seed { get; set; } = 33;
+        public IRunStore Store { get; private set; }
+        public ISeedSource SeedSource { get; private set; }
+        private uint selectedSeed = 33;
+        // Compatibility for fixed workbench/test callers. Reading this never requests entropy.
+        public uint Seed
+        {
+            get => selectedSeed;
+            set
+            {
+                var fixedSource = new FixedSeedSource(value);
+                if (Busy) throw new InvalidOperationException("Cannot change the seed source during an action.");
+                SeedSource = fixedSource;
+                selectedSeed = value;
+            }
+        }
         private string trialId;
         private Grade cap = Grade.Legendary;
         private bool menu = true;
@@ -40,7 +53,7 @@ namespace FateDice
             catch (Exception e) { Debug.LogError(e.Message, this); enabled = false; }
         }
 
-        public void Initialize(LocalRunStore store, IRunSceneNavigation sceneNavigation = null)
+        public void Initialize(IRunStore store, IRunSceneNavigation sceneNavigation = null, ISeedSource seedSource = null)
         {
             if (UI) throw new InvalidOperationException("RunUIController has already been initialized.");
             if (store == null) throw new ArgumentNullException(nameof(store));
@@ -54,10 +67,12 @@ namespace FateDice
             UI = root.GetComponent<UIManager>();
             if (!UI) throw new InvalidOperationException("UIRoot prefab requires UIManager.");
             navigation = sceneNavigation;
+            SeedSource = seedSource ?? SeedSource ?? new SystemSeedSource();
+            if (SeedSource is FixedSeedSource fixedSource) selectedSeed = fixedSource.Value;
             UseStore(store);
         }
 
-        public void UseStore(LocalRunStore store)
+        public void UseStore(IRunStore store)
         {
             if (Busy) throw new InvalidOperationException("Cannot switch saves during an action.");
             Store = store ?? throw new ArgumentNullException(nameof(store));
@@ -77,7 +92,7 @@ namespace FateDice
             if (Session == null)
             {
                 if (!Store.Exists) return false;
-                try { Session = new RunSession(Store.Load()) { Checkpoint = Store.Save }; }
+                try { Session = new RunSession(Store.Load(), Store); }
                 catch (Exception e) { invalidSave = true; error = PlayerError(e); return false; }
             }
             menu = false; atTitle = false; error = null; Render(); return true;
@@ -103,10 +118,10 @@ namespace FateDice
             if (Busy || invalidSave) return;
             try
             {
-                var next = RunSession.New(config.Snapshot(), Seed, trialId, cap);
-                next.State.lastResult = (Session?.State ?? savedPreview)?.lastResult;
-                Store.Save(next.State); next.Checkpoint = Store.Save;
-                Session = next; savedPreview = next.State; error = null;
+                var next = RunSession.New(config.Snapshot(), SeedSource.NextSeed(), trialId, cap,
+                    Store, (Session?.ReadSnapshot() ?? savedPreview)?.lastResult);
+                selectedSeed = next.ReadSnapshot().initialSeed;
+                Session = next; savedPreview = next.ReadSnapshot(); error = null;
                 if (navigation != null) navigation.RequestInGame();
                 else { menu = false; Render(); }
             }
@@ -117,7 +132,7 @@ namespace FateDice
             if (Busy || invalidSave) return;
             try
             {
-                Session = new RunSession(Store.Load()) { Checkpoint = Store.Save };
+                Session = new RunSession(Store.Load(), Store);
                 error = null;
                 if (navigation != null) navigation.RequestInGame();
                 else { menu = false; Render(); }
@@ -145,14 +160,14 @@ namespace FateDice
         private bool SaveElapsedTime()
         {
             if (Session == null || Store == null) return true;
-            try { Store.Save(Session.State); return true; }
+            try { return Session.SaveCheckpoint(); }
             catch (Exception e) { error = PlayerError(e); if (Widgets != null) Widgets.Notice.text = "자동 저장 실패: " + error; return false; }
         }
         protected virtual void Update()
         {
             if (UI) UI.Root.ApplySafeArea();
-            if (Session != null && !menu && !(navigation?.IsTransitioning ?? false) && Session.State.phase != RunPhase.Result)
-                Session.State.playedSeconds += Time.unscaledDeltaTime;
+            if (Session != null && !menu && !(navigation?.IsTransitioning ?? false) && Session.Phase != RunPhase.Result)
+                Session.RecordElapsed(Time.unscaledDeltaTime);
             if (!Busy && UI && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
                 if (UI.Popups.Count > 0) UI.CloseTopPopup();
@@ -168,7 +183,7 @@ namespace FateDice
         private void Show<T>(RunUIData data) where T : BaseUI
         {
             UI.Show<T>(data);
-            if (!menu && Session != null && (Session.State.phase == RunPhase.ExplorationRoll || Session.State.phase == RunPhase.CombatRoll))
+            if (!menu && Session != null && (Session.Phase == RunPhase.ExplorationRoll || Session.Phase == RunPhase.CombatRoll))
                 ShowDiceWindow(false);
             UI.SetInputLocked(Busy);
         }
@@ -183,7 +198,8 @@ namespace FateDice
                 SyncInputLock(); return;
             }
             if (menu) { RenderMenu(); return; }
-            var state = Session.State;
+            var state = Session.ReadSnapshot();
+            var token = new RunCommandToken(state.runId, state.sequence);
             var rules = state.config;
             var stats = GrowthRules.Stats(state);
             var xpTarget = state.level <= rules.growth.levels.Length ? rules.growth.levels[state.level - 1].xpRequired.ToString() : "최대";
@@ -204,7 +220,7 @@ namespace FateDice
             if (rerollPhase && state.rerollUnlocked)
             {
                 hud.fate += "\n재굴림: " + state.rerollCharges + "  /  주사위 선택 (" + rules.growth.rerollCost + "회 소모)";
-                if (state.rerollCharges >= rules.growth.rerollCost) hud.dieClicked = index => Command(() => Session.Reroll(index), true);
+                if (state.rerollCharges >= rules.growth.rerollCost) hud.dieClicked = index => Command(() => Session.Reroll(index, token), true);
             }
             var context = Context(rules.presentation);
             var showPaths = state.phase == RunPhase.Map || state.phase == RunPhase.ExplorationRoll || state.phase == RunPhase.ExplorationCards;
@@ -223,7 +239,7 @@ namespace FateDice
                         completedNodes = state.resolvedEventIds.Select(id => state.nodeHistory.FirstOrDefault(n => n.id == id))
                             .Where(n => n != null).Select(n => new NodeState { id = n.id, type = n.type, childIds = n.childIds.ToList() }).ToArray(),
                         available = state.availableNodeIds.ToArray(), selected = state.selectedNode?.id,
-                        chooseNode = TravelToNode,
+                        chooseNode = id => TravelToNode(id, token),
                         fates = Array.Empty<FateOfferUIData>()
                     };
                     if (state.phase == RunPhase.Map)
@@ -231,7 +247,7 @@ namespace FateDice
                         hud.situation = state.eventsResolved >= rules.world.eventsToBoss ? "다음  /  대운명" :
                             "갈림길 선택  /  " + (rules.world.eventsToBoss - state.eventsResolved) + "번의 사건 후 대운명";
                         exploration.cap = Choice("cap-cycle", "등급 상한: " + KoreanText.Grade(state.explorationCap),
-                            () => Command(() => Session.SetExplorationCap((Grade)(((int)Session.State.explorationCap + 1) % 5))), purpose: ButtonPurpose.Navigation);
+                            () => Command(() => Session.SetExplorationCap((Grade)(((int)state.explorationCap + 1) % 5), token)), purpose: ButtonPurpose.Navigation);
                     }
                     else if (state.phase == RunPhase.ExplorationRoll)
                     {
@@ -243,7 +259,7 @@ namespace FateDice
                     {
                         hud.situation = "운명 선택  /  " + KoreanText.Node(state.selectedNode.type) + " 경로";
                         exploration.fates = state.cards.Select(c => new FateOfferUIData
-                        { id = c.id, type = c.type, grade = c.grade, clicked = id => Command(() => Session.ChooseFate(id), selectionKey: "fate-" + id) }).ToArray();
+                        { id = c.id, type = c.type, grade = c.grade, clicked = id => Command(() => Session.ChooseFate(id, token), selectionKey: "fate-" + id) }).ToArray();
                     }
                     Show<ExplorationUI>(exploration); break;
                 case RunPhase.CombatRoll:
@@ -276,29 +292,29 @@ namespace FateDice
                         var effect = CombatRules.Evaluate(state, c);
                         return new ActionOfferUIData { id = c.id, originalId = c.contentId, label = KoreanText.Content(action.label), grade = c.grade,
                             effect = "피해 " + effect.damage + " / 수호 " + effect.block, tags = (string[])action.tags.Clone(),
-                            visual = visuals.ResolveAction(rules, c.contentId), clicked = id => Command(() => Session.ChooseAction(id), selectionKey: "card-" + id, actionId: id) };
+                            visual = visuals.ResolveAction(rules, c.contentId), clicked = id => Command(() => Session.ChooseAction(id, token), selectionKey: "card-" + id, actionId: id) };
                     }).ToArray();
                     Show<CombatUI>(combat); break;
                 case RunPhase.Encounter:
                     var encounter = rules.Event(state.activeEventId);
                     hud.situation = KoreanText.Grade(state.activeGrade) + "  /  " + KoreanText.Content(encounter.label);
                     var choices = new System.Collections.Generic.List<UIChoiceData>
-                    { Choice("resolve", encounter.type == NodeType.Rest ? "휴식하고 회복" : "결과 받아들이기", () => Command(() => Session.ResolveEncounter(false))) };
-                    if (encounter.type == NodeType.Rest) choices.Add(Choice("train", "대신 훈련하기\n" + RewardText(Session.RestTrainingReward()), () => Command(() => Session.ResolveEncounter(true))));
+                    { Choice("resolve", encounter.type == NodeType.Rest ? "휴식하고 회복" : "결과 받아들이기", () => Command(() => Session.ResolveEncounter(false, token))) };
+                    if (encounter.type == NodeType.Rest) choices.Add(Choice("train", "대신 훈련하기\n" + RewardText(Session.RestTrainingReward()), () => Command(() => Session.ResolveEncounter(true, token))));
                     Show<EncounterUI>(new EncounterUIData { context = context, hud = hud, revealed = revealed,
                         description = KoreanText.Content(encounter.description), outcome = "결과\n" + RewardText(state.pendingReward), choices = choices.ToArray() }); break;
                 case RunPhase.Shop:
                     hud.situation = "여행자의 상점  /  " + state.gold + " 골드";
                     var products = rules.world.shop.Select(goods => Choice("buy-" + goods.id,
-                        KoreanText.Content(goods.label) + "  /  " + goods.price + " 골드\n" + (state.purchasedIds.Contains(goods.id) ? "구매 완료" : RewardText(goods.reward)),
-                        () => Command(() => Session.Buy(goods.id)), !state.purchasedIds.Contains(goods.id) && state.gold >= goods.price, ButtonPurpose.Purchase)).ToList();
-                    products.Add(Choice("leave", "상점 나가기", () => Command(() => Session.LeaveShop())));
+                        KoreanText.Content(goods.label) + "  /  " + ShopRules.Offer(state,goods.id).price + " 골드\n" + (state.purchasedIds.Contains(goods.id) ? "구매 완료" : RewardText(goods.reward)),
+                        () => Command(() => Session.Buy(goods.id, token)), !state.purchasedIds.Contains(goods.id) && state.gold >= ShopRules.Offer(state,goods.id).price, ButtonPurpose.Purchase)).ToList();
+                    products.Add(Choice("leave", "상점 나가기", () => Command(() => Session.LeaveShop(token))));
                     Show<EncounterUI>(new EncounterUIData { context = context, hud = hud, revealed = revealed, choices = products.ToArray() }); break;
                 case RunPhase.Reward:
                     hud.situation = !string.IsNullOrEmpty(state.activeEnemyId) && state.enemyHp == 0 ? "승리  /  보상" : "결과  /  보상";
                     Show<RewardUI>(new RewardUIData { context = context, hud = hud, revealed = revealed, description = RewardText(state.pendingReward),
                         instructions = "보상을 받은 뒤 장비 선택을 마치면 여정이 이어집니다.",
-                        claim = Choice("claim", "보상 받고 계속하기", () => Command(() => Session.ClaimReward())) }); break;
+                        claim = Choice("claim", "보상 받고 계속하기", () => Command(() => Session.ClaimReward(token))) }); break;
                 case RunPhase.EquipmentChoice:
                     var equipment = new EquipmentUIData { context = context, hud = hud, revealed = revealed };
                     hud.situation = "발견한 장비";
@@ -308,16 +324,16 @@ namespace FateDice
                         var oldId = state.equipmentIds[(int)item.slot];
                         equipment.details = KoreanText.Slot(item.slot) + "  /  " + KoreanText.Content(item.label) + "\n" + EquipmentText(item);
                         equipment.current = "현재 장비: " + (string.IsNullOrEmpty(oldId) ? "빈 슬롯" : KoreanText.Content(rules.Equipment(oldId).label) + "\n" + EquipmentText(rules.Equipment(oldId)));
-                        equipment.choices = new[] { Choice("equip-accept", "장비 교체", () => Command(() => Session.Equip(true))), Choice("equip-decline", "두고 가기", () => Command(() => Session.Equip(false))) };
+                        equipment.choices = new[] { Choice("equip-accept", "장비 교체", () => Command(() => Session.Equip(true, token))), Choice("equip-decline", "두고 가기", () => Command(() => Session.Equip(false, token))) };
                     }
                     else
                     {
                         var die = rules.Die(state.pendingDieId);
                         hud.situation = "발견한 주사위  /  " + KoreanText.Content(die.label);
-                        hud.dieClicked = index => Command(() => Session.ReplaceDie(index));
+                        hud.dieClicked = index => Command(() => Session.ReplaceDie(index, token));
                         equipment.details = "위의 주사위 여섯 개 중 교체할 하나를 고르세요.\n눈: " + string.Join(", ", die.values) + "\n등장 가중치: " + string.Join(", ", die.weights);
                         equipment.current = "현재 주사위\n" + string.Join(" / ", state.dieIds.Select(id => KoreanText.Content(rules.Die(id).label)));
-                        equipment.choices = new[] { Choice("die-skip", "기존 주사위 유지", () => Command(() => Session.ReplaceDie(-1))) };
+                        equipment.choices = new[] { Choice("die-skip", "기존 주사위 유지", () => Command(() => Session.ReplaceDie(-1, token))) };
                     }
                     Show<EquipmentUI>(equipment); break;
                 case RunPhase.Result:
@@ -333,9 +349,10 @@ namespace FateDice
 
         private void ShowDiceWindow(bool rolling)
         {
-            var state = Session.State;
+            var state = Session.ReadSnapshot();
+            var token = new RunCommandToken(state.runId, state.sequence);
             bool combat = state.phase == RunPhase.CombatRoll || state.phase == RunPhase.CombatCards;
-            float duration = Mathf.Max(.65f, state.config.presentation.rollSeconds);
+            float duration = state.config.presentation.DiceTiming(combat).rollSeconds;
             UI.ShowPopup<DiceRollUI>(new DiceRollUIData
             {
                 title = combat ? "전투 주사위" : "운명의 주사위",
@@ -345,27 +362,30 @@ namespace FateDice
                 values = rolling ? (int[])state.dice.Clone() : null,
                 result = rolling ? KoreanText.HandSummary(state, true) : "6개의 주사위가 준비되었습니다",
                 rolling = rolling, duration = duration,
-                roll = rolling ? null : Choice("roll", "주사위 6개 굴리기", () => Command(() => Session.Roll(), true)),
+                roll = rolling ? null : Choice("roll", "주사위 6개 굴리기", () => Command(() => Session.Roll(token), true)),
                 appearance = visuals.ResolveButton(ButtonPurpose.Primary)
             });
             SyncInputLock();
         }
 
-        private void TravelToNode(string id)
+        private void TravelToNode(string id, RunCommandToken token)
         {
             if (Busy) return;
-            StartCoroutine(ArriveAtNode(id));
+            StartCoroutine(ArriveAtNode(id, token));
         }
 
-        private IEnumerator ArriveAtNode(string id)
+        private IEnumerator ArriveAtNode(string id, RunCommandToken token)
         {
             actionBusy = true; SyncInputLock(); error = null;
             bool moved = false;
-            try { moved = Session.ChooseNode(id); }
-            catch (Exception e) { error = "이동을 저장하지 못했습니다. " + PlayerError(e); }
-            if (moved && Widgets != null) yield return Widgets.AnimateNodeArrival(id, .35f);
-            Render();
-            actionBusy = false; SyncInputLock();
+            try
+            {
+                try { moved = Session.ChooseNode(id, token); }
+                catch (Exception e) { error = "이동을 저장하지 못했습니다. " + PlayerError(e); }
+                if (moved && Widgets != null) yield return PresentSafely(Widgets.AnimateNodeArrival(id, .35f));
+                RefreshView();
+            }
+            finally { actionBusy = false; SyncInputLock(); }
         }
         private void RenderMenu()
         {
@@ -422,35 +442,13 @@ namespace FateDice
         {
             actionBusy = true; SyncInputLock(); error = null;
             bool changed = false;
-            var before = Session.State;
+            var before = Session.ReadSnapshot();
             var combatView = UI.ActiveScreen as CombatUI;
-            CombatFeedbackData feedback = null;
             try
             {
-                changed = command();
-                if (changed && actionId != null) feedback = CaptureFeedback(before, Session.State, actionId);
-            }
-            catch (Exception e) { error = "행동을 저장하지 못했습니다. " + PlayerError(e); }
-            var style = Session.State.config.presentation;
-            try
-            {
-                if (roll && changed)
-                {
-                    // Results and cards are already checkpointed. Only presentation is delayed.
-                    ShowDiceWindow(true);
-                    var popup = UI.Popups.LastOrDefault() as DiceRollUI;
-                    yield return new WaitForSecondsRealtime(Mathf.Max(.65f, style.rollSeconds));
-                    yield return new WaitForSecondsRealtime(popup ? Mathf.Clamp(popup.resultHoldSeconds, 0, 3) : .9f);
-                    if (UI.Popups.LastOrDefault() == popup) UI.CloseTopPopup();
-                }
-                if (changed && selectionKey != null)
-                {
-                    if (Widgets != null) yield return Widgets.AnimateCardSelection(selectionKey, .22f);
-                    if (feedback != null && combatView) yield return combatView.PlayFeedback(feedback);
-                    else yield return new WaitForSecondsRealtime(Mathf.Max(.18f, style.actionSeconds));
-                }
-                Render();
-                if (!roll && selectionKey == null) yield return new WaitForSecondsRealtime(style.actionSeconds);
+                try { changed = command(); }
+                catch (Exception e) { error = "행동을 저장하지 못했습니다. " + PlayerError(e); }
+                yield return PresentSafely(PresentChange(before, combatView, changed, roll, selectionKey, actionId));
             }
             finally
             {
@@ -458,6 +456,78 @@ namespace FateDice
                 if (combatView) combatView.ResetFeedback();
                 actionBusy = false; SyncInputLock();
             }
+        }
+        private IEnumerator PresentChange(RunState before, CombatUI combatView, bool changed, bool roll, string selectionKey, string actionId)
+        {
+            var after = Session.ReadSnapshot();
+            var style = after.config.presentation;
+            var feedback = changed && actionId != null ? CaptureFeedback(before, after, actionId) : null;
+            if (roll && changed)
+            {
+                ShowDiceWindow(true);
+                var popup = UI.Popups.LastOrDefault() as DiceRollUI;
+                bool combat = before.phase == RunPhase.CombatRoll || before.phase == RunPhase.CombatCards;
+                var timing = style.DiceTiming(combat);
+                if (timing.rollSeconds > 0) yield return new WaitForSecondsRealtime(timing.rollSeconds);
+                if (popup) popup.CompleteRoll();
+                if (timing.resultHoldSeconds > 0) yield return new WaitForSecondsRealtime(timing.resultHoldSeconds);
+                if (UI.Popups.LastOrDefault() == popup) UI.CloseTopPopup();
+            }
+            if (changed && selectionKey != null)
+            {
+                if (Widgets != null) yield return Widgets.AnimateCardSelection(selectionKey, .22f);
+                if (feedback != null && combatView) yield return combatView.PlayFeedback(feedback);
+                else yield return new WaitForSecondsRealtime(Mathf.Max(.18f, style.actionSeconds));
+            }
+            Render();
+            if (!roll && selectionKey == null) yield return new WaitForSecondsRealtime(style.actionSeconds);
+        }
+        // Unity normally drives nested iterators separately. Drive them here so a nested
+        // presentation failure is caught at the same boundary as a failed screen rebind.
+        private IEnumerator PresentSafely(IEnumerator presentation)
+        {
+            var stack = new System.Collections.Generic.Stack<IEnumerator>();
+            stack.Push(presentation);
+            bool failed = false;
+            try
+            {
+                while (stack.Count > 0)
+                {
+                    bool next = false;
+                    object current = null;
+                    try
+                    {
+                        next = stack.Peek().MoveNext();
+                        if (next) current = stack.Peek().Current;
+                        else (stack.Pop() as IDisposable)?.Dispose();
+                    }
+                    catch (Exception e) { ReportPresentationFailure(e); failed = true; }
+                    if (failed) break;
+                    if (!next) continue;
+                    if (current is IEnumerator nested) stack.Push(nested);
+                    else yield return current;
+                }
+            }
+            finally
+            {
+                while (stack.Count > 0)
+                {
+                    try { (stack.Pop() as IDisposable)?.Dispose(); }
+                    catch (Exception e) { if (!failed) ReportPresentationFailure(e); failed = true; }
+                }
+            }
+            if (failed) TryRefreshView(false);
+        }
+        public bool RefreshView() => TryRefreshView(true);
+        private bool TryRefreshView(bool reportFailure)
+        {
+            try { Render(); return true; }
+            catch (Exception e) { if (reportFailure) ReportPresentationFailure(e); return false; }
+        }
+        private void ReportPresentationFailure(Exception exception)
+        {
+            Debug.LogWarning("Run presentation: " + exception.Message, this);
+            error = "화면을 표시하지 못했습니다. 확정된 진행 상태에서 다시 표시합니다.";
         }
         private static CombatFeedbackData CaptureFeedback(RunState before, RunState after, string id)
         {
@@ -506,8 +576,9 @@ namespace FateDice
             if (reward.xp != 0) parts.Add(reward.xp + " 경험치");
             if (reward.health != 0) parts.Add("체력 " + (reward.health > 0 ? "+" : "") + reward.health);
             if (reward.rerollCharges > 0) parts.Add(reward.rerollCharges + "회 재굴림");
-            if (!string.IsNullOrEmpty(reward.equipmentId)) parts.Add("장비: " + KoreanText.Content((Session?.State.config ?? PreviewConfig).Equipment(reward.equipmentId).label));
-            if (!string.IsNullOrEmpty(reward.dieId)) parts.Add("주사위: " + KoreanText.Content((Session?.State.config ?? PreviewConfig).Die(reward.dieId).label));
+            if (!string.IsNullOrEmpty(reward.equipmentId)) parts.Add("장비: " + KoreanText.Content((Session?.ReadSnapshot().config ?? PreviewConfig).Equipment(reward.equipmentId).label));
+            if (!string.IsNullOrEmpty(reward.dieId)) parts.Add("주사위: " + KoreanText.Content((Session?.ReadSnapshot().config ?? PreviewConfig).Die(reward.dieId).label));
+            if (!string.IsNullOrEmpty(reward.addActionId)) parts.Add("행동 카드: " + KoreanText.Content((Session?.ReadSnapshot().config ?? PreviewConfig).Action(reward.addActionId).label));
             return parts.Count == 0 ? "아이템 보상 없음" : string.Join("  •  ", parts);
         }
         private static string PlayerError(Exception exception)

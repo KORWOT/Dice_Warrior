@@ -7,20 +7,22 @@ namespace FateDice
     public struct PlayerStats { public int maxHp,power,guard; }
     public static class GrowthRules
     {
-        public static PlayerStats Stats(RunState state)
+        public static PlayerStats Stats(RunStateData state)
         {
             long hp=state.baseMaxHp,power=state.basePower,guard=state.baseGuard;
             foreach(var item in Equipped(state)){hp+=item.maxHp;power+=item.power;guard+=item.guard;}
             return new PlayerStats{maxHp=Limit(hp),power=Limit(power),guard=Limit(guard)};
         }
-        public static void Grant(RunState state,RewardDefinition reward)
+        public static void Grant(RunStateData state,RewardDefinition reward)
         {
+            if(!string.IsNullOrEmpty(reward.addActionId)&&!state.actionIds.Contains(reward.addActionId))
+                state.actionIds.Add(reward.addActionId);
             state.gold=Limit((long)state.gold+reward.gold);
             state.xp=Limit((long)state.xp+reward.xp);
             var previousMax=Stats(state).maxHp;
-            while(state.level<=state.config.growth.levels.Length)
+            while(state.level<=state.Rules.growth.levels.Length)
             {
-                var step=state.config.growth.levels[state.level-1];
+                var step=state.Rules.growth.levels[state.level-1];
                 if(state.xp<step.xpRequired)break;
                 state.xp-=step.xpRequired;state.level++;
                 state.baseMaxHp=Limit((long)state.baseMaxHp+step.maxHp);
@@ -35,14 +37,14 @@ namespace FateDice
                 state.rerollUnlocked=true;state.rerollCharges=Limit((long)state.rerollCharges+reward.rerollCharges);
             }
         }
-        public static void Equip(RunState state,string id)
+        public static void Equip(RunStateData state,string id)
         {
-            var previousMax=Stats(state).maxHp;var item=state.config.Equipment(id);
+            var previousMax=Stats(state).maxHp;var item=state.Rules.Equipment(id);
             state.equipmentIds[(int)item.slot]=id;
             var maximum=Stats(state).maxHp;
             state.hp=(int)Math.Min(maximum,(long)state.hp+(state.hp>0?Math.Max(0,maximum-previousMax):0));
         }
-        public static double Multiplier(RunState state,ActionDefinition action,ModifiedValue value)
+        public static double Multiplier(RunStateData state,ActionDefinition action,ModifiedValue value)
         {
             var equipment=Equipped(state).ToArray();
             var equippedTags=new HashSet<string>(equipment.SelectMany(x=>x.tags));
@@ -63,8 +65,8 @@ namespace FateDice
             }
             return Math.Max(0,multiplier);
         }
-        private static IEnumerable<EquipmentDefinition> Equipped(RunState state)
-            =>state.equipmentIds.Where(id=>!string.IsNullOrEmpty(id)).Select(state.config.Equipment);
+        private static IEnumerable<EquipmentDefinition> Equipped(RunStateData state)
+            =>state.equipmentIds.Where(id=>!string.IsNullOrEmpty(id)).Select(state.Rules.Equipment);
         private static int Limit(long value)=>(int)Math.Max(0,Math.Min(int.MaxValue,value));
     }
 }

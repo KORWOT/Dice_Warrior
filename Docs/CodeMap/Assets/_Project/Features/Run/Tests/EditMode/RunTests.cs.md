@@ -1,4 +1,9 @@
-# RunTests.cs
+﻿# RunTests.cs
+
+## RA-B 상태 경계 fixture 전환 (2026-09-09)
+
+세션의 State는 독립 표시 복사다. 준비 상태를 지역 RunState DTO에 구성한 뒤 새 RunSession 또는 격리 저장소에 전달한다. 규칙 기대값과 기존 버튼/저장/재연 assertion은 유지한다. 잘못된 저장 검사는 동일한 수정 DTO를 LocalRunStore.Save에 전달한다. 실제 실행 증거는 ROGUELIKE_ARCHITECTURE_REPORT를 따른다.
+
 - 책임: 순수전투·명령원자성·탐험/보상·성장/태그·재굴림경계의EditMode NUnit34건.
 - fixture: PrototypeAuthoring.CreateDefaults독립복제, Battle명시상태, Journey특정사건가중치/상한. 실제SO원본/파일변경없음.
 - 직접사용: RunSession,CombatRules,GrowthRules,GameConfigData/RunState/OfferedCard,JsonUtility,NUnit. Checkpoint의IOException만실패주입.

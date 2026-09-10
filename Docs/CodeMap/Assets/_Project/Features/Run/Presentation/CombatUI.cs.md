@@ -18,3 +18,8 @@
 
 - CombatFeedbackAuthoring이 추가하는 actionFeedback/damageFeedback/hitFlash, actionFeedbackSeconds/shakePixels/feedbackHoldSeconds/feedbackVersion을 사용한다. PlayFeedback(CombatFeedbackData)는 플레이어 결과와 생존 적 반응을 순서대로 표시하며 HP bar/Text를 단계별 확정치로 갱신한다. 피해량과 막힌 양, 획득 수호와 실제 흡수를 구분한다. arena만 감쇠 흔들림, 텍스트 확대·상승, 약한 색상 flash를 표시하고 IsFeedbackPlaying으로 재생 수명을 노출한다. Bind/Unbind/OnDisable/finally에서 텍스트·색상·위치를 정리한다. 규칙이나 저장은 직접 실행하지 않는다.
 - 실제 검증 및 한계: Docs/Reports/COMBAT_FEEDBACK_REPORT.md.
+- RA-B-02 수정2: arena의 흔들림은 기존 anchored 좌표로 계산하되 PlayFeedback 진입 시 localPosition도 보존한다. Impact 종료와 ResetFeedback/중단 복원은 원래 localPosition을 직접 사용해 RectTransform anchor 변환에서 분수 좌표가 사라지지 않게 한다. 기존 시간/표시/연출 크기/Prefab은 유지한다. RunBoundaryFlowTests의 실제 분수좌표 완전동등 RED→GREEN과 기존 연출/오류복구 검증을 함께 확인한다.
+
+- B-02 추가 수정3 검증: 정상 종료의 기준은 완료된 RectTransform layout 위치이며, 중단은 같은 프레임의 실제 captured localPosition이다. Unity 초기 layout 계산 자체를 연출이 되돌리도록 하지 않는다. 대응 테스트는 안정된 분수좌표 종료 및 초기 tiny fractional 값의 동기 중단을 각각 완전동등 비교한다.
+
+- B-02 최종 원인/수정: anchoredPosition getter 자체가 pending RectTransform layout을 갱신할 수 있으므로 localPosition을 반드시 먼저 보존한 뒤 anchored 흔들림 기준을 읽는다. 종료/중단은 보존 local로 복원한다. getter 독립 probe와 같은 프레임 중단 RED→GREEN을 사용하며 신규 serialized 필드/Prefab 변경은 없다.

@@ -1,4 +1,11 @@
 # ExplorationRules.cs
+
+## RA-C 현재 경계 (2026-09-09)
+
+상태 인자는 RunStateData, 설정 접근은 Rules로 변경되고 Core asmref에 소속된다. 그래프 생성·가지 정리·이력·보스 전환·노드 ID·단일 RNG 소비 순서는 그대로다. RunApplication이 명령 후보에서 호출하고 Runtime 지도는 확정 표시 DTO만 사용한다.
+
+기존 수식/행동 보존 및 Core 컴파일/전체 패·명령 재연은 ROGUELIKE_ARCHITECTURE_REPORT의 새 실행 증거를 따른다. 아래 기존 단계 증거를 RA-C PASS로 재사용하지 않는다.
+
 - 역할: 활성 탐험 노드 생성, 프리뷰 확장, 선택 경로 정리와 사건 완료 후 다음 Map 진입. UI 참조 없음.
 - Initialize: 활성 노드/available IDs/이력을 초기화하고 기존 branchCount/previewDepth/nodeWeights로 생성한다.
 - PruneTo: roots에서 childIds를 따라 HashSet으로 도달 가능한 활성 ID를 구한다. 도달 불가능한 NodeState를 nodeHistory로 옮긴 뒤 활성 목록에서 제거한다. ID/유형/연결과 RNG/진척은 바꾸지 않는다. 공유 자식은 한 번 방문하고 유지한다.

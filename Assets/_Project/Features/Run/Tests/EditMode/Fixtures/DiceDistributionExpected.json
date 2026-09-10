@@ -1,0 +1,1010 @@
+{
+  "schema": 1,
+  "provenance": {
+    "method": "All 46656 ordered face tuples; exact integer product masses and rational arithmetic; exclusive partition oracle.",
+    "status": "FROZEN_INDEPENDENT_EXPECTATIONS_GAME_RNG_NOT_USED_TO_GENERATE",
+    "modelSha256": "c2f9b76df0102e31707fc26b11bcc1778ff8353b6155d0b0db39f86668cffa2a",
+    "resultsSha256": "fb27239d6ec64d85bbe2bf01f0ee6ef8ca96b063a13541323109a6af40069076",
+    "inputsSha256": "6846f91f931496c5f0224a2b232bbad72bc318098f22c1f8880ab120d41e7215",
+    "sourceAssetAtCaptureSha256": "c59550d5ed157a5f06320d51ffcd6d3fabb8947b81f3ce2e103fe824ccc03303",
+    "sourceAssetHashIsProvenanceOnly": "RA-D adds unrelated content; compare the relevant literal fields below, not the whole asset hash.",
+    "crossChecks": "Exact tuple mass equals independent occupancy-polynomial mass for all k=0..6; base hand counts and SixKind product identity checked offline. No production rule or RNG was executed."
+  },
+  "sampling": {
+    "replacementCounts": [
+      0,
+      1,
+      2,
+      6
+    ],
+    "seeds": [
+      1,
+      33,
+      88,
+      1957,
+      2654435769,
+      305419896,
+      3735928559,
+      2463534242
+    ],
+    "samplesPerSeed": 62500,
+    "samplesPerConfiguration": 500000,
+    "totalRollSamples": 2000000,
+    "offeredSlots": 3,
+    "familyComparisons": 340,
+    "familyAlpha": 0.0001,
+    "familyDefinition": "4 configurations * (10 adopted hands + 9 fate powers + 6 dice * 6 faces + 2 phases * 3 slots * 5 grades)",
+    "countTolerance": "ceil(L/3 + sqrt(2*N*p*(1-p)*L + L*L/9)); L=ln(2*340/0.0001). Exact p=0 or 1 requires exact count.",
+    "drawOrder": "For each sample: Roll (six draws), BestHand (no draw), exploration DrawGrade slots 0..2 with Legendary cap, combat DrawGrade slots 0..2 with Common cap; one continuing local RNG per seed.",
+    "limits": "Union/Bernstein guarantee assumes independent ideal draws. Fixed xorshift32 streams are deterministic and independence is not proven; this is a fixed regression threshold, not a formal confidence guarantee for the PRNG.",
+    "gradeScope": "Grade-slot API draws only; content/type/ID draws of full offer generation are outside this distribution test. Each slot has N=500000; slots are not pooled as independent 3N samples. No fate-power bonus or reroll is sampled."
+  },
+  "inputs": {
+    "basicDieId": "plain",
+    "replacementDieId": "ember",
+    "dice": [
+      {
+        "id": "plain",
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "weights": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "faceProbabilities": [
+          "1/6",
+          "1/6",
+          "1/6",
+          "1/6",
+          "1/6",
+          "1/6"
+        ]
+      },
+      {
+        "id": "ember",
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "weights": [
+          1,
+          1,
+          1,
+          1,
+          2,
+          3
+        ],
+        "faceProbabilities": [
+          "1/9",
+          "1/9",
+          "1/9",
+          "1/9",
+          "2/9",
+          "1/3"
+        ]
+      }
+    ],
+    "hands": [
+      {
+        "kind": "Pair",
+        "enumValue": 0,
+        "priority": 0,
+        "fatePower": 1
+      },
+      {
+        "kind": "TwoPairs",
+        "enumValue": 1,
+        "priority": 1,
+        "fatePower": 2
+      },
+      {
+        "kind": "Triple",
+        "enumValue": 2,
+        "priority": 2,
+        "fatePower": 3
+      },
+      {
+        "kind": "Straight",
+        "enumValue": 6,
+        "priority": 3,
+        "fatePower": 4
+      },
+      {
+        "kind": "FullHouse",
+        "enumValue": 4,
+        "priority": 4,
+        "fatePower": 5
+      },
+      {
+        "kind": "ThreePairs",
+        "enumValue": 3,
+        "priority": 5,
+        "fatePower": 5
+      },
+      {
+        "kind": "FourKind",
+        "enumValue": 5,
+        "priority": 6,
+        "fatePower": 6
+      },
+      {
+        "kind": "FullStraight",
+        "enumValue": 7,
+        "priority": 7,
+        "fatePower": 7
+      },
+      {
+        "kind": "FiveKind",
+        "enumValue": 8,
+        "priority": 8,
+        "fatePower": 8
+      },
+      {
+        "kind": "SixKind",
+        "enumValue": 9,
+        "priority": 9,
+        "fatePower": 9
+      }
+    ],
+    "minimumFatePower": 1,
+    "maximumFatePower": 9,
+    "gradeTables": {
+      "exploration": [
+        {
+          "minimum_power": 1,
+          "weights": [
+            "65",
+            "25",
+            "8",
+            "1.8",
+            "0.2"
+          ]
+        },
+        {
+          "minimum_power": 3,
+          "weights": [
+            "45",
+            "32",
+            "18",
+            "4",
+            "1"
+          ]
+        },
+        {
+          "minimum_power": 5,
+          "weights": [
+            "25",
+            "32",
+            "28",
+            "12",
+            "3"
+          ]
+        },
+        {
+          "minimum_power": 7,
+          "weights": [
+            "10",
+            "20",
+            "35",
+            "25",
+            "10"
+          ]
+        },
+        {
+          "minimum_power": 9,
+          "weights": [
+            "3",
+            "12",
+            "30",
+            "35",
+            "20"
+          ]
+        }
+      ],
+      "combat": [
+        {
+          "minimum_power": 1,
+          "weights": [
+            "58",
+            "31",
+            "9",
+            "1.8",
+            "0.2"
+          ]
+        },
+        {
+          "minimum_power": 3,
+          "weights": [
+            "43",
+            "34",
+            "18",
+            "4",
+            "1"
+          ]
+        },
+        {
+          "minimum_power": 5,
+          "weights": [
+            "25",
+            "32",
+            "30",
+            "10",
+            "3"
+          ]
+        },
+        {
+          "minimum_power": 7,
+          "weights": [
+            "12",
+            "23",
+            "35",
+            "22",
+            "8"
+          ]
+        },
+        {
+          "minimum_power": 9,
+          "weights": [
+            "5",
+            "15",
+            "35",
+            "30",
+            "15"
+          ]
+        }
+      ]
+    },
+    "gradeMultipliers": [
+      "1",
+      "1.2",
+      "1.5",
+      "1.9",
+      "2.4"
+    ],
+    "offeredSlots": 3,
+    "commonShopPriceMultiplier": 1,
+    "economy": {
+      "reroll_cost_charges": 1,
+      "starting_gold": 12,
+      "shop": [
+        {
+          "id": "potion",
+          "price_gold": 10,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "reroll",
+          "price_gold": 12,
+          "reroll_charges": 3,
+          "die_id": ""
+        },
+        {
+          "id": "die",
+          "price_gold": 16,
+          "reroll_charges": 0,
+          "die_id": "ember"
+        },
+        {
+          "id": "blade",
+          "price_gold": 18,
+          "reroll_charges": 0,
+          "die_id": ""
+        }
+      ],
+      "events": [
+        {
+          "id": "combat_0",
+          "node_type": 0,
+          "grade": 0,
+          "health": 0,
+          "gold": 5,
+          "xp": 8,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "combat_1",
+          "node_type": 0,
+          "grade": 1,
+          "health": 0,
+          "gold": 6,
+          "xp": 10,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "combat_2",
+          "node_type": 0,
+          "grade": 2,
+          "health": 0,
+          "gold": 8,
+          "xp": 12,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "combat_3",
+          "node_type": 0,
+          "grade": 3,
+          "health": 0,
+          "gold": 10,
+          "xp": 15,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "combat_4",
+          "node_type": 0,
+          "grade": 4,
+          "health": 0,
+          "gold": 12,
+          "xp": 19,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "event_0",
+          "node_type": 1,
+          "grade": 0,
+          "health": -4,
+          "gold": 5,
+          "xp": 8,
+          "reroll_charges": 2,
+          "die_id": ""
+        },
+        {
+          "id": "event_1",
+          "node_type": 1,
+          "grade": 1,
+          "health": -4,
+          "gold": 6,
+          "xp": 10,
+          "reroll_charges": 2,
+          "die_id": ""
+        },
+        {
+          "id": "event_2",
+          "node_type": 1,
+          "grade": 2,
+          "health": -4,
+          "gold": 8,
+          "xp": 12,
+          "reroll_charges": 2,
+          "die_id": ""
+        },
+        {
+          "id": "event_3",
+          "node_type": 1,
+          "grade": 3,
+          "health": -4,
+          "gold": 10,
+          "xp": 15,
+          "reroll_charges": 2,
+          "die_id": ""
+        },
+        {
+          "id": "event_4",
+          "node_type": 1,
+          "grade": 4,
+          "health": -4,
+          "gold": 12,
+          "xp": 19,
+          "reroll_charges": 2,
+          "die_id": ""
+        },
+        {
+          "id": "treasure_0",
+          "node_type": 2,
+          "grade": 0,
+          "health": 0,
+          "gold": 12,
+          "xp": 4,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "treasure_1",
+          "node_type": 2,
+          "grade": 1,
+          "health": 0,
+          "gold": 14,
+          "xp": 5,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "treasure_2",
+          "node_type": 2,
+          "grade": 2,
+          "health": 0,
+          "gold": 18,
+          "xp": 6,
+          "reroll_charges": 0,
+          "die_id": "ember"
+        },
+        {
+          "id": "treasure_3",
+          "node_type": 2,
+          "grade": 3,
+          "health": 0,
+          "gold": 23,
+          "xp": 8,
+          "reroll_charges": 0,
+          "die_id": "ember"
+        },
+        {
+          "id": "treasure_4",
+          "node_type": 2,
+          "grade": 4,
+          "health": 0,
+          "gold": 29,
+          "xp": 10,
+          "reroll_charges": 0,
+          "die_id": "ember"
+        },
+        {
+          "id": "shop_0",
+          "node_type": 3,
+          "grade": 0,
+          "health": 0,
+          "gold": 0,
+          "xp": 0,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "shop_1",
+          "node_type": 3,
+          "grade": 1,
+          "health": 0,
+          "gold": 0,
+          "xp": 0,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "shop_2",
+          "node_type": 3,
+          "grade": 2,
+          "health": 0,
+          "gold": 0,
+          "xp": 0,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "shop_3",
+          "node_type": 3,
+          "grade": 3,
+          "health": 0,
+          "gold": 0,
+          "xp": 0,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "shop_4",
+          "node_type": 3,
+          "grade": 4,
+          "health": 0,
+          "gold": 0,
+          "xp": 0,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "rest_0",
+          "node_type": 4,
+          "grade": 0,
+          "health": 24,
+          "gold": 0,
+          "xp": 4,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "rest_1",
+          "node_type": 4,
+          "grade": 1,
+          "health": 29,
+          "gold": 0,
+          "xp": 5,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "rest_2",
+          "node_type": 4,
+          "grade": 2,
+          "health": 36,
+          "gold": 0,
+          "xp": 6,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "rest_3",
+          "node_type": 4,
+          "grade": 3,
+          "health": 46,
+          "gold": 0,
+          "xp": 8,
+          "reroll_charges": 0,
+          "die_id": ""
+        },
+        {
+          "id": "rest_4",
+          "node_type": 4,
+          "grade": 4,
+          "health": 58,
+          "gold": 0,
+          "xp": 10,
+          "reroll_charges": 0,
+          "die_id": ""
+        }
+      ],
+      "rest_training": {
+        "xp_before_cap_bonus": 12,
+        "reroll_charges": 1
+      },
+      "events_to_boss": 10
+    }
+  },
+  "cases": [
+    {
+      "replacementCount": 0,
+      "dieIds": [
+        "plain",
+        "plain",
+        "plain",
+        "plain",
+        "plain",
+        "plain"
+      ],
+      "integerDenominator": 46656,
+      "handMasses": [
+        7200,
+        16200,
+        7200,
+        3600,
+        7500,
+        1800,
+        2250,
+        720,
+        180,
+        6
+      ],
+      "fatePowerMasses": [
+        7200,
+        16200,
+        7200,
+        3600,
+        9300,
+        2250,
+        720,
+        180,
+        6
+      ],
+      "explorationGradeProbabilities": [
+        "3001/6075",
+        "3433/12150",
+        "6139/38880",
+        "8221/155520",
+        "395/31104"
+      ],
+      "combatGradeProbabilities": [
+        "35353/77760",
+        "49433/155520",
+        "26107/155520",
+        "23/486",
+        "319/25920"
+      ],
+      "meanFatePower": "23689/7776",
+      "meanFaceSum": "21",
+      "explorationRareOrAbove": "181/810",
+      "combatRareOrAbove": "35381/155520",
+      "meanExplorationGradeMultiplier": "9337519/7776000",
+      "meanCombatGradeMultiplier": "625879/518400",
+      "optionalOneRerollTheory": {
+        "mean_fate_power_after": {
+          "fraction": "23533/5832",
+          "value": 4.035150891632373
+        },
+        "mean_gain_per_initial_roll": {
+          "fraction": "23065/23328",
+          "value": 0.9887259945130316
+        },
+        "mean_charges_spent_per_initial_roll": {
+          "fraction": "7355/7776",
+          "value": 0.9458590534979424
+        },
+        "gain_per_spent_charge": {
+          "fraction": "4613/4413",
+          "value": 1.0453206435531384
+        },
+        "gain_per_gold_at_shop_charge_price": {
+          "fraction": "4613/17652",
+          "value": 0.2613301608882846
+        },
+        "probability_power_improves": {
+          "fraction": "19955/46656",
+          "value": 0.4277049039780521
+        },
+        "probability_power_worsens": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "probability_power_unchanged": {
+          "fraction": "26701/46656",
+          "value": 0.5722950960219478
+        }
+      },
+      "replacementEfficiencyTheory": {
+        "mean_power_gain_vs_all_plain": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "marginal_power_gain_vs_one_fewer_special": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "marginal_power_gain_per_future_roll_per_shop_gold": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "purchase_price_gold_for_this_step": 0,
+        "sixteen_gold_shadow_equivalent_rerolls": {
+          "fraction": "4",
+          "value": 4.0
+        }
+      }
+    },
+    {
+      "replacementCount": 1,
+      "dieIds": [
+        "ember",
+        "plain",
+        "plain",
+        "plain",
+        "plain",
+        "plain"
+      ],
+      "integerDenominator": 69984,
+      "handMasses": [
+        11160,
+        24300,
+        10800,
+        5040,
+        11250,
+        2700,
+        3375,
+        1080,
+        270,
+        9
+      ],
+      "fatePowerMasses": [
+        11160,
+        24300,
+        10800,
+        5040,
+        13950,
+        3375,
+        1080,
+        270,
+        9
+      ],
+      "explorationGradeProbabilities": [
+        "12029/24300",
+        "9143/32400",
+        "6119/38880",
+        "41017/777600",
+        "3281/259200"
+      ],
+      "combatGradeProbabilities": [
+        "35413/77760",
+        "49409/155520",
+        "5207/31104",
+        "4589/97200",
+        "4769/388800"
+      ],
+      "meanFatePower": "23569/7776",
+      "meanFaceSum": "391/18",
+      "explorationRareOrAbove": "4331/19440",
+      "combatRareOrAbove": "7057/31104",
+      "meanExplorationGradeMultiplier": "9333719/7776000",
+      "meanCombatGradeMultiplier": "1876981/1555200",
+      "optionalOneRerollTheory": {
+        "mean_fate_power_after": {
+          "fraction": "5098861/1259712",
+          "value": 4.047640254280344
+        },
+        "mean_gain_per_initial_roll": {
+          "fraction": "1280683/1259712",
+          "value": 1.016647455926434
+        },
+        "mean_charges_spent_per_initial_roll": {
+          "fraction": "7355/7776",
+          "value": 0.9458590534979424
+        },
+        "gain_per_spent_charge": {
+          "fraction": "1280683/1191510",
+          "value": 1.0748403286585928
+        },
+        "gain_per_gold_at_shop_charge_price": {
+          "fraction": "1280683/4766040",
+          "value": 0.2687100821646482
+        },
+        "probability_power_improves": {
+          "fraction": "181351/419904",
+          "value": 0.43188681222374636
+        },
+        "probability_power_worsens": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "probability_power_unchanged": {
+          "fraction": "238553/419904",
+          "value": 0.5681131877762536
+        }
+      },
+      "replacementEfficiencyTheory": {
+        "mean_power_gain_vs_all_plain": {
+          "fraction": "-5/324",
+          "value": -0.015432098765432098
+        },
+        "marginal_power_gain_vs_one_fewer_special": {
+          "fraction": "-5/324",
+          "value": -0.015432098765432098
+        },
+        "marginal_power_gain_per_future_roll_per_shop_gold": {
+          "fraction": "-5/5184",
+          "value": -0.0009645061728395061
+        },
+        "purchase_price_gold_for_this_step": 16,
+        "sixteen_gold_shadow_equivalent_rerolls": {
+          "fraction": "4",
+          "value": 4.0
+        }
+      }
+    },
+    {
+      "replacementCount": 2,
+      "dieIds": [
+        "ember",
+        "ember",
+        "plain",
+        "plain",
+        "plain",
+        "plain"
+      ],
+      "integerDenominator": 104976,
+      "handMasses": [
+        16584,
+        36072,
+        16368,
+        6960,
+        17428,
+        4092,
+        5451,
+        1536,
+        468,
+        17
+      ],
+      "fatePowerMasses": [
+        16584,
+        36072,
+        16368,
+        6960,
+        21520,
+        5451,
+        1536,
+        468,
+        17
+      ],
+      "explorationGradeProbabilities": [
+        "2583383/5248800",
+        "741563/2624400",
+        "166699/1049760",
+        "2812199/52488000",
+        "675761/52488000"
+      ],
+      "combatGradeProbabilities": [
+        "118889/262440",
+        "3334907/10497600",
+        "1773673/10497600",
+        "628001/13122000",
+        "3413/273375"
+      ],
+      "meanFatePower": "320627/104976",
+      "meanFaceSum": "202/9",
+      "explorationRareOrAbove": "394097/1749600",
+      "combatRareOrAbove": "2407133/10497600",
+      "meanExplorationGradeMultiplier": "126197543/104976000",
+      "meanCombatGradeMultiplier": "2819347/2332800",
+      "optionalOneRerollTheory": {
+        "mean_fate_power_after": {
+          "fraction": "3869491/944784",
+          "value": 4.09563561618317
+        },
+        "mean_gain_per_initial_roll": {
+          "fraction": "122981/118098",
+          "value": 1.0413470168842824
+        },
+        "mean_charges_spent_per_initial_roll": {
+          "fraction": "99331/104976",
+          "value": 0.9462258039932937
+        },
+        "gain_per_spent_charge": {
+          "fraction": "983848/893979",
+          "value": 1.1005269698728941
+        },
+        "gain_per_gold_at_shop_charge_price": {
+          "fraction": "245962/893979",
+          "value": 0.27513174246822353
+        },
+        "probability_power_improves": {
+          "fraction": "46153/104976",
+          "value": 0.4396528730376467
+        },
+        "probability_power_worsens": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "probability_power_unchanged": {
+          "fraction": "58823/104976",
+          "value": 0.5603471269623533
+        }
+      },
+      "replacementEfficiencyTheory": {
+        "mean_power_gain_vs_all_plain": {
+          "fraction": "1651/209952",
+          "value": 0.0078637021795458
+        },
+        "marginal_power_gain_vs_one_fewer_special": {
+          "fraction": "4891/209952",
+          "value": 0.0232958009449779
+        },
+        "marginal_power_gain_per_future_roll_per_shop_gold": {
+          "fraction": "4891/3359232",
+          "value": 0.0014559875590611187
+        },
+        "purchase_price_gold_for_this_step": 16,
+        "sixteen_gold_shadow_equivalent_rerolls": {
+          "fraction": "4",
+          "value": 4.0
+        }
+      }
+    },
+    {
+      "replacementCount": 6,
+      "dieIds": [
+        "ember",
+        "ember",
+        "ember",
+        "ember",
+        "ember",
+        "ember"
+      ],
+      "integerDenominator": 531441,
+      "handMasses": [
+        59400,
+        150120,
+        89280,
+        21600,
+        115960,
+        20340,
+        59340,
+        4320,
+        10284,
+        797
+      ],
+      "fatePowerMasses": [
+        59400,
+        150120,
+        89280,
+        21600,
+        136300,
+        59340,
+        4320,
+        10284,
+        797
+      ],
+      "explorationGradeProbabilities": [
+        "23647831/53144100",
+        "3837071/13286025",
+        "968497/5314410",
+        "3561331/53144100",
+        "225421/13286025"
+      ],
+      "combatGradeProbabilities": [
+        "21990233/53144100",
+        "16873367/53144100",
+        "2057951/10628820",
+        "1561127/26572050",
+        "96499/5904900"
+      ],
+      "meanFatePower": "1871105/531441",
+      "meanFaceSum": "76/3",
+      "explorationRareOrAbove": "943199/3542940",
+      "combatRareOrAbove": "142805/531441",
+      "meanExplorationGradeMultiplier": "655237973/531441000",
+      "meanCombatGradeMultiplier": "218965223/177147000",
+      "optionalOneRerollTheory": {
+        "mean_fate_power_after": {
+          "fraction": "22003349/4782969",
+          "value": 4.600353671537491
+        },
+        "mean_gain_per_initial_roll": {
+          "fraction": "5163404/4782969",
+          "value": 1.0795395077827181
+        },
+        "mean_charges_spent_per_initial_roll": {
+          "fraction": "505984/531441",
+          "value": 0.9520981632956433
+        },
+        "gain_per_spent_charge": {
+          "fraction": "1290851/1138464",
+          "value": 1.1338531565337155
+        },
+        "gain_per_gold_at_shop_charge_price": {
+          "fraction": "1290851/4553856",
+          "value": 0.2834632891334289
+        },
+        "probability_power_improves": {
+          "fraction": "2291384/4782969",
+          "value": 0.47907147213373114
+        },
+        "probability_power_worsens": {
+          "fraction": "0",
+          "value": 0.0
+        },
+        "probability_power_unchanged": {
+          "fraction": "2491585/4782969",
+          "value": 0.5209285278662689
+        }
+      },
+      "replacementEfficiencyTheory": {
+        "mean_power_gain_vs_all_plain": {
+          "fraction": "8067517/17006112",
+          "value": 0.47438926663543085
+        },
+        "marginal_power_gain_vs_one_fewer_special": {
+          "fraction": "180757/1062882",
+          "value": 0.1700630926104685
+        },
+        "marginal_power_gain_per_future_roll_per_shop_gold": {
+          "fraction": "180757/17006112",
+          "value": 0.010628943288154282
+        },
+        "purchase_price_gold_for_this_step": 16,
+        "sixteen_gold_shadow_equivalent_rerolls": {
+          "fraction": "4",
+          "value": 4.0
+        }
+      }
+    }
+  ],
+  "resourceLimits": [
+    "All quoted gold prices are Common shop prices: 12 gold for 3 charges, 1 charge per one-die reroll, 16 gold for one Ember replacement. Common multiplier is exactly 1; higher-grade shops use the new price policy.",
+    "4 gold/charge and 16 gold = 4 rerolls are shadow-price ratios. The actual bundle grants 3 charges and each product is bought once per shop; neither 4 charges nor unlimited same-shop purchases are offered.",
+    "One Ember replacement lowers exact mean fate power by 5/324 despite increasing the face sum. Multiple replacements do not imply stochastic dominance or better every-hand/card outcomes.",
+    "Rare+ is a per-slot marginal at the stated cap. It is not a probability that a run wins or that a card is better; slots share rolled fate power, and card content/tag/HP/horizon utility is not modeled.",
+    "Optional one-reroll values are independent exact theory: see all six faces, skip unless expected fate power strictly improves, otherwise choose a maximizing slot, ties lowest slot. Actual game reroll/offer refresh is not sampled here.",
+    "Shop die acquisition needs a selected replacement slot; replacing Ember with Ember has no distribution gain. Rare/Epic/Legendary treasure grants Ember; Event offers 2 charges with nominal health -4, and training grants 1 charge plus baseline XP12 while forgoing rest healing. These policies do not establish an optimal run strategy."
+  ]
+}

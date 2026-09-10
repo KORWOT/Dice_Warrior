@@ -1,0 +1,9 @@
+{
+  "name": "FateDice.Core",
+  "rootNamespace": "FateDice",
+  "references": [],
+  "autoReferenced": true,
+  "noEngineReferences": true,
+  "overrideReferences": true,
+  "precompiledReferences": []
+}
