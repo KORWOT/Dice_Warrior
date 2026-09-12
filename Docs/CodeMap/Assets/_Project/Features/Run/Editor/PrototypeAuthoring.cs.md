@@ -1,5 +1,9 @@
 # PrototypeAuthoring.cs
 
+## 검토 후속 기본 상점 할인 (2026-09-11)
+
+CreateDefaults의 새 여정 상점 배율은 [1,.95,.9,.85,.8]이며 고등급의 동일 상품 가격이 증가하지 않도록 하는 조정 가능한 초기값이다. 기존 가격 계산·보상·상품·시작 소유 목록은 유지한다. 기존 SO를 자동 재생성하거나 저장된 여정의 규칙/확정가격을 변경하지 않는다. 실제 DefaultFateDice.asset의 동일 배율 적용은 별도 승인된 Editor API 보조에서 수행한다. 직접 소비자인 ContentExtensionTests/ContentExtensionFlowTests는 새 가격과 이전 증가배율 저장의 재개를 각각 검사한다. 실제 결과는 COMMIT_REVIEW_8C76732_FOLLOWUP_REPORT를 따른다.
+
 ## RA-A 현재 계약 (2026-09-09)
 
 CreateDefaults에서 탐험/전투 RollPresentationSettings를 각각 생성하여 .65초 굴림/.9초 결과 유지 기본을 명시한다. 기존 legacy .35 값과 모든 게임 규칙 수치는 유지한다. 기존 SO 자동 재생성 없음; 이번 DefaultFateDice.asset 변경은 PLAN에 지정된 Editor API 도구로만 수행한다.

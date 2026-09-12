@@ -1,4 +1,8 @@
 # RunUIData.cs
+
+## 메타 진행 현재 계약 (2026-09-11)
+
+MenuUIData에 metaEnabled와 characters/loadoutChoices/growthChoices를 추가했다. RunUIController.Meta가 읽기용 프로필에서 선택 DTO를 만들며 MenuUI가 authored 컨테이너에 표시한다. DTO는 영구 저장 원본이나 권한 객체를 보관하지 않고 기존 UIChoiceData 콜백 계약을 사용한다. 다른 화면/기존 메타 미주입 데이터는 그대로 사용할 수 있다. META_PROGRESSION_REPORT 참조.
 - 역할: 화면별 런타임 표시 DTO. UIData→RunUIData(context,hud)→Menu/Exploration/Combat/Encounter/Reward/Equipment/ResultUIData를 정의한다. ScriptableObject나 저장 모델이 아니다.
 - 입출력: RunHUDData는 표시 문구/복사 dice/메뉴·주사위 요청, UIChoiceData는 키/문구/가용·선택 상태와 요청 delegate. ActionOffer는 originalId/id/실제 효과·태그/grade/art, FateOffer는 id/type/grade만 포함한다.
 - 데이터 경계: RunUIContext는 주입 manager, 네 반복 원본, visual catalog, presentation 의존 묶음이다. RunSession/LocalRunStore를 보유하지 않는다. 신규 지도의 campaignNodes는 CampaignMapProjection이 만든 공개 DTO이며, nodes/completedNodes는 구형 지도 전용 복사다.

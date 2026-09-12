@@ -8,10 +8,12 @@ namespace FateDice
     {
         public RunUIController controller;
         public SceneFlowController sceneFlow;
+        public MetaProgressionConfig metaConfig;
         static GameApplication current;
         public static GameApplication Current => current ? current : null;
 
-        public static GameApplication Bootstrap(GameApplication prefab, IRunStore store = null, ISeedSource seedSource = null)
+        public static GameApplication Bootstrap(GameApplication prefab, IRunStore store = null, ISeedSource seedSource = null,
+            IMetaProgressionService metaService = null)
         {
             if (current)
             {
@@ -19,6 +21,8 @@ namespace FateDice
                     throw new InvalidOperationException("The running application already owns a different save store.");
                 if (seedSource != null && !ReferenceEquals(seedSource, current.controller.SeedSource))
                     throw new InvalidOperationException("The running application already owns a different seed source.");
+                if (metaService != null && !ReferenceEquals(metaService, current.controller.Meta))
+                    throw new InvalidOperationException("The running application already owns a different meta service.");
                 return current;
             }
             if (!prefab) throw new ArgumentNullException(nameof(prefab));
@@ -33,10 +37,20 @@ namespace FateDice
             {
                 instance = Instantiate(prefab);
                 instance.controller.initializeOnAwake = false;
+                if (store == null && metaService == null)
+                {
+                    if (!instance.metaConfig) throw new InvalidOperationException("GameApplication requires its authored meta progression config.");
+                    const string profileId = "local-development";
+                    metaService = new LocalMetaProgressionService(new LocalPlayerDataStore(LocalPlayerDataStore.PlayerPath(
+                        Path.Combine(Application.persistentDataPath, "FateDiceMeta"), profileId), profileId),
+                        () => instance.controller.config.Snapshot(), instance.metaConfig, seedSource,
+                        new LocalRunStore(Path.Combine(Application.persistentDataPath, "FateDiceLocal", "run.json")));
+                }
+                if (store != null && metaService != null && !ReferenceEquals(store, metaService.RunStore))
+                    throw new InvalidOperationException("Meta progression and run checkpoints must belong to the same player store.");
                 // Inject all dependencies before activating any controller, UI or EventSystem.
                 instance.sceneFlow.Initialize(instance.controller);
-                instance.controller.Initialize(store ?? new LocalRunStore(Path.Combine(
-                    Application.persistentDataPath, "FateDiceLocal", "run.json")), instance.sceneFlow, seedSource);
+                instance.controller.Initialize(store ?? metaService.RunStore, instance.sceneFlow, seedSource, metaService);
                 DontDestroyOnLoad(instance.gameObject);
                 current = instance;
                 instance.gameObject.SetActive(true);

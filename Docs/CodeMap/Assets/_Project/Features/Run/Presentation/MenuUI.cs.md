@@ -1,5 +1,9 @@
 # MenuUI.cs
 
+## 메타 진행 현재 계약 (2026-09-11)
+
+metaLayoutVersion1과 authored metaCharacters/metaLoadout/metaGrowth 컨테이너, legacyGrowthNotice 참조를 추가했다. MenuUIData.metaEnabled이면 컨테이너를 필수 검증하고 보유 캐릭터/장비·주사위/성장 선택을 기존 Widgets.Choice 소유 수명으로 작성한다. 기존 임시 성장 안내는 메타 사용 시 숨긴다. 탭·스크롤·원본 배치와 layoutVersion1은 유지한다. 데이터 지급/저장 책임은 없으며 Controller가 명령을 제공한다. META_PROGRESSION_REPORT 참조.
+
 - 역할: Lobby의 캐릭터·세팅·성장 안내 탭과 출전/이어하기를 표시하는 RunScreenView<MenuUIData>다. 기존 방랑자와 런 설정만 표시하며 계정·영구 성장·게임 규칙을 추가하지 않는다.
 - serialized 입력: 기존 trialHeading/capHeading/seedHeading, trialChoices/capChoices/mainChoices, seedInput/error/lastResult 및 상속 layout/group을 유지한다. characterName/characterDetails/growthDetails, characterPanel/settingsPanel/growthPanel, characterTab/settingsTab/growthTab, layoutVersion이 추가된다. LobbyPreparationAuthoring가 MenuUI.prefab 한 개에 이 연결을 작성한다.
 - 데이터: RunUIController 또는 Editor UIWorkbenchPreview가 만든 MenuUIData의 세 캐릭터/성장 문자열과 기존 선택 DTO를 바인딩한다. 시련·등급·새 여정·이어하기·손상 보관의 기존 command key/가용 상태/delegate는 Widgets.Choice를 통해 유지한다. 로비는 RunState/LocalRunStore/SceneManager를 직접 조회하지 않는다.

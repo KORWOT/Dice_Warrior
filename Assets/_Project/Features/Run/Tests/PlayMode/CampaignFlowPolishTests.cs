@@ -286,16 +286,23 @@ namespace FateDice.Tests
             string before = Stable(State); var bytes = Bytes(); int saves = store.saves;
             using (var mouse = new TemporaryMouse())
             {
+                var trace = new List<string>();
                 mouse.Queue(point, false); yield return null; yield return null;
+                trace.Add("hover " + mouse.Describe(scroll));
                 float start = scroll.verticalNormalizedPosition;
                 mouse.Queue(point, true); yield return null;
+                trace.Add("down " + mouse.Describe(scroll));
                 var moved = point - Vector2.up * Mathf.Max(100, EventSystem.current.pixelDragThreshold * 4);
                 mouse.Queue(moved, true); yield return null; yield return null;
+                trace.Add("move1 " + mouse.Describe(scroll));
                 // ScrollRect captures its origin when the threshold is crossed; keep moving after BeginDrag.
                 moved -= Vector2.up * 100;
                 mouse.Queue(moved, true); yield return null; yield return null;
+                trace.Add("move2 " + mouse.Describe(scroll));
                 mouse.Queue(moved, false); yield return null; yield return null;
-                Assert.That(Mathf.Abs(scroll.verticalNormalizedPosition - start), Is.GreaterThan(.005f), "The real input module must actually scroll.");
+                trace.Add("up " + mouse.Describe(scroll));
+                Assert.That(Mathf.Abs(scroll.verticalNormalizedPosition - start), Is.GreaterThan(.005f),
+                    "The real input module must actually scroll. start=" + start + " end=" + scroll.verticalNormalizedPosition + "\n" + string.Join("\n", trace));
             }
             Assert.That(Controller.Busy, Is.False); Assert.That(State.phase, Is.EqualTo(RunPhase.Map));
             Assert.That(Stable(State), Is.EqualTo(before)); Assert.That(store.saves, Is.EqualTo(saves)); CollectionAssert.AreEqual(bytes, Bytes());
@@ -508,22 +515,53 @@ namespace FateDice.Tests
                 Assert.That(view.actionFeedback.text, Is.Empty);
             }
         }
-        // Use the installed input API without adding an assembly reference or changing its settings.
+        // Route synthetic input while unfocused using an owned, disposable settings clone.
         sealed class TemporaryMouse : IDisposable
         {
             readonly Type input, stateType;
             readonly object device, previous;
             readonly MethodInfo queue;
+            readonly PropertyInfo settings;
+            readonly Object originalSettings, temporarySettings;
+            readonly HideFlags originalFlags;
+            readonly string originalJson;
+            bool disposed;
             public TemporaryMouse()
             {
                 input = Type.GetType("UnityEngine.InputSystem.InputSystem, Unity.InputSystem", true);
                 stateType = Type.GetType("UnityEngine.InputSystem.LowLevel.MouseState, Unity.InputSystem", true);
                 var mouse = Type.GetType("UnityEngine.InputSystem.Mouse, Unity.InputSystem", true);
                 previous = mouse.GetProperty("current").GetValue(null);
-                device = input.GetMethod("AddDevice", new[] { typeof(string), typeof(string), typeof(string) })
-                    .Invoke(null, new object[] { "Mouse", "CampaignFlowTestMouse", null });
                 queue = input.GetMethods().Single(m => m.Name == "QueueStateEvent" && m.IsGenericMethodDefinition).MakeGenericMethod(stateType);
-                device.GetType().GetMethod("MakeCurrent").Invoke(device, null);
+                settings = input.GetProperty("settings");
+                originalSettings = (Object)settings.GetValue(null);
+                originalFlags = originalSettings.hideFlags;
+                originalJson = JsonUtility.ToJson(originalSettings);
+                temporarySettings = Object.Instantiate(originalSettings);
+                temporarySettings.hideFlags = HideFlags.HideAndDontSave;
+                try
+                {
+                    SetMode("backgroundBehavior", "IgnoreFocus");
+                    SetMode("editorInputBehaviorInPlayMode", "AllDeviceInputAlwaysGoesToGameView");
+                    try
+                    {
+                        // InputManager destroys an outgoing HideAndDontSave settings object.
+                        // Retain our borrowed original during the swap, then restore its exact flags.
+                        if (originalFlags == HideFlags.HideAndDontSave) originalSettings.hideFlags = HideFlags.DontSave;
+                        settings.SetValue(null, temporarySettings);
+                    }
+                    finally { originalSettings.hideFlags = originalFlags; }
+                    device = input.GetMethod("AddDevice", new[] { typeof(string), typeof(string), typeof(string) })
+                        .Invoke(null, new object[] { "Mouse", "CampaignFlowTestMouse", null });
+                    input.GetMethod("EnableDevice").Invoke(null, new[] { device });
+                    device.GetType().GetMethod("MakeCurrent").Invoke(device, null);
+                }
+                catch { Dispose(); throw; }
+            }
+            void SetMode(string name, string value)
+            {
+                var property = temporarySettings.GetType().GetProperty(name);
+                property.SetValue(temporarySettings, Enum.Parse(property.PropertyType, value));
             }
             public void Queue(Vector2 point, bool pressed)
             {
@@ -531,10 +569,67 @@ namespace FateDice.Tests
                 stateType.GetField("position").SetValue(state, point); stateType.GetField("buttons").SetValue(state, (ushort)(pressed ? 1 : 0));
                 queue.Invoke(null, new[] { device, state, (object)(-1d) });
             }
+            // Observe after the existing yields; never update input, dispatch events or modify the live pointer.
+            public string Describe(ScrollRect scroll)
+            {
+                try
+                {
+                    var system = EventSystem.current; var module = system ? system.currentInputModule : null;
+                    var position = Member(device, "position"); var button = Member(device, "leftButton");
+                    var value = position.GetType().GetMethod("ReadValue", Type.EmptyTypes).Invoke(position, null);
+                    var rows = new List<string>();
+                    var pointers = Member(module, "m_PointerStates") as IEnumerable;
+                    if (pointers != null) foreach (var pointer in pointers)
+                    {
+                        var data = Member(pointer, "eventData") as PointerEventData; var left = Member(pointer, "leftButton");
+                        if (data == null) { rows.Add("missing eventData"); continue; }
+                        rows.Add("device=" + Device(Member(data, "device")) + " control=" + Member(Member(data, "control"), "path") +
+                            " pos=" + data.position + " delta=" + data.delta + " hit=" + Name(data.pointerCurrentRaycast.gameObject) +
+                            " press=" + Name(data.pointerPress) + " drag=" + Name(data.pointerDrag) + " dragging=" + data.dragging +
+                            " leftPressed=" + Member(left, "isPressed") + " leftPress=" + Name(Member(left, "m_PressObject") as Object) +
+                            " leftDrag=" + Name(Member(left, "m_DragObject") as Object) + " leftDragging=" + Member(left, "m_Dragging"));
+                    }
+                    return "frame=" + Time.frameCount + " normalized=" + scroll.verticalNormalizedPosition +
+                        " content=" + scroll.content.anchoredPosition + " contentRect=" + scroll.content.rect +
+                        " viewport=" + ScreenRect(scroll.viewport) + " movement=" + scroll.movementType +
+                        " focus=" + Application.isFocused + "/" + (system && system.isFocused) + " cursor=" + Cursor.lockState +
+                        " module=" + Name(module) + " ignoresFocus=" + Member(module, "shouldIgnoreFocus") +
+                        " virtual=" + Device(device) + " pos=" + value + " pressed=" + Member(button, "isPressed") +
+                        " pointers=[" + string.Join("; ", rows) + "]";
+                }
+                catch (Exception error) { return "diagnostic unavailable: " + error.GetBaseException().Message; }
+            }
+            static object Member(object target, string name)
+            {
+                if (target == null) return null;
+                const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                var property = target.GetType().GetProperty(name, flags);
+                return property != null ? property.GetValue(target) : target.GetType().GetField(name, flags)?.GetValue(target);
+            }
+            static string Device(object value) => value == null ? "none" : Member(value, "deviceId") + ":" + Member(value, "name") +
+                " enabled=" + Member(value, "enabled") + " native=" + Member(value, "native");
+            static string Name(Object value) => value ? value.name : "none";
             public void Dispose()
             {
-                input.GetMethods().Single(m => m.Name == "RemoveDevice" && m.GetParameters().Length == 1).Invoke(null, new[] { device });
-                if (previous != null) previous.GetType().GetMethod("MakeCurrent").Invoke(previous, null);
+                if (disposed) return;
+                disposed = true;
+                try
+                {
+                    if (device != null) input.GetMethods().Single(m => m.Name == "RemoveDevice" && m.GetParameters().Length == 1)
+                        .Invoke(null, new[] { device });
+                }
+                finally
+                {
+                    try { settings.SetValue(null, originalSettings); }
+                    finally
+                    {
+                        try { if (previous != null) previous.GetType().GetMethod("MakeCurrent").Invoke(previous, null); }
+                        finally { if (temporarySettings) Object.DestroyImmediate(temporarySettings); }
+                    }
+                    Assert.That(settings.GetValue(null), Is.SameAs(originalSettings));
+                    Assert.That(originalSettings.hideFlags, Is.EqualTo(originalFlags));
+                    Assert.That(JsonUtility.ToJson(originalSettings), Is.EqualTo(originalJson), "Original input settings must remain unchanged.");
+                }
             }
         }
     }

@@ -74,7 +74,7 @@ namespace FateDice.Editor
                     eventsToBoss=10,offeredCards=3,previewDepth=2,branchCount=3,
                     bossReward = new RewardDefinition {gold=50,xp=30},
                     restTraining = new RewardDefinition {xp=12,rerollCharges=1},
-                    shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f},
+                    shopPriceMultipliers=new[]{1f,.95f,.9f,.85f,.8f},
                     shop = new[]{
                         new ShopProduct{id="potion",label="Healing draught",price=10,reward=new RewardDefinition{health=25}},
                         new ShopProduct{id="reroll",label="Reroll training + 3 charges",price=12,reward=new RewardDefinition{rerollCharges=3}},

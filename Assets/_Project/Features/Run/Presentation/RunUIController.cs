@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 namespace FateDice
 {
     // Owns the application state and commands. Views receive display snapshots only.
-    public class RunUIController : MonoBehaviour
+    public partial class RunUIController : MonoBehaviour
     {
         [Tooltip("New runs take a validated snapshot of this config.")] public FateDiceConfig config;
         [Tooltip("Font used when authoring the screen prefabs.")] public Font uiFont;
@@ -19,7 +19,7 @@ namespace FateDice
         public FateDiceWidgets Widgets => (UI?.ActiveScreen as IRunScreenView)?.Widgets;
         public GameConfigData PreviewConfig { get; private set; }
         public RunSession Session { get; private set; }
-        public bool Busy => actionBusy || (navigation?.IsTransitioning ?? false);
+        public bool Busy => actionBusy || metaBusy || (navigation?.IsTransitioning ?? false);
         public IRunStore Store { get; private set; }
         public ISeedSource SeedSource { get; private set; }
         private uint selectedSeed = 33;
@@ -62,10 +62,14 @@ namespace FateDice
             catch (Exception e) { Debug.LogError(e.Message, this); enabled = false; }
         }
 
-        public void Initialize(IRunStore store, IRunSceneNavigation sceneNavigation = null, ISeedSource seedSource = null)
+        public void Initialize(IRunStore store, IRunSceneNavigation sceneNavigation = null, ISeedSource seedSource = null,
+            IMetaProgressionService metaService = null)
         {
             if (UI) throw new InvalidOperationException("RunUIController has already been initialized.");
             if (store == null) throw new ArgumentNullException(nameof(store));
+            if (metaService != null && !ReferenceEquals(store, metaService.RunStore))
+                throw new InvalidOperationException("The meta service must own the run checkpoint store.");
+            Meta = metaService;
             if (!config || !uiFont || !uiRootPrefab || !visuals)
                 throw new InvalidOperationException("Fate Dice requires its config, font, visual catalog and UIRoot prefab.");
             PreviewConfig = config.Snapshot();
@@ -84,6 +88,8 @@ namespace FateDice
         public void UseStore(IRunStore store)
         {
             if (Busy) throw new InvalidOperationException("Cannot switch saves during an action.");
+            if (Meta != null && !ReferenceEquals(store, Meta.RunStore))
+                throw new InvalidOperationException("Cannot replace a profile-owned checkpoint store.");
             Store = store ?? throw new ArgumentNullException(nameof(store));
             Session = null; menu = true; atTitle = false; ReadSavedPreview(); Render();
         }
@@ -118,13 +124,14 @@ namespace FateDice
         private void ReadSavedPreview()
         {
             savedPreview = null; invalidSave = false; error = null;
-            if (Store == null || !Store.Exists) return;
-            try { savedPreview = Store.Load(); }
+            if (Store == null) return;
+            try { if (Store.Exists) savedPreview = Store.Load(); }
             catch (Exception e) { invalidSave = true; error = PlayerError(e); }
         }
         private void StartNewJourney()
         {
             if (Busy || invalidSave) return;
+            if (Meta != null) { StartMetaJourney(); return; }
             try
             {
                 var next = RunSession.New(config.Snapshot(), SeedSource.NextSeed(), trialId, cap,
@@ -159,6 +166,7 @@ namespace FateDice
         protected virtual void OnDestroy() { if (UI) UI.CloseAll(); }
         protected virtual void OnDisable()
         {
+            metaViewVersion++;
             // Cancellation disposes the command iterator and clears its fields. Capture ownership first.
             var ownedFate = presentingFate ? presentingFate : shownFate;
             int ownedBinding = presentingFate ? presentingFateBinding : shownFateBinding;
@@ -397,9 +405,9 @@ namespace FateDice
                 case RunPhase.Result:
                     hud.situation = state.won ? "여정 완료" : "여정 종료";
                     Show<ResultUI>(new ResultUIData { context = context, hud = hud,
-                        summary = "사건 " + state.eventsResolved + "   전투 턴 " + state.combatTurns + "\n시드 " + state.initialSeed + "   시간 " + TimeSpan.FromSeconds(state.playedSeconds).ToString(@"mm\:ss"),
+                        summary = "사건 " + state.eventsResolved + "   전투 턴 " + state.combatTurns + "\n시드 " + state.initialSeed + "   시간 " + TimeSpan.FromSeconds(state.playedSeconds).ToString(@"mm\:ss") + MetaResultText(state.runId),
                         grades = "선택한 등급 (운명 + 행동)\n" + string.Join(" / ", state.selectedGrades.Select((count, index) => ShortGrade((Grade)index) + ": " + count)),
-                        restart = Choice("restart", "준비 로비로 돌아가기", ShowMenu) }); break;
+                        restart = Choice("restart", Meta == null ? "준비 로비로 돌아가기" : "정산 확인 후 로비로", ReturnFromMetaResult) }); break;
                 default: throw new InvalidOperationException("No UI registered for phase " + state.phase);
             }
         }
@@ -485,6 +493,7 @@ namespace FateDice
         }
         private void RenderMenu()
         {
+            if (Meta != null) { RenderMetaMenu(); return; }
             var rules = PreviewConfig;
             var record = savedPreview?.lastResult;
             Show<MenuUI>(new MenuUIData

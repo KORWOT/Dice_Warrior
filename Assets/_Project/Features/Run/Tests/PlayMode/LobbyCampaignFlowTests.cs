@@ -69,7 +69,7 @@ namespace FateDice.Tests
             Assert.That(lobby.layoutVersion, Is.EqualTo(1));
             var exploration = UnityEditor.AssetDatabase.LoadAssetAtPath<ExplorationUI>(PrefabFolder + "ExplorationUI.prefab");
             Assert.That(exploration, Is.Not.Null);
-            Assert.That(exploration.layoutVersion, Is.EqualTo(2));
+            Assert.That(exploration.layoutVersion, Is.EqualTo(3));
             Assert.That(exploration.campaignMap, Is.Not.Null);
             Assert.That(exploration.campaignMap.transform, Is.SameAs(exploration.mapContainer));
             foreach (string field in new[] { "edgeLayer", "nodeLayer", "playerMarker", "currentLocation" })

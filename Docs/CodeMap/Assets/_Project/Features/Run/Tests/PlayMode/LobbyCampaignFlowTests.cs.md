@@ -1,7 +1,7 @@
 # LobbyCampaignFlowTests.cs
 - 역할: 실제 GameApplication/제작 Lobby·InGame/등록 MenuUI·ExplorationUI·DiceRollUI를 사용하는 LOBBY_MAP_DICE 통합 PlayMode 검사 6건이다. 첫 asset 검사1건을 컴파일 가능한 reflection으로 작성해 실제 missing DiceRollUI RED 후 구현했다. 기존 5건을 유지하고 C02 완료 경로 회귀 1건을 추가했다.
 - 입력/격리: 실제 SO snapshot, seed33/88, 테스트별 Temp LocalRunStore를 Bootstrap 전에 주입한다. 상황 fixture는 clone nodeWeights만 Combat/Event/Treasure로 고정하고 실제 RunSession.New/ChooseNode/Roll/ChooseFate/ResolveEncounter/ClaimReward와 필요한 Equip/ReplaceDie를 사용한다. 소스 SO/제작씬/기본 저장을 변경하지 않는다.
-- 자산 oracle: 6개 서로 다른 자식 DiceFaceView 및 각 Graphic의 CanvasRenderer, popup title/detail/result/rollButton, 준비 로비3패널·3탭·표시 필드, MenuUI layoutVersion1/ExplorationUI layoutVersion2, mapContainer와 동일 GameObject의 CampaignMapView 및4연결 참조를 요구한다.
+- 자산 oracle: 6개 서로 다른 자식 DiceFaceView 및 각 Graphic의 CanvasRenderer, popup title/detail/result/rollButton, 준비 로비3패널·3탭·표시 필드, MenuUI layoutVersion1/ExplorationUI layoutVersion3, mapContainer와 동일 GameObject의 CampaignMapView 및4연결 참조를 요구한다.
 - 준비 로비: 실제 pointer로 탭·시련·상한·새 여정·menu/continue를 누른다. 패널1개 활성/설정 rebinding 유지/재진입 캐릭터 초기화/hidden seed/no campaign map/실제 config 표시/영구 성장 추후 안내를 검사한다. 설정 변경 자체는 저장을 만들거나 기존 여정을 바꾸지 않는다.
 - 맵/도착/굴림: 720×1280·720×1600에서 실제 graph ID1회/child 위쪽/실제edge+현재출발선/48px·safe·viewport·raycast를 확인한다. ChooseNode checkpoint가 도착연출 전에 확정되고 중복 클릭은 무효이며, 이동 후 popup6면 미굴림0이 나타난다. 열린 modal 아래 menu pointer/직접callback이 차단된다. 명시 CloseTopPopup 후 open-dice로 재열어도 state/RNG가 동일하다.
 - 결과: 실제 popup roll pointer 직후 Cards state와 디스크가 oracle.Roll과 같고 rolling/Busy=true다. 중복 클릭/애니메이션 매 프레임은 RNG를 추가 소비하지 않는다. 최종 6값이 실제 dice와 같고 popup 종료 후 실제 FateCard offered IDs와 터치 가능을 확인한다.
@@ -26,3 +26,5 @@ MenuUI.layoutVersion=1, ExplorationUI.layoutVersion=2와 AnimateNodeArrival(stri
 ArrivalAndSixDiceCommitBeforeAnimationAtBothPortraitRatios는 최초 노드 탭 직후 Busy=true, 도착 완료 전 popup 없음, 이미 확정된 ChooseNode oracle와 저장 상태를 요구한다. 같은 노드의 이전 callback 재호출·플레이어 이동·공유 노드/경로 좌표·정확 굴림·재개 및 비용 검사를 유지한다. 별도 이동 버튼이나 preview 대기 상태를 요구하지 않는다.
 
 이 새 사용자 계약이 위 절차형 지도 작업의 노드 preview→move 입력 기록을 대체한다. 검사 추가/삭제는 없고 기존 EventSystem 6실패를 완화하지 않는다. Main의 신규 RED2 실패 확인 후 작성했으며 담당 Unity/컴파일 실행은 NOT_RUN이다. 현재 실행/최종 판정은 CAMPAIGN_FLOW_POLISH_REPORT의 실제 증거를 따른다.
+
+2026-09-11 CR-02(기존 CFP-T02) 추가 보완: 사용자 추가 1회 승인으로 PreparationLobbyAndSixDicePopupHaveAuthoredContracts의 ExplorationUI.layoutVersion 기대값만 2에서 3으로 동기화했다. artifacts/campaign-flow-polish/play-final.json의 해당 검사 실제 Expected 2 / Actual 3 실패를 RED 근거로 사용하며 다른 assertion과 검사 6건은 그대로 유지한다. 위 절차형 지도 기록의 버전2는 이전 계약이며 현재는 즉시 탭 이동 원본의 버전3을 요구한다. 담당 Unity 실행은 NOT_RUN이고 후속 통합 결과는 COMMIT_REVIEW_8C76732_FOLLOWUP_REPORT를 따른다.

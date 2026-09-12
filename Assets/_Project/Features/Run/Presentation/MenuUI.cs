@@ -14,6 +14,9 @@ namespace FateDice
         public RectTransform characterPanel, settingsPanel, growthPanel;
         public Button characterTab, settingsTab, growthTab;
         public int layoutVersion;
+        public int metaLayoutVersion;
+        public RectTransform metaCharacters, metaLoadout, metaGrowth;
+        public Text legacyGrowthNotice;
         [Header("로비 선택 색상")]
         public Color accent = new Color(.75f, .63f, .39f);
         public Color buttonNormal = new Color(.055f, .078f, .105f);
@@ -62,6 +65,12 @@ namespace FateDice
             AddChoices(trialChoices, data.trials);
             AddChoices(capChoices, data.caps);
             AddChoices(mainChoices, new[] { data.start, data.resume, data.archive });
+            if (data.metaEnabled && (!metaCharacters || !metaLoadout || !metaGrowth))
+                throw new InvalidOperationException("MenuUI requires authored meta preparation containers.");
+            if (metaCharacters) AddChoices(metaCharacters, data.characters);
+            if (metaLoadout) AddChoices(metaLoadout, data.loadoutChoices);
+            if (metaGrowth) AddChoices(metaGrowth, data.growthChoices);
+            if (legacyGrowthNotice) legacyGrowthNotice.gameObject.SetActive(!data.metaEnabled);
             SetText(error, data.error); SetText(lastResult, data.lastResult);
 
             characterListener = () => SelectTabFromInput(characterTab, 0);

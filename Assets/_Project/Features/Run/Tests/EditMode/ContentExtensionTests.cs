@@ -75,7 +75,29 @@ namespace FateDice.Tests
             Assert.That(action.grade,Is.EqualTo(Grade.Uncommon));Assert.That(action.tags,Is.EqualTo(new[]{"attack","fire","physical"}));
             Assert.That(action.effects.Length,Is.EqualTo(1));Assert.That(action.effects[0].kind,Is.EqualTo(ActionEffectKind.Damage));
             Assert.That(action.effects[0].coefficient,Is.EqualTo(1.6f));
-            Assert.That(data.world.shopPriceMultipliers,Is.EqualTo(new[]{1f,1.1f,1.25f,1.5f,1.75f}));
+            Assert.That(data.world.shopPriceMultipliers,Is.EqualTo(new[]{1f,.95f,.9f,.85f,.8f}));
+        }
+        [TestCase(false)][TestCase(true)]
+        public void DefaultShopPricesNeverIncreaseWithGradeAndLegendaryCostsLess(bool authoredAsset)
+        {
+            var data=authoredAsset
+                ? UnityEditor.AssetDatabase.LoadAssetAtPath<FateDiceConfig>(FateDiceConfig.DefaultAssetPath).Snapshot()
+                : PrototypeAuthoring.CreateDefaults();
+            var expected=new[]{new[]{10,12,16,18},new[]{9,11,15,17},new[]{9,11,14,16},new[]{9,10,14,15},new[]{8,10,13,14}};
+            Assert.That(data.world.shop.Select(product=>product.id),Is.EqualTo(new[]{"potion","reroll","die","blade"}));
+            int[] previous=null;
+            for(int grade=0;grade<expected.Length;grade++)
+            {
+                var prices=data.world.shop.Select(product=>ShopRules.Price(data,product.price,(Grade)grade)).ToArray();
+                Assert.That(prices,Is.EqualTo(expected[grade]),"Default shop prices for "+(Grade)grade);
+                for(int product=0;product<prices.Length;product++)
+                {
+                    if(previous!=null)Assert.That(prices[product],Is.LessThanOrEqualTo(previous[product]),"A better fate must not increase a product's price.");
+                    if((Grade)grade==Grade.Legendary)Assert.That(prices[product],Is.LessThan(data.world.shop[product].price),"Legendary must benefit every existing product.");
+                }
+                previous=prices;
+            }
+            Assert.That(data.world.shopPriceMultipliers,Is.EqualTo(new[]{1f,.95f,.9f,.85f,.8f}));
         }
         [Test] public void MixedEffectsSharePreviewAndResolutionWithIndependentTagAndShieldOracle()
         {
@@ -159,12 +181,16 @@ namespace FateDice.Tests
             Assert.That(fresh.State.actionIds,Does.Not.Contain("ember_slash"));Assert.That(run.State.actionIds,Does.Contain("ember_slash"));
             Assert.That(JsonUtility.ToJson(config),Is.EqualTo(definition));Assert.That(config.combat.startingActionIds,Is.EqualTo(new[]{"strike","guard","heavy"}));
         }
-        [TestCase(Grade.Common,10,12,16,18)][TestCase(Grade.Uncommon,11,13,18,20)]
-        [TestCase(Grade.Rare,13,15,20,23)][TestCase(Grade.Epic,15,18,24,27)][TestCase(Grade.Legendary,18,21,28,32)]
-        public void EntrySnapshotsExactGradePricesWithoutRngAndPurchaseResumeReusesThem(Grade grade,int potion,int reroll,int die,int blade)
+        [TestCase(Grade.Common,10,12,16,18,true)][TestCase(Grade.Uncommon,11,13,18,20,true)]
+        [TestCase(Grade.Rare,13,15,20,23,true)][TestCase(Grade.Epic,15,18,24,27,true)][TestCase(Grade.Legendary,18,21,28,32,true)]
+        [TestCase(Grade.Common,10,12,16,18,false)][TestCase(Grade.Uncommon,9,11,15,17,false)]
+        [TestCase(Grade.Rare,9,11,14,16,false)][TestCase(Grade.Epic,9,10,14,15,false)][TestCase(Grade.Legendary,8,10,13,14,false)]
+        public void EntrySnapshotsExactGradePricesWithoutRngAndPurchaseResumeReusesThem(Grade grade,int potion,int reroll,int die,int blade,bool previousPricePolicy)
         {
             WithStore(store=>{
-                var run=Enter(NodeType.Shop,grade);var snapshot=run.State;var prices=new[]{potion,reroll,die,blade};
+                var config=Config();
+                if(previousPricePolicy)config.world.shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f};
+                var run=Enter(NodeType.Shop,grade,config);var snapshot=run.State;var prices=new[]{potion,reroll,die,blade};
                 Assert.That(snapshot.shopOffers.Select(x=>x.price),Is.EqualTo(prices));
                 uint rng=snapshot.rngState;ShopRules.Enter(snapshot);Assert.That(snapshot.rngState,Is.EqualTo(rng));
                 store.Save(snapshot);run=new RunSession(store.Load(),store);
@@ -177,7 +203,8 @@ namespace FateDice.Tests
         }
         [Test] public void PriceRoundingZeroAndOverflowAreExplicitAndMalformedOffersRejected()
         {
-            var data=Config();Assert.That(ShopRules.Price(data,0,Grade.Legendary),Is.Zero);
+            var data=Config();data.world.shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f};
+            Assert.That(ShopRules.Price(data,0,Grade.Legendary),Is.Zero);
             Assert.That(ShopRules.Price(data,2,Grade.Rare),Is.EqualTo(3));Assert.That(ShopRules.Price(data,int.MaxValue,Grade.Legendary),Is.EqualTo(int.MaxValue));
             var snapshot=Enter(NodeType.Shop,Grade.Rare).State;snapshot.shopOffers[0].price--;
             Assert.Throws<RunStateValidationException>(()=>new RunSession(snapshot));
@@ -196,7 +223,8 @@ namespace FateDice.Tests
         }
         [Test] public void NewFieldsAreCopiedWithoutAliasesOrNullNormalization()
         {
-            var source=Enter(NodeType.Shop,Grade.Rare).State;var copy=source.DeepCopy();
+            var config=Config();config.world.shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f};
+            var source=Enter(NodeType.Shop,Grade.Rare,config).State;var copy=source.DeepCopy();
             Assert.That(Json(copy),Is.EqualTo(Json(source)));
             copy.shopOffers[0].price=0;copy.config.world.shopPriceMultipliers[0]=9;
             copy.config.Action("ember_slash").effects[0].coefficient=9;copy.config.Event("treasure_0").reward.addActionId="strike";
@@ -205,6 +233,41 @@ namespace FateDice.Tests
             Assert.That(source.config.Event("treasure_0").reward.addActionId,Is.EqualTo("ember_slash"));
             source.shopOffers=null;source.config.world.shopPriceMultipliers=null;source.config.Action("ember_slash").effects=null;
             copy=source.DeepCopy();Assert.That(copy.shopOffers,Is.Null);Assert.That(copy.config.world.shopPriceMultipliers,Is.Null);Assert.That(copy.config.Action("ember_slash").effects,Is.Null);
+        }
+        [TestCase(false)][TestCase(true)]
+        public void PreviousPricedShopCheckpointKeepsOffersChargesAndRulesAfterNewDiscountDefaults(bool authoredAsset)
+        {
+            WithStore(store=>{
+                var oldConfig=Config();oldConfig.world.shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f};
+                var original=Enter(NodeType.Shop,Grade.Rare,oldConfig).State;
+                Assert.That(original.shopOffers.Select(offer=>offer.price),Is.EqualTo(new[]{13,15,20,23}));
+                store.Save(original);var savedBytes=File.ReadAllBytes(store.Path);
+                var currentDefaults=authoredAsset
+                    ? UnityEditor.AssetDatabase.LoadAssetAtPath<FateDiceConfig>(FateDiceConfig.DefaultAssetPath).Snapshot()
+                    : PrototypeAuthoring.CreateDefaults();
+                currentDefaults.world.mapGenerationVersion=0; // Isolate the unchanged shop-entry fixture from map authoring.
+                var fresh=Enter(NodeType.Shop,Grade.Rare,currentDefaults);
+                Assert.That(fresh.State.shopOffers.Select(offer=>offer.price),Is.EqualTo(new[]{9,11,14,16}));
+
+                var loaded=store.Load();Assert.That(Json(loaded),Is.EqualTo(Json(original)));
+                var resumed=new RunSession(loaded,store);
+                Assert.That(resumed.State.config.world.shopPriceMultipliers,Is.EqualTo(new[]{1f,1.1f,1.25f,1.5f,1.75f}));
+                CollectionAssert.AreEqual(savedBytes,File.ReadAllBytes(store.Path),"Loading against new defaults must not rewrite an older checkpoint.");
+                int gold=resumed.State.gold;uint rng=resumed.State.rngState;int sequence=resumed.State.sequence;
+                Assert.That(resumed.Buy("potion"),Is.True);Assert.That(resumed.State.gold,Is.EqualTo(gold-13));
+                Assert.That(resumed.State.sequence,Is.EqualTo(sequence+1));Assert.That(resumed.State.rngState,Is.EqualTo(rng));
+                Assert.That(Json(store.Load()),Is.EqualTo(Json(resumed.State)));
+                resumed=new RunSession(store.Load(),store);Assert.That(resumed.ClaimReward(),Is.True);
+                resumed=new RunSession(store.Load(),store);
+                Assert.That(resumed.Phase,Is.EqualTo(RunPhase.Shop));Assert.That(resumed.Buy("potion"),Is.False);
+                Assert.That(resumed.State.shopOffers.Select(offer=>offer.price),Is.EqualTo(new[]{13,15,20,23}));
+                Assert.That(resumed.Buy("reroll"),Is.True);Assert.That(resumed.State.gold,Is.EqualTo(gold-28));
+                Assert.That(resumed.State.rngState,Is.EqualTo(rng));
+                resumed=new RunSession(store.Load(),store);Assert.That(resumed.ClaimReward(),Is.True);
+                Assert.That(resumed.State.shopOffers.Select(offer=>offer.price),Is.EqualTo(new[]{13,15,20,23}));
+                Assert.That(resumed.State.config.world.shopPriceMultipliers,Is.EqualTo(new[]{1f,1.1f,1.25f,1.5f,1.75f}));
+                Assert.That(Json(store.Load()),Is.EqualTo(Json(resumed.State)));
+            });
         }
         [Test] public void OldJsonShopRestoresOnlyItsOwnPricesAndNeverInjectsNewContentOrRules()
         {

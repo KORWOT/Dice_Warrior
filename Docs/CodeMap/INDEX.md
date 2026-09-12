@@ -1,6 +1,25 @@
 # CodeMap 기능 색인
 
-실제 로컬 플레이 루프, 저장/이어하기, 전용 Scene과 설정 SO의 직접 연결을 구현했다. Assets/_Project의 113개 프로젝트 소유 C#은 각각 같은 상대 경로의 요약 문서와 대응한다. 실행 증거와 조작·밸런싱 안내는 [REPORT](../Reports/FATE_DICE_PROTOTYPE_REPORT.md), 고정 단계와 Finding 이력은 [PLAN](../Plans/FATE_DICE_PROTOTYPE_PLAN.md)에 있다. 후속 작업의 실행 상태는 각 작업의 REPORT를 따른다.
+## 플레이어 원본·로비 출전·영구 성장 (2026-09-11)
+
+계약은 [META_PROGRESSION_PLAN](../Plans/META_PROGRESSION_PLAN.md), 현재 검증 상태는 [META_PROGRESSION_REPORT](../Reports/META_PROGRESSION_REPORT.md)를 따른다. 아래 과거 파일 수/보고는 이 확장의 실행 상태를 대신하지 않는다.
+
+| 대상 | 한국어 역할과 관계 | 요약 |
+|---|---|---|
+| Meta / PlayerProfileData | 보유 개체 ID·출전 구성·시작 스냅샷·소유 검증, 순수 Core | [요약](Assets/_Project/Features/Meta/Domain/PlayerProfileData.cs.md) |
+| Meta / MetaProgressionConfig | 초기 보유품·성장 경제 시험값 SO | [요약](Assets/_Project/Features/Meta/Configs/MetaProgressionConfig.cs.md) |
+| Meta / PlayerSaveDocument | 프로필·런·정산 공동 저장/복제·revision·원자 파일 교체 | [요약](Assets/_Project/Features/Meta/Runtime/PlayerSaveDocument.cs.md) |
+| Meta / IMetaProgressionService | 추후 Firebase 어댑터가 구현할 비동기 명령 경계 | [요약](Assets/_Project/Features/Meta/Runtime/IMetaProgressionService.cs.md) |
+| Meta / LocalMetaProgressionService | 개발용 소유 설정/런 생성/재화 정산/성장 및 체크포인트 | [요약](Assets/_Project/Features/Meta/Runtime/LocalMetaProgressionService.cs.md) |
+| Meta Editor / MetaProgressionAuthoring | 기존 MenuUI/App prefab에 SO·컨테이너를 Editor API로 연결 | [요약](Assets/_Project/Features/Meta/Editor/MetaProgressionAuthoring.cs.md) |
+| Run UI / RunUIController.Meta | 로비 설정/성장과 결과 정산의 async UI 수명 조정 | [요약](Assets/_Project/Features/Run/Presentation/RunUIController.Meta.cs.md) |
+| Meta Tests / EditMode | 소유·동결·재시도·정산·실패·이관·손상 경계 | [요약](Assets/_Project/Features/Run/Tests/EditMode/MetaProgressionTests.cs.md) |
+| Meta Tests / PlayMode | 두 세로 해상도의 실제 포인터/레이캐스트 버튼 흐름 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/MetaProgressionFlowTests.cs.md) |
+| 도구 / MetaProbe | 고정 작성 호출 및 Editor 상태/자산 참조 검사 | [요약](artifacts/meta-progression/MetaProbe.cs.md) |
+
+직접 변경 관계: GameApplication → IMetaProgressionService/LocalMetaProgressionService → profile store/RunSession; RunUIController → MenuUIData → MenuUI. 기존 4개 파일 요약도 현재 계약으로 동기화한다.
+
+실제 로컬 플레이 루프, 저장/이어하기, 전용 Scene과 설정 SO의 직접 연결을 구현했다. 프로젝트 소유 C#은 각각 같은 상대 경로의 요약 문서와 대응한다. 초기 실행 증거와 조작·밸런싱 안내는 [REPORT](../Reports/FATE_DICE_PROTOTYPE_REPORT.md), 고정 단계와 Finding 이력은 [PLAN](../Plans/FATE_DICE_PROTOTYPE_PLAN.md)에 있다. 후속 작업의 실행 상태는 각 작업의 REPORT를 따른다.
 
 | 기능 / 스크립트 | 한국어 역할과 직접 관계 | 요약 |
 |---|---|---|
@@ -135,6 +154,8 @@ UI 구조 개선: [PLAN](../Plans/UI_STRUCTURE_PLAN.md), [REPORT](../Reports/UI_
 
 ## RA-D 효과·획득·상점 가격
 
+2026-09-11 검토 후속의 새 여정 초기 배율은 1/.95/.9/.85/.8로 조정한다. 기존 저장의 규칙·가격과 ShopRules 계산 방식은 유지한다. 현재 실행·남은 항목은 [후속 REPORT](../Reports/COMMIT_REVIEW_8C76732_FOLLOWUP_REPORT.md)를 따른다. 같은 후속에서 Title의 별도 EventSystem을 제거하여 입력 소유자는 공용 UIRoot 하나로 유지하고 LobbyCampaignFlowTests의 지도 작성 버전은3을 요구한다.
+
 - [ActionEffects.cs](Assets/_Project/Features/Combat/Runtime/ActionEffects.cs.md): ActionEffectDefinition과 Damage/Block 명시 처리기, EffectResolver가 기존 태그·등급·반올림으로 계산해 합산한다. CombatRules.Evaluate/Resolve가 같은 평가를 사용한다. null/빈 effects는 구형 두 계수, 명시 배열이 권위이며 IsValid가 미지원/음수/비유한/전체0을 거절한다. 규칙 RNG/상태를 쓰지 않고 결과 ActionEffect만 반환한다.
 - [ShopRules.cs](Assets/_Project/Features/Shop/Domain/ShopRules.cs.md): ShopOffer(productId,price) 및 ShopRules가 저장된 기본가격×등급배율을 AwayFromZero로 정수화해 입장 snapshot을 만든다. RunApplication이 입장/구매/퇴장 수명을 소유하고 UI는 Offer의 가격으로 표시·가능 여부를 판정한다. LocalRunStore/RunApplication의 RestoreLegacy는 유효한 구형 상점만 당시 기본가격으로 복원한다. 최신 SO를 참조하지 않고 RNG를 쓰지 않는다.
 - [ContentExtensionTests.cs](Assets/_Project/Features/Run/Tests/EditMode/ContentExtensionTests.cs.md): RA-D 콘텐츠/효과/가격 계약 EditMode 검사. 독립 30피해·23수호, 명시효과 검증, 실제 보물획득→장비→Roll추첨→사용→디스크재개, 중복 소유/RNG, 등급별 정확가격/실패저장/구형JSON/복사 독립성을 검증한다. 격리 TEMP 저장만 사용하고 사용자 저장은 접근하지 않는다.
@@ -199,4 +220,4 @@ RunUIController→PresentationPlayback→DiceRollUI/SelectionFeedback/CombatUI�
 [PLAN](../Plans/CAMPAIGN_FLOW_POLISH_PLAN.md), [REPORT](../Reports/CAMPAIGN_FLOW_POLISH_REPORT.md). CampaignMapView는 화면 복귀의 최종 레이아웃 후 현재 노드·플레이어·다음 경로로 한 번 초점을 맞추고, ExplorationUI는 노드 탭을 단일 이동 요청으로 연결한다. Controller는 새 전투 화면→CombatUI.PlayEntry 실제 완료→DiceRollUI 순서를 기존 PresentationPlayback에 통합한다. 다음 턴은 진입 연출을 반복하지 않는다.
 
 - [CampaignFlowAuthoring.cs](Assets/_Project/Features/Run/Editor/CampaignFlowAuthoring.cs.md): ExplorationUI/CombatUI 두 원본만 한 번 작성하며 편집값을 보존한다.
-- [CampaignFlowPolishTests.cs](Assets/_Project/Features/Run/Tests/PlayMode/CampaignFlowPolishTests.cs.md): 실제 포인터 이동·복귀 초점·전투 진입·저장/취소/timeout 경계 검증. 구조 설명은 실행 PASS를 대신하지 않는다.
+- [CampaignFlowPolishTests.cs](Assets/_Project/Features/Run/Tests/PlayMode/CampaignFlowPolishTests.cs.md): 실제 포인터 이동·복귀 초점·전투 진입·저장/취소/timeout 경계 검증. 비활성 Editor의 합성 입력은 임시 설정 사본을 사용하며 원본 객체 파기 방지 및 설정 복원을 검증한다. CFU-R01의 실행 판정은 META_PROGRESSION_REPORT를 따른다.

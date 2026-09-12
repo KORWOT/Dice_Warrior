@@ -48,6 +48,8 @@ namespace FateDice
     {
         public string characterName, characterDetails, growthDetails;
         public UIChoiceData[] trials, caps;
+        public UIChoiceData[] characters, loadoutChoices, growthChoices;
+        public bool metaEnabled;
         public string seed;
         public Action<string> seedChanged;
         public UIChoiceData start, resume, archive;

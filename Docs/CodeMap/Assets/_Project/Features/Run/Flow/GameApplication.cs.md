@@ -1,5 +1,9 @@
 # GameApplication.cs
 
+## 메타 진행 현재 계약 (2026-09-11)
+
+기본 제작 씬 Bootstrap은 authored metaConfig와 content snapshot/seed를 LocalMetaProgressionService에 주입한다. profile별 FateDiceMeta 해시 경로에 프로필·런·정산을 묶고 기존 FateDiceLocal/run.json은 읽기 전용 이관 원본으로 연결한다. store 명시 주입은 기존 격리 테스트/작업실 경로를 유지한다. metaService를 주입하면 그 RunStore와만 조립하며 살아 있는 앱의 다른 메타 서비스는 거부한다. 비활성 조립 후 활성화 수명은 동일하다. 실제 서버/계정 인증은 없다. META_PROGRESSION_REPORT를 따른다. 아래 기본 저장 경로 설명은 이전 구현 기록이다.
+
 ## RA-B 현재 계약 (2026-09-09)
 
 Bootstrap의 저장 인자를 IRunStore로 일반화하여 파일/실패 주입 어댑터를 같은 조립 경계로 전달한다. 기본 구현 LocalRunStore와 경로, 기존 앱의 다른 저장소/시드 공급자 거절, inactive 조립→지속 수명은 유지한다. Controller가 직접 파일 구현에 의존하지 않게 연결한다.

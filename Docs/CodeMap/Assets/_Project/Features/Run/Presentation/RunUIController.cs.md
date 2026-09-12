@@ -1,5 +1,9 @@
 # RunUIController.cs
 
+## 메타 진행 현재 계약 (2026-09-11)
+
+partial 클래스의 RunUIController.Meta에 영구 진행 UI 조정을 분리한다. Initialize의 마지막 선택 인자로 IMetaProgressionService를 받으며 같은 RunStore만 허용한다. Busy는 meta 명령도 포함하고 OnDisable은 metaViewVersion을 증가시켜 늦은 응답의 화면 접근을 차단한다. 메타 주입 시 RenderMenu/StartNewJourney/Result 정산을 해당 partial로 위임한다. 미주입 테스트/작업실/legacy facade의 기존 런 흐름은 유지한다. ReadSavedPreview는 Exists 자체의 손상 오류도 UI로 보고한다. META_PROGRESSION_REPORT 참조.
+
 ## 캠페인 이동·복귀와 전투 진입 (2026-09-11)
 
 - 현재 입력 계약은 아래 절차 지도 작업의 노드 미리보기/이동 버튼을 대체한다. ExplorationUI의 이동 가능한 노드 탭→TravelToNode→ChooseNode 저장1회→실제 도착 연출→탐험 주사위 창이다. 지도 초점은 CampaignMapView가 공개 currentId와 활성화/최종 레이아웃을 사용해 복귀 때 한 번 맞춘다. Controller가 지도 위치나 런 상태를 새로 계산하지 않는다.

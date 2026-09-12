@@ -84,9 +84,10 @@ namespace FateDice.Tests
 #endif
         }
 
-        void Prepare(NodeType type)
+        void Prepare(NodeType type,bool previousPricePolicy=false)
         {
             var config=Prefab().controller.config.Snapshot();config.world.mapGenerationVersion=0;
+            if(previousPricePolicy)config.world.shopPriceMultipliers=new[]{1f,1.1f,1.25f,1.5f,1.75f};
             foreach(var row in config.fate.exploration)row.weights=type==NodeType.Shop?new float[]{0,0,1,0,0}:new float[]{1,0,0,0,0};
             foreach(var row in config.fate.combat)row.weights=new float[]{0,1,0,0,0};
             foreach(var enemy in config.combat.enemies){enemy.maxHp=100000;enemy.power=0;}
@@ -132,22 +133,33 @@ namespace FateDice.Tests
         [UnityTest] public IEnumerator ShopButtonsShowFixedPricesAndChargeExactlyTheDisplayedAmountAfterResume()
         {
             Prepare(NodeType.Shop);yield return Open();
-            var prices=new[]{13,15,20,23};var ids=new[]{"potion","reroll","die","blade"};
+            yield return VerifyShopButtonsAndResume(new[]{9,11,14,16});
+        }
+        [UnityTest] public IEnumerator PreviousShopCheckpointKeepsDisplayedPricesAndChargesAfterDiscountDefaults()
+        {
+            Assert.That(Prefab().controller.config.Snapshot().world.shopPriceMultipliers,Is.EqualTo(new[]{1f,.95f,.9f,.85f,.8f}));
+            Prepare(NodeType.Shop,previousPricePolicy:true);yield return Open();
+            Assert.That(State.config.world.shopPriceMultipliers,Is.EqualTo(new[]{1f,1.1f,1.25f,1.5f,1.75f}));
+            yield return VerifyShopButtonsAndResume(new[]{13,15,20,23});
+        }
+        IEnumerator VerifyShopButtonsAndResume(int[] prices)
+        {
+            var ids=new[]{"potion","reroll","die","blade"};
             for(int i=0;i<ids.Length;i++)
             {
                 var button=Button("buy-"+ids[i]);AssertRaycast(button);
                 Assert.That(string.Join(" ",button.GetComponentsInChildren<Text>().Select(t=>t.text)),Does.Contain(prices[i]+" 골드"));
             }
             int gold=State.gold;uint rng=State.rngState;yield return Press("buy-potion");
-            Assert.That(State.gold,Is.EqualTo(gold-13));Assert.That(State.rngState,Is.EqualTo(rng));
+            Assert.That(State.gold,Is.EqualTo(gold-prices[0]));Assert.That(State.rngState,Is.EqualTo(rng));
             Assert.That(Stable(disk.Load()),Is.EqualTo(Stable(State)));
             yield return Press("claim");Assert.That(State.phase,Is.EqualTo(RunPhase.Shop));
             Assert.That(Button("buy-potion").IsInteractable(),Is.False);
             Assert.That(State.shopOffers.Select(o=>o.price),Is.EqualTo(prices));
             Object.Destroy(app.gameObject);app=null;yield return null;store.Saves=0;
-            yield return Open();Assert.That(State.gold,Is.EqualTo(gold-13));
+            yield return Open();Assert.That(State.gold,Is.EqualTo(gold-prices[0]));
             Assert.That(Button("buy-potion").IsInteractable(),Is.False);
-            yield return Press("buy-reroll");Assert.That(State.gold,Is.EqualTo(gold-28));
+            yield return Press("buy-reroll");Assert.That(State.gold,Is.EqualTo(gold-prices[0]-prices[1]));
             yield return Press("claim");Assert.That(State.rerollCharges,Is.EqualTo(3));
             yield return Press("leave");Assert.That(State.phase,Is.EqualTo(RunPhase.Map));Assert.That(State.shopOffers,Is.Empty);
         }

@@ -85,3 +85,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: FateDice.Runtime::FateDice.GameApplication
   controller: {fileID: 7293718475180361215}
   sceneFlow: {fileID: 2589453994336244506}
+  metaConfig: {fileID: 11400000, guid: 403107cc6a6c12249bcea69c4a53ed0a, type: 2}
