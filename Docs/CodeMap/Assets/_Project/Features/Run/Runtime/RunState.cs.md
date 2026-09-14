@@ -8,3 +8,7 @@ RA-C 현재 계약 · 2026-09-09
 - 직접 사용하는 쪽: RunSession, LocalRunStore, Controller, 표시/규칙 테스트.
 - 상태/수명·검수 주의: 이 DTO는 표시/저장 경계의 독립 복사이며 명령 실행 권위를 가지지 않는다. inherited public 필드의 실제 Unity JSON 호환을 CoreReplayTests에서 검증한다.
 - 관계 근거: 위 공개 API 및 실제 소스의 직접 호출/필드 타입을 확인했다. 실행 상태는 Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md를 따른다.
+
+## RV-02 직접 검증 통과
+
+Runtime DTO에 저장 소유권용 recoveryGeneration을 보관한다. DeepCopy와 FromCore의 선택 인자에서 유지하며 Core 계산 상태에는 넣지 않는다. 구형 런의 누락 초기 값은 빈 세대로 취급한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.

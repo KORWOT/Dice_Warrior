@@ -21,6 +21,18 @@ namespace FateDice
         public bool NeedsSettlement
         { get { var d = Read(); return d.run != null && d.run.phase == RunPhase.Result && !d.settlements.Any(x => x.runId == d.run.runId); } }
         public SettlementReceipt Settlement(string runId) => Read().settlements.FirstOrDefault(x => x.runId == runId)?.Copy();
+        public PlayerSaveDocument ReadRecoverySnapshot()
+        {
+            // A vanished file is not a new profile. Recovery never manufactures a replacement.
+            if (!store.Exists) throw new FileNotFoundException("복구할 프로필 저장이 없습니다.");
+            return store.Read().Copy();
+        }
+        public ProfileBackupPreview InspectBackup() => (store as IPlayerDataRecoveryStore)?.InspectBackup();
+        public PlayerSaveDocument RestoreBackup(ProfileBackupPreview preview)
+        {
+            if (!(store is IPlayerDataRecoveryStore recovery)) throw new InvalidOperationException("이 저장소는 로컬 백업 복구를 지원하지 않습니다.");
+            return recovery.RestoreBackup(preview);
+        }
 
         public LocalMetaProgressionService(IPlayerDataStore store, Func<GameConfigData> content,
             MetaProgressionConfig config, ISeedSource seed = null, IRunStore legacy = null)
@@ -49,12 +61,14 @@ namespace FateDice
         static MetaOperationReceipt Replay(PlayerSaveDocument d, MetaRequest r, string fingerprint)
         {
             Request(r);
+            ProfileRules.Require(r.expectedRecoveryGeneration == d.profile.recoveryGeneration,
+                "복구 이전의 요청입니다. 저장된 진행을 확인해 주세요.", MetaFailureKind.Stale);
             var previous = d.operations.FirstOrDefault(x => x.requestId == r.requestId);
             ProfileRules.Require(previous == null || previous.fingerprint == fingerprint, "같은 요청 식별자에 다른 내용을 사용할 수 없습니다.");
             return previous;
         }
         static void Revision(PlayerSaveDocument d, MetaRequest r)
-        { ProfileRules.Require(d.profile.revision == r.expectedRevision, "프로필이 변경되었습니다. 최신 상태에서 다시 시도해 주세요."); }
+        { ProfileRules.Require(d.profile.revision == r.expectedRevision, "프로필이 변경되었습니다. 최신 상태에서 다시 시도해 주세요.", MetaFailureKind.Stale); }
         static void Complete(PlayerSaveDocument d, MetaRequest r, string fingerprint, string runId = null)
         {
             d.profile.revision = checked(d.profile.revision + 1);
@@ -97,6 +111,7 @@ namespace FateDice
             // Factory candidate only; no checkpoint is published until the whole player document commits.
             var candidate = RunSession.New(rules, seed.NextSeed(), l.wildcardId, l.cap, previousResult: d.run?.lastResult).ReadSnapshot();
             candidate.profileId = store.ProfileId;
+            candidate.recoveryGeneration = d.profile.recoveryGeneration;
             candidate.equipmentIds = l.equipment.Select(id => string.IsNullOrEmpty(id) ? null : d.profile.equipment.Single(x => x.instanceId == id).definitionId).ToArray();
             candidate.dieIds = l.dice.Select(id => d.profile.dice.Single(x => x.instanceId == id).definitionId).ToArray();
             candidate.hp = GrowthRules.Stats(candidate).maxHp;
@@ -155,11 +170,15 @@ namespace FateDice
             public void Save(RunState state)
             {
                 var d = owner.Read(); RunStateValidator.Validate(state);
-                ProfileRules.Require(d.run != null && state.profileId == owner.store.ProfileId && state.runId == d.run.runId &&
-                    state.initialSeed == d.run.initialSeed && state.playedSeconds >= d.run.playedSeconds &&
-                    (state.sequence == d.run.sequence || (long)state.sequence == (long)d.run.sequence + 1) &&
+                ProfileRules.Require(state.recoveryGeneration == d.profile.recoveryGeneration,
+                    "복구 이전의 여정입니다. 저장된 진행을 다시 불러와 주세요.", MetaFailureKind.Stale);
+                ProfileRules.Require(state.profileId == owner.store.ProfileId, "다른 플레이어의 여정입니다.", MetaFailureKind.ForeignProfile);
+                ProfileRules.Require(d.run != null && state.runId == d.run.runId && state.playedSeconds >= d.run.playedSeconds &&
+                    (state.sequence == d.run.sequence || (long)state.sequence == (long)d.run.sequence + 1),
+                    "시작 기록과 다른 여정 또는 오래된 체크포인트입니다.", MetaFailureKind.Stale);
+                ProfileRules.Require(state.initialSeed == d.run.initialSeed &&
                     MetaJson.Hash(MetaJson.Encode(state.config)) == MetaJson.Hash(MetaJson.Encode(d.run.config)),
-                    "시작 기록과 다른 여정 또는 오래된 체크포인트입니다.");
+                    "여정의 시작 규칙이 일치하지 않습니다.");
                 if (state.sequence == d.run.sequence)
                 {
                     // Autosave keeps the command sequence. It may advance elapsed time only;
@@ -168,10 +187,10 @@ namespace FateDice
                     candidate.playedSeconds = saved.playedSeconds = 0;
                     if (candidate.lastResult != null) candidate.lastResult.playedSeconds = 0;
                     if (saved.lastResult != null) saved.lastResult.playedSeconds = 0;
-                    ProfileRules.Require(MetaJson.Encode(candidate) == MetaJson.Encode(saved), "다른 세션이 먼저 여정을 변경했습니다. 저장된 여정을 다시 불러와 주세요.");
+                    ProfileRules.Require(MetaJson.Encode(candidate) == MetaJson.Encode(saved), "다른 세션이 먼저 여정을 변경했습니다. 저장된 여정을 다시 불러와 주세요.", MetaFailureKind.Stale);
                 }
                 ProfileRules.Require(!d.settlements.Any(x => x.runId == state.runId) || MetaJson.Encode(state) == MetaJson.Encode(d.run),
-                    "정산한 여정은 변경할 수 없습니다.");
+                    "정산한 여정은 변경할 수 없습니다.", MetaFailureKind.Stale);
                 d.run = state.DeepCopy(); owner.Commit(d);
             }
             public string Archive() => throw new MetaCommandException("영구 프로필은 여정 슬롯 비우기로 삭제할 수 없습니다. 원본을 보존하고 복구해 주세요.");

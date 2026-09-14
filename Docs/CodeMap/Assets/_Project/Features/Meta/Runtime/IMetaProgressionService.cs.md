@@ -5,3 +5,11 @@
 - 사용하는 대상·사용하는 쪽·관계 근거: GameApplication이 구현을 주입하고 RunUIController.Meta가 명령을 소비한다. 현재 구현은 LocalMetaProgressionService.
 - 상태·수명·검수 주의: Firebase 어댑터는 Auth UID와 서버 승인 상태를 공급해야 한다. 로컬 저장소 전체 JSON 업로드를 영구 잔액 확정 API로 쓰지 않는다. 실제 네트워크/Auth/Rules는 이번 범위 밖이다.
 - 구현 계약: Docs/Plans/META_PROGRESSION_PLAN.md. 실제 검증 상태는 Docs/Reports/META_PROGRESSION_REPORT.md와 기록된 실행 증거를 따른다.
+
+## RECOVERY_STABILITY RV-01 직접 검증 통과
+
+ReadRecoverySnapshot은 같은 시점의 프로필·런·정산을 복사 반환한다. LocalMetaProgressionService 구현을 RunUIController.Recovery가 후보 준비에 사용한다. 새 프로필 생성이나 재정산을 하지 않으며 읽기 실패를 전달한다. 검증 상태: RECOVERY_STABILITY_REPORT 참조.
+
+## RV-02 직접 검증 통과
+
+MetaRequest.expectedRecoveryGeneration을 불변 재시도 입력에 추가한다. InspectBackup/RestoreBackup은 검증된 미리보기와 확인 이후 복원을 연결하며 실제로 LocalPlayerDataStore의 복구 기능에 위임한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.

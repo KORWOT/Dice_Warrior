@@ -29,7 +29,7 @@ namespace FateDice
             {
                 if (this)
                 {
-                    error = e is MetaCommandException ? e.Message : PlayerError(e);
+                    error = e is MetaCommandException rejected && rejected.Kind == MetaFailureKind.Rejected ? e.Message : PlayerError(e);
                     if (e is MetaCommandException) { pendingStart = null; pendingGrowth = null; }
                 }
             }
@@ -57,8 +57,13 @@ namespace FateDice
         }
         void StartMetaJourney()
         {
-            if (pendingStart == null) pendingStart = new StartRunRequest { requestId = Guid.NewGuid().ToString("N"),
-                expectedRevision = Meta.Profile.revision, abandonActiveRun = savedPreview != null && savedPreview.phase != RunPhase.Result };
+            if (pendingStart == null)
+            {
+                var profile = Meta.Profile;
+                pendingStart = new StartRunRequest { requestId = Guid.NewGuid().ToString("N"),
+                    expectedRevision = profile.revision, expectedRecoveryGeneration = profile.recoveryGeneration,
+                    abandonActiveRun = savedPreview != null && savedPreview.phase != RunPhase.Result };
+            }
             var request = pendingStart;
             RunMeta(() => Meta.StartRunAsync(request), state =>
             {
@@ -71,13 +76,14 @@ namespace FateDice
         {
             if (Busy) return;
             var l = profile.loadout.Copy(); change(l);
-            var request = new LoadoutRequest { requestId = Guid.NewGuid().ToString("N"), expectedRevision = profile.revision, loadout = l };
+            var request = new LoadoutRequest { requestId = Guid.NewGuid().ToString("N"), expectedRevision = profile.revision,
+                expectedRecoveryGeneration = profile.recoveryGeneration, loadout = l };
             RunMeta(() => Meta.SaveLoadoutAsync(request), _ => { pendingStart = null; });
         }
         void GrowMetaCharacter(PlayerProfileData profile)
         {
             if (pendingGrowth == null) pendingGrowth = new GrowthRequest { requestId = Guid.NewGuid().ToString("N"),
-                expectedRevision = profile.revision, characterId = profile.loadout.characterId };
+                expectedRevision = profile.revision, expectedRecoveryGeneration = profile.recoveryGeneration, characterId = profile.loadout.characterId };
             var request = pendingGrowth;
             RunMeta(() => Meta.GrowAsync(request), _ => { pendingGrowth = null; pendingStart = null; });
         }
@@ -93,7 +99,9 @@ namespace FateDice
             if (Meta == null) { ShowMenu(); return; }
             if (Busy || Session == null) return;
             string runId = Session.ReadSnapshot().runId;
-            var request = new SettlementRequest { requestId = "settle-" + runId, expectedRevision = Meta.Profile.revision, runId = runId };
+            var profile = Meta.Profile;
+            var request = new SettlementRequest { requestId = "settle-" + runId, expectedRevision = profile.revision,
+                expectedRecoveryGeneration = profile.recoveryGeneration, runId = runId };
             RunMeta(() => Meta.SettleAsync(request), _ =>
             {
                 // Settlement already wrote the checkpoint and receipt atomically; no second run save.
@@ -108,7 +116,9 @@ namespace FateDice
             try { p = Meta.Profile; }
             catch (Exception e)
             {
+                RequireRecovery(MetaFailure.Classify(e));
                 invalidSave = true; error = PlayerError(e);
+                if (NeedsRecovery) { RenderRecovery(); return; }
                 Show<MenuUI>(new MenuUIData { context = Context(rules.presentation), metaEnabled = true,
                     characterName = "프로필 복구 필요", characterDetails = "원본을 보존했습니다. 저장 파일을 확인해 주세요.",
                     growthDetails = "프로필을 읽을 수 없어 출전과 성장을 중단했습니다.", error = error,

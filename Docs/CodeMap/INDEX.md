@@ -15,6 +15,11 @@
 | Run UI / RunUIController.Meta | 로비 설정/성장과 결과 정산의 async UI 수명 조정 | [요약](Assets/_Project/Features/Run/Presentation/RunUIController.Meta.cs.md) |
 | Meta Tests / EditMode | 소유·동결·재시도·정산·실패·이관·손상 경계 | [요약](Assets/_Project/Features/Run/Tests/EditMode/MetaProgressionTests.cs.md) |
 | Meta Tests / PlayMode | 두 세로 해상도의 실제 포인터/레이캐스트 버튼 흐름 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/MetaProgressionFlowTests.cs.md) |
+| Meta / MetaFailure | 문구 비교 없는 복구 오류 종류와 안내 | [요약](Assets/_Project/Features/Meta/Runtime/MetaFailure.cs.md) |
+| Meta / LocalPlayerDataRecovery | 마지막 정상 백업·확인 후 전체 복원·손상 원본 보존 | [요약](Assets/_Project/Features/Meta/Runtime/LocalPlayerDataRecovery.cs.md) |
+| Run UI / Recovery | 명시 재로드·백업 확인/취소/복원·이전 입력 무효화 | [요약](Assets/_Project/Features/Run/Presentation/RunUIController.Recovery.cs.md) |
+| Recovery Tests / PlayMode | 두 세션·실제 복구 버튼·복원 후 중복 정산 방지 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/RecoveryStabilityFlowTests.cs.md) |
+| Recovery Tests / EditMode | 오류 구분·백업 I/O 실패·복원 이전 쓰기 차단 | [요약](Assets/_Project/Features/Run/Tests/EditMode/RecoveryStabilityTests.cs.md) |
 | 도구 / MetaProbe | 고정 작성 호출 및 Editor 상태/자산 참조 검사 | [요약](artifacts/meta-progression/MetaProbe.cs.md) |
 
 직접 변경 관계: GameApplication → IMetaProgressionService/LocalMetaProgressionService → profile store/RunSession; RunUIController → MenuUIData → MenuUI. 기존 4개 파일 요약도 현재 계약으로 동기화한다.

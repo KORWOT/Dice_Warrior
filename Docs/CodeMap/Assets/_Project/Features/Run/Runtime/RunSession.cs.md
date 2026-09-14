@@ -9,3 +9,7 @@ RA-C 현재 계약 · 2026-09-09
 - 상태/수명·검수 주의: private application이 상태 변경을 독점한다. 표시 설정은 세션 수명 동안 독립 보관하고 복사로만 내보낸다. JsonUtility/게임 계산식/파일 I/O가 facade에 없다.
 - 관계 근거: 위 공개 API 및 실제 소스의 직접 호출/필드 타입을 확인했다. 실행 상태는 Docs/Reports/ROGUELIKE_ARCHITECTURE_REPORT.md를 따른다.
 - RA-D 직접 관계: 기존 명령 facade를 그대로 사용한다. RunApplication/RunStateCopy가 새 action effects·획득 ID·고정 shopOffers까지 독립 저장 DTO로 전달하고 Runtime facade에는 카드/가격 분기를 추가하지 않는다.
+
+## RV-02 직접 검증 통과
+
+생성 시 recoveryGeneration을 별도 readonly 값으로 보관하고 ReadSnapshot/CheckpointAdapter가 매번 동일 세대를 붙인다. 오래된 Session은 프로필 복원 후 새 소유 세대를 자동 획득하지 못한다. 게임 명령·Core 상태·규칙은 변경하지 않는다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.

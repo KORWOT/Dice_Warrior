@@ -5,3 +5,11 @@
 - 사용하는 대상·사용하는 쪽·관계 근거: IPlayerDataStore를 LocalMetaProgressionService가 사용한다. IRunStore 어댑터는 서비스 내부이며 저장 구현에는 보상 결정 책임이 없다.
 - 상태·수명·검수 주의: 체크섬은 손상 감지이며 위변조 방지가 아니다. 원본 손상/지원하지 않는 버전/다른 플레이어는 거부하며 자동 삭제하지 않는다. 프로필 revision과 문서 revision을 구분한다.
 - 구현 계약: Docs/Plans/META_PROGRESSION_PLAN.md. 실제 검증 상태는 Docs/Reports/META_PROGRESSION_REPORT.md와 기록된 실행 증거를 따른다.
+
+## RECOVERY_STABILITY RV-01 직접 검증 통과
+
+파일 envelope/문서/프로필 schema와 타 프로필을 MetaFailure typed cause로 구분한다. 기존 InvalidDataException 타입과 일반 I/O 예외는 유지한다. 문서 revision 불일치에 Stale 코드를 지정한다. 자동 초기화와 읽기 시 파일 쓰기는 없다. 검증 상태: RECOVERY_STABILITY_REPORT 참조.
+
+## RV-02 직접 검증 통과
+
+프로필과 런의 복구 세대 일치를 검증한다. ReadBytes는 실제 bytes 하나를 파싱/검증한다. Write는 현재 bytes 검증·revision/세대 CAS 후 이전 정상 bytes를 .backup에 원자 보관하고 새 후보를 확정한다. 공통 파일 작업은 LocalPlayerDataRecovery partial에 있다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.

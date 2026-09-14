@@ -91,3 +91,7 @@ ShowDiceWindow가 기존 저장 스냅샷에서 조합 label/HandKind/priority �
 
 Playback(PresentationPlayback)이 시퀀스 시작/종료 시각·상태·이벤트를 소유한다. PresentChange는 실제 popup/선택 FEEL/전투 완료를 기다리며 .22/.18/추가 action 대기를 제거했다. PresentSafely는 TimedOut/Faulted/Cancelled에 소유 효과·popup 정리와 확정 snapshot 복구를 하고 비활성 중 Render를 생략한다. timeout은 label/elapsed/limit 오류 로그, Faulted는 기존 warning이다. OnDisable은 Cancel 뒤 잔여 UI/잠금을 정리한다. 새 Dice binding이면 옛 Close/Render를 생략한다. 추가 명령·저장·RNG 없음.
 실제 증거/판정은 PRESENTATION_LIFECYCLE_REPORT를 따른다. 위의 이전 고정 대기 계약은 이번 사용자 요청 범위에서 대체한다.
+
+## RECOVERY_STABILITY RV-01 직접 검증 통과
+
+복구 필요 상태는 Render에서 우선 표시하며 경과시간 기록·자동 저장·게임 명령을 중단한다. Choice/주사위/지도/카드/운명 delegate는 복구 입력 세대를 캡처한다. PlayerError는 MetaFailure 코드로 복구 가능 상태를 구분하되 일반 런 I/O 실패는 기존 재시도 흐름을 보존한다. OnDisable의 기존 연출 소유 정리는 유지한다. 검증 상태: RECOVERY_STABILITY_REPORT 참조.

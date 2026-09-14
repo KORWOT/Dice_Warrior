@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FateDice
 {
-    [Serializable] public class MetaRequest { public string requestId; public long expectedRevision; }
+    [Serializable] public class MetaRequest { public string requestId; public long expectedRevision; public string expectedRecoveryGeneration = ""; }
     [Serializable] public sealed class LoadoutRequest : MetaRequest { public RunLoadout loadout; }
     [Serializable] public sealed class StartRunRequest : MetaRequest { public bool abandonActiveRun; }
     [Serializable] public sealed class SettlementRequest : MetaRequest { public string runId; }
@@ -19,6 +19,9 @@ namespace FateDice
         IRunStore RunStore { get; }
         SettlementReceipt Settlement(string runId);
         bool NeedsSettlement { get; }
+        PlayerSaveDocument ReadRecoverySnapshot();
+        ProfileBackupPreview InspectBackup();
+        PlayerSaveDocument RestoreBackup(ProfileBackupPreview preview);
         Task<PlayerProfileData> SaveLoadoutAsync(LoadoutRequest request);
         Task<RunState> StartRunAsync(StartRunRequest request);
         Task<SettlementReceipt> SettleAsync(SettlementRequest request);

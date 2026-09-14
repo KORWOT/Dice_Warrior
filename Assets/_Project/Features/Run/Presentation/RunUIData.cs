@@ -50,6 +50,8 @@ namespace FateDice
         public UIChoiceData[] trials, caps;
         public UIChoiceData[] characters, loadoutChoices, growthChoices;
         public bool metaEnabled;
+        public bool recoveryMode;
+        public UIChoiceData[] recoveryChoices;
         public string seed;
         public Action<string> seedChanged;
         public UIChoiceData start, resume, archive;

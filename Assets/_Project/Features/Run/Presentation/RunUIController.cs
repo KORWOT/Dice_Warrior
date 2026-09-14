@@ -166,6 +166,7 @@ namespace FateDice
         protected virtual void OnDestroy() { if (UI) UI.CloseAll(); }
         protected virtual void OnDisable()
         {
+            commandViewVersion++;
             metaViewVersion++;
             // Cancellation disposes the command iterator and clears its fields. Capture ownership first.
             var ownedFate = presentingFate ? presentingFate : shownFate;
@@ -194,14 +195,15 @@ namespace FateDice
         }
         private bool SaveElapsedTime()
         {
+            if (NeedsRecovery) return false;
             if (Session == null || Store == null) return true;
             try { return Session.SaveCheckpoint(); }
-            catch (Exception e) { error = PlayerError(e); if (Widgets != null) Widgets.Notice.text = "자동 저장 실패: " + error; return false; }
+            catch (Exception e) { error = PlayerError(e); if (NeedsRecovery) RenderRecovery(); else if (Widgets != null) Widgets.Notice.text = "자동 저장 실패: " + error; return false; }
         }
         protected virtual void Update()
         {
             if (UI) UI.Root.ApplySafeArea();
-            if (Session != null && !menu && !(navigation?.IsTransitioning ?? false) && Session.Phase != RunPhase.Result)
+            if (Session != null && !NeedsRecovery && !menu && !(navigation?.IsTransitioning ?? false) && Session.Phase != RunPhase.Result)
                 Session.RecordElapsed(Time.unscaledDeltaTime);
             if (!Busy && UI && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
@@ -212,9 +214,9 @@ namespace FateDice
 
         private RunUIContext Context(PresentationSettings presentation) => new RunUIContext
         { manager = UI, prefabs = uiPrefabs, visuals = visuals, presentation = presentation };
-        private static UIChoiceData Choice(string key, string text, Action clicked, bool interactable = true,
-            ButtonPurpose purpose = ButtonPurpose.Primary, bool selected = false) => new UIChoiceData
-        { key = key, text = text, clicked = clicked, interactable = interactable, purpose = purpose, selected = selected };
+        private UIChoiceData Choice(string key, string text, Action clicked, bool interactable = true,
+            ButtonPurpose purpose = ButtonPurpose.Primary, bool selected = false, bool recovery = false) => new UIChoiceData
+        { key = key, text = text, clicked = GuardInput(clicked, recovery), interactable = interactable, purpose = purpose, selected = selected };
         private void Show<T>(RunUIData data, bool openDice = true) where T : BaseUI
         {
             UI.Show<T>(data);
@@ -225,6 +227,7 @@ namespace FateDice
 
         private void Render(bool deferCombatDice = false)
         {
+            if (NeedsRecovery) { RenderRecovery(); return; }
             if (atTitle)
             {
                 UI.Show<TitleUI>(new TitleUIData { title = "운명의 주사위", subtitle = "한 명의 모험가, 여섯 개의 주사위, 당신의 여정.",
@@ -255,7 +258,7 @@ namespace FateDice
             if (rerollPhase && state.rerollUnlocked)
             {
                 hud.fate += "\n재굴림: " + state.rerollCharges + "  /  주사위 선택 (" + rules.growth.rerollCost + "회 소모)";
-                if (state.rerollCharges >= rules.growth.rerollCost) hud.dieClicked = index => Command(() => Session.Reroll(index, token), true);
+                if (state.rerollCharges >= rules.growth.rerollCost) hud.dieClicked = GuardInput<int>(index => Command(() => Session.Reroll(index, token), true));
             }
             var context = Context(rules.presentation);
             var showPaths = state.phase == RunPhase.Map || state.phase == RunPhase.ExplorationRoll || state.phase == RunPhase.ExplorationCards;
@@ -274,7 +277,7 @@ namespace FateDice
                         completedNodes = state.resolvedEventIds.Select(id => state.nodeHistory.FirstOrDefault(n => n.id == id))
                             .Where(n => n != null).Select(n => new NodeState { id = n.id, type = n.type, childIds = n.childIds.ToList() }).ToArray(),
                         available = state.availableNodeIds.ToArray(), selected = state.selectedNode?.id,
-                        chooseNode = id => TravelToNode(id, token),
+                        chooseNode = GuardInput<string>(id => TravelToNode(id, token)),
                         fates = Array.Empty<FateOfferUIData>()
                     };
                     if (state.phase == RunPhase.Map)
@@ -306,16 +309,16 @@ namespace FateDice
                         {
                             context = context, hud = hud,
                             offers = state.cards.Select(c => new FateOfferUIData { id = c.id, type = c.type, grade = c.grade }).ToArray(),
-                            confirm = id =>
+                            confirm = GuardInput<string>(id =>
                             {
                                 if (!Busy && popup && popup.BindingVersion == popupBinding && UI.Popups.LastOrDefault() == popup)
                                     Command(() => Session.ChooseFate(id, token), selectionKey: "fate-" + id);
-                            },
-                            close = () =>
+                            }),
+                            close = GuardInput(() =>
                             {
                                 if (!Busy && popup && popup.BindingVersion == popupBinding && UI.Popups.LastOrDefault() == popup)
                                     UI.CloseTopPopup();
-                            }
+                            })
                         });
                         popupBinding = popup.BindingVersion;
                         shownFate = popup; shownFateBinding = popupBinding;
@@ -352,7 +355,7 @@ namespace FateDice
                         var effect = CombatRules.Evaluate(state, c);
                         return new ActionOfferUIData { id = c.id, originalId = c.contentId, label = KoreanText.Content(action.label), grade = c.grade,
                             effect = "피해 " + effect.damage + " / 수호 " + effect.block, tags = (string[])action.tags.Clone(),
-                            visual = visuals.ResolveAction(rules, c.contentId), clicked = id => Command(() => Session.ChooseAction(id, token), selectionKey: "card-" + id, actionId: id) };
+                            visual = visuals.ResolveAction(rules, c.contentId), clicked = GuardInput<string>(id => Command(() => Session.ChooseAction(id, token), selectionKey: "card-" + id, actionId: id)) };
                     }).ToArray();
                     bool enterCombat = state.phase == RunPhase.CombatRoll && !deferCombatDice &&
                         !actionBusy && !(UI.ActiveScreen is CombatUI);
@@ -396,7 +399,7 @@ namespace FateDice
                     {
                         var die = rules.Die(state.pendingDieId);
                         hud.situation = "발견한 주사위  /  " + KoreanText.Content(die.label);
-                        hud.dieClicked = index => Command(() => Session.ReplaceDie(index, token));
+                        hud.dieClicked = GuardInput<int>(index => Command(() => Session.ReplaceDie(index, token)));
                         equipment.details = "위의 주사위 여섯 개 중 교체할 하나를 고르세요.\n눈: " + string.Join(", ", die.values) + "\n등장 가중치: " + string.Join(", ", die.weights);
                         equipment.current = "현재 주사위\n" + string.Join(" / ", state.dieIds.Select(id => KoreanText.Content(rules.Die(id).label)));
                         equipment.choices = new[] { Choice("die-skip", "기존 주사위 유지", () => Command(() => Session.ReplaceDie(-1, token))) };
@@ -440,7 +443,7 @@ namespace FateDice
 
         private void TravelToNode(string id, RunCommandToken token)
         {
-            if (Busy) return;
+            if (Busy || NeedsRecovery) return;
             StartCoroutine(ArriveAtNode(id, token));
         }
 
@@ -540,7 +543,7 @@ namespace FateDice
         }
         private void Command(Func<bool> command, bool roll = false, string selectionKey = null, string actionId = null)
         {
-            if (Busy) return;
+            if (Busy || NeedsRecovery) return;
             StartCoroutine(Perform(command, roll, selectionKey, actionId));
         }
         private IEnumerator Perform(Func<bool> command, bool roll, string selectionKey, string actionId)
@@ -696,9 +699,16 @@ namespace FateDice
             if (!string.IsNullOrEmpty(reward.addActionId)) parts.Add("행동 카드: " + KoreanText.Content((Session?.ReadSnapshot().config ?? PreviewConfig).Action(reward.addActionId).label));
             return parts.Count == 0 ? "아이템 보상 없음" : string.Join("  •  ", parts);
         }
-        private static string PlayerError(Exception exception)
+        private string PlayerError(Exception exception)
         {
             Debug.LogWarning(exception.Message);
+            if (Meta != null)
+            {
+                var kind = MetaFailure.Classify(exception);
+                if (kind != MetaFailureKind.Rejected && (kind != MetaFailureKind.TemporaryIO || NeedsRecovery))
+                    RequireRecovery(kind);
+                return kind == MetaFailureKind.Rejected && exception is MetaCommandException ? exception.Message : MetaFailure.Message(kind);
+            }
             if (exception is System.IO.InvalidDataException)
                 return "저장 파일을 읽을 수 없습니다. 손상 파일을 보관한 뒤 새 여정을 시작해 주세요.";
             if (exception is UnauthorizedAccessException || exception is System.IO.IOException)

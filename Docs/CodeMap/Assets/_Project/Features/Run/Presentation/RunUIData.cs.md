@@ -51,3 +51,7 @@ DiceRollUIData에 comboName/hand/comboStrength/holdSeconds 표시 필드를 추�
 - FateOfferUIData의 id/type/grade와 일반 유형 설명만 선택 전에 공개한다. 콜백 필드는 표시층 요청일 뿐 규칙 실행을 소유하지 않는다. FateChoiceUIData의 confirm/close는 해당 팝업의 별도 1:1 요약에서 다룬다.
 - 검수 주의: 저장용 NodeState/RunState의 신규 필드를 View에 직접 넘기지 않는다. 공개 깊이는 저장된 설정을 사용하며 기본2층, 보스 표식은 항상 공개한다. 렌더별 새 배열·콜백의 바인딩 수명을 유지한다.
 - 구현 계약과 실제 검증 상태: Docs/Plans/PROCEDURAL_CAMPAIGN_PLAN.md, Docs/Reports/PROCEDURAL_CAMPAIGN_REPORT.md. 이 요약은 실행 PASS의 증거가 아니다.
+
+## RECOVERY_STABILITY RV-01 직접 검증 통과
+
+MenuUIData의 recoveryMode/recoveryChoices가 기존 준비 로비 컨테이너의 복구 표시를 선택한다. RunUIController.Recovery가 만들고 MenuUI가 바인딩한다. 직접 저장이나 지급 책임은 없다. 검증 상태: RECOVERY_STABILITY_REPORT 참조.

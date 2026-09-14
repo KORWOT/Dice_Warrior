@@ -64,7 +64,7 @@ namespace FateDice
             SetText(growthDetails, data.growthDetails);
             AddChoices(trialChoices, data.trials);
             AddChoices(capChoices, data.caps);
-            AddChoices(mainChoices, new[] { data.start, data.resume, data.archive });
+            AddChoices(mainChoices, data.recoveryMode ? data.recoveryChoices : new[] { data.start, data.resume, data.archive });
             if (data.metaEnabled && (!metaCharacters || !metaLoadout || !metaGrowth))
                 throw new InvalidOperationException("MenuUI requires authored meta preparation containers.");
             if (metaCharacters) AddChoices(metaCharacters, data.characters);
@@ -79,6 +79,10 @@ namespace FateDice
             characterTab.onClick.AddListener(characterListener);
             settingsTab.onClick.AddListener(settingsListener);
             growthTab.onClick.AddListener(growthListener);
+            characterTab.gameObject.SetActive(!data.recoveryMode);
+            settingsTab.gameObject.SetActive(!data.recoveryMode);
+            growthTab.gameObject.SetActive(!data.recoveryMode);
+            if (data.recoveryMode) selectedTab = 0;
             // Rebinding a selected trial/cap stays in Settings; closing the screen resets this index.
             DisplayTab(selectedTab, false);
         }

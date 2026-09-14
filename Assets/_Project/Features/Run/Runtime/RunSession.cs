@@ -7,18 +7,20 @@ namespace FateDice
     {
         readonly RunApplication application;
         readonly PresentationSettings presentation;
+        readonly string recoveryGeneration = "";
         sealed class CheckpointAdapter
         {
             public readonly Action<RunState> Callback;
             readonly PresentationSettings presentation;
-            public CheckpointAdapter(Action<RunState> callback,PresentationSettings style)
-            { Callback=callback; presentation=style; }
-            public void Save(CoreRunState state) => Callback(RunState.FromCore(state,presentation));
+            readonly string recoveryGeneration;
+            public CheckpointAdapter(Action<RunState> callback,PresentationSettings style, string generation)
+            { Callback=callback; presentation=style; recoveryGeneration=generation; }
+            public void Save(CoreRunState state) => Callback(RunState.FromCore(state,presentation,recoveryGeneration));
         }
         public Action<RunState> Checkpoint
         {
             get => (application.Checkpoint?.Target as CheckpointAdapter)?.Callback;
-            set => application.Checkpoint=value==null?null:new Action<CoreRunState>(new CheckpointAdapter(value,presentation).Save);
+            set => application.Checkpoint=value==null?null:new Action<CoreRunState>(new CheckpointAdapter(value,presentation,recoveryGeneration).Save);
         }
         public RunState State => ReadSnapshot();
         public RunPhase Phase => application.Phase;
@@ -27,6 +29,7 @@ namespace FateDice
             if(state==null)throw new ArgumentNullException(nameof(state));
             // Runtime validation includes the saved style; the core catalog excludes it.
             RunStateValidator.Validate(state);
+            recoveryGeneration=state.recoveryGeneration ?? "";
             presentation=state.config.presentation.DeepCopy();
             application=new RunApplication(state.ToCore());
             if(store!=null)Checkpoint=store.Save;
@@ -43,7 +46,7 @@ namespace FateDice
             if(store!=null){session.Checkpoint=store.Save;session.SaveCheckpoint();}
             return session;
         }
-        public RunState ReadSnapshot() => RunState.FromCore(application.ReadSnapshot(),presentation);
+        public RunState ReadSnapshot() => RunState.FromCore(application.ReadSnapshot(),presentation,recoveryGeneration);
         public RunCommandToken CaptureCommandToken() => application.CaptureCommandToken();
         public void RecordElapsed(double seconds) => application.RecordElapsed(seconds);
         public bool SaveCheckpoint() => application.SaveCheckpoint();

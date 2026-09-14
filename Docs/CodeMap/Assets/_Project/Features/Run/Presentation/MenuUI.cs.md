@@ -13,3 +13,7 @@ metaLayoutVersion1과 authored metaCharacters/metaLoadout/metaGrowth 컨테이�
 - 표시: 검정/남색과 절제한 금색으로 선택·주요 행동을 구분한다. accent/buttonNormal/buttonSelected/buttonPressed/buttonDisabled/primaryButton/secondaryBorder/unselectedTabText를 serialized Color로 노출하여 MenuUI 원본 Inspector에서 선택 색상을 편집한다. 선택 영역은 기존 CommonButtonView 원본을 복제하므로 font/style 연결을 보존한다. 하단 mainChoices와 오류/최근 결과/notice는 탭 scroll 밖의 authored footer에 놓인다.
 - 관계: UIManager/BaseUI가 화면 캐시·열기/닫기·입력잠금을 담당하고 RunScreenLayout/FateDiceWidgets가 기존 참조와 반복 선택을 제공한다. PlayWorkbenchSession의 초기 trial/cap 설정은 숨겨진 버튼을 우회하지 않고 세팅 탭을 먼저 여는 경로로 연결해야 한다.
 - 검수 상태: 실제 통합 실행 결과는 Docs/Reports/LOBBY_MAP_DICE_REPORT.md를 참조한다.
+
+## RECOVERY_STABILITY RV-01 직접 검증 통과
+
+recoveryMode이면 mainChoices에 복구 동작만 표시하고 탭을 숨기며 캐릭터 패널을 안내 영역으로 쓴다. 일반 재바인딩 때 탭을 되살린다. 기존 authored 참조/색상/메타 컨테이너를 보존하고 새 자산은 만들지 않는다. 검증 상태: RECOVERY_STABILITY_REPORT 참조.

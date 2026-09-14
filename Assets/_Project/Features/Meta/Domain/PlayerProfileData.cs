@@ -27,13 +27,14 @@ namespace FateDice
         public const int CurrentSchema = 1;
         public int schema = CurrentSchema;
         public string profileId, authority = "LocalDevelopment";
+        public string recoveryGeneration = "";
         public long revision, growthCurrency;
         public OwnedCharacter[] characters = Array.Empty<OwnedCharacter>();
         public OwnedItem[] equipment = Array.Empty<OwnedItem>(), dice = Array.Empty<OwnedItem>();
         public string[] wildcards = Array.Empty<string>();
         public RunLoadout loadout;
         public PlayerProfileData Copy() => new PlayerProfileData { schema = schema, profileId = profileId,
-            authority = authority, revision = revision, growthCurrency = growthCurrency,
+            authority = authority, recoveryGeneration = recoveryGeneration, revision = revision, growthCurrency = growthCurrency,
             characters = characters.Select(x => x.Copy()).ToArray(), equipment = equipment.Select(x => x.Copy()).ToArray(),
             dice = dice.Select(x => x.Copy()).ToArray(), wildcards = (string[])wildcards.Clone(), loadout = loadout.Copy() };
     }
@@ -62,18 +63,21 @@ namespace FateDice
             rulesVersion = rulesVersion, profileRevision = profileRevision, characterRank = characterRank,
             loadout = loadout.Copy(), policy = policy.Copy() };
     }
+    public enum MetaFailureKind { Rejected, Stale, TemporaryIO, Corrupt, UnsupportedSchema, ForeignProfile }
     public sealed class MetaCommandException : InvalidOperationException
     {
-        public MetaCommandException(string message) : base(message) { }
+        public MetaFailureKind Kind { get; }
+        public MetaCommandException(string message, MetaFailureKind kind = MetaFailureKind.Rejected) : base(message) { Kind = kind; }
     }
     public static class ProfileRules
     {
-        public static void Require(bool condition, string message)
-        { if (!condition) throw new MetaCommandException(message); }
+        public static void Require(bool condition, string message, MetaFailureKind kind = MetaFailureKind.Rejected)
+        { if (!condition) throw new MetaCommandException(message, kind); }
 
         public static void Validate(PlayerProfileData p)
         {
             Require(p != null && p.schema == PlayerProfileData.CurrentSchema, "지원하지 않는 프로필 버전입니다.");
+            Require(p.recoveryGeneration != null && (p.recoveryGeneration.Length == 0 || Guid.TryParse(p.recoveryGeneration, out _)), "프로필 복구 세대가 올바르지 않습니다.");
             Require(!string.IsNullOrWhiteSpace(p.profileId) && p.authority == "LocalDevelopment" && p.revision >= 0 && p.growthCurrency >= 0,
                 "프로필 식별자·권한·재화가 올바르지 않습니다.");
             Require(p.characters != null && p.characters.Length > 0 && p.characters.All(x => x != null && x.rank >= 0), "캐릭터 데이터가 올바르지 않습니다.");
