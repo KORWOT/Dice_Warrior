@@ -63,14 +63,19 @@ namespace FateDice
         static string Fingerprint(byte[] bytes)
         { using (var hash = SHA256.Create()) return BitConverter.ToString(hash.ComputeHash(bytes)).Replace("-", ""); }
 
-        static byte[] EncodeDocument(PlayerSaveDocument document)
+        byte[] EncodeDocument(PlayerSaveDocument document)
         {
+            using (MeasureSave(3))
+            {
             string payload = MetaJson.Encode(document);
             return new UTF8Encoding(false).GetBytes(MetaJson.Encode(new LocalSaveEnvelope {
                 schema = 1, payload = payload, checksum = MetaJson.Hash(payload) }));
+            }
         }
-        static void WriteAtomicBytes(string destination, byte[] bytes)
+        void WriteAtomicBytes(string destination, byte[] bytes)
         {
+            using (MeasureSave(destination == Path ? 4 : 5))
+            {
             string temp = destination + "." + Guid.NewGuid().ToString("N") + ".tmp";
             try
             {
@@ -82,6 +87,7 @@ namespace FateDice
             {
                 if (File.Exists(temp))
                     try { File.Delete(temp); } catch (IOException) { } catch (UnauthorizedAccessException) { }
+            }
             }
         }
     }

@@ -73,7 +73,9 @@ namespace FateDice
                 type.GetFields(BindingFlags.Public | BindingFlags.Instance).Select(field =>
                 { var p = base.CreateProperty(field, MemberSerialization.Fields); p.Readable = p.Writable = true; return p; }).ToList();
         }
-        static JsonSerializerSettings Settings() => new JsonSerializerSettings { ContractResolver = new Fields(),
+        // Cache immutable type contracts, never player data or serializer instances.
+        static readonly Fields Resolver = new Fields();
+        static JsonSerializerSettings Settings() => new JsonSerializerSettings { ContractResolver = Resolver,
             TypeNameHandling = TypeNameHandling.None, MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
             MissingMemberHandling = MissingMemberHandling.Error, MaxDepth = 128 };
         public static string Encode(object value) => JsonConvert.SerializeObject(value, Settings());
@@ -103,11 +105,15 @@ namespace FateDice
             Path = System.IO.Path.GetFullPath(path); ProfileId = profileId;
         }
         public static string PlayerPath(string root, string profileId) => System.IO.Path.Combine(root, MetaJson.Hash(profileId), "player.json");
-        public PlayerSaveDocument Read() => ReadBytes(File.ReadAllBytes(Path));
+        byte[] ReadPrimaryBytes() { using (MeasureSave(0)) return File.ReadAllBytes(Path); }
+        public PlayerSaveDocument Read() => ReadBytes(ReadPrimaryBytes());
         PlayerSaveDocument ReadBytes(byte[] bytes)
         {
             try
             {
+                PlayerSaveDocument doc;
+                using (MeasureSave(1))
+                {
                 string text;
                 using (var reader = new StreamReader(new MemoryStream(bytes), Encoding.UTF8, true)) text = reader.ReadToEnd();
                 var envelope = MetaJson.Decode<LocalSaveEnvelope>(text);
@@ -115,13 +121,15 @@ namespace FateDice
                 if (envelope.schema != 1) throw MetaFailure.InvalidFile(MetaFailureKind.UnsupportedSchema, "지원하지 않는 프로필 파일 버전입니다.");
                 if (string.IsNullOrEmpty(envelope.payload) || MetaJson.Hash(envelope.payload) != envelope.checksum)
                     throw new InvalidDataException("프로필 파일의 체크섬이 올바르지 않습니다.");
-                var doc = MetaJson.Decode<PlayerSaveDocument>(envelope.payload);
+                doc = MetaJson.Decode<PlayerSaveDocument>(envelope.payload);
                 if (doc == null) throw new InvalidDataException("프로필 내용이 없습니다.");
                 if (doc.schema != 1 || (doc.profile != null && doc.profile.schema != PlayerProfileData.CurrentSchema))
                     throw MetaFailure.InvalidFile(MetaFailureKind.UnsupportedSchema, "지원하지 않는 프로필 문서 버전입니다.");
                 if (doc.profile != null && doc.profile.profileId != ProfileId || doc.run != null && doc.run.profileId != ProfileId)
                     throw MetaFailure.InvalidFile(MetaFailureKind.ForeignProfile, "다른 플레이어의 프로필 또는 여정입니다.");
-                doc.Validate(ProfileId); return doc;
+                }
+                using (MeasureSave(2)) doc.Validate(ProfileId);
+                return doc;
             }
             catch (JsonException e) { throw new InvalidDataException("프로필 JSON을 읽지 못했습니다.", e); }
             catch (MetaCommandException e) { throw new InvalidDataException(e.Message, e); }
@@ -129,20 +137,21 @@ namespace FateDice
         }
         public void Write(long expectedRevision, PlayerSaveDocument candidate)
         {
-            candidate.Validate(ProfileId);
+            using (MeasureSave(2)) candidate.Validate(ProfileId);
             ProfileRules.Require(candidate.revision == expectedRevision, "오래된 저장 문서입니다. 다시 불러와 주세요.", MetaFailureKind.Stale);
             Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
             // OS-owned exclusive file handle serializes writers, including other service instances.
             // This is our profile write lock; it never touches Unity's project lock.
             using (var writeLock = new FileStream(Path + ".write-lock", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None))
             {
-                var previousBytes = Exists ? File.ReadAllBytes(Path) : null;
+                var previousBytes = Exists ? ReadPrimaryBytes() : null;
                 var previous = previousBytes == null ? null : ReadBytes(previousBytes);
                 long currentRevision = previous?.revision ?? 0;
                 ProfileRules.Require(previous == null || previous.profile.recoveryGeneration == candidate.profile.recoveryGeneration,
                     "복구 이전의 저장 후보입니다. 다시 불러와 주세요.", MetaFailureKind.Stale);
                 ProfileRules.Require(currentRevision == expectedRevision, "다른 작업이 먼저 저장했습니다. 다시 불러와 주세요.", MetaFailureKind.Stale);
-                var next = candidate.Copy(); next.revision = checked(expectedRevision + 1); next.Validate(ProfileId);
+                var next = candidate.Copy(); next.revision = checked(expectedRevision + 1);
+                using (MeasureSave(2)) next.Validate(ProfileId);
                 var bytes = EncodeDocument(next);
                 // Preserve exactly the validated document. A bad current file never replaces a good backup.
                 // Backup failure aborts before touching the primary document.

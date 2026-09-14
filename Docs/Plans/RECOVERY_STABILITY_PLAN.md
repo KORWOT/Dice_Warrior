@@ -23,12 +23,12 @@ UI는 기존 MenuUI의 작성된 정보/버튼 컨테이너를 복구 상태로 
 
 RV별 실패 재현→근거 있는 최소 구현→직접 실행 통과 후 다음 단계. 필터0건은 성공 아님; 현재 정상 채널인 전체 suite 또는 대상이 실제 선택된 실행을 확인한다. 최종 소스로 컴파일/전체 EditMode/PlayMode 및 Android 모듈이 있으면 ARM64 IL2CPP 개발 APK/해시/경고 기록. 승인 기기·격리조건 부재는 기기만 NOT_RUN. 필요한 Unity 실행 불가 WAIT_VALIDATION, 실제 실패 FAIL, 상한 내 미해결 필수 결함 BLOCKED.
 
-최초 통합 검토1묶음, 이후 전체 Task 공통 수정·재검증 최대2묶음. 현재 최초 개발/재현 단계, 통합 검토0, 이후 보완0/2. 단계별 예산 초기화 없음. 메인 단독 코드/자산/실행 소유. 리뷰 스킬의 보조 검토가 필요할 경우 최초 통합 시 읽기 전용1명/누적1명 상한과 경계를 이 문서에 구체화하고 실행한다.
+최초 통합 검토1묶음, 이후 전체 Task 공통 수정·재검증 최대2묶음. 현재 최초 통합 검토1/1 진행 중이며 이후 보완0/2다. 단계별 예산 초기화 없음. 메인 단독 코드/자산/실행 소유. 최초 통합의 읽기 전용 보조 검토1명/누적1명 경계는 아래에 기록한다.
 
 - [x] RV-01 직접 재현/복구/UI 검증 (EditMode12/12, PlayMode5/5; 전체 통합 검증은 별도 미완료)
 - [x] RV-02 백업·확인·복구 세대 직접 검증 (EditMode23/23, UI8/8 + 정산 백업 추가UI1/1)
-- [ ] RV-03 실제 지연/유실/불명 요청 UI 검증
-- [ ] RV-04 누적 측정/근거 기반 최소 개선
+- [x] RV-03 실제 지연/유실/불명 요청 UI 검증 (UI15/15, journal10/10, 기존 메타 UI3/3; 전체 검사 별도)
+- [x] RV-04 누적 측정/근거 기반 최소 개선 (실제 자료3조건×5회 전후, 단일 읽기 RED→GREEN; 전체 검사 별도)
 - [ ] 최초 통합 검토/최신 전체 검사/Android/보존/CodeMap
 
 ### RV-01 구현 선택 / 최초 개발 진행
@@ -56,3 +56,25 @@ RV-03 구체 계약: IPlayerDataStore.RequestJournal을 명시 의존성으로 �
 ### RV-03 진행분 커밋 요청 / 2026-09-14
 
 후속 사용자 요청 «좋아 이제 정리해서 커밋진행해줘»로 c30d6a8 이후 RV-03 구현·직접 영향 테스트·신규 .meta·대응 CodeMap/INDEX·본 PLAN/REPORT의 정확한 파일 staging 및 로컬 commit을 허용한다. 시작 시 staged0이다. 기존 사용자 RP2개/동적 폰트와 미추적 설계 원문3개/과거 도구 요약/ProjectSettings/Packages는 제외한다. 전체 Task 완료나 RV-04 착수를 이 커밋의 조건으로 추가하지 않는다. 컴파일과 직접 검사의 실제 결과 및 미실행 범위를 REPORT에 구분한다. push·브랜치 변경·reset·stash는 허용하지 않는다. 기존 통합 검토0/1 및 이후 보완0/2는 유지하며 전체 구현·검증 Goal은 진행 중이다.
+
+재개 기준 eaa0114 / staged0. 직전 턴은 최신 컴파일·직접25건 실행과 문서·승인 커밋을 완료한 progress다. 이후 Git 쓰기는 다시 금지한다. 미결 필수 검증은 기존 메타 UI 0건 실행부터 확인한다. 현재 stopped/검사 IsRunActive=false/active scene dirty=false를 확인한 뒤 EditorUtility.RequestScriptReload로 검사 캐시 가설을 진단한다. 패키지·설정·자산 쓰기나 진행 중 검사 중단은 하지 않는다. 통합 검토/보완 예산 유지.
+
+### RV-04 측정 계약
+
+실제 LocalMetaProgressionService의 출발/명시 포기 명령을 메모리 시험 저장소에 순차 실행해 과거 런0/100/1000개(정산 종류 abandoned)와 현재 정상 활성 런1개를 생성한다. ID/영수증/프로필 revision을 임의 합성하지 않는다. 신규는 첫 출발 이후, 누적은 명시 포기 이력의 비용이며 승리/상점 등 명령 혼합의 최악 비용이라고 일반화하지 않는다. 각 문서는 전체 Validate를 통과한 뒤 GUID TEMP의 실제 LocalPlayerDataStore로 기록한다.
+
+허용 코드: Meta/Runtime/LocalSaveDiagnostics.cs(동일 store partial의 Editor 한정 관측), PlayerSaveDocument.cs 및 LocalPlayerDataRecovery.cs의 읽기·decode/검증·encode·primary/backup 원자 쓰기 구간 관측. 진단 미연결 시 수집하지 않으며 Player 빌드에는 진단 상태/수집을 넣지 않는다. 실제 파일 I/O와 충돌 검증 순서는 바꾸지 않는다. Run/Tests/PlayMode/RecoveryStabilityPerformanceTests.cs에서 authored Lobby를 열어 RefreshView1회 및 양수 시간 체크포인트1회마다 실제 primary read 횟수, 구간 시간, 전체 동기 시간/할당, 다음 프레임 간격을 기록한다. 각 자료에서 워밍업1회 이후5회, Editor/Mono·warm OS cache 조건과 해상도를 기록한다. 제어되지 않은 OS cold cache나 Android 성능을 주장하지 않는다. 새 스크립트 .meta/CodeMap/INDEX 포함.
+
+측정 후 중복 읽기 등이 확인될 때만 로비 한 갱신의 같은 스냅샷 공유 등 직접 원인을 최소 변경한다. 그 회귀를 먼저 실패로 확인하고 같은 측정 fixture/내용/횟수로 재실행한다. 저장 직전 CAS·세대 검사·명령 receipt·같은 값 설정의 요청 ID 기록은 유지한다. 테스트 중 제품 소스 편집/동시 Unity 실행은 하지 않는다.
+
+최초 실측15개 로비 표본 전부 primary read2회, checkpoint의 decode/encode 수백 ms가 확인됐다. RenderMetaMenu의 Profile+NeedsSettlement 별도 읽기를 ReadDisplaySnapshot1회로 합치며 같은 스냅샷의 run preview도 사용한다. 명령/복구 읽기는 별도로 유지한다. MetaJson.Settings가 매번 새 Fields resolver를 만들어 타입 계약 reflection/cache를 버리는 원인을 확인하여 타입 계약 resolver만 재사용하고 serializer/settings·플레이어 데이터는 공유하지 않는다. JSON 공식 Performance Tips의 resolver 재사용 지침도 확인했다. 기존 단일 읽기 RED, 고정 JSON bytes/동시 개체 독립성 추가 회귀와 동일 측정 전후 결과로 검증한다.
+
+### 최초 통합 검토 묶음 개시
+
+RV-01~04 직접 검증 후 requesting-code-review 스킬의 검토자를 읽기 전용1명에 한해 위임한다(동시1/누적1/재위임0). 입력은 원문 Goal/본 PLAN/REPORT, 기준 b18f3b7→현재 eaa0114+working diff 및 CodeMap/직접 참조다. 출력은 RV-01~04의 실제 필수 결함별 근거·영향·해결 조건과 FOLLOW_UP 구분이며 파일/Unity/Git 쓰기 권한은 없다. 메인은 최신 전체 EditMode/PlayMode·Android·보존 검사와 문서 통합만 담당하며 같은 파일을 동시에 쓰지 않는다. 이 묶음이 전체 Task의 최초 통합 검토1/1이고 이후 수정·재검증은 여전히 총0/2이다. 단계별 검토 예산을 새로 만들지 않는다.
+
+### RV-04 진행분 커밋 요청 / 2026-09-14
+
+후속 사용자 요청 «좋아 이제 정리해서 커밋진행해줘»에 따라 eaa0114 이후 RV-04 제품 코드·직접 영향 테스트·신규 .meta·대응 CodeMap/INDEX·본 PLAN/REPORT의 정확한 파일 staging·로컬 commit을 허용한다. 시작 staged0. 기존 RP2개/동적 폰트, 미추적 설계 원문3개/과거 도구 요약/ProjectSettings/Packages는 제외하고 보존한다. push·브랜치 변경·reset·stash는 하지 않는다.
+
+이번 요청에서는 제품 수정 범위를 늘리지 않고 진행 상태를 기록한다. 최초 전체 EditMode는303 PASS/14 FAIL이며 전체 PlayMode·Android는 미완료다. 읽기 전용 검토의 RS-IR-01(완료 전 닫기/재개한 요청 창 갱신 누락)과 전체 검사 RS-IR-02(상태 재현 해시14건 불일치)를 REPORT에 남긴다. 원인 수정·재검증은 후속 동일 Task에 이어가며 최초 통합1/1 진행 중·보완0/2를 유지한다. 이 커밋은 전체 Task 완료 또는 통합 PASS 판정이 아니다.

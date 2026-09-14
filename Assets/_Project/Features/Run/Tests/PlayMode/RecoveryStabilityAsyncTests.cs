@@ -112,6 +112,7 @@ namespace FateDice.Tests
             public bool NeedsSettlement => inner.NeedsSettlement;
             public SettlementReceipt Settlement(string runId) => inner.Settlement(runId);
             public PlayerSaveDocument ReadRecoverySnapshot() => inner.ReadRecoverySnapshot();
+            public PlayerSaveDocument ReadDisplaySnapshot() => inner.ReadDisplaySnapshot();
             public ProfileBackupPreview InspectBackup() => inner.InspectBackup();
             public PlayerSaveDocument RestoreBackup(ProfileBackupPreview preview) => inner.RestoreBackup(preview);
             public System.Threading.Tasks.Task<PlayerProfileData> SaveLoadoutAsync(LoadoutRequest value) => Hold(value, r => inner.SaveLoadoutAsync((LoadoutRequest)r));

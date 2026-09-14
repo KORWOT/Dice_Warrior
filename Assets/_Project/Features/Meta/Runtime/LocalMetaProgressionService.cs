@@ -23,6 +23,7 @@ namespace FateDice
         public bool NeedsSettlement
         { get { var d = Read(); return d.run != null && d.run.phase == RunPhase.Result && !d.settlements.Any(x => x.runId == d.run.runId); } }
         public SettlementReceipt Settlement(string runId) => Read().settlements.FirstOrDefault(x => x.runId == runId)?.Copy();
+        public PlayerSaveDocument ReadDisplaySnapshot() => Read().Copy();
         public PlayerSaveDocument ReadRecoverySnapshot()
         {
             // A vanished file is not a new profile. Recovery never manufactures a replacement.

@@ -1,5 +1,7 @@
 # LocalPlayerDataRecovery.cs
 
+RV-04: private EncodeDocument/WriteAtomicBytes를 인스턴스 메서드로 두어 해당 저장소의 Editor 진단에서 encode와 primary/backup 쓰기를 분리 관측한다. 원자 교체·원본 보관·복원 계약과 실제 I/O 순서는 유지한다. 측정 상태는 RECOVERY_STABILITY_REPORT 참조.
+
 - 역할: LocalPlayerDataStore의 정상 백업·원자 파일 쓰기 부분을 분리한다.
 - 입력/출력: 검증 완료된 이전 문서 bytes와 새 후보 → 마지막 정상본 player.json.backup 및 현재본의 원자 교체.
 - 핵심 동작: 주 저장 잠금 아래 이전 bytes를 검증한 뒤 백업에 그대로 기록한다. 각 파일은 고유 임시 파일 flush 후 replace/move하며 자체 임시 파일만 정리한다. 백업 쓰기 실패는 현재본 쓰기를 막는다.

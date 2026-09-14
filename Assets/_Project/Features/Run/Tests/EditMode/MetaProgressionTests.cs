@@ -83,6 +83,25 @@ namespace FateDice.Tests
             Assert.That(LocalPlayerDataStore.PlayerPath(directory, "../other/user"), Does.StartWith(Path.GetFullPath(directory)));
             Assert.That(LocalPlayerDataStore.PlayerPath(directory, "a"), Is.Not.EqualTo(LocalPlayerDataStore.PlayerPath(directory, "b")));
         }
+        public sealed class JsonProbe
+        {
+            public string name;
+            public int[] values;
+            public int Computed => throw new InvalidOperationException("Computed properties are not save fields.");
+        }
+        [Test] public void JsonContractReusePreservesBytesAndIndependentConcurrentValues()
+        {
+            var tasks = Enumerable.Range(0, 16).Select(i => Task.Run(() =>
+            {
+                var value = new JsonProbe { name = "probe-" + i, values = new[] { i, i + 1 } };
+                string expected = "{\"name\":\"probe-" + i + "\",\"values\":[" + i + "," + (i + 1) + "]}";
+                string json = MetaJson.Encode(value);
+                Assert.That(json, Is.EqualTo(expected));
+                var copy = MetaJson.Decode<JsonProbe>(json); copy.values[0] = -1;
+                Assert.That(value.values[0], Is.EqualTo(i)); Assert.That(MetaJson.Encode(value), Is.EqualTo(expected));
+            })).ToArray();
+            Task.WhenAll(tasks).GetAwaiter().GetResult();
+        }
         [Test] public void OwnedLoadoutPersistsAndStartsAnIndependentFrozenRun()
         {
             var p = service.Profile; var l = p.loadout.Copy();

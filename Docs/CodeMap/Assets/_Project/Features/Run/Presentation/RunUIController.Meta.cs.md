@@ -19,3 +19,7 @@
 ## RV-03 구현 진행
 
 기존 async RunMeta와 화면 소유 pendingStart/Growth를 제거하고 MetaRequests partial에 고정 의도를 전달한다. 미결 요청 중에는 새 변경 대신 처리 결과 확인 버튼을 표시한다. 로비 표시/경제 계산 수치는 유지한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.
+
+## RV-04 측정 후 최소 개선
+
+RenderMetaMenu는 ReadDisplaySnapshot1회로 프로필/정산 여부/런 preview를 함께 표시한다. 표시 사본을 명령 권위로 쓰지 않으며 명령은 expectedRevision과 새 권위 읽기로 검증한다.

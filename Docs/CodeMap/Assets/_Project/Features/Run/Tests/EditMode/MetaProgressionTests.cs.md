@@ -11,3 +11,7 @@
 ## RV-03 구현 진행
 
 ProbeStore는 실제 격리 저장소의 RequestJournal을 그대로 전달한다. 기존 저장/지급 검증은 유지한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.
+
+## RV-04 측정 후 최소 개선
+
+JsonContractReusePreservesBytesAndIndependentConcurrentValues는 고정 JSON 표현·computed property 제외·동시16개 개체 및 복사 독립성을 검증한다.

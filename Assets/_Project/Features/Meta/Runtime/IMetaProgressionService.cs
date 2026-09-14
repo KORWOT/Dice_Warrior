@@ -22,6 +22,7 @@ namespace FateDice
         IMetaRequestJournal RequestJournal { get; }
         double ResponseWaitSeconds { get; }
         Task<MetaRequestResolution> QueryRequestAsync(MetaPendingRequest request);
+        PlayerSaveDocument ReadDisplaySnapshot();
         PlayerSaveDocument ReadRecoverySnapshot();
         ProfileBackupPreview InspectBackup();
         PlayerSaveDocument RestoreBackup(ProfileBackupPreview preview);

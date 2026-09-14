@@ -19,3 +19,7 @@ Replay보다 먼저 요청 세대를 확인한다. 시작 DTO에 현재 프로�
 ## RV-03 구현 진행
 
 QueryRequestAsync는 원문의 종류별 business fingerprint를 기존 operations와 대조한 뒤 같은 문서 스냅샷을 반환한다. 복원된 백업에 이미 처리 기록이 있으면 확인하고, 기록이 없고 복구 세대가 다르면 자동 재실행 없이 SupersededByRecovery다. 대기 설정과 journal을 조정 객체에 제공한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.
+
+## RV-04 측정 후 최소 개선
+
+ReadDisplaySnapshot은 Read1회 결과의 독립 사본이다. 기존 Recovery 읽기는 파일 부재를 거부하고, 명령·checkpoint의 최신 읽기/CAS는 그대로 유지한다.

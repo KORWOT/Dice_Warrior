@@ -4,9 +4,9 @@
 
 사전 확인: 기존 Task 문서/구현 없음. 저장 충돌의 거부는 있으나 SaveElapsedTime이 실패하면 메뉴도 열리지 않고 RefreshView는 같은 Session을 표시한다. PlayerSaveDocument는 정상 백업/복원 API가 없고 메타 UI는 finally가 바인딩 소유 확인 전에 metaBusy를 해제하며 catch도 오래된 오류를 기록한다. 실제 지연 서비스/지속 미결 기록은 아직 없다. Unity6000.6.0f1 연결 Editor는 ready/stopped, Pipeline7801. 참고 검토 파일은 프로젝트 및 명시 Downloads 경로에 없었으며 승인 Goal로 진행한다.
 
-RV-01/02: 과거 직접 검사 PASS. RV-03: 제품 요청 수명 구현 및 직접 테스트를 추가했고 아래 진행분 검증을 수행 중이다. RV-04: 미착수. 전체 최신 suite/Android는 통합 후 필수 미완료 검사다. 실제 사용자 데이터 손상 시험/쓰기는 없으며, 후속 사용자 요청으로 아래 범위의 로컬 커밋을 진행한다.
+RV-01/02/03 직접 검사 및 RV-04 전후 측정은 아래 실행 기록을 확보했다. 최초 전체 EditMode는303 PASS/14 FAIL이며 요청 창 재개 결함1건도 확인했다. 전체 PlayMode/Android와 통합 판정은 미완료다. 실제 사용자 데이터 손상 시험/쓰기는 없으며, 후속 사용자 요청으로 RV-04 진행분을 로컬 커밋한다. 전체 Task 완료가 아니다.
 
-횟수: 최초 개발/재현, 최초 통합 검토0/1, 이후 수정·재검증0/2. 신규 필수 Finding과 실행 증거는 해당 단계에서 이 문서에 누적한다.
+횟수: 최초 통합 검토1/1 진행 중, 이후 수정·재검증0/2. 신규 필수 Finding과 실행 증거는 이 문서에 누적하며 아래 이전 단계의 횟수는 당시 이력이다.
 
 ## RV-01 최초 개발 / 2026-09-14
 
@@ -74,3 +74,43 @@ RV-01/02: 과거 직접 검사 PASS. RV-03: 제품 요청 수명 구현 및 직�
 - 기존 MetaProgressionFlowTests 커밋 직전 실행도 completed/0건/0초 (`commit-rv03-meta-flow.json`)으로 **WAIT_VALIDATION**이다. 이를 PASS로 보고하지 않으며, Unity 실행 상태 문제의 추가 조사 및 전체 suite는 후속 Goal에 남긴다.
 - 커밋 목록은 소스17개·신규 .meta6개·1:1 CodeMap17개·INDEX/PLAN/REPORT3개로 **43개**다. 모든 소스의 .meta/요약 존재와 범위 내 diff whitespace 검사를 확인했다. `commit-rv03-files.txt`, `commit-rv03-source-hashes.json`에 로컬 목록/소스 해시를 보관한다. 실제 test evidence는 기존 ignore된 artifacts/recovery-stability에 있고 Git에는 결과 요약을 기록한다.
 - 제외 대상 RP2개/폰트의 이번 커밋 준비 전후 SHA256 동일 여부는 `commit-rv03-excluded-preservation.json`으로 확인한다. RV-01 시작 baseline 대비 동적 폰트 차이는 앞선 보존 관찰대로 여전히 남아 있다. 이번 진행분은 렌더링/폰트 자산을 stage하지 않는다.
+
+## eaa0114 이후 검증 재개
+
+직전 턴은 사용자 요청 커밋 및 최신 직접25건 증거를 추가한 progress다. Git 쓰기는 다시 하지 않는다. Unity ready/stopped, IsRunActive=false, active scene dirty=false 확인 후 EditorUtility.RequestScriptReload를 실행했다. 동일 MetaProgressionFlowTests **3/3 PASS**, 22.15초, skipped/inconclusive0 (`rv03-meta-flow-domain-reload.json`). 코드·테스트·패키지·설정 변경 없이0건 문제가 해소된 실행이다. 도메인에 남는 검사 상태의 영향은 확인했지만 어느 내부 캐시가 원인인지는 확정하지 않았다. 이후 필요 시 검사 종료와 미저장 씬 없음을 확인한 뒤 같은 재로드 경로를 사용한다. 기존0건은 과거 WAIT_VALIDATION 이력으로 보존한다.
+
+RV-03 뒤 RV-01/02 기존 복구 UI **9/9 PASS**, 132.55초, skipped/inconclusive0 (`rv03-recovery-ui-regression.json`). 전용 도메인 재로드 후 실행했다. 실제 지연 UI15/15+journal10/10+기존 메타3/3 및 복구9/9의 직접 범위가 통과하여 RV-04 측정으로 진행한다. 전체 최신 검사와 Android는 별도 미완료다.
+
+## RV-04 최초 측정 준비
+
+계획대로 LocalSaveDiagnostics를 Editor에만 추가해 실제 primary 읽기, decode/무결성, store 문서 Validate, encode, primary/backup 원자 쓰기를 계측한다. 서비스/Core 검증과 복사 등은 전체 동기 시간에는 포함되나 이 구간 합계에 포함되지 않는다고 명시한다. 진단 객체를 연결하지 않으면 수집하지 않고 Player에는 진단 데이터/타이머가 없다. I/O/CAS/백업 순서는 유지했다. 성능 fixture는 실제 명령으로 누적 이력을 만들고 각 조건5회 데이터를 저장한 뒤 로비 갱신의 단일 문서 읽기 계약을 검사한다. 첫 컴파일 completed/failed=false; 측정 결과와 최적화는 아직 없다.
+
+최초 측정은 **1개 실행/1개 FAIL(RED)**, 45.36초 (`rv04-baseline-test.json`)다. 세 조건의 실제5회 표본 저장과 유효성/영수증/체크포인트 검사는 모두 마친 뒤 로비 단일 읽기 assertion에서 실패했다. 원자료 `performance-20260914-043237-071.json`:0/100/1000 과거 런의 파일22,960/55,053/345,760bytes, 로비 읽기 각각 모든 표본2회. 로비 중앙값278.93/538.06/591.39ms, 체크포인트1073.01/1466.00/888.24ms. 각 조건의 개별 변동이 커 이력 증가에 따른 단조 비용이나 실기기 지연으로 일반화하지 않는다.
+
+store 내부 checkpoint decode 중앙값447.49/550.32/404.44ms, encode167.77/262.00/144.51ms에 비해 실제 primary read는0.22/0.22/0.34ms였다. MetaJson이 각 변환마다 Fields resolver를 생성해 타입 계약을 반복 만드는 직접 원인을 확인했다. [Json.NET 공식 성능 지침](https://www.newtonsoft.com/json/help/html/Performance.htm)에 따라 resolver의 타입 메타데이터만 공유한다. 로비 표시에는 ReadDisplaySnapshot1회로 profile/run/settlement를 함께 사용한다. 명령과 잠금 안 CAS는 여전히 실제 파일을 다시 읽는다.
+
+메모리 첫 수치0은 무할당이 아니다. 64KiB 배열을 생성한 별도 calibration도 GC.GetAllocatedBytesForCurrentThread 증가0이어서 현재 Mono 카운터 미지원으로 판정했다. 후속 표본은 지원 여부를 기록하고 미지원이면 allocatedBytes=-1, 별도 monoHeapDeltaBytes(살아 있는 힙 증감, GC 시 음수 가능)를 보조 지표로 쓴다. baseline0을 절감 비교에 사용하지 않는다.
+
+개선 후 동일 시험 **1/1 PASS**, 6.04초, skipped/inconclusive0 (`rv04-improved-test.json`), 원자료 `performance-20260914-043844-914.json`이다. 문서 크기/이력 수는 동일하고 모든5회 로비 읽기1회, checkpoint read2회(후보+잠금 안 CAS)/primary write1/backup write1·영수증 불변을 확인했다. 아래는5회 중앙값이며 Editor/Mono/warm OS cache 측정이다.
+
+| 과거 런 | bytes | 로비 ms 전→후 | checkpoint ms 전→후 | 후 checkpoint Mono 힙 증감 중앙값 |
+|---|---:|---:|---:|---:|
+| 0 | 22,960 | 278.93→5.10 | 1073.01→19.73 | 2,015,232 bytes |
+| 100 | 55,053 | 538.06→6.00 | 1466.00→22.01 | 3,313,664 bytes |
+| 1000 | 345,760 | 591.39→20.10 | 888.24→53.03 | 6,291,456 bytes |
+
+직렬화 metadata cache는 데이터 권위를 캐시하지 않는다. 각 명령/저장 시 revision·sequence·복구 세대를 다시 검증한다. 실제 변경이 없는 설정의 requestId 기록/정산 receipt 삭제/압축/DB 전환은 하지 않았다. 소규모 최적화 범위에서 종료하며1000런에서 남는53ms 동기 비용, 힙 증감과 실제 기기 혼합 이력 측정/보관 정책은 FOLLOW_UP으로 둔다. 단일 값/순수 할당 또는 모바일 FPS 개선으로 주장하지 않는다.
+
+RV-01~04 직접 검증 후 최초 통합 검토1/1을 시작한다. 읽기 전용 보조 검토1명(재위임0), 메인 최신 전체 검사/Android/보존 확인을 한 묶음으로 진행하며 이후 보완은0/2다.
+
+## 최초 통합 중간 결과 및 RV-04 진행분 커밋 / 2026-09-14
+
+후속 사용자 커밋 요청을 반영한다. eaa0114 이후 로비 표시 문서1회 읽기, JSON 타입 계약 재사용, Editor 저장 단계 계측, 유효한 누적 런 성능 시험과 관련 회귀/요약 문서를 포함한다. 요청 창 결함 수정이나 새로운 테스트 실행을 이 커밋 준비에 추가하지 않는다. 직전 실제 검사 원자료를 다시 읽어 아래 상태를 확인했으며 과거 직접 PASS를 전체 통과로 대체하지 않는다.
+
+- 최신 소스의 최초 전체 EditMode **317개 실행:303 PASS/14 FAIL**,46.49초, skipped/inconclusive0 (`artifacts/recovery-stability/integrated-edit-initial.json`). 실패14건은 모두 CoreReplayTests.PreExtractionCommandsKeepEveryStateFieldAndChoiceId의7개 시나리오×재개 여부2개에서 sequence1 전체 상태 해시 불일치다. 이를 FAIL로 유지한다.
+- **RS-IR-01 / P2 / OPEN:** RunUIController.MetaRequests.cs의 OpenMetaRequest는 표시 세대를 바꾸고 대기 화면을 다시 그리지만 진행 중 요청의 완료 관찰을 새 바인딩에 연결하지 않는다. `새 여정→요청 창 닫기→완료 전에 재개→성공/실패/시간 초과` 때 이전 관찰자는 바인딩 소유권 검사로 종료하고 새 화면의 확인/재시도는 비활성으로 남는다. 읽기 전용 검토 후 메인이 원본의 OpenMetaRequest/ObserveMetaRequest/RenderMetaRequest 흐름을 대조했다. 해결 조건은 현재 대기 요청 관찰을 새 화면에 연결하고 완료 전 닫기/재개 TCS 성공·실패·시간 초과를 실제 UI로 검증하는 것이다. 이전 응답의 새 Session/이동/잠금 변경 금지는 유지한다. 해당 재개 순서의 실행 재현은 아직 미실행이다.
+- **RS-IR-02 / OPEN:** 위 전체 상태 재현14건의 해시 실패로 기존 게임 상태 보존을 아직 입증하지 못했다. 신규 저장용 recoveryGeneration 필드의 역사적 비교 투영 누락 가능성을 조사 중이며 원인은 확정하지 않았다. 해결 조건은 실제 필드 차이를 확인하고 기존 게임 상태/선택 ID/난수 기대값을 유지한 회귀 통과다. 근거 없이 기준 fixture를 재생성하거나 assertion을 삭제하지 않는다.
+- 전체 PlayMode와 Android ARM64 IL2CPP 개발 빌드는 이번 소스로 아직 미실행이다. 최신 통합 검증 **WAIT_VALIDATION**, 실행한 전체 EditMode **FAIL**을 구분한다. 승인된 격리 기기가 없어 기기 중단/복귀 검사는 **NOT_RUN**이다.
+- 기존 RP2개/동적 폰트 및 미추적 설계/도구 요약/로컬 패키지 설정은 커밋에서 제외한다. RV-01 시작 대비 폰트 차이는 기존 보존 관찰대로 미해결이며 임의로 HEAD 내용으로 되돌리지 않는다. 진행분 보관은 해당 차이의 해소를 뜻하지 않는다.
+- 최초 통합 검토1/1 진행 중, 이후 수정·재검증0/2 유지. 이 커밋은 진행분이며 모든 필수 검증 PASS 또는 전체 Task 완료를 주장하지 않는다.
+- 커밋 준비 검사: 정확한23개 파일(소스9/신규 .meta2/1:1 CodeMap9/INDEX·PLAN·REPORT3)을 확정하고 모든 소스의 .meta·요약 존재 및 범위 내 whitespace 검사를 확인했다. 요약 문서 끝의 불필요한 빈 줄만 정리했으며 제품 소스는 검사 실행 이후 변경하지 않았다. `commit-rv04-files.txt`, `commit-rv04-source-hashes.json`, `commit-rv04-excluded-before.json`에 파일 목록·소스 해시·제외13개 파일의 준비 시점 해시를 보관한다.

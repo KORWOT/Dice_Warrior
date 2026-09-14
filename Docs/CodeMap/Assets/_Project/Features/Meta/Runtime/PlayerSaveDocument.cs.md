@@ -18,3 +18,11 @@
 ## RV-03 구현 진행
 
 IPlayerDataStore가 명시적 RequestJournal을 제공한다. 로컬 구현은 동일 프로필 경로의 .pending sidecar를 제공하며 본문/백업은 기존 계약을 유지한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.
+
+## RV-04 관측
+
+ReadPrimaryBytes 및 decode/Validate 범위는 같은 저장소의 Editor 한정 LocalSaveDiagnostics에 호출/시간을 기록한다. Write의 잠금 안에서도 실제 primary read를 별도 집계하며 CAS/세대/후보 검증 순서는 유지한다. 수집하지 않는 제품 빌드의 저장 계약은 동일하다.
+
+## RV-04 측정 후 최소 개선
+
+MetaJson은 Fields resolver의 타입 계약 캐시만 재사용한다. serializer settings와 데이터는 호출별이며 저장 필드·JSON bytes·TypeNameHandling.None 계약을 유지한다.

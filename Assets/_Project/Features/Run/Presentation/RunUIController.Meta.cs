@@ -51,7 +51,8 @@ namespace FateDice
         {
             var rules = PreviewConfig;
             PlayerProfileData p;
-            try { p = Meta.Profile; }
+            PlayerSaveDocument snapshot;
+            try { snapshot = Meta.ReadDisplaySnapshot(); p = snapshot.profile; }
             catch (Exception e)
             {
                 RequireRecovery(MetaFailure.Classify(e));
@@ -64,7 +65,10 @@ namespace FateDice
             }
             var l = p.loadout; var policy = Meta.Policy;
             int rank = p.characters.Single(x => x.characterId == l.characterId).rank;
-            bool unsettled = Meta.NeedsSettlement;
+            // One coherent display snapshot; commands still read and validate authority again.
+            savedPreview = snapshot.run?.DeepCopy();
+            bool unsettled = snapshot.run != null && snapshot.run.phase == RunPhase.Result &&
+                !snapshot.settlements.Any(receipt => receipt.runId == snapshot.run.runId);
             var gear = new List<UIChoiceData>();
             for (int i = 0; i < 3; i++)
             {

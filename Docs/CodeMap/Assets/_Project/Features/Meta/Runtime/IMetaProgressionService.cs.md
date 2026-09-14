@@ -18,3 +18,7 @@ MetaRequest.expectedRecoveryGeneration을 불변 재시도 입력에 추가한�
 ## RV-03 구현 진행
 
 RequestJournal/ResponseWaitSeconds/QueryRequestAsync를 추가한다. 결과 조회는 같은 원문 요청과 기존 영수증 fingerprint를 비교한 확정/미확정/거절/복구 이전 결과를 반환하는 권위 경계다. 실제 서버 구현은 범위 밖이다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.
+
+## RV-04 측정 후 최소 개선
+
+ReadDisplaySnapshot은 신규 프로필도 파일을 만들지 않는 읽기 전용 표시 사본이다. 로비는 한 문서의 profile/run/settlement를 같이 표시하며 명령과 ReadRecoverySnapshot의 권위 확인을 생략하지 않는다.
