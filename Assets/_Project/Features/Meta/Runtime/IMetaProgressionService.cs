@@ -19,6 +19,9 @@ namespace FateDice
         IRunStore RunStore { get; }
         SettlementReceipt Settlement(string runId);
         bool NeedsSettlement { get; }
+        IMetaRequestJournal RequestJournal { get; }
+        double ResponseWaitSeconds { get; }
+        Task<MetaRequestResolution> QueryRequestAsync(MetaPendingRequest request);
         PlayerSaveDocument ReadRecoverySnapshot();
         ProfileBackupPreview InspectBackup();
         PlayerSaveDocument RestoreBackup(ProfileBackupPreview preview);

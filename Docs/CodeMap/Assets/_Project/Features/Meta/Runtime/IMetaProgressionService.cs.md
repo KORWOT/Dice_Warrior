@@ -13,3 +13,8 @@ ReadRecoverySnapshot은 같은 시점의 프로필·런·정산을 복사 반환
 ## RV-02 직접 검증 통과
 
 MetaRequest.expectedRecoveryGeneration을 불변 재시도 입력에 추가한다. InspectBackup/RestoreBackup은 검증된 미리보기와 확인 이후 복원을 연결하며 실제로 LocalPlayerDataStore의 복구 기능에 위임한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.
+
+
+## RV-03 구현 진행
+
+RequestJournal/ResponseWaitSeconds/QueryRequestAsync를 추가한다. 결과 조회는 같은 원문 요청과 기존 영수증 fingerprint를 비교한 확정/미확정/거절/복구 이전 결과를 반환하는 권위 경계다. 실제 서버 구현은 범위 밖이다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.

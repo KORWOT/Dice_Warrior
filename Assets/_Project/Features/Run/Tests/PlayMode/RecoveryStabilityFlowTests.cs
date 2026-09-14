@@ -27,6 +27,7 @@ namespace FateDice.Tests
             public bool failAfter, failBefore, failRead;
             public ProbeStore(IPlayerDataStore inner) { this.inner = inner; }
             public string ProfileId => inner.ProfileId;
+            public IMetaRequestJournal RequestJournal => inner.RequestJournal;
             public bool Exists => inner.Exists;
             public PlayerSaveDocument Read() => failRead ? throw new IOException("recovery read unavailable") : inner.Read();
             public ProfileBackupPreview InspectBackup() => ((IPlayerDataRecoveryStore)inner).InspectBackup();

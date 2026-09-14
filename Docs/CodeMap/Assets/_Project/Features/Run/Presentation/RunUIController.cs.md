@@ -95,3 +95,8 @@ Playback(PresentationPlayback)이 시퀀스 시작/종료 시각·상태·이벤
 ## RECOVERY_STABILITY RV-01 직접 검증 통과
 
 복구 필요 상태는 Render에서 우선 표시하며 경과시간 기록·자동 저장·게임 명령을 중단한다. Choice/주사위/지도/카드/운명 delegate는 복구 입력 세대를 캡처한다. PlayerError는 MetaFailure 코드로 복구 가능 상태를 구분하되 일반 런 I/O 실패는 기존 재시도 흐름을 보존한다. OnDisable의 기존 연출 소유 정리는 유지한다. 검증 상태: RECOVERY_STABILITY_REPORT 참조.
+
+
+## RV-03 구현 진행
+
+미결 메타 요청은 Gameplay Busy와 분리된다. 관련 새 출발/이어하기/체크포인트/게임 명령/시간 기록은 MetaCommandsBlocked로 중단하고 복구 조작의 입력은 유지한다. 진입/disable 세대로 이전 완료를 차단한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.

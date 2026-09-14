@@ -22,6 +22,7 @@ namespace FateDice.Tests
             public bool failBefore, failAfter;
             public ProbeStore(IPlayerDataStore inner) { this.inner = inner; }
             public string ProfileId => inner.ProfileId;
+            public IMetaRequestJournal RequestJournal => inner.RequestJournal;
             public bool Exists => inner.Exists;
             public PlayerSaveDocument Read() => inner.Read();
             public void Write(long revision, PlayerSaveDocument candidate)

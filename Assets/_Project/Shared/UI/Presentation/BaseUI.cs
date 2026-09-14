@@ -9,6 +9,7 @@ namespace FateDice
     {
         public CanvasGroup group;
         public bool IsOpen { get; private set; }
+        public long BindingRevision { get; private set; }
         public abstract Type DataType { get; }
         public UIManager Manager { get; private set; }
         bool initialized;
@@ -32,7 +33,7 @@ namespace FateDice
                 InitializeView();
                 initialized = true;
             }
-            IsOpen = true;
+            BindingRevision++; IsOpen = true;
             try { BindView(data); }
             catch (Exception bindError)
             {
@@ -51,7 +52,7 @@ namespace FateDice
         internal void CloseView()
         {
             if (!IsOpen) return;
-            IsOpen = false;
+            BindingRevision++; IsOpen = false;
             StopAllCoroutines();
             try { UnbindView(); }
             finally

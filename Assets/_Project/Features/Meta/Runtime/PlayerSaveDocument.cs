@@ -85,6 +85,7 @@ namespace FateDice
     }
     public interface IPlayerDataStore
     {
+        IMetaRequestJournal RequestJournal { get; }
         string ProfileId { get; }
         bool Exists { get; }
         PlayerSaveDocument Read();
@@ -92,6 +93,7 @@ namespace FateDice
     }
     public sealed partial class LocalPlayerDataStore : IPlayerDataStore
     {
+        public IMetaRequestJournal RequestJournal => new LocalMetaRequestJournal(Path, ProfileId);
         public string Path { get; }
         public string ProfileId { get; }
         public bool Exists => File.Exists(Path);

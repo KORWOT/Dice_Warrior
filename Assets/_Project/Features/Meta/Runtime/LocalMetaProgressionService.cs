@@ -16,6 +16,8 @@ namespace FateDice
         readonly IRunStore legacy;
         readonly PlayerProfileData initial;
         public IRunStore RunStore { get; }
+        public IMetaRequestJournal RequestJournal => store.RequestJournal;
+        public double ResponseWaitSeconds => config.responseWaitSeconds;
         public PlayerProfileData Profile => Read().profile.Copy();
         public MetaPolicy Policy { get { var p = config.policy.Copy(); p.Validate(); return p; } }
         public bool NeedsSettlement
@@ -40,6 +42,8 @@ namespace FateDice
             this.store = store ?? throw new ArgumentNullException(nameof(store));
             this.content = content ?? throw new ArgumentNullException(nameof(content));
             this.config = config ? config : throw new ArgumentNullException(nameof(config));
+            ProfileRules.Require(config.responseWaitSeconds >= .05f && config.responseWaitSeconds <= 300,
+                "메타 응답 대기 시간은 0.05~300초로 설정해 주세요.");
             this.seed = seed ?? new SystemSeedSource(); this.legacy = legacy;
             initial = config.CreateProfile(store.ProfileId, content());
             RunStore = new Checkpoints(this);
@@ -58,6 +62,27 @@ namespace FateDice
         static void Request(MetaRequest r)
         { ProfileRules.Require(r != null && !string.IsNullOrWhiteSpace(r.requestId) && r.requestId.Length <= 128 && r.expectedRevision >= 0, "요청 식별자와 버전을 확인해 주세요."); }
         static string Fingerprint(string kind, object input) => MetaJson.Hash(kind + ":" + MetaJson.Encode(input));
+        public Task<MetaRequestResolution> QueryRequestAsync(MetaPendingRequest pending) => Execute(() =>
+        {
+            pending.Validate(store.ProfileId);
+            var request = pending.Request(); var d = Read();
+            string fingerprint = request is StartRunRequest start ? Fingerprint("start", start.abandonActiveRun) :
+                request is LoadoutRequest loadout ? Fingerprint("loadout", loadout.loadout) :
+                request is GrowthRequest grow ? Fingerprint("grow", grow.characterId) :
+                Fingerprint("settle", ((SettlementRequest)request).runId);
+            var receipt = d.operations.FirstOrDefault(x => x.requestId == request.requestId);
+            ProfileRules.Require(receipt == null || receipt.fingerprint == fingerprint, "보관 요청과 처리 기록의 입력이 다릅니다.");
+            // Receipts are inspected before the generation fence: a restored backup may already contain this result.
+            if (receipt != null) return new MetaRequestResolution { outcome = MetaRequestOutcome.Committed,
+                snapshot = d.Copy(), runId = receipt.runId };
+            if (request.expectedRecoveryGeneration != d.profile.recoveryGeneration)
+                return new MetaRequestResolution { outcome = MetaRequestOutcome.SupersededByRecovery,
+                    snapshot = d.Copy(), message = "복원 이전의 요청입니다. 복원된 진행을 확인했으며 이전 요청은 다시 실행하지 않습니다." };
+            if (request.expectedRevision != d.profile.revision)
+                return new MetaRequestResolution { outcome = MetaRequestOutcome.Rejected, snapshot = d.Copy(),
+                    message = "프로필이 변경되어 이전 요청을 적용할 수 없습니다. 저장된 진행을 확인해 주세요." };
+            return new MetaRequestResolution { outcome = MetaRequestOutcome.Unknown };
+        });
         static MetaOperationReceipt Replay(PlayerSaveDocument d, MetaRequest r, string fingerprint)
         {
             Request(r);

@@ -19,7 +19,7 @@ namespace FateDice
         public FateDiceWidgets Widgets => (UI?.ActiveScreen as IRunScreenView)?.Widgets;
         public GameConfigData PreviewConfig { get; private set; }
         public RunSession Session { get; private set; }
-        public bool Busy => actionBusy || metaBusy || (navigation?.IsTransitioning ?? false);
+        public bool Busy => actionBusy || (navigation?.IsTransitioning ?? false);
         public IRunStore Store { get; private set; }
         public ISeedSource SeedSource { get; private set; }
         private uint selectedSeed = 33;
@@ -91,19 +91,23 @@ namespace FateDice
             if (Meta != null && !ReferenceEquals(store, Meta.RunStore))
                 throw new InvalidOperationException("Cannot replace a profile-owned checkpoint store.");
             Store = store ?? throw new ArgumentNullException(nameof(store));
-            Session = null; menu = true; atTitle = false; ReadSavedPreview(); Render();
+            InitializeMetaRequests(); Session = null; menu = true; atTitle = false; ReadSavedPreview(); Render();
         }
         public void EnterTitle(Action continueToLobby)
         {
+            metaViewVersion++;
             enterLobby = continueToLobby ?? throw new ArgumentNullException(nameof(continueToLobby));
             menu = true; atTitle = true; error = null; Render();
         }
         public void EnterLobby()
         {
+            metaViewVersion++;
             menu = true; atTitle = false; PreviewConfig = config.Snapshot(); ReadSavedPreview(); Render();
         }
         public bool TryEnterInGame()
         {
+            metaViewVersion++;
+            if (MetaCommandsBlocked) return false;
             if (Session == null)
             {
                 if (!Store.Exists) return false;
@@ -130,7 +134,7 @@ namespace FateDice
         }
         private void StartNewJourney()
         {
-            if (Busy || invalidSave) return;
+            if (Busy || MetaCommandsBlocked || invalidSave) return;
             if (Meta != null) { StartMetaJourney(); return; }
             try
             {
@@ -145,7 +149,7 @@ namespace FateDice
         }
         private void ContinueJourney()
         {
-            if (Busy || invalidSave) return;
+            if (Busy || MetaCommandsBlocked || invalidSave) return;
             try
             {
                 Session = new RunSession(Store.Load(), Store);
@@ -168,6 +172,7 @@ namespace FateDice
         {
             commandViewVersion++;
             metaViewVersion++;
+            metaRequestVisible = false;
             // Cancellation disposes the command iterator and clears its fields. Capture ownership first.
             var ownedFate = presentingFate ? presentingFate : shownFate;
             int ownedBinding = presentingFate ? presentingFateBinding : shownFateBinding;
@@ -195,7 +200,7 @@ namespace FateDice
         }
         private bool SaveElapsedTime()
         {
-            if (NeedsRecovery) return false;
+            if (NeedsRecovery || MetaCommandsBlocked) return false;
             if (Session == null || Store == null) return true;
             try { return Session.SaveCheckpoint(); }
             catch (Exception e) { error = PlayerError(e); if (NeedsRecovery) RenderRecovery(); else if (Widgets != null) Widgets.Notice.text = "자동 저장 실패: " + error; return false; }
@@ -203,7 +208,7 @@ namespace FateDice
         protected virtual void Update()
         {
             if (UI) UI.Root.ApplySafeArea();
-            if (Session != null && !NeedsRecovery && !menu && !(navigation?.IsTransitioning ?? false) && Session.Phase != RunPhase.Result)
+            if (Session != null && !NeedsRecovery && !MetaCommandsBlocked && !menu && !(navigation?.IsTransitioning ?? false) && Session.Phase != RunPhase.Result)
                 Session.RecordElapsed(Time.unscaledDeltaTime);
             if (!Busy && UI && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
@@ -216,7 +221,7 @@ namespace FateDice
         { manager = UI, prefabs = uiPrefabs, visuals = visuals, presentation = presentation };
         private UIChoiceData Choice(string key, string text, Action clicked, bool interactable = true,
             ButtonPurpose purpose = ButtonPurpose.Primary, bool selected = false, bool recovery = false) => new UIChoiceData
-        { key = key, text = text, clicked = GuardInput(clicked, recovery), interactable = interactable, purpose = purpose, selected = selected };
+        { key = key, text = text, clicked = GuardInput(clicked, recovery), interactable = interactable && (recovery || !MetaCommandsBlocked), purpose = purpose, selected = selected };
         private void Show<T>(RunUIData data, bool openDice = true) where T : BaseUI
         {
             UI.Show<T>(data);
@@ -228,6 +233,8 @@ namespace FateDice
         private void Render(bool deferCombatDice = false)
         {
             if (NeedsRecovery) { RenderRecovery(); return; }
+            if (metaRequestVisible && MetaCommandsBlocked) { RenderMetaRequest(); return; }
+            if (MetaCommandsBlocked && !atTitle) menu = true;
             if (atTitle)
             {
                 UI.Show<TitleUI>(new TitleUIData { title = "운명의 주사위", subtitle = "한 명의 모험가, 여섯 개의 주사위, 당신의 여정.",
@@ -443,7 +450,7 @@ namespace FateDice
 
         private void TravelToNode(string id, RunCommandToken token)
         {
-            if (Busy || NeedsRecovery) return;
+            if (Busy || NeedsRecovery || MetaCommandsBlocked) return;
             StartCoroutine(ArriveAtNode(id, token));
         }
 
@@ -543,7 +550,7 @@ namespace FateDice
         }
         private void Command(Func<bool> command, bool roll = false, string selectionKey = null, string actionId = null)
         {
-            if (Busy || NeedsRecovery) return;
+            if (Busy || NeedsRecovery || MetaCommandsBlocked) return;
             StartCoroutine(Perform(command, roll, selectionKey, actionId));
         }
         private IEnumerator Perform(Func<bool> command, bool roll, string selectionKey, string actionId)

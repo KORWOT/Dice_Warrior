@@ -13,6 +13,8 @@ namespace FateDice
         public string[] startingEquipmentIds = Array.Empty<string>();
         public string[] extraDieIds = Array.Empty<string>();
         public MetaPolicy policy = new MetaPolicy();
+        [Tooltip("응답 대기 후 결과 확인 상태로 전환하는 시간입니다. 실패/취소를 확정하지 않으며 연출 제한 시간과 별개입니다.")]
+        [Min(0.05f)] public float responseWaitSeconds = 30;
 
         public PlayerProfileData CreateProfile(string profileId, GameConfigData rules)
         {

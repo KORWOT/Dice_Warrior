@@ -13,12 +13,12 @@ namespace FateDice
         Action GuardInput(Action action, bool recovery = false)
         {
             long version = commandViewVersion;
-            return () => { if (this && isActiveAndEnabled && version == commandViewVersion && (recovery || !NeedsRecovery)) action?.Invoke(); };
+            return () => { if (this && isActiveAndEnabled && version == commandViewVersion && (recovery || !NeedsRecovery && !MetaCommandsBlocked)) action?.Invoke(); };
         }
         Action<T> GuardInput<T>(Action<T> action)
         {
             long version = commandViewVersion;
-            return value => { if (this && isActiveAndEnabled && version == commandViewVersion && !NeedsRecovery) action(value); };
+            return value => { if (this && isActiveAndEnabled && version == commandViewVersion && !NeedsRecovery && !MetaCommandsBlocked) action(value); };
         }
         void RequireRecovery(MetaFailureKind kind)
         {
@@ -103,7 +103,6 @@ namespace FateDice
             actionBusy = false;
             Session = candidate; savedPreview = snapshot.run?.DeepCopy();
             RecoveryFailure = null; backupPreview = null; invalidSave = false; error = null;
-            pendingStart = null; pendingGrowth = null;
             atTitle = false; menu = candidate == null;
             if (candidate == null)
             {

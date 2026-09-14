@@ -20,6 +20,12 @@
 | Run UI / Recovery | 명시 재로드·백업 확인/취소/복원·이전 입력 무효화 | [요약](Assets/_Project/Features/Run/Presentation/RunUIController.Recovery.cs.md) |
 | Recovery Tests / PlayMode | 두 세션·실제 복구 버튼·복원 후 중복 정산 방지 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/RecoveryStabilityFlowTests.cs.md) |
 | Recovery Tests / EditMode | 오류 구분·백업 I/O 실패·복원 이전 쓰기 차단 | [요약](Assets/_Project/Features/Run/Tests/EditMode/RecoveryStabilityTests.cs.md) |
+| Recovery Tests / Async | 실제 지연 응답·화면 수명·미결 요청 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/RecoveryStabilityAsyncTests.cs.md) |
+| Meta / MetaPendingRequest | 같은 ID·입력·버전으로 보관하는 요청 원문과 결과 | [요약](Assets/_Project/Features/Meta/Runtime/MetaPendingRequest.cs.md) |
+| Meta / LocalMetaRequestJournal | 프로필별 미결 요청의 영속 보관·확인 후 정리 | [요약](Assets/_Project/Features/Meta/Runtime/LocalMetaRequestJournal.cs.md) |
+| Meta Tests / RequestJournal | 원문 보존·파일 실패·복구 전 요청과 영수증 조회 | [요약](Assets/_Project/Features/Run/Tests/EditMode/MetaRequestJournalTests.cs.md) |
+| Meta / MetaRequestCoordinator | 화면과 독립된 요청 대기·만료·조회·재시도 | [요약](Assets/_Project/Features/Meta/Runtime/MetaRequestCoordinator.cs.md) |
+| Run UI / MetaRequests | 요청 확인 화면과 바인딩 소유권에 따른 결과 적용 | [요약](Assets/_Project/Features/Run/Presentation/RunUIController.MetaRequests.cs.md) |
 | 도구 / MetaProbe | 고정 작성 호출 및 Editor 상태/자산 참조 검사 | [요약](artifacts/meta-progression/MetaProbe.cs.md) |
 
 직접 변경 관계: GameApplication → IMetaProgressionService/LocalMetaProgressionService → profile store/RunSession; RunUIController → MenuUIData → MenuUI. 기존 4개 파일 요약도 현재 계약으로 동기화한다.

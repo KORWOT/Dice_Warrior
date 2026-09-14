@@ -8,84 +8,27 @@ namespace FateDice
     public partial class RunUIController
     {
         public IMetaProgressionService Meta { get; private set; }
-        bool metaBusy;
         int metaViewVersion;
-        StartRunRequest pendingStart;
-        GrowthRequest pendingGrowth;
-
-        async void RunMeta<T>(Func<Task<T>> action, Action<T> completed)
-        {
-            if (Busy) return;
-            metaBusy = true; error = null; int version = metaViewVersion; SyncInputLock();
-            try
-            {
-                var result = await action();
-                // A server response can outlive the view. The service owns persistence; an old
-                // continuation must not navigate or replace a newly bound scene/controller.
-                if (this && isActiveAndEnabled && version == metaViewVersion)
-                { metaBusy = false; completed(result); }
-            }
-            catch (Exception e)
-            {
-                if (this)
-                {
-                    error = e is MetaCommandException rejected && rejected.Kind == MetaFailureKind.Rejected ? e.Message : PlayerError(e);
-                    if (e is MetaCommandException) { pendingStart = null; pendingGrowth = null; }
-                }
-            }
-            finally
-            {
-                if (this)
-                {
-                    metaBusy = false;
-                    if (isActiveAndEnabled && version == metaViewVersion)
-                    {
-                        try
-                        {
-                            // A failed response can follow a successful disk/server commit.
-                            // Reconcile the saved run so continue/abandon never depend on an old preview.
-                            var commandError = error;
-                            ReadSavedPreview();
-                            if (!invalidSave) error = commandError;
-                            Render();
-                        }
-                        catch (Exception e) { error = PlayerError(e); if (Widgets != null) Widgets.Notice.text = error; }
-                    }
-                    SyncInputLock();
-                }
-            }
-        }
         void StartMetaJourney()
         {
-            if (pendingStart == null)
-            {
-                var profile = Meta.Profile;
-                pendingStart = new StartRunRequest { requestId = Guid.NewGuid().ToString("N"),
-                    expectedRevision = profile.revision, expectedRecoveryGeneration = profile.recoveryGeneration,
-                    abandonActiveRun = savedPreview != null && savedPreview.phase != RunPhase.Result };
-            }
-            var request = pendingStart;
-            RunMeta(() => Meta.StartRunAsync(request), state =>
-            {
-                pendingStart = null; pendingGrowth = null;
-                Session = new RunSession(state, Store); savedPreview = state.DeepCopy(); selectedSeed = state.initialSeed;
-                if (navigation != null) navigation.RequestInGame(); else menu = false;
-            });
+            if (MetaCommandsBlocked) return;
+            var profile = Meta.Profile;
+            RunMetaRequest(new StartRunRequest { requestId = Guid.NewGuid().ToString("N"),
+                expectedRevision = profile.revision, expectedRecoveryGeneration = profile.recoveryGeneration,
+                abandonActiveRun = savedPreview != null && savedPreview.phase != RunPhase.Result });
         }
         void ChangeMetaLoadout(PlayerProfileData profile, Action<RunLoadout> change)
         {
-            if (Busy) return;
+            if (Busy || MetaCommandsBlocked) return;
             var l = profile.loadout.Copy(); change(l);
-            var request = new LoadoutRequest { requestId = Guid.NewGuid().ToString("N"), expectedRevision = profile.revision,
-                expectedRecoveryGeneration = profile.recoveryGeneration, loadout = l };
-            RunMeta(() => Meta.SaveLoadoutAsync(request), _ => { pendingStart = null; });
+            RunMetaRequest(new LoadoutRequest { requestId = Guid.NewGuid().ToString("N"), expectedRevision = profile.revision,
+                expectedRecoveryGeneration = profile.recoveryGeneration, loadout = l });
         }
         void GrowMetaCharacter(PlayerProfileData profile)
         {
-            if (pendingGrowth == null) pendingGrowth = new GrowthRequest { requestId = Guid.NewGuid().ToString("N"),
-                expectedRevision = profile.revision, expectedRecoveryGeneration = profile.recoveryGeneration, characterId = profile.loadout.characterId };
-            var request = pendingGrowth;
-            RunMeta(() => Meta.GrowAsync(request), _ => { pendingGrowth = null; pendingStart = null; });
+            if (MetaCommandsBlocked) return;
+            RunMetaRequest(new GrowthRequest { requestId = Guid.NewGuid().ToString("N"), expectedRevision = profile.revision,
+                expectedRecoveryGeneration = profile.recoveryGeneration, characterId = profile.loadout.characterId });
         }
         string MetaResultText(string runId)
         {
@@ -97,17 +40,12 @@ namespace FateDice
         void ReturnFromMetaResult()
         {
             if (Meta == null) { ShowMenu(); return; }
-            if (Busy || Session == null) return;
+            if (Busy || MetaCommandsBlocked || Session == null) return;
             string runId = Session.ReadSnapshot().runId;
             var profile = Meta.Profile;
             var request = new SettlementRequest { requestId = "settle-" + runId, expectedRevision = profile.revision,
                 expectedRecoveryGeneration = profile.recoveryGeneration, runId = runId };
-            RunMeta(() => Meta.SettleAsync(request), _ =>
-            {
-                // Settlement already wrote the checkpoint and receipt atomically; no second run save.
-                pendingStart = null;
-                if (navigation != null) navigation.RequestLobby(); else EnterLobby();
-            });
+            RunMetaRequest(request);
         }
         void RenderMetaMenu()
         {
@@ -169,7 +107,7 @@ namespace FateDice
                     () => ChangeMetaLoadout(p, next => next.wildcardId = id), true, ButtonPurpose.Trial, l.wildcardId == id)).ToArray(),
                 caps = Enum.GetValues(typeof(Grade)).Cast<Grade>().Select(grade => Choice("cap-" + grade, ShortGrade(grade),
                     () => ChangeMetaLoadout(p, next => next.cap = grade), true, ButtonPurpose.Grade, l.cap == grade)).ToArray(),
-                start = Choice("new", unsettled ? "이전 여정 정산 필요" : savedPreview != null && savedPreview.phase != RunPhase.Result ? "현재 여정 포기 후 새 여정" : "새 여정", StartNewJourney, !invalidSave && !unsettled),
+                start = MetaCommandsBlocked ? Choice("meta-request-status", "보관된 요청 결과 확인", OpenMetaRequest, recovery: true) : Choice("new", unsettled ? "이전 여정 정산 필요" : savedPreview != null && savedPreview.phase != RunPhase.Result ? "현재 여정 포기 후 새 여정" : "새 여정", StartNewJourney, !invalidSave && !unsettled),
                 resume = savedPreview != null ? Choice("continue", unsettled ? "완료 여정 정산하기" : savedPreview.phase == RunPhase.Result ? "지난 결과 확인" : "저장된 여정 이어하기", ContinueJourney, !invalidSave) : null,
                 error = error
             });

@@ -48,3 +48,11 @@ UI와 독립된 메타 요청 조정 객체가 요청 사본/종류/전체 입�
 TaskCompletionSource 시험 서비스는 실제 확정과 응답 반환을 따로 통제한다. 설정 가능한30초 응답 대기는 연출 watchdog과 분리한다. 대기 만료는 실패 확정이 아니며 조회/동일 입력 재시도만 제공한다. 관련 게임/메타 변경을 차단하되 상태 창 닫기/재개/결과 조회 UI는 사용 가능하게 한다. 정상/늦은 응답과 catch/finally는 요청 및 화면 바인딩 소유권으로 제한한다.
 
 같은 UI 인스턴스의 외부 재바인딩도 구분하기 위해 직접 관계인 Assets/_Project/Shared/UI/Presentation/BaseUI.cs에 읽기 전용 바인딩 세대만 추가할 수 있다(기존 열기/닫기·소유·팝업 동작 변경 없음). 이 파일과 대응 CodeMap/기존 UI 회귀도 허용 경계에 포함한다. journal 계약의 직접 영향 테스트 어댑터와 MetaProgressionConfig/대응 요약도 함께 갱신한다.
+
+2026-09-14 재개 기준은 사용자 요청 진행분 커밋 c30d6a8이다. 이전 턴은 문서·커밋과 새 검증 증거를 남긴 progress이며 이후 Git 쓰기는 다시 금지한다. RV-01/02 제품 변경 없이 커밋 직전 UI 재실행이0건인 사실은 WAIT_VALIDATION으로 유지한다. RV-03 최초 실제 실패 재현(닫기 버튼 부재)은 유효하며 그 코드 수정을 진행한다. 전체 검토/보완 예산은 유지한다.
+
+RV-03 구체 계약: IPlayerDataStore.RequestJournal을 명시 의존성으로 두고 LocalPlayerDataStore와 기존 시험 ProbeStore4개가 동일 profile별 journal을 제공한다. IMetaProgressionService는 journal/응답 대기 설정/불변 요청 결과 조회를 제공한다. MetaPendingRequest는 종류·profileId·직렬화한 정확한 요청과 전체 해시를 보존하고, MetaRequestCoordinator가 Task 대기와 시도 소유권을 관리한다. 조회는 기존 영수증 fingerprint를 검증한 같은 문서 스냅샷 또는 미확정/복구 이전 결과를 반환한다. 이미 확인한 결과의 journal 정리는 동일 요청 해시 확인 후에만 수행한다. 작업 문서는 계속 이 PLAN/REPORT 두 개만 사용한다.
+
+### RV-03 진행분 커밋 요청 / 2026-09-14
+
+후속 사용자 요청 «좋아 이제 정리해서 커밋진행해줘»로 c30d6a8 이후 RV-03 구현·직접 영향 테스트·신규 .meta·대응 CodeMap/INDEX·본 PLAN/REPORT의 정확한 파일 staging 및 로컬 commit을 허용한다. 시작 시 staged0이다. 기존 사용자 RP2개/동적 폰트와 미추적 설계 원문3개/과거 도구 요약/ProjectSettings/Packages는 제외한다. 전체 Task 완료나 RV-04 착수를 이 커밋의 조건으로 추가하지 않는다. 컴파일과 직접 검사의 실제 결과 및 미실행 범위를 REPORT에 구분한다. push·브랜치 변경·reset·stash는 허용하지 않는다. 기존 통합 검토0/1 및 이후 보완0/2는 유지하며 전체 구현·검증 Goal은 진행 중이다.

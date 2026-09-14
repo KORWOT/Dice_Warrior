@@ -6,3 +6,8 @@
 - 사용하는 대상·사용하는 쪽·관계 근거: 실제 LocalPlayerDataStore, LocalMetaProgressionService, RunSession과 초기 설정을 사용한다. ProbeStore는 전/후 확정 실패만 주입한다.
 - 상태·수명·검수 주의: 실제 사용자 경로를 사용하지 않는다. 실행 결과는 META_PROGRESSION_REPORT와 artifacts 증거를 따른다.
 - 구현 계약: Docs/Plans/META_PROGRESSION_PLAN.md. 실제 검증 상태는 Docs/Reports/META_PROGRESSION_REPORT.md와 기록된 실행 증거를 따른다.
+
+
+## RV-03 구현 진행
+
+ProbeStore는 실제 격리 저장소의 RequestJournal을 그대로 전달한다. 기존 저장/지급 검증은 유지한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.

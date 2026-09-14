@@ -27,6 +27,7 @@ namespace FateDice.Tests
             public bool failAfter;
             public ProbeStore(IPlayerDataStore inner) { this.inner = inner; }
             public string ProfileId => inner.ProfileId;
+            public IMetaRequestJournal RequestJournal => inner.RequestJournal;
             public bool Exists => inner.Exists;
             public PlayerSaveDocument Read() => inner.Read();
             public void Write(long revision, PlayerSaveDocument candidate)
@@ -131,6 +132,14 @@ namespace FateDice.Tests
             probe.failAfter = true; LogAssert.Expect(LogType.Warning, "UI meta response lost");
             Click(Button("new")); yield return Layout(); probe.failAfter = false;
             var savedId = service.RunStore.Load().runId;
+            Assert.That(service.RequestJournal.Read(), Is.Not.Null);
+            Click(Button("meta-request-close")); yield return Layout();
+            Click(((MenuUI)C.UI.ActiveScreen).settingsTab); yield return Layout();
+            Assert.That(Button("trial-bastion").interactable, Is.False, "Unconfirmed departure blocks related settings changes.");
+            Click(Button("meta-request-status")); yield return Layout();
+            Click(Button("meta-request-check")); yield return Until(() => !C.Busy && C.Session != null && C.UI.ActiveScreen is ExplorationUI);
+            yield return Layout();
+            Click(Button("menu")); yield return Until(() => !C.Busy && C.UI.ActiveScreen is MenuUI); yield return Layout();
             Click(((MenuUI)C.UI.ActiveScreen).settingsTab); yield return Layout();
             yield return Reveal(Button("trial-bastion")); Click(Button("trial-bastion")); yield return Layout();
             Assert.That(C.Session, Is.Null);

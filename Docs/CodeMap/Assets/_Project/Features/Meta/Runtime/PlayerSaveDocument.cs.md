@@ -13,3 +13,8 @@
 ## RV-02 직접 검증 통과
 
 프로필과 런의 복구 세대 일치를 검증한다. ReadBytes는 실제 bytes 하나를 파싱/검증한다. Write는 현재 bytes 검증·revision/세대 CAS 후 이전 정상 bytes를 .backup에 원자 보관하고 새 후보를 확정한다. 공통 파일 작업은 LocalPlayerDataRecovery partial에 있다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.
+
+
+## RV-03 구현 진행
+
+IPlayerDataStore가 명시적 RequestJournal을 제공한다. 로컬 구현은 동일 프로필 경로의 .pending sidecar를 제공하며 본문/백업은 기존 계약을 유지한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.

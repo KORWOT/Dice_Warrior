@@ -5,3 +5,8 @@
 - 사용하는 대상·사용하는 쪽·관계 근거: MetaProgressionAuthoring이 DefaultMetaProgression.asset을 만들고 GameApplication이 LocalMetaProgressionService에 주입한다.
 - 상태·수명·검수 주의: 기존 프로필에 초기 지급을 반복하지 않는다. 런 시작 시 정책을 복제하며 현재 인스턴스에는 정책 변경을 소급하지 않는다.
 - 구현 계약: Docs/Plans/META_PROGRESSION_PLAN.md. 실제 검증 상태는 Docs/Reports/META_PROGRESSION_REPORT.md와 기록된 실행 증거를 따른다.
+
+
+## RV-03 구현 진행
+
+responseWaitSeconds는 별도 응답 대기 시간(기본30초, 0.05~300초)이다. 값은 서비스에서 검증하고 타임아웃은 실패/취소 확정이 아닌 결과 확인 전환으로 사용한다. 연출 watchdog/밸런스/저장된 런 규칙을 바꾸지 않는다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.

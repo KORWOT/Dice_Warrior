@@ -14,3 +14,8 @@ ReadRecoverySnapshot은 존재하는 저장을 한 번 읽고 복사한다. 문�
 ## RV-02 직접 검증 통과
 
 Replay보다 먼저 요청 세대를 확인한다. 시작 DTO에 현재 프로필 세대를 붙이고 Checkpoints.Save에서 세대를 검사한다. 복원 전 요청이나 런은 같은 revision/sequence로 돌아가도 거부한다. InspectBackup/RestoreBackup은 IPlayerDataRecoveryStore 지원 시만 실행한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT 참조.
+
+
+## RV-03 구현 진행
+
+QueryRequestAsync는 원문의 종류별 business fingerprint를 기존 operations와 대조한 뒤 같은 문서 스냅샷을 반환한다. 복원된 백업에 이미 처리 기록이 있으면 확인하고, 기록이 없고 복구 세대가 다르면 자동 재실행 없이 SupersededByRecovery다. 대기 설정과 journal을 조정 객체에 제공한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.

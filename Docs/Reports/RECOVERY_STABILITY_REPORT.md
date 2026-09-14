@@ -4,7 +4,7 @@
 
 사전 확인: 기존 Task 문서/구현 없음. 저장 충돌의 거부는 있으나 SaveElapsedTime이 실패하면 메뉴도 열리지 않고 RefreshView는 같은 Session을 표시한다. PlayerSaveDocument는 정상 백업/복원 API가 없고 메타 UI는 finally가 바인딩 소유 확인 전에 metaBusy를 해제하며 catch도 오래된 오류를 기록한다. 실제 지연 서비스/지속 미결 기록은 아직 없다. Unity6000.6.0f1 연결 Editor는 ready/stopped, Pipeline7801. 참고 검토 파일은 프로젝트 및 명시 Downloads 경로에 없었으며 승인 Goal로 진행한다.
 
-RV-01/02: 직접 검사 PASS. RV-03: 실제 지연 서비스의 실패 재현 단계이며 제품 요청 수명 구현은 미완료. RV-04: 미착수. 전체 최신 suite/Android는 통합 후 필수 미완료 검사다. 실제 사용자 데이터 손상 시험/쓰기는 없으며, 후속 사용자 요청으로 아래 범위의 로컬 커밋을 진행한다.
+RV-01/02: 과거 직접 검사 PASS. RV-03: 제품 요청 수명 구현 및 직접 테스트를 추가했고 아래 진행분 검증을 수행 중이다. RV-04: 미착수. 전체 최신 suite/Android는 통합 후 필수 미완료 검사다. 실제 사용자 데이터 손상 시험/쓰기는 없으며, 후속 사용자 요청으로 아래 범위의 로컬 커밋을 진행한다.
 
 횟수: 최초 개발/재현, 최초 통합 검토0/1, 이후 수정·재검증0/2. 신규 필수 Finding과 실행 증거는 해당 단계에서 이 문서에 누적한다.
 
@@ -46,3 +46,31 @@ RV-01/02: 직접 검사 PASS. RV-03: 실제 지연 서비스의 실패 재현 �
 - 커밋 직전 PlayMode는 **WAIT_VALIDATION**. category 실행이 completed/0건으로 끝나 `commit-play-zero-not-run.json`에 보존했다. `list_tests`는 대상 9개 및 RecoveryStability category를 정상 발견했으나, 정확한 클래스 이름으로 지정한 후속 실행 역시 completed/0건이었다(`commit-rv0102-play.json`). Editor 로그도 RunStarted0/RunFinished0이므로 UI 동작 성공/실패의 근거가 아니다. 목록 조회와 실행 단계의 불일치이며 원인은 확정하지 않았다. 이전 8/8+1/1 통과는 위 과거 기록으로만 남긴다. 테스트/조건을 삭제하거나 패키지·설정을 수정하지 않았다.
 - 제외 대상 RP2개/폰트는 이번 커밋 준비 시작 시점과 SHA256이 동일하다(`commit-excluded-preservation.json`). RV-01 최초 작업 baseline과의 폰트 차이는 위 보존 관찰로 여전히 남아 있으며 이 커밋에는 폰트를 넣지 않는다. 소스15개는 모두 `.meta`와 1:1 CodeMap이 존재한다. 소스 SHA256과 정확한 커밋38개 목록을 로컬 아티팩트에 기록했다.
 - 전체 suite/Android/최초 통합 검토는 아직 미완료이며 이 진행분 커밋을 전체 Task PASS로 간주하지 않는다. 최초 통합0/1, 이후 보완0/2를 유지한다. 후속 구현은 RV-03부터 이어간다.
+
+## RV-03 최초 개발 재개
+
+현재 기준 c30d6a8. 직전 사용자 승인 진행분 커밋 이후 Git 쓰기는 다시 하지 않는다. 이전 턴은 진행분 정리와 신규 검증 증거를 남긴 progress다. 본 단계는 승인된 Goal/PLAN과 기존 RED를 이어 구현한다.
+
+영속 요청 원문/전체 fingerprint, 동일 프로필 .pending journal, 화면과 독립된 요청 조정 객체, 설정 가능한30초 응답 대기, 권위 영수증 조회 계약을 추가했다. 요청은 발송 전 보관하며 시간 초과는 Unknown이다. 같은 ID/입력/revision/복구 세대로 재시도하고 결과 확인 후 동일 journal만 정리한다. BaseUI.BindingRevision과 controller 세대·활성 화면을 모두 확인하여 이전 완료/오류/정리가 새 UI를 변경하지 못하게 한다. 별도 prefab 작성이나 서비스 전체 Task.Run/메인 스레드 네트워크 Wait/Result는 없다.
+
+첫 구현 컴파일 completed/failed=false. 기존 실패 재현의 동일 UI 검사 **1/1 PASS**, 0.71초, skipped/inconclusive0 (`rv03-ui-initial.json`). 실제 코드 재컴파일 이후에는 PlayMode 실행이1건 선택되어 동작했다. 이전0건 기록은 그대로 남기며 이1건으로 전체 UI 또는 RV-03 완료를 주장하지 않는다. 확정/응답을 독립 통제하는 TCS 시험 서비스를 네 가지 명령으로 확대하고 직접 AC를 추가하는 중이다. 최초 통합0/1·이후 보완0/2 유지.
+
+확대 UI **11/11 PASS**, 5.38초, skipped/inconclusive0 (`rv03-ui-expanded-initial.json`). 정상 지연 출발/확정 후 유실 조회/확정 전 실패 동일 재시도/무응답 대기 만료/이전 시도의 늦은 실패와 새 대기/앱 재시작/같은 뷰 외부 바인딩의 늦은 성공·실패/성장 비용1회/저널 발송 전 쓰기 및 확정 후 정리 실패를 실제 버튼으로 확인했다. 이후 정산과 복구 이전 요청의 직접 UI, journal 원문/파일 경계 테스트를 추가한다.
+
+기존 MetaProgressionFlowTests의 유실 응답 시나리오는 승인된 RV-03 계약에 따라 먼저 관련 설정 차단을 확인하고 결과를 조회한 뒤 설정을 바꾸어 저장된 출발을 이어가는 동선으로 갱신했다. 원래 시작의 와일드/동일 runId/중복 정산 금지 기대값은 유지한다. 미확정 요청을 둔 채 설정을 바꾸는 기존 동선을 유지하는 것이 이번 요청과 충돌하므로 이 직접 영향만 변경한다.
+
+- 추가 정산 및 복구 이전 미결 요청 UI 포함 **13/13 PASS**, 20.01초 (`rv03-ui-all-direct.json`). journal 원문·복사·원자 기록·손상/미지원/타 프로필 보존·복구 세대·복원 영수증 조회 EditMode **10/10 PASS**, 3.93초 (`rv03-journal-direct.json`). 이 기록은 다음 커밋 직전 검사보다 앞선 실행이다.
+- 새 요청 대기 도중 옛 응답 및 확정 전 앱 재시작 사례를 추가한 UI15건은 **14 PASS / 1 FAIL**, 22.41초 (`rv03-ui-15.json`). 실패는 씬 전환 직후 Layout 갱신 전 menu 버튼의 raycast가 null인 fixture였다. 기존 Layout 대기를 해당 클릭 전과 직접 영향받는 MetaProgressionFlowTests의 같은 동선에 추가했다. 제품 코드나 assertion 기대값은 변경하지 않았다.
+- 후속 MetaProgressionFlowTests 실행은 completed/0건 (`rv03-meta-ui-initial.json`)으로 **WAIT_VALIDATION**이다. 발견과 실행 결과의 불일치 원인은 아직 확정하지 않았다. 성공으로 간주하거나 패키지/설정을 수정하지 않았다.
+
+## RV-03 진행분 커밋 / 2026-09-14
+
+후속 사용자 요청에 따라 c30d6a8 이후 메타 요청 journal/조정 객체/결과 조회/현재 UI 바인딩 소유권과 관련 직접 테스트·신규 .meta·1:1 요약·색인·PLAN/REPORT를 로컬 커밋한다. 기존 사용자 RP2개/동적 폰트, 미추적 설계 원문/도구 요약/로컬 패키지 설정은 제외한다. 전체 RV-03 완료나 Task 완료 커밋으로 주장하지 않으며 RV-04·최신 전체 suite·Android·최초 통합 검토는 계속 미완료다. 최초 통합0/1 및 이후 보완0/2 유지.
+
+커밋 직전 최신 재컴파일은 completed/failed=false, 오류0이다. 아래에 실제 재실행 결과를 추가한다.
+
+- 실제 지연/유실/늦은 응답 UI **15/15 PASS**, 24.72초, skipped/inconclusive0 (`commit-rv03-async-ui.json`). 앞선 Layout 대기 누락 fixture 실패가 이 실행에서 해소됐다.
+- 요청 journal EditMode **10/10 PASS**, 3.32초, skipped/inconclusive0 (`commit-rv03-journal-edit.json`). 신규 동작 직접25건 통과이며 전체 검사 통과를 뜻하지 않는다.
+- 기존 MetaProgressionFlowTests 커밋 직전 실행도 completed/0건/0초 (`commit-rv03-meta-flow.json`)으로 **WAIT_VALIDATION**이다. 이를 PASS로 보고하지 않으며, Unity 실행 상태 문제의 추가 조사 및 전체 suite는 후속 Goal에 남긴다.
+- 커밋 목록은 소스17개·신규 .meta6개·1:1 CodeMap17개·INDEX/PLAN/REPORT3개로 **43개**다. 모든 소스의 .meta/요약 존재와 범위 내 diff whitespace 검사를 확인했다. `commit-rv03-files.txt`, `commit-rv03-source-hashes.json`에 로컬 목록/소스 해시를 보관한다. 실제 test evidence는 기존 ignore된 artifacts/recovery-stability에 있고 Git에는 결과 요약을 기록한다.
+- 제외 대상 RP2개/폰트의 이번 커밋 준비 전후 SHA256 동일 여부는 `commit-rv03-excluded-preservation.json`으로 확인한다. RV-01 시작 baseline 대비 동적 폰트 차이는 앞선 보존 관찰대로 여전히 남아 있다. 이번 진행분은 렌더링/폰트 자산을 stage하지 않는다.

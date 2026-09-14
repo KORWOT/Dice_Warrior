@@ -6,3 +6,8 @@
 - 사용하는 대상·사용하는 쪽·관계 근거: production MenuUI/GameApplication prefab, Lobby/InGame Scene, RunUIController와 LocalMetaProgressionService를 사용한다.
 - 상태·수명·검수 주의: 사용자 기존 run/새 meta 파일 존재 여부와 bytes 보존을 검사한다. 전투 전체 연출 검사는 기존 회귀가 담당하며 이 테스트는 결과 경계를 실제 RunSession으로 준비한다.
 - 구현 계약: Docs/Plans/META_PROGRESSION_PLAN.md. 실제 검증 상태는 Docs/Reports/META_PROGRESSION_REPORT.md와 기록된 실행 증거를 따른다.
+
+
+## RV-03 구현 진행
+
+ProbeStore는 실제 격리 저장소 RequestJournal을 전달한다. RV-03의 결과 불명 상태에서 관련 변경 차단 계약에 맞춰 유실 응답의 UI 복구 동선을 검증한다. 실제 검증 상태는 RECOVERY_STABILITY_REPORT를 따른다.
