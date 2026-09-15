@@ -162,6 +162,54 @@ namespace FateDice.Tests
             Assert.That(C.UI.ActiveScreen, Is.TypeOf<ExplorationUI>());
             Assert.That(disk.Read().operations.Count, Is.EqualTo(1)); Assert.That(service.RequestJournal.Read(), Is.Null);
         }
+        [UnityTest, Category("RecoveryReopen")] public IEnumerator ReopenedPendingSuccessAppliesToTheCurrentBinding()
+        { yield return ReopenBeforeCompletion("success"); }
+        [UnityTest, Category("RecoveryReopen")] public IEnumerator ReopenedPendingFailureEnablesTheSameRequestRetry()
+        { yield return ReopenBeforeCompletion("failure"); }
+        [UnityTest, Category("RecoveryReopen")] public IEnumerator ReopenedPendingTimeoutEnablesRecoveryAndIgnoresLateFailure()
+        { yield return ReopenBeforeCompletion("timeout"); }
+        IEnumerator ReopenBeforeCompletion(string outcome)
+        {
+            yield return Open(720, 1280);
+            meta.responseWaitSeconds = outcome == "timeout" ? 2 : 30;
+            Click(Button("new")); yield return Layout();
+            var original = service.RequestJournal.Read();
+            var bytes = File.ReadAllBytes(disk.Path + ".pending");
+            Click(Button("meta-request-close")); yield return Layout();
+            Click(Button("meta-request-status")); yield return Layout();
+            Assert.That(controlled.calls.Count, Is.EqualTo(1), "Reopening must observe, not redispatch.");
+            Assert.That(controlled.calls[0].task.IsCompleted, Is.False);
+            Assert.That(Button("meta-request-check").interactable, Is.False, "The request must still be waiting when reopened.");
+            if (outcome == "success")
+            {
+                controlled.calls[0].complete();
+                yield return Until(() => C.Session != null && !C.Busy); yield return Layout();
+            }
+            else
+            {
+                if (outcome == "failure")
+                { LogAssert.Expect(LogType.Warning, "reopened request offline"); controlled.calls[0].fail(new IOException("reopened request offline")); }
+                yield return Until(() => Button("meta-request-retry").interactable); yield return Layout();
+                Assert.That(C.Session, Is.Null); Assert.That(disk.Exists, Is.False);
+                CollectionAssert.AreEqual(bytes, File.ReadAllBytes(disk.Path + ".pending"));
+                Assert.That(MetaJson.Encode(service.RequestJournal.Read()), Is.EqualTo(MetaJson.Encode(original)));
+                if (outcome == "timeout")
+                {
+                    var view = C.UI.ActiveScreen; long binding = view.BindingRevision;
+                    controlled.calls[0].fail(new IOException("detached failure after reopened timeout"));
+                    yield return Layout(); yield return Layout();
+                    Assert.That(C.UI.ActiveScreen, Is.SameAs(view)); Assert.That(view.BindingRevision, Is.EqualTo(binding));
+                    Assert.That(Button("meta-request-retry").interactable, Is.True);
+                }
+                meta.responseWaitSeconds = 30;
+                Click(Button("meta-request-retry")); yield return Layout();
+                Assert.That(MetaJson.Encode(controlled.calls[1].request), Is.EqualTo(MetaJson.Encode(original)));
+                controlled.calls[1].complete(); yield return Until(() => C.Session != null && !C.Busy); yield return Layout();
+            }
+            Assert.That(C.UI.ActiveScreen, Is.TypeOf<ExplorationUI>());
+            Assert.That(C.Session.ReadSnapshot().runId, Is.EqualTo(disk.Read().run.runId));
+            Assert.That(disk.Read().operations.Count, Is.EqualTo(1)); Assert.That(service.RequestJournal.Read(), Is.Null);
+        }
         [UnityTest] public IEnumerator AcceptedDepartureWithLostResponseQueriesWithoutRollingOrStartingAgain()
         {
             yield return Open(720, 1280); Click(Button("new")); yield return Layout();

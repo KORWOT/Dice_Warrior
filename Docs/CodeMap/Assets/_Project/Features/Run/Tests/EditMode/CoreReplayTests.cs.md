@@ -19,3 +19,9 @@ RA-C 현재 계약 · 2026-09-09
 - 적용한 ProjectHistoricalMapFields는 정확한 world/노드 경로에서 신규 필드의 존재·정수 타입·0 값을 먼저 검사하고 해당 필드만 제거한다. 모드1이나 0이 아닌 좌표/설정을 legacy로 간주해 숨기지 않는다. 기존 ID/유형/childIds/시간/RNG/진행/내용 필드는 계속 원래 canonical hash에 포함한다.
 - 증거: artifacts/procedural-campaign/edit-initial.json, replay-first-actual.json, replay-first-state-comparison.json. 오프라인 비교는 Mono/Json.NET의 기존 double R 형식으로 최초 명령7개의 기존 기대 hash와 현재 실패 hash를 모두 재현했다. 이는 전체 Unity 재연14개의 재실행 PASS를 대신하지 않는다.
 - 최종 실행: Main이 replay-fix.patch를 소스에 적용하고 Unity EditMode의 고정 재연14개를 다시 실행하여 14/14 PASS(9.18초)했다. 증거는 artifacts/procedural-campaign/replay-final.json이다. 기존 golden fixture는 변경하지 않았다. 전체 작업 판정은 Docs/Reports/PROCEDURAL_CAMPAIGN_REPORT.md를 따른다.
+
+## RECOVERY_STABILITY RS-IR-02
+
+- 새 Runtime 저장 메타데이터 recoveryGeneration은 기존 fixture 작성 이후 추가됐다. 실제7개 첫 명령의 snapshot에서 빈 세대 한 필드만 제외하면 원래 golden과 모두 같고, 포함하면 최초 전체 검사14건 실패의 해시가 재현됨을 확인했다.
+- Hash는 recoveryGeneration의 존재·문자열 타입·정확한 빈 값을 먼저 검사한 뒤 그 필드만 과거 비교에서 제외한다. 기존 모든 게임 필드/ID/시간/RNG/기준 fixture는 유지한다. 복원된 비어 있지 않은 세대를 숨기지 않는다.
+- 실제 진단은 artifacts/recovery-stability/replay-generation-diagnosis.json, 최신14개 연속/저장 재연 및 전체 검사 판정은 RECOVERY_STABILITY_REPORT를 따른다.

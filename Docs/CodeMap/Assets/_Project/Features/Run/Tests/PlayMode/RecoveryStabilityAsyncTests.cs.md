@@ -16,3 +16,7 @@ TCS 호출 목록에서 로컬 권위의 실제 확정과 응답 성공/실패�
 ## RV-04 측정 후 최소 개선
 
 ControlledMetaService는 ReadDisplaySnapshot도 실제 로컬 서비스에 위임해 단일 표시 스냅샷 계약의 직접 영향을 반영한다.
+
+## RS-IR-01 보완1
+
+RecoveryReopen category의3개 검사는 완료 전 창 닫기/재개 후 성공·실패·timeout을 통제한다. 새 발송 없음, 미결 원문 bytes 유지, 동일 재시도1회 출발, timeout 뒤 늦은 실패의 바인딩 무변경을 실제 버튼으로 검사한다. 원래 완료 후 재개/외부 재바인딩 검사도 유지하며 실행 상태는 REPORT를 따른다.

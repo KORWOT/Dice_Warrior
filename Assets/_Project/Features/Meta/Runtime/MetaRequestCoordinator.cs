@@ -17,6 +17,7 @@ namespace FateDice
         public Exception Error { get; private set; }
         public MetaPendingRequest Pending => pending?.Copy();
         public bool HasPending => pending != null;
+        public Task ActiveAttempt { get; private set; } = Task.CompletedTask;
         public MetaRequestCoordinator(IMetaProgressionService service)
         {
             this.service = service ?? throw new ArgumentNullException(nameof(service));
@@ -28,17 +29,17 @@ namespace FateDice
             ProfileRules.Require(!HasPending, "먼저 보관된 요청의 결과를 확인해 주세요.");
             var candidate = MetaPendingRequest.Create(journal.ProfileId, request);
             journal.Begin(candidate); pending = candidate;
-            return AttemptAsync(true);
+            return ActiveAttempt = AttemptAsync(true);
         }
         public Task RetryAsync()
         {
             ProfileRules.Require(HasPending && State == MetaRequestState.Unknown, "결과가 불명확한 요청만 같은 내용으로 다시 시도할 수 있습니다.");
-            journal.Begin(pending); return AttemptAsync(true);
+            journal.Begin(pending); return ActiveAttempt = AttemptAsync(true);
         }
         public Task CheckAsync()
         {
             ProfileRules.Require(HasPending && State != MetaRequestState.Waiting, "요청 확인이 진행 중입니다.");
-            return AttemptAsync(false);
+            return ActiveAttempt = AttemptAsync(false);
         }
         async Task<MetaRequestResolution> DispatchAndCheck(MetaPendingRequest request, bool dispatch)
         {
@@ -89,6 +90,7 @@ namespace FateDice
             ProfileRules.Require(State == MetaRequestState.Resolved && pending?.fingerprint == request.fingerprint,
                 "처리 결과를 확인한 요청만 완료할 수 있습니다.");
             journal.Clear(request); ++attempt; pending = null; State = MetaRequestState.Idle; Resolution = null; Error = null;
+            ActiveAttempt = Task.CompletedTask;
         }
     }
 }

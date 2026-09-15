@@ -25,6 +25,9 @@
 | Meta / LocalMetaRequestJournal | 프로필별 미결 요청의 영속 보관·확인 후 정리 | [요약](Assets/_Project/Features/Meta/Runtime/LocalMetaRequestJournal.cs.md) |
 | Meta / LocalSaveDiagnostics | Editor에서 실제 저장 I/O와 구간 시간을 인스턴스별 관측 | [요약](Assets/_Project/Features/Meta/Runtime/LocalSaveDiagnostics.cs.md) |
 | Recovery Tests / Performance | 신규·100·1000런 문서의 로비/체크포인트 측정 | [요약](Assets/_Project/Features/Run/Tests/PlayMode/RecoveryStabilityPerformanceTests.cs.md) |
+| Recovery Diagnostics / ReplayGenerationProbe | 고정 재연의 빈 복구 세대 필드와 기존 상태 hash 차이 진단 | [요약](artifacts/recovery-stability/ReplayGenerationProbe.cs.md) |
+| Recovery Diagnostics / RestoreBuildFontCache | 빌드의 자동 글꼴 캐시 변경만 검증된 직전 사본으로 복원 | [요약](artifacts/recovery-stability/RestoreBuildFontCache.cs.md) |
+| Recovery Diagnostics / RestoreBuildSettings | 빌드 후 입력 자산 선로드 파일 변경을 시작 상태로 복원 | [요약](artifacts/recovery-stability/RestoreBuildSettings.cs.md) |
 | Meta Tests / RequestJournal | 원문 보존·파일 실패·복구 전 요청과 영수증 조회 | [요약](Assets/_Project/Features/Run/Tests/EditMode/MetaRequestJournalTests.cs.md) |
 | Meta / MetaRequestCoordinator | 화면과 독립된 요청 대기·만료·조회·재시도 | [요약](Assets/_Project/Features/Meta/Runtime/MetaRequestCoordinator.cs.md) |
 | Run UI / MetaRequests | 요청 확인 화면과 바인딩 소유권에 따른 결과 적용 | [요약](Assets/_Project/Features/Run/Presentation/RunUIController.MetaRequests.cs.md) |

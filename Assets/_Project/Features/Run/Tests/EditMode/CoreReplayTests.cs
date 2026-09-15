@@ -57,6 +57,13 @@ namespace FateDice.Tests
             foreach(var action in json["config"]["combat"]["actions"].Cast<JObject>())action.Property("effects")?.Remove();
             ((JObject)json["config"]["world"]).Property("shopPriceMultipliers")?.Remove();json.Property("shopOffers")?.Remove();
             ProjectHistoricalMapFields(json);
+            // These fixed pre-recovery runs have no generation. Assert its exact default before
+            // projecting only this new storage field; a restored generation must never be hidden.
+            var generation=json.Property("recoveryGeneration");
+            Assert.That(generation,Is.Not.Null,"Recovery generation field must exist");
+            Assert.That(generation.Value.Type,Is.EqualTo(JTokenType.String));
+            Assert.That((string)generation.Value,Is.EqualTo(""),"Historical runs must not acquire a recovery generation");
+            generation.Remove();
             // Every original field, ID, RNG and time remains in the unchanged complete-state golden hash.
             var text=Canonical(json).ToString(Formatting.None);
             using(var sha=SHA256.Create())return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(text))).Replace("-","");

@@ -22,6 +22,9 @@ namespace FateDice
         {
             if (Busy) return;
             InitializeMetaRequests(); metaRequestVisible = true;
+            // Reattach this binding to the same attempt; reopening never sends a new request.
+            if (metaRequests?.State == MetaRequestState.Waiting)
+            { ObserveMetaRequest(metaRequests.ActiveAttempt); return; }
             commandViewVersion++; metaViewVersion++; RenderMetaRequest();
         }
         void CloseMetaRequest()

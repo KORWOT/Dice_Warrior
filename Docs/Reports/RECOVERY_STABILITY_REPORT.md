@@ -1,12 +1,12 @@
 # RECOVERY_STABILITY 결과
 
-상태: IMPLEMENT / 진행 중. 기준 main/b18f3b78fe960e725194bb10143c52c0c947a8d0. [PLAN](../Plans/RECOVERY_STABILITY_PLAN.md). 이전283/283·200/200은 이번 변경의 PASS가 아니다.
+상태: IMPLEMENT / COMPLETE — 필수 구현·검증 PASS, RS-PRES-01은 2026-09-14 현재 글꼴 캐시 유지 사용자 승인으로 해소했다. 기기 검사는 승인 격리 기기 부재로 NOT_RUN이다. 최초 기준 main/b18f3b78fe960e725194bb10143c52c0c947a8d0, 현재88720fc+보완1 작업 사본. [PLAN](../Plans/RECOVERY_STABILITY_PLAN.md). 이전283/283·200/200은 이번 변경의 PASS가 아니다.
 
 사전 확인: 기존 Task 문서/구현 없음. 저장 충돌의 거부는 있으나 SaveElapsedTime이 실패하면 메뉴도 열리지 않고 RefreshView는 같은 Session을 표시한다. PlayerSaveDocument는 정상 백업/복원 API가 없고 메타 UI는 finally가 바인딩 소유 확인 전에 metaBusy를 해제하며 catch도 오래된 오류를 기록한다. 실제 지연 서비스/지속 미결 기록은 아직 없다. Unity6000.6.0f1 연결 Editor는 ready/stopped, Pipeline7801. 참고 검토 파일은 프로젝트 및 명시 Downloads 경로에 없었으며 승인 Goal로 진행한다.
 
-RV-01/02/03 직접 검사 및 RV-04 전후 측정은 아래 실행 기록을 확보했다. 최초 전체 EditMode는303 PASS/14 FAIL이며 요청 창 재개 결함1건도 확인했다. 전체 PlayMode/Android와 통합 판정은 미완료다. 실제 사용자 데이터 손상 시험/쓰기는 없으며, 후속 사용자 요청으로 RV-04 진행분을 로컬 커밋한다. 전체 Task 완료가 아니다.
+RV-01~04 구현·측정과 최신 전체 EditMode317/317·PlayMode228/228 및 Android 개발 빌드를 완료했다. 최초 실패14건과 요청 창 재개 결함은 보완1에서 해결했다. 첫 테스트에서 자동 갱신된 글꼴 캐시는 사용자가 현재 상태 유지를 승인했다. 시작 시점 원본 bytes 복원으로 판정하지 않으며, 승인된 예외1개와 시작 해시가 같은 보호 대상12개를 구분한다. 실제 사용자 데이터 손상 시험/쓰기는 없으며88720fc 이후 Git 쓰기도 없다. 아래 BLOCKED 기록은 승인 전 이력이다.
 
-횟수: 최초 통합 검토1/1 진행 중, 이후 수정·재검증0/2. 신규 필수 Finding과 실행 증거는 이 문서에 누적하며 아래 이전 단계의 횟수는 당시 이력이다.
+횟수: 최초 통합 검토1/1, 이후 수정·재검증1/2. 코드 필수 Finding은 해결됐고, 아래 이전 단계의 횟수와 실패 상태는 당시 이력이다.
 
 ## RV-01 최초 개발 / 2026-09-14
 
@@ -114,3 +114,60 @@ RV-01~04 직접 검증 후 최초 통합 검토1/1을 시작한다. 읽기 전�
 - 기존 RP2개/동적 폰트 및 미추적 설계/도구 요약/로컬 패키지 설정은 커밋에서 제외한다. RV-01 시작 대비 폰트 차이는 기존 보존 관찰대로 미해결이며 임의로 HEAD 내용으로 되돌리지 않는다. 진행분 보관은 해당 차이의 해소를 뜻하지 않는다.
 - 최초 통합 검토1/1 진행 중, 이후 수정·재검증0/2 유지. 이 커밋은 진행분이며 모든 필수 검증 PASS 또는 전체 Task 완료를 주장하지 않는다.
 - 커밋 준비 검사: 정확한23개 파일(소스9/신규 .meta2/1:1 CodeMap9/INDEX·PLAN·REPORT3)을 확정하고 모든 소스의 .meta·요약 존재 및 범위 내 whitespace 검사를 확인했다. 요약 문서 끝의 불필요한 빈 줄만 정리했으며 제품 소스는 검사 실행 이후 변경하지 않았다. `commit-rv04-files.txt`, `commit-rv04-source-hashes.json`, `commit-rv04-excluded-before.json`에 파일 목록·소스 해시·제외13개 파일의 준비 시점 해시를 보관한다.
+
+## 88720fc 이후 최초 통합 결과 / 보완1
+
+직전 턴은 진행분 커밋·원자료 재확인·제외13개 파일 해시 보존을 완료한 progress다. 이후 Git 쓰기를 하지 않는다. 최초 전체 PlayMode **225/225 PASS**,362.89초, skipped/inconclusive0 (`integrated-play-initial.json`). 기존 검사는 완료 전에 닫기/재개한 대기 창을 포함하지 않아 RS-IR-01은 여전히 OPEN이다. 전체 EditMode14건 실패와 이 실제 코드 결함을 최초 검토1/1에 통합하고 보완1/2를 시작한다.
+
+RS-IR-02 실제 Unity 메모리 진단: `ReplayGenerationProbe.Run`으로 고정7개 시나리오의 첫 ChooseNode를 실행했다. 기존 비교에 `recoveryGeneration:""`가 포함된 해시는 최초 실패값과 같고, 해당 한 필드만 제거한 해시는7개 모두 기존 golden과 정확히 같다 (`replay-generation-diagnosis.json`). 첫 사례는038F7885…→54999904…이다. fixture를 수정하지 않았으며 나머지 필드 변화는 이7개 첫 명령에서 없다. 전체273명령·저장/복원14개는 수정 후 재실행이 필요하다.
+
+RS-IR-01은 실제 TCS 성공/실패/무응답3가지 모두 완료 전에 닫고 상태 창을 다시 여는 버튼 검사를 추가했다. 재개가 새 발송을 만들지 않고, 결과 불명 때 원문 bytes/ID/입력을 보존하고, 늦은 실패가 새 바인딩을 바꾸지 않으며, 동일 재시도의 출발이1회임을 검증한다. 제품 변경 전 RED를 확보한 뒤 조정 객체의 같은 진행 Task를 새 바인딩에서 관찰하도록 최소 수정한다.
+
+보완1 RED **3개 실행/3 FAIL**,45.77초 (`r1-reopen-red.json`). 성공과timeout은 재개 화면 갱신을 기다리다15초 assertion으로 실패했고 실패 응답은 현재 바인딩에서 경고조차 처리하지 않아 기대 warning이 없었다. 같은 제품 원인이 확인돼 MetaRequestCoordinator.ActiveAttempt와 OpenMetaRequest의 새 바인딩 관찰만 연결했다. 기존 요청/시도 소유권·원문·대기시간·명령 처리는 유지했다. RS-IR-02는 정확히 빈 세대임을 assertion한 뒤 역사적 해시에서만 제거한다. 제품 게임 규칙과 golden fixture 변경 없음.
+
+보완1 최신 컴파일 completed/failed=false. 전체 EditMode **317/317 PASS**,55.63초 (`r1-edit-all.json`), 기존 CoreReplay14개 모두 포함·통과. fixture SHA256은59A69CA30D8A85F0BB3EF87F34B08FA6E73BF989365117930AD24BDF0728045B로 변경 없음. 동일 요청 창 재개3건은 **3/3 PASS**,3.14초 (`r1-reopen-green.json`)로 RED→GREEN을 확인했다. 두 실행 모두 skipped/inconclusive0. 제품 소스28개의 해시·.meta·CodeMap 존재를 `r1-source-manifest.json`에 고정했다. 이후 최신 전체 PlayMode·Android·보존 확인을 같은 보완1에 이어 수행한다.
+
+같은 최종 소스의 전체 PlayMode **228/228 PASS**,369.51초 (`r1-play-all.json`), skipped/inconclusive0. 복구 UI9/요청 수명18/메타 흐름3/누적 성능1을 포함한다. 소스28개 해시는 전체 검사 전후 동일하다. RS-IR-01/02는 보완1에서 해결·검증했으며 추가 코드 보완 묶음을 사용하지 않았다.
+
+Android 사전 확인: Unity6000.6.0f1, 현재 target Android·지원 모듈 있음·ARM64·IL2CPP·active scene dirty=false. 기존 활성 Title/Lobby/InGame3개 씬을 사용한다 (`r1-android-preflight.json`). Development+DetailedBuildReport와 출력 경로의 dry_run valid=true 이후 build_f7d06b4bd8f3를 시작했다 (`r1-android-dry-run.json`, `r1-android-start.json`). 생성/최종 결과는 완료 응답 이후 기록하며 큐 접수만으로 성공을 주장하지 않는다.
+
+## 최종 검증과 보존 확인
+
+| 요구 | 실제 근거 / 판정 |
+|---|---|
+| RV-01 명시 재로드/최신 n+2/실패 보존/옛 입력 차단 | RecoveryStabilityTests 및 RecoveryStabilityFlowTests. 최신 전체 EditMode/PlayMode에 포함되어 PASS. 읽기·후보 검증 이후만 Session을 교체하며 선행 autosave/보상 재실행 없음. |
+| RV-02 검증된 이전 정상본/확인 후 문서 전체 복구/원본 보존/세대 차단 | 파일·백업 실패/복구 세대 EditMode23건과 복구 UI9건에 포함. 손상 원본·backup·receipt를 보존하고 이전 세션/요청/ABA 후보를 거부. PASS. |
+| RV-03 실제 지연·응답 유실·닫기/재개·늦은 응답·재시작·중복 지급 금지 | TCS UI18건, journal10건, 기존 메타 흐름3건. 새 재개3건의 RED→GREEN 및 전체 PASS. 원문 journal과 같은 ID/입력/revision/세대를 유지. |
+| RV-04 누적 성능 | 유효0/100/1000런×워밍업1+표본5 전후 자료, 중복 read2→1. checkpoint CAS read2/primary1/backup1·receipt 불변. 최신 전체 PlayMode 성능1건도 PASS (`performance-20260914-051458-116.json`). |
+| 최신 컴파일·전체 검사 | `r1-final-compile-status.json` 오류0, `r1-edit-all.json`317/317, `r1-play-all.json`228/228. skipped/inconclusive0. 소스28개 해시 일치. |
+| Android 개발 빌드 | `r1-android-status.json` build_f7d06b4bd8f3 / Succeeded /222.084초/오류0. 실제 BuildReport.options에 Development/Il2CPP/DetailedBuildReport 확인 (`r1-build-settings-restored.json`). APK의 native libraries는 arm64-v8a만 있고 libil2cpp.so/libunity.so 포함. |
+| 기기 중단/복귀 | 승인된 격리 기기가 없어 NOT_RUN. 사용자 앱 설치/덮어쓰기/실행하지 않음. |
+| 문서·설정·실제 저장 보존 | `r1-final-preservation.json` 및 승인 후 재확인: 시작 baseline13개 중12개 SHA256 동일. 글꼴 캐시1개는 RS-PRES-01의 명시적 현재 상태 유지 승인으로 해소. 실제 저장·RP2개·Title·AGENTS/Goal/GDD·manifest/lock·ProjectSettings는 일치. |
+
+APK: `Temp/recovery-stability/DiceWarrior-Recovery-88720fc-r1.apk` (76,842,273 bytes), SHA256 `95EB4D3BAD214CED52864979E2E3DCF36D6BE6AFF315DE878E3D553B900E3DA2`. 상세 환경/검증/경고는 `artifacts/recovery-stability/r1-android-summary.json`에 기록했다. 경고994건은 AI Inference shader970, Unity analyzer15, TMP shader/IL2CPP4, Pipeline IL2CPP 큰 메서드2, Diagnostics symbols1, Player Pipeline 설정 없음1, 기존 AnimatedLabel 미사용 필드1이다. 경고0이라고 주장하지 않는다. 패키지/전역 설정/공급사 코드를 수정하지 않았다.
+
+빌드가 자동 변경한 파일은 별도로 검증·원상 복구했다. TMP 캐시는 빌드 직전0688B5CE…로 복원하고 .meta SHA256 A5979AD7…도 보존했다 (`r1-build-font-restored.json`). InputSystem 선로드는 메모리 빈 배열 복구 후 파일만 남은 차이를 시작62658610…와 정확히 같은 bytes로 복원했다 (`r1-build-settings-restored.json`). 이 두 작업은 명시 경로·전후 해시·dirty/빌드 상태를 검사하는 Editor API 도구로 수행했다.
+
+### 보존 처분 및 승인 전 대기 이력
+
+**RS-PRES-01 / RESOLVED — 현재 캐시 유지 사용자 승인:** 첫 RV-01 PlayMode에서 `Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset`의 자동 생성 캐시가 작업 시작90BE8855…에서0688B5CE…로 바뀌었다. 당시 해시만 기록했고 동일 bytes 사본은 없다. 이전 작업의 Pretendard 사본 A0031A85…도 시작 hash와 다르므로 임의로 대신 복원하지 않았다. 현재 캐시 유지 승인 또는 별도 복원 처분을 요청했고, 2026-09-14 사용자가 «승인»으로 현재 상태 유지를 허용했다. 실제 시작 원본 복원으로 판정하지 않는다. 추가 코드 결함이나 테스트 실패는 남아 있지 않다.
+
+대기 감사: 직전 Goal 턴은 보완·전체 검사·APK·빌드 자동 변경 복원을 수행한 progress였고 마지막에 RS-PRES-01 확인 대기에 도달했다. 이번 후속 턴은 같은 조건의 두 번째 확인이다. 새 승인 답변은 없으며 소스28개·현재 font0688B5CE…·APK95EB4D3B… 해시와 HEAD88720fc/staged0이 유지된다. 실행 중인 검증 프로세스를 기다리는 상태가 아니고 사용자 처분 없이는 남은 보존 항목을 안전하게 확정할 수 없다. 테스트를 반복하거나 보완 예산을 추가 소비하지 않았으며 Goal은 아직 활성 상태로 둔다.
+
+세 번째 연속 Goal 턴의 재확인에서도 승인 답변이 없고 소스/폰트/APK 및 staged0이 동일하다. 직전 턴은 새 구현·실행 증거를 얻지 않은 no progress였으며, 현재도 사용자 처분 없이 남은 보존 요구를 달성할 안전한 작업이 없다. 같은 조건이3개 연속 턴에서 지속돼 Goal을 BLOCKED로 전환한다. 승인 또는 정확한 시작 원본이 제공되면 해당 보존 항목부터 재개한다. 검토1/1·보완1/2 예산은 유지하며 새 테스트/코드 수정/자산 변경은 없다.
+
+**승인 후 최종 확인 / 2026-09-14 14:39 KST:** 위 대기 이력 이후 사용자의 명시적 승인으로 보존 항목을 종료했다. 현재 글꼴 SHA256 `0688B5CE5A24B3CA38DC86A2CE04A7128CA44A2629F150D02ECA4642E2908337`, .meta `A5979AD7F2ED27573EE6895552B903E126E1F692495BD2B7DB049A80A7E685D9`를 다시 확인했다. 나머지 보호 대상12개는 baseline과 같고 `r1-source-manifest.json`의28개 소스도 변경0이다. APK SHA256은 위95EB4D3B…와 같다. 컴파일·전체 검사·빌드 결과 파일을 다시 읽어 오류0/Edit317/Play228/Android Succeeded를 확인했으며, 승인 문서만 갱신하므로 검사를 중복 실행하지 않았다. HEAD88720fc/staged0을 유지하고 새 commit은 만들지 않았다. 미해결 필수 Finding0, 전체 IMPLEMENT COMPLETE로 판정한다. 실제 기기 NOT_RUN 및 빌드 경고994건은 완료 판정에서 숨기지 않는다.
+
+### 변경 파일·관계와 후속 범위
+
+제품/검사 C#28개 정확한 경로와 SHA256은 `artifacts/recovery-stability/r1-source-manifest.json`에 기록했다. 신규 .meta13개를 함께 유지하며 기존 .meta 삭제/변경은 없다. 그28개 1:1 CodeMap과 INDEX를 동기화했다. 별도 보존/진단 도구는 `ReplayGenerationProbe.cs`, `RestoreBuildFontCache.cs`, `RestoreBuildSettings.cs`3개이며 모두 artifacts/recovery-stability 아래에 있고 각각 CodeMap/INDEX를 추가했다. 이번 보완의 제품 변경은 MetaRequestCoordinator/RunUIController.MetaRequests, 테스트 변경은 CoreReplayTests/RecoveryStabilityAsyncTests4개로 한정된다. 새 Scene/Prefab/SO authoring은 필요하지 않았다.
+
+최초 검토1묶음/보완1묶음을 사용했으며2번째 보완 묶음은 미사용이다. 1000런에서 남는 동기 checkpoint 비용, 실제 기기·혼합 이력 성능/장기 receipt 보관 정책, 기존 공급사 빌드 경고 정리는 FOLLOW_UP이다. Firebase SDK·서버/Auth 구현, 게임 수치 변경, 추가 Git 작업은 하지 않았다.
+
+## 최종 보완 커밋 준비 / 2026-09-15
+
+사용자 후속 커밋 요청으로 main/88720fc, 기존 staged0을 확인하고 보완1 및 완료 문서14개 파일만 로컬 커밋 대상으로 확정했다. 제품 변경은 대기 중 메타 요청 창을 다시 열었을 때 같은 Task의 완료를 현재 화면에 연결하는 수정이다. 성공·실패·timeout 재개3개 회귀와 빈 recoveryGeneration의 역사적 재연 비교 경계, 대응 요약·색인, 최초 실패부터 최종 PASS·글꼴 유지 승인까지의 기록을 함께 보관한다. 일회성 도구 요약3개는 로컬 검증 경위를 설명하며 도구 원문·원자료·APK는 기존 artifacts/Temp 제외 정책에 따라 로컬에 남긴다.
+
+검증 재확인: 최종 소스 manifest28개 변경0, 컴파일 completed/failed=false/errors0, 전체 EditMode317/317·PlayMode228/228(실패/skipped/inconclusive0), Android Succeeded/오류0/경고994를 원자료에서 확인했다. APK SHA256도95EB4D3B…로 동일하다. 이번 요청에서는 소스를 수정하거나 Unity 검사를 다시 실행하지 않았다. 기기 NOT_RUN은 유지한다. 프로젝트가 참조하는 Docs/AI/CODEX_WORKFLOW.md는 현재 경로 및 Docs 내 파일명 검색에서 찾지 못해 실제 AGENTS.md와 기존 PLAN의 명시 Git 규칙을 적용했다.
+
+보존 재확인: 승인 글꼴0688B5CE…는 그대로다. 실제 사용자 player.json은 완료 후 기록 시각2026-09-14 05:42:20 UTC에 변경된 현재본6E4AD4C7…를 관찰했다. 변경 주체를 추정하거나 과거 사본으로 되돌리지 않고 이번 커밋의 보존 기준으로 둔다. 위2026-09-14 보존 PASS는 당시 결과이며 오늘의 파일이 당시와 같다는 주장이 아니다. 이 외 기존 사용자 렌더링 변경·설계 원문·로컬 설정은 커밋에서 제외하고 현재 bytes를 보존한다. 커밋 대상 목록과 제외 파일의 현재 해시는 artifacts/recovery-stability/commit-final-files.txt 및 commit-final-excluded-before.json에 기록한다. 이 후속 요청이 앞선 Git 쓰기 금지에 대한 로컬 커밋 예외이며 push는 포함하지 않는다.
