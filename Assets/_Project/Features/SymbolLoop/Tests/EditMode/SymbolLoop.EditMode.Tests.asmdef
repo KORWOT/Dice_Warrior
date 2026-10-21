@@ -1,6 +1,8 @@
 {
   "name": "SymbolLoop.EditMode.Tests",
   "references": ["SymbolLoop.Core","SymbolLoop.Runtime","SymbolLoop.Editor","FateDice.SharedUI","Unity.ugui"],
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
   "includePlatforms": ["Editor"],
   "optionalUnityReferences": ["TestAssemblies"],
   "autoReferenced": false

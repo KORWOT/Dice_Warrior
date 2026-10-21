@@ -1,9 +1,14 @@
 # SymbolLoopApp.cs
 
-- 역할: Title 게임 조립, 로비/캠페인/결과/저장 복구와 연출 수명 관리.
-- 핵심 동작: 명령 pending 저장→Execute→pending 제거 성공 이후 확정 전후 사본으로 이동/전투 재생. 같은 revision의 영수증 재시도는 연출하지 않는다. 완료 후 최종 Render.
-- 입출력: authored UIManager/Config, Open(path,seedSource) → Session과 LoopScreenData. IsPresenting은 명령/재생 중 여부.
-- 사용하는 대상: LoopSession/LoopStore/Config, UIManager, Screen/Playback. 실제 경로는 persistentDataPath/symbol-loop-v1/player.json.
-- 사용하는 쪽/관계 근거: Title 직렬화 컴포넌트, Authoring, 격리 FlowTests. Find/singleton 없음.
-- 상태/수명: busy와 UIManager 입력 잠금으로 중복 명령 차단. App 코루틴이 nested iterator를 펼쳐 예외에도 잠금 해제. Render, 화면 닫기, OnDisable, OnApplicationPause(true)는 재생 취소/최종 상태 복귀. 파괴 시 UI 닫음.
-- 검수: 저장 실패는 미결 입력 UI, 시각 실패는 저장 상태 표시. 취소/재개가 RNG·보상·턴을 재실행하면 안 됨. 새 로드의 로비에서 이어하기는 결과를 바로 표시. Android Portrait 요청, 화면/safe area 변경 적용.
+- 역할: Title 조립, Mock 권한 프로필과 로컬 캠페인·결과·복구·연출 화면 연결.
+- 핵심 동작: Open에서 Factory/Coordinator 생성, 프로필 재조회. Dispatch는 비동기 요청 종료 후 확정 전후 사본으로 기존 이동/전투 연출. UI는 새 제출의 재현 검증/승인 지급, 구형 P1 대기, 실패/요청 결과 불명을 구분한다.
+- 입출력: authored UI/Config, Open(path,seedSource,backend,mode). seedSource는 격리 Mock 시험용 주입이며 게임 명령이 시드를 지정하지 않는다.
+- 사용하는 대상: Session/Store/Coordinator/Factory/Config, Shared UI, Screen/Playback. Title 및 FlowTests가 사용한다.
+- 관계 근거: 기존 Title의 App 컴포넌트/프리팹 직렬화 연결을 유지한다. 런 경로는 persistentDataPath/symbol-loop-backend-v1/mock/checkpoint.json, 독립 authority.json.
+- 상태/수명: 요청 중/초기화 중/연출 중 입력을 차단한다. pause/disable은 연출만 중단하며 미결 요청을 삭제하지 않는다. 파괴는 취소를 알리고 결과 불명 요청을 보존한다.
+- 검수: 기존 symbol-loop-v1 파일 접근/이관 없음. Firebase 미지원에는 시작 성공/Mock 자동 전환 없음. Android 실제 수명 주기 검증은 별도다.
+
+- 복원은 세션 생성 성공과 별개로 디스크 pending을 먼저 확인한다. 정상 백엔드 pending은 복원 후 보존/재시도, 손상된 요청은 원문을 보존하고 자동 취소하지 않는다.
+- P2 결과: `기록 검증 · 보상 받기`로 제출한다. 승인 뒤 승리/완료 지역/지급액은 서버 영수증에서 표시한다. 기존 P1 영수증은 대기/0지급으로 표시하며 자동 재제출 버튼을 만들지 않는다.
+- P3: 정산 통신 중/결과 불명은 `보상 검증 대기 · 지급 결과 미확정`으로 표시한다. 재시작 뒤 같은 요청이 확정되면 결과 화면을 바로 표시한다. pause/disable은 요청을 버리지 않으며 승인 응답 유실 후에도 같은 ID로 재확인한다. FlowTests가 실제 포인터와 화면 재생성으로 확인한다.
+- 백업 복원 시 자동 정리는 사전에 관찰한 로컬 pending ID를 지정한다. 백엔드 pending 또는 관찰 후 새로 생긴 요청은 제거하지 않으며 복원/정리 후 현재 pending을 다시 읽는다.

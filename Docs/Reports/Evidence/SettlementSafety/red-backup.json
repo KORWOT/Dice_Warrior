@@ -1,0 +1,43 @@
+{
+  "success": true,
+  "command": "command run_tests",
+  "data": {
+    "command": "run_tests",
+    "parameters": {
+      "mode": "editor",
+      "filter": "PastBackupOfSettledRunRecoversReceiptAndNewestProfile"
+    },
+    "result": {
+      "Summary": {
+        "Total": 1,
+        "Passed": 0,
+        "Failed": 1,
+        "Skipped": 0,
+        "Inconclusive": 0
+      },
+      "Results": [
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendSettlementSafetyTests.PastBackupOfSettledRunRecoversReceiptAndNewestProfile",
+          "Status": "Failed",
+          "Duration": 0.7008182,
+          "Message": "  Server settlement must close the older unfinished backup\r\n  Expected: True\r\n  But was:  False\r\n",
+          "StackTrace": "at DiceWarrior.SymbolLoop.Tests.BackendSettlementSafetyTests.PastBackupOfSettledRunRecoversReceiptAndNewestProfile () [0x002a0] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SymbolLoop\\Tests\\EditMode\\BackendSettlementSafetyTests.cs:42\r\nat UnityEngine.TestTools.TestRunner.TestTaskWrapper+<Execute>d__2.MoveNext () [0x00063] in .\\Library\\PackageCache\\com.unity.test-framework@7a3849e09bd0\\UnityEngine.TestRunner\\TestRunner\\TestTaskWrapper.cs:31\r\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@7a3849e09bd0\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:52\r\n"
+        }
+      ],
+      "Duration": 4.94,
+      "StatusPath": null,
+      "Mode": "EditMode",
+      "FilterApplied": "testname: PastBackupOfSettledRunRecoversReceiptAndNewestProfile",
+      "success": true,
+      "result": null
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

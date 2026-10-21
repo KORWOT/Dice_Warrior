@@ -1,0 +1,380 @@
+{
+  "success": true,
+  "command": "command run_tests",
+  "data": {
+    "command": "run_tests",
+    "parameters": {
+      "mode": "editor",
+      "filter": "SymbolLoop",
+      "filter_type": "assembly"
+    },
+    "result": {
+      "Summary": {
+        "Total": 49,
+        "Passed": 49,
+        "Failed": 0,
+        "Skipped": 0,
+        "Inconclusive": 0
+      },
+      "Results": [
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.ApprovedUpgradeSurvivesLocalSaveFailureAndRestart",
+          "Status": "Passed",
+          "Duration": 0.2031445,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.ConcurrentAdaptersSpendTheInitialBalanceOnlyOnce",
+          "Status": "Passed",
+          "Duration": 0.2050977,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.DirectLocalPermanentMutationsAreRefused",
+          "Status": "Passed",
+          "Duration": 0.0020229,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.InvalidVersionLoadoutOwnershipAndOversizedLogAreExplicitFailures",
+          "Status": "Passed",
+          "Duration": 0.1977653,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.LobbyBackupRecoversActiveTicketAndMatchingProgressIsNeverRestarted",
+          "Status": "Passed",
+          "Duration": 0.1799092,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.LocalSaveFailureDoesNotAppendCommandsOrAdvanceRandomness",
+          "Status": "Passed",
+          "Duration": 0.1540538,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.LostStartResponseResumesSameServerRunAndCannotReplayChangedBody",
+          "Status": "Passed",
+          "Duration": 0.1442798,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.MissingOrCorruptAuthorityNeverRestoresOldCurrencyOrRegrants",
+          "Status": "Passed",
+          "Duration": 0.1202083,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.MockGrantIsOnceAndReturnedOrLocalProfileCannotChangeAuthority",
+          "Status": "Passed",
+          "Duration": 0.1419132,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.RestoredCheckpointRefreshesFromAuthorityWithoutRollingItBack",
+          "Status": "Passed",
+          "Duration": 0.139895,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.StaleUndispatchedBackendInputDoesNotTrapPendingOrChangeAuthority",
+          "Status": "Passed",
+          "Duration": 0.1211611,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.SubmissionIsVerifiedWithSingleRewardAndNextRunIsPossible",
+          "Status": "Passed",
+          "Duration": 0.7178728,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.UnsupportedFirebaseDoesNotCreateMockAuthority",
+          "Status": "Passed",
+          "Duration": 0.1012565,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendFoundationTests.UpgradeChecksCostRevisionAndReplayFingerprint",
+          "Status": "Passed",
+          "Duration": 0.2005877,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendReplayIntegrationTests.DurableServerRateLimitsIgnoreExactRetriesAndClockRollback",
+          "Status": "Passed",
+          "Duration": 0.8433736,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendReplayIntegrationTests.InvalidLogsAndClientResultClaimsCannotGrantOrCloseTheActiveRun",
+          "Status": "Passed",
+          "Duration": 0.5838701,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendReplayIntegrationTests.LegacyPendingRecordAndItsReceiptRemainUnpaid",
+          "Status": "Passed",
+          "Duration": 0.5459099,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendReplayIntegrationTests.LostPayoutReplyThenFailedLocalSaveRecoverTheSameReceiptOnce",
+          "Status": "Passed",
+          "Duration": 0.5874386,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.BackendReplayIntegrationTests.ServerTicketRulesWinOverLaterConfigurationAndDuplicateSubmissionsPayOnce",
+          "Status": "Passed",
+          "Duration": 0.6486723,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.FixedGoldenReplaysEveryStateAndResumesWithoutRandomDrift(\"victory\")",
+          "Status": "Passed",
+          "Duration": 0.0151341,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.FixedGoldenReplaysEveryStateAndResumesWithoutRandomDrift(\"defeat\")",
+          "Status": "Passed",
+          "Duration": 0.0323625,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.FixedGoldenReplaysEveryStateAndResumesWithoutRandomDrift(\"abandon-after-region\")",
+          "Status": "Passed",
+          "Duration": 0.0072207,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.FixedGoldenReplaysEveryStateAndResumesWithoutRandomDrift(\"shop-equipment-resume\")",
+          "Status": "Passed",
+          "Duration": 0.0086662,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.FrozenTicketDeterminesPayoutAndOverflowIsRejected",
+          "Status": "Passed",
+          "Duration": 0.0062171,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.GoldenCoverageIncludesTerminalOutcomesSlotsShoppingGrowthAndComboEffects",
+          "Status": "Passed",
+          "Duration": 0.0074226,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.InvalidPhaseGearSlotPaymentAndClientProvidedRollCannotCreateRewards",
+          "Status": "Passed",
+          "Duration": 0.009344,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.InvalidTicketUnsupportedRulesAndMalformedOrOversizedLogsFailClosed",
+          "Status": "Passed",
+          "Duration": 0.0030221,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.RunReplayTests.SequenceOrderDuplicateTargetAndTerminalTamperingAreRejectedAtTheirCommand",
+          "Status": "Passed",
+          "Duration": 0.0087302,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.All84OrderedResultsUseOnlyExactWholeCombosOrAllBasics",
+          "Status": "Passed",
+          "Duration": 0.004675,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.AuthoredPrefabHasAllLocalBindingsAndNoLegacyDependencies",
+          "Status": "Passed",
+          "Duration": 0.0307329,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.BackupRestorationPreservesCorruptFileAndFencesOldRequests",
+          "Status": "Passed",
+          "Duration": 0.0635711,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.BoardsAreStableWithAllFiveTypesAndIndependentOfCombat",
+          "Status": "Passed",
+          "Duration": 0.0073732,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.CompleteCampaignVerifiesAndSettlesOnceAndGrowthAppliesToNextRun",
+          "Status": "Passed",
+          "Duration": 0.1254398,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.CrossingEachLapGrowsDiceAndThirdRewardPrecedesBoss",
+          "Status": "Passed",
+          "Duration": 0.0007072,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.DefaultRulesFinishWithoutFixturesAndSeed33Wins",
+          "Status": "Passed",
+          "Duration": 0.0879046,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.DiskResumeKeepsNextResultAndReturnedSnapshotIsIsolated",
+          "Status": "Passed",
+          "Duration": 0.0338294,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.EnemyShieldSpansWholeGroupAndPlayerBlockExpires",
+          "Status": "Passed",
+          "Duration": 0.0004772,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.ExplicitPendingCancelPreservesMalformedRequestAndAllowsNewInput",
+          "Status": "Passed",
+          "Duration": 0.0221013,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.FailedSaveDoesNotPublishStateRandomnessOrReceipt",
+          "Status": "Passed",
+          "Duration": 0.0187148,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.GearRequiresSkillTagAndGuardDoesNotReduceIncomingAttack",
+          "Status": "Passed",
+          "Duration": 0.0003256,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.InvalidTablesAndMalformedStateAreRejected",
+          "Status": "Passed",
+          "Duration": 0.0003913,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.KillSkipsPlannedLaterSkillsAndRetaliation",
+          "Status": "Passed",
+          "Duration": 0.0005976,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.LossAndAbandonDoNotGrantUnverifiedCurrency",
+          "Status": "Passed",
+          "Duration": 0.0264114,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.PendingRequestSurvivesRestartAndCommitReceiptMakesRetryIdempotent",
+          "Status": "Passed",
+          "Duration": 0.0267648,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.RestTreasureShopAndDiceReplacementHaveActualCostsAndChoices",
+          "Status": "Passed",
+          "Duration": 0.0007488,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.SavedRunUsesFrozenRulesAfterConfigChanges",
+          "Status": "Passed",
+          "Duration": 0.0223821,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.TravelOnlyResolvesLanding(1)",
+          "Status": "Passed",
+          "Duration": 0.0003883,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.TravelOnlyResolvesLanding(6)",
+          "Status": "Passed",
+          "Duration": 0.0001164,
+          "Message": null,
+          "StackTrace": null
+        },
+        {
+          "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopTests.WrongFingerprintAndStaleVersionCannotExecute",
+          "Status": "Passed",
+          "Duration": 0.0323725,
+          "Message": null,
+          "StackTrace": null
+        }
+      ],
+      "Duration": 10.83,
+      "StatusPath": null,
+      "Mode": "EditMode",
+      "FilterApplied": "assembly: SymbolLoop",
+      "success": true,
+      "result": null
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

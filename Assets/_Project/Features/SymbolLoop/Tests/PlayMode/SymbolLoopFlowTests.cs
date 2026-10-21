@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using FateDice;
 using NUnit.Framework;
 using UnityEditor;
@@ -143,9 +145,15 @@ namespace DiceWarrior.SymbolLoop.Tests
                 yield return WaitPlayback();
             }
             Assert.That(app.Session.Snapshot.run.won,Is.True);
-            Click("성장 재화 받기"); Assert.That(app.Session.Snapshot.profile.currency,Is.EqualTo(50));
+            Click("기록 검증"); yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.profile.currency,Is.EqualTo(70));
+            Assert.That(app.Session.Snapshot.submission.status,Is.EqualTo(BackendStatus.Approved));
             Capture("result-720x1280");
             Click("로비로"); Assert.That(((SymbolLoopScreen)ui.ActiveScreen).title.text,Is.EqualTo("DICE WARRIOR"));
+            yield return null; Click("영구 HP"); yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.profile.currency,Is.EqualTo(50));
+            Click("새 여정"); yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.run.maxHp,Is.EqualTo(65));
         }
         IEnumerator WaitPlayback(Action observe=null)
         {
@@ -250,6 +258,115 @@ namespace DiceWarrior.SymbolLoop.Tests
             Assert.That(result.cue.text,Is.EqualTo("이번 여정이 끝났습니다"));
             Capture("result-final");
             yield return null;
+        }
+        IEnumerator Reopen(IGameBackend backend=null)
+        {
+            Object.Destroy(appObject); yield return null;
+            appObject=new GameObject("Reopened symbol app"); appObject.SetActive(false);
+            app=appObject.AddComponent<SymbolLoopApp>(); app.ui=ui; app.config=config;
+            app.Open(Path.Combine(directory,"player.json"),()=>33,backend);
+            appObject.SetActive(true); yield return null; Canvas.ForceUpdateCanvases();
+        }
+        [UnityTest] public IEnumerator CorruptCheckpointRecoveryPreservesUnknownStartRequest()
+        {
+            app.Session.Execute(app.Session.Prepare("loadout","die:arcane"));
+            var command=app.Session.Prepare("start"); var disk=new LoopStore(Path.Combine(directory,"player.json"));
+            disk.WritePending(command);
+            var backend=new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>33);
+            var approved=backend.StartRunAsync(command.backend,CancellationToken.None).GetAwaiter().GetResult();
+            File.WriteAllText(Path.Combine(directory,"player.json"),"corrupt checkpoint");
+            yield return Reopen(); Assert.That(app.Session,Is.Null);
+            Click("백업 내용 확인"); yield return null; Click("이 백업으로 복원"); yield return null;
+            Assert.That(disk.ReadPending().id,Is.EqualTo(command.id));
+            Click("같은 입력 재시도"); yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.run.id,Is.EqualTo(approved.run.serverRunId));
+            Assert.That(app.Session.Snapshot.run.dice[0].definitionId,Is.EqualTo("arcane"));
+            Assert.That(disk.ReadPending(),Is.Null);
+        }
+        sealed class DelayedBackend : IGameBackend
+        {
+            readonly IGameBackend inner;
+            public readonly TaskCompletionSource<bool> release=new TaskCompletionSource<bool>();
+            public int starts;
+            public DelayedBackend(IGameBackend inner) { this.inner=inner; }
+            public Task<BackendReply> GetProfileAsync(CancellationToken ct)=>inner.GetProfileAsync(ct);
+            public Task<BackendReply> GetRunStatusAsync(string id,CancellationToken ct)=>inner.GetRunStatusAsync(id,ct);
+            public async Task<BackendReply> StartRunAsync(BackendRequest request,CancellationToken ct)
+            { starts++; await release.Task; return await inner.StartRunAsync(request,ct); }
+            public Task<BackendReply> SubmitRunAsync(BackendRequest r,CancellationToken ct)=>inner.SubmitRunAsync(r,ct);
+            public Task<BackendReply> UpgradeAsync(BackendRequest r,CancellationToken ct)=>inner.UpgradeAsync(r,ct);
+            public Task<BackendReply> GetOperationStatusAsync(string id,CancellationToken ct)=>inner.GetOperationStatusAsync(id,ct);
+        }
+        [UnityTest] public IEnumerator DelayedApprovalSurvivesPauseDisableAndBlocksDuplicateInput()
+        {
+            var backend=new DelayedBackend(new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>33));
+            yield return Reopen(backend);
+            var button=((SymbolLoopScreen)ui.ActiveScreen).buttons.First(b=>b.label.text.StartsWith("새 여정"));
+            Click("새 여정"); Assert.That(app.IsPresenting,Is.True);
+            button.button.onClick.Invoke(); Assert.That(backend.starts,Is.EqualTo(1));
+            app.SendMessage("OnApplicationPause",true); appObject.SetActive(false);
+            backend.release.SetResult(true);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(app.Backend.Busy) { Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline)); yield return null; }
+            Assert.That(app.Session.Snapshot.run.seed,Is.EqualTo(33));
+            Assert.That(new LoopStore(Path.Combine(directory,"player.json")).ReadPending(),Is.Null);
+            appObject.SetActive(true); app.SendMessage("OnApplicationPause",false); yield return null;
+            Assert.That(app.IsPresenting,Is.False); Assert.That(backend.starts,Is.EqualTo(1));
+            Assert.That(((SymbolLoopScreen)ui.ActiveScreen).title.text,Does.StartWith("REGION"));
+            Capture("backend-approved-after-pause");
+        }
+
+        sealed class LostSettlementBackend : IGameBackend
+        {
+            readonly IGameBackend inner;
+            public readonly TaskCompletionSource<bool> release=new TaskCompletionSource<bool>();
+            public bool paid, lost;
+            public LostSettlementBackend(IGameBackend inner) { this.inner=inner; }
+            public Task<BackendReply> GetProfileAsync(CancellationToken ct)=>inner.GetProfileAsync(ct);
+            public Task<BackendReply> GetRunStatusAsync(string id,CancellationToken ct)=>inner.GetRunStatusAsync(id,ct);
+            public Task<BackendReply> StartRunAsync(BackendRequest r,CancellationToken ct)=>inner.StartRunAsync(r,ct);
+            public Task<BackendReply> UpgradeAsync(BackendRequest r,CancellationToken ct)=>inner.UpgradeAsync(r,ct);
+            public Task<BackendReply> GetOperationStatusAsync(string id,CancellationToken ct)=>inner.GetOperationStatusAsync(id,ct);
+            public async Task<BackendReply> SubmitRunAsync(BackendRequest r,CancellationToken ct)
+            {
+                var reply=await inner.SubmitRunAsync(r,ct);
+                if(!lost) { lost=true;paid=true;await release.Task;throw new System.Net.Http.HttpRequestException("fixture-settlement-reply-lost"); }
+                return reply;
+            }
+        }
+        [UnityTest] public IEnumerator LostSettlementReplyShowsPendingAndRecoversAfterPauseAndReopen()
+        {
+            var backend=new LostSettlementBackend(new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>33));
+            yield return Reopen(backend); Click("새 여정");yield return WaitPlayback();
+            // Resolve the ordinary seed33 commands directly; the separate pointer campaign test covers every turn.
+            for(int i=0;app.Session.Snapshot.run.phase!=Phase.Result && i<200;i++)
+            {
+                var run=app.Session.Snapshot.run;string kind="choose",arg="";
+                switch(run.phase)
+                {
+                    case Phase.Map:kind="travel";break;
+                    case Phase.Combat:kind="combat";break;
+                    case Phase.LapReward:kind="lap";arg="aegis";break;
+                    case Phase.Rest:arg="heal";break;
+                    case Phase.Event:arg="study";break;
+                    case Phase.Treasure:arg="gear:mail";break;
+                    case Phase.Shop:arg="leave";break;
+                }
+                app.Session.Execute(app.Session.Prepare(kind,arg));
+            }
+            Assert.That(app.Session.Snapshot.run.won,Is.True);app.Render();yield return null;
+            Click("기록 검증");Assert.That(backend.paid,Is.True);
+            var disk=new LoopStore(Path.Combine(directory,"player.json"));string requestId=disk.ReadPending().id;
+            app.SendMessage("OnApplicationPause",true);appObject.SetActive(false);backend.release.SetResult(true);
+            float deadline=Time.realtimeSinceStartup+5;
+            while(app.Backend.Busy) { Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline));yield return null; }
+            appObject.SetActive(true);app.SendMessage("OnApplicationPause",false);yield return null;
+            Assert.That(((SymbolLoopScreen)ui.ActiveScreen).detail.text,Does.Contain("검증 대기"));
+            Assert.That(app.Session.Snapshot.run.settled,Is.False);Assert.That(disk.ReadPending().id,Is.EqualTo(requestId));Capture("settlement-pending");
+            yield return Reopen(backend);yield return null;Click("같은 입력 재시도");yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.run.settled,Is.True);Assert.That(app.Session.Snapshot.profile.currency,Is.EqualTo(70));
+            Assert.That(app.Session.Snapshot.submission.requestId,Is.EqualTo(requestId));Assert.That(disk.ReadPending(),Is.Null);
+            Assert.That(((SymbolLoopScreen)ui.ActiveScreen).detail.text,Does.Contain("50 지급"));Capture("settlement-recovered");
         }
     }
 }

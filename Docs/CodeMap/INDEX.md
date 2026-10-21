@@ -2,14 +2,26 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-프로젝트 소유 C# 18개와 일회성 정리 도구 1개의 요약을 유지한다.
+프로젝트 소유 C# 30개와 일회성 정리 도구 1개의 요약을 유지한다.
 
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|
 | 데이터 | [LoopData](Assets/_Project/Features/SymbolLoop/Domain/LoopData.cs.md) | 규칙·런·프로필·로그·명령·영수증 |
 | 전투 | [SymbolCombat](Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs.md) | 정확한 전체 조합, 순서대로 기본기, 턴 보호막/반격 |
 | 캠페인 | [LoopRules](Assets/_Project/Features/SymbolLoop/Domain/LoopRules.cs.md) | 12칸/3지역/완주/성장/선택/보스와 검증 |
-| 명령 | [LoopSession](Assets/_Project/Features/SymbolLoop/Runtime/LoopSession.cs.md) | 후보 저장 후 공개, 토큰·재시도·정산 |
+| 공통 명령 규칙 | [RunCommandRules](Assets/_Project/Features/SymbolLoop/Domain/RunCommandRules.cs.md) | 세션/권한 재현의 순수 런 명령·대상 규칙 |
+| 백엔드 계약 | [BackendContracts](Assets/_Project/Features/SymbolLoop/Domain/BackendContracts.cs.md) | 버전·요청·응답·시작 티켓·명령 로그와 IGameBackend |
+| 백엔드 조정 | [GameBackendCoordinator](Assets/_Project/Features/SymbolLoop/Backend/GameBackendCoordinator.cs.md) | 동일 요청 재시도·과거 정산/새 활성 런 복구·단절 진단 |
+| Mock 권한 저장 | [MockAuthorityStore](Assets/_Project/Features/SymbolLoop/Backend/MockAuthorityStore.cs.md) | 독립 파일·최초 20재화·프로필/런/작업 원자 보관 |
+| Mock 구현 | [MockGameBackend](Assets/_Project/Features/SymbolLoop/Backend/MockGameBackend.cs.md) | 시작 승인·성장 비용·재현 정산·멱등·빈도 |
+| 런 재현 검증 | [MockRunVerifier](Assets/_Project/Features/SymbolLoop/Backend/MockRunVerifier.cs.md) | 티켓에서 독립 재생·불법 로그 거절·지급액 계산 |
+| 생성 지점 | [GameBackendFactory](Assets/_Project/Features/SymbolLoop/Backend/GameBackendFactory.cs.md) | Mock 선택, Firebase 미지원 |
+| 백엔드 검증 | [BackendFoundationTests](Assets/_Project/Features/SymbolLoop/Tests/EditMode/BackendFoundationTests.cs.md) | 권한 분리·재시도·동시 구매·손상/백업 복구 |
+| 재현 검증 검사 | [RunReplayTests](Assets/_Project/Features/SymbolLoop/Tests/EditMode/RunReplayTests.cs.md) | 고정 4시드·121명령 상태 비교·변조/상한 |
+| 정산 통합 검사 | [BackendReplayIntegrationTests](Assets/_Project/Features/SymbolLoop/Tests/EditMode/BackendReplayIntegrationTests.cs.md) | 지급 1회·구형 대기 유지·응답 유실/저장 실패·빈도 |
+| 정산 안전성 검사 | [BackendSettlementSafetyTests](Assets/_Project/Features/SymbolLoop/Tests/EditMode/BackendSettlementSafetyTests.cs.md) | 동시10정산·두 세션 구매·과거 백업·단절/취소·늦은 응답 |
+| 저장 경합 검사 | [LoopStoreConcurrencyTests](Assets/_Project/Features/SymbolLoop/Tests/EditMode/LoopStoreConcurrencyTests.cs.md) | 동시 Commit·복원 세대·pending ID 보호·원문 보존 |
+| 명령 | [LoopSession](Assets/_Project/Features/SymbolLoop/Runtime/LoopSession.cs.md) | 로컬 후보 저장 후 공개, 백엔드 승인 적용 |
 | 저장 | [LoopStore](Assets/_Project/Features/SymbolLoop/Runtime/LoopStore.cs.md) | 체크섬·원자 교체·백업·세대·미결 입력 |
 | 설정 | [SymbolLoopConfig](Assets/_Project/Features/SymbolLoop/Configs/SymbolLoopConfig.cs.md) | MVP 콘텐츠 SO와 새 런 복사 |
 | 화면 흐름 | [SymbolLoopApp](Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopApp.cs.md) | 로비/여정/결과/복구와 세션 연결 |
@@ -26,7 +38,10 @@
 | 공통 UI | [CommonButtonView](Assets/_Project/Shared/UI/Presentation/CommonButtonView.cs.md) | 로컬 버튼 표시·콜백 |
 | 정리 증거 | [RemoveLegacy](artifacts/symbol-loop-replacement/RemoveLegacy.cs.md) | 승인된 구형 자산 삭제와 직접 참조 검사 |
 
-직접 흐름: Title → SymbolLoopApp → LoopSession → LoopRules/SymbolCombat → LoopStore.
+직접 흐름: Title → SymbolLoopApp → GameBackendCoordinator → LoopSession → RunCommandRules → LoopRules/SymbolCombat. 후보 검증 후 LoopStore에 저장한다.
+권한 흐름: App → GameBackendFactory → IGameBackend/MockGameBackend → MockAuthorityStore. Session의 profile은 캐시이며 영구 재화를 직접 확정하지 않는다.
+새 제출 흐름: MockGameBackend → MockRunVerifier → RunCommandRules/LoopRules/SymbolCombat → 지급 영수증/프로필 원자 저장. 시작 티켓과 골든 기대값으로 재현하며 클라이언트 최종 결과는 받지 않는다.
+P3 복구 흐름: Coordinator → GetRunStatusAsync → Session.ReconcileSubmission/RestoreActiveRun. 과거 로컬 상태는 Store.PreserveCheckpoint로 보존하고 서버 영수증/명령에서 복구한다. authority revision과 로컬 revision/generation이 늦은 응답·동시 저장을 차단한다.
 화면은 App → UIManager → SymbolLoopScreen → CommonButtonView로 연결한다.
 App → SymbolLoopPlayback → LoopDieGraphic/LoopGlyphGraphic으로 확정 결과를 재생한다. Screen은 Playback.Snap으로 저장 상태를 바로 표시한다.
 Core assembly는 Unity 의존이 없고, Runtime은 Core/SharedUI/uGUI/InputSystem을 참조한다.

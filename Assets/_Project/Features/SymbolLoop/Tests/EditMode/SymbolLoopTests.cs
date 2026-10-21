@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -19,6 +20,20 @@ namespace DiceWarrior.SymbolLoop.Tests
                 Directory.Delete(directory,true);
         }
         LoopStore Disk() => new LoopStore(Path.Combine(directory,"player.json"));
+        void Execute(LoopSession session,Command command,Rules rules=null)
+        {
+            var backend=new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>command.seed==0?33:command.seed,rules);
+            BackendReply reply;
+            switch(command.kind)
+            {
+                case "start": reply=backend.StartRunAsync(command.backend,CancellationToken.None).GetAwaiter().GetResult(); break;
+                case "grow": reply=backend.UpgradeAsync(command.backend,CancellationToken.None).GetAwaiter().GetResult(); break;
+                case "settle": reply=backend.SubmitRunAsync(command.backend,CancellationToken.None).GetAwaiter().GetResult(); break;
+                default: session.Execute(command); return;
+            }
+            Assert.That(reply.IsConfirmed,Is.True,reply.message);
+            session.ApplyBackend(command,reply);
+        }
         static Run NewRun(Rules rules=null) => LoopRules.Start(rules??new Rules(),new Profile(),33,"test-run");
         sealed class MemoryStore : ILoopStore
         {
@@ -110,7 +125,7 @@ namespace DiceWarrior.SymbolLoop.Tests
         [Test] public void FailedSaveDoesNotPublishStateRandomnessOrReceipt()
         {
             var store=new MemoryStore(); var session=new LoopSession(store,new Rules());
-            session.Execute(session.Prepare("start",seed:33)); string before=LoopJson.Encode(session.Snapshot);
+            Execute(session,session.Prepare("start",seed:33)); string before=LoopJson.Encode(session.Snapshot);
             var request=session.Prepare("travel"); store.fail=true;
             Assert.Throws<IOException>(()=>session.Execute(request));
             Assert.That(LoopJson.Encode(session.Snapshot),Is.EqualTo(before));
@@ -122,7 +137,7 @@ namespace DiceWarrior.SymbolLoop.Tests
         [Test] public void DiskResumeKeepsNextResultAndReturnedSnapshotIsIsolated()
         {
             var disk=Disk(); var session=new LoopSession(disk,new Rules());
-            session.Execute(session.Prepare("start",seed:33));
+            Execute(session,session.Prepare("start",seed:33));
             var snapshot=session.Snapshot; snapshot.run.hp=1; snapshot.run.rules.dice[0].faces[0]=Symbol.Fire;
             var resumed=new LoopSession(disk,new Rules()); Assert.That(resumed.Snapshot.run.hp,Is.EqualTo(60));
             var request=session.Prepare("travel"); session.Execute(request); resumed.Execute(request);
@@ -142,40 +157,41 @@ namespace DiceWarrior.SymbolLoop.Tests
         [Test] public void SavedRunUsesFrozenRulesAfterConfigChanges()
         {
             var disk=Disk(); var session=new LoopSession(disk,new Rules());
-            session.Execute(session.Prepare("start",seed:33));
+            Execute(session,session.Prepare("start",seed:33));
             var changed=new Rules {power=99}; var resumed=new LoopSession(disk,changed);
             Assert.That(resumed.Snapshot.run.power,Is.EqualTo(5)); Assert.That(resumed.Snapshot.run.rules.power,Is.EqualTo(5));
         }
-        [Test] public void CompleteCampaignSettlesOnlyOnceAndGrowthAppliesToNextRun()
+        [Test] public void CompleteCampaignVerifiesAndSettlesOnceAndGrowthAppliesToNextRun()
         {
             var store=new MemoryStore(); var rules=new Rules {hp=500,power=30};
-            var session=new LoopSession(store,rules); session.Execute(session.Prepare("start",seed:42));
+            var session=new LoopSession(store,rules); Execute(session,session.Prepare("start",seed:42),rules);
             int commands=Finish(session);
             Assert.That(commands,Is.LessThan(100)); Assert.That(session.Snapshot.run.won,Is.True);
-            var settle=session.Prepare("settle"); session.Execute(settle); session.Execute(settle); session.Execute(session.Prepare("settle"));
-            Assert.That(session.Snapshot.profile.currency,Is.EqualTo(50));
-            session.Execute(session.Prepare("grow")); Assert.That(session.Snapshot.profile.currency,Is.EqualTo(30));
-            session.Execute(session.Prepare("start",seed:44)); Assert.That(session.Snapshot.run.maxHp,Is.EqualTo(505));
+            var settle=session.Prepare("settle"); Execute(session,settle); Execute(session,settle); Execute(session,session.Prepare("settle"));
+            Assert.That(session.Snapshot.profile.currency,Is.EqualTo(70));
+            Assert.That(session.Snapshot.submission.status,Is.EqualTo(BackendStatus.Approved));
+            Execute(session,session.Prepare("grow")); Assert.That(session.Snapshot.profile.currency,Is.EqualTo(50));
+            Execute(session,session.Prepare("start",seed:44),rules); Assert.That(session.Snapshot.run.maxHp,Is.EqualTo(505));
         }
         [Test] public void DefaultRulesFinishWithoutFixturesAndSeed33Wins()
         {
             var session=new LoopSession(new MemoryStore(),new Rules());
-            session.Execute(session.Prepare("start",seed:33));
+            Execute(session,session.Prepare("start",seed:33));
             Assert.That(Finish(session),Is.LessThan(100));
             Assert.That(session.Snapshot.run.won,Is.True);
         }
-        [Test] public void LossAndAbandonSettleCompletedRegionsWithoutWinBonus()
+        [Test] public void LossAndAbandonDoNotGrantUnverifiedCurrency()
         {
             var store=new MemoryStore(); var session=new LoopSession(store,new Rules());
-            session.Execute(session.Prepare("start",seed:33)); session.Execute(session.Prepare("abandon"));
-            session.Execute(session.Prepare("settle")); Assert.That(session.Snapshot.profile.currency,Is.Zero);
+            Execute(session,session.Prepare("start",seed:33)); session.Execute(session.Prepare("abandon"));
+            Execute(session,session.Prepare("settle")); Assert.That(session.Snapshot.profile.currency,Is.EqualTo(20));
             var run=NewRun(); run.hp=1; run.enemy=new Enemy {hp=999,maxHp=999,attack=999,intent=Intent.Attack}; run.phase=Phase.Combat;
             LoopRules.RollCombat(run); Assert.That(run.phase,Is.EqualTo(Phase.Result)); Assert.That(run.won,Is.False);
         }
         [Test] public void BackupRestorationPreservesCorruptFileAndFencesOldRequests()
         {
             var disk=Disk(); var session=new LoopSession(disk,new Rules());
-            session.Execute(session.Prepare("start",seed:33)); var old=session.Prepare("travel");
+            Execute(session,session.Prepare("start",seed:33)); var old=session.Prepare("travel");
             session.Execute(session.Prepare("abandon"));
             File.WriteAllText(Path.Combine(directory,"player.json"),"damaged");
             Assert.Throws<IOException>(()=>disk.Read());
@@ -189,10 +205,10 @@ namespace DiceWarrior.SymbolLoop.Tests
         [Test] public void PendingRequestSurvivesRestartAndCommitReceiptMakesRetryIdempotent()
         {
             var disk=Disk(); var session=new LoopSession(disk,new Rules()); var start=session.Prepare("start",seed:33);
-            disk.WritePending(start); session.Execute(start);
+            disk.WritePending(start); Execute(session,start);
             var restarted=new LoopSession(Disk(),new Rules());
-            restarted.Execute(disk.ReadPending());
-            Assert.That(restarted.Snapshot.revision,Is.EqualTo(1)); Assert.That(restarted.Snapshot.run.id,Is.EqualTo(start.id));
+            Execute(restarted,disk.ReadPending());
+            Assert.That(restarted.Snapshot.revision,Is.EqualTo(1)); Assert.That(restarted.Snapshot.run.id,Is.EqualTo(session.Snapshot.run.id));
             disk.ClearPending(start.id); Assert.That(disk.ReadPending(),Is.Null);
         }
         [Test] public void ExplicitPendingCancelPreservesMalformedRequestAndAllowsNewInput()
@@ -202,13 +218,13 @@ namespace DiceWarrior.SymbolLoop.Tests
             var disk=Disk(); Assert.Catch(()=>disk.ReadPending());
             disk.DiscardPending();
             Assert.That(File.ReadAllText(Directory.GetFiles(directory,"*.pending-discarded-*").Single()),Is.EqualTo("damaged pending"));
-            var session=new LoopSession(disk,new Rules()); session.Execute(session.Prepare("start",seed:33));
+            var session=new LoopSession(disk,new Rules()); Execute(session,session.Prepare("start",seed:33));
             Assert.That(session.Snapshot.run.hp,Is.EqualTo(60));
         }
         [Test] public void WrongFingerprintAndStaleVersionCannotExecute()
         {
             var disk=Disk(); var session=new LoopSession(disk,new Rules()); var start=session.Prepare("start",seed:33);
-            session.Execute(start); start.seed=34; Assert.Throws<InvalidOperationException>(()=>session.Execute(start));
+            Execute(session,start); start.seed=34; Assert.Throws<InvalidOperationException>(()=>Execute(session,start));
             var a=session.Prepare("travel"); session.Execute(session.Prepare("abandon"));
             Assert.Throws<InvalidOperationException>(()=>session.Execute(a));
         }

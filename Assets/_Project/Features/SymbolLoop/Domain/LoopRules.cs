@@ -13,7 +13,7 @@ namespace DiceWarrior.SymbolLoop
         }
         public static Tile[] Board(uint seed, int region)
         {
-            uint rng = seed ^ ((uint)region * 0x85ebca6b);
+            uint rng = seed ^ unchecked((uint)region * 0x85ebca6b);
             var board = new[] { Tile.Start, Tile.Combat, Tile.Event, Tile.Treasure, Tile.Shop, Tile.Rest,
                 Tile.Combat, Tile.Combat, Tile.Event, Tile.Treasure, Tile.Rest, Tile.Combat };
             for (int i = 11; i > 1; --i)
@@ -185,13 +185,28 @@ namespace DiceWarrior.SymbolLoop
                 rules.gear.Any(g=>string.IsNullOrWhiteSpace(g.id)||g.slot<0||g.slot>2||g.damage<0||g.block<0))
                 throw new ArgumentException("Invalid equipment");
         }
+        public static bool ValidSubmission(SubmissionReceipt receipt)
+        {
+            if(receipt==null || string.IsNullOrWhiteSpace(receipt.receiptId) || string.IsNullOrWhiteSpace(receipt.requestId)) return false;
+            if(receipt.status==BackendStatus.PendingVerification) return receipt.appliedAmount==0;
+            return receipt.status==BackendStatus.Approved && receipt.verificationVersion==BackendProtocol.VerificationVersion &&
+                receipt.appliedAmount>=0 && receipt.completedRegions>=0 && receipt.completedRegions<=3 &&
+                (!receipt.won || (receipt.completedRegions==3 && !receipt.abandoned));
+        }
         static string SignatureOf(Skill skill) => SymbolCombat.Signature(skill.symbols);
         public static void Validate(PlayerDocument doc)
         {
-            if (doc==null || doc.schema!=1 || doc.revision<0 || doc.generation<0 || doc.profile==null ||
+            if (doc==null || doc.schema!=2 || doc.revision<0 || doc.generation<0 || doc.profile==null ||
                 doc.profile.currency<0 || doc.profile.growth<0 || doc.receipts==null ||
                 doc.receipts.Any(r=>r==null || string.IsNullOrWhiteSpace(r.id)||string.IsNullOrWhiteSpace(r.fingerprint)||r.revision>doc.revision) ||
                 doc.receipts.Select(r=>r.id).Distinct().Count()!=doc.receipts.Count) throw new ArgumentException("Invalid profile");
+            if(doc.commands==null || doc.commands.Count>BackendProtocol.MaxCommands ||
+                doc.commands.Where((c,i)=>c==null || c.sequence!=i+1 || string.IsNullOrWhiteSpace(c.clientCommandId)).Any())
+                throw new ArgumentException("Invalid command checkpoint");
+            if(doc.authority!=null && (doc.authority.revision<0 || doc.authority.values==null ||
+                doc.authority.values.currency<0 || doc.authority.values.growth<0)) throw new ArgumentException("Invalid authority cache");
+            if(doc.ticket!=null && (doc.run==null || doc.ticket.serverRunId!=doc.run.id ||
+                doc.ticket.rulesVersion!=BackendProtocol.RulesVersion)) throw new ArgumentException("Invalid run ticket");
             var r=doc.run;
             if(r==null) return;
             ValidateRules(r.rules);
@@ -211,7 +226,8 @@ namespace DiceWarrior.SymbolLoop
                 throw new ArgumentException("Invalid run");
             if ((r.phase==Phase.Combat && (r.enemy==null||r.enemy.hp<=0||r.hp<=0)) ||
                 (r.enemy!=null && (r.enemy.hp<0||r.enemy.hp>r.enemy.maxHp||r.enemy.shield<0||r.enemy.attack<=0||!Enum.IsDefined(typeof(Intent),r.enemy.intent))) ||
-                (r.settled && (r.phase!=Phase.Result || r.payout!=r.completedRegions*r.rules.regionCurrency+(r.won?r.rules.winCurrency:0))) ||
+                (r.settled && (r.phase!=Phase.Result || doc.submission==null || doc.submission.serverRunId!=r.id ||
+                    r.payout!=doc.submission.appliedAmount || !ValidSubmission(doc.submission))) ||
                 (r.won && (r.phase!=Phase.Result||r.completedRegions!=3||r.hp<=0)))
                 throw new ArgumentException("Invalid combat/result");
             if(r.lastTurn!=null && (r.lastTurn.faces==null || r.lastTurn.faces.Length!=r.dice.Count ||

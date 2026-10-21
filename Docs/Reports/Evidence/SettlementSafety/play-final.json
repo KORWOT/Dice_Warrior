@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "command": "command test_status",
+  "data": {
+    "command": "test_status",
+    "parameters": {},
+    "result": "{\r\n  \"status\": \"completed\",\r\n  \"duration\": 106.31,\r\n  \"summary\": {\r\n    \"total\": 7,\r\n    \"passed\": 7,\r\n    \"failed\": 0,\r\n    \"skipped\": 0,\r\n    \"inconclusive\": 0\r\n  },\r\n  \"results\": [\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.CorruptCheckpointRecoveryPreservesUnknownStartRequest\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 0.1789437,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    },\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.DelayedApprovalSurvivesPauseDisableAndBlocksDuplicateInput\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 0.0967576,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    },\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.LostSettlementReplyShowsPendingAndRecoversAfterPauseAndReopen\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 0.5760629,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    },\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.PawnVisitsEachCellAndInterruptedRollRestoresCommittedLanding\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 4.1782202,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    },\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.PointerFlowCompletesCampaignAndRestoresSavedTurnWithoutExecutingAgain\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 83.8065415,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    },\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.SymbolDiceAndEffectsFollowCommittedComboFallbackAndKillLogs\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 17.2941322,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    },\r\n    {\r\n      \"FullName\": \"DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.TallPortraitShowsChoicesWithoutClipping\",\r\n      \"Status\": \"Passed\",\r\n      \"Duration\": 0.1670383,\r\n      \"Message\": null,\r\n      \"StackTrace\": null\r\n    }\r\n  ]\r\n}",
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -102,10 +102,14 @@ namespace DiceWarrior.SymbolLoop
     [Serializable] public sealed class Receipt { public string id, fingerprint; public long revision; }
     [Serializable] public sealed class PlayerDocument
     {
-        public int schema = 1, generation;
+        public int schema = 2, generation;
         public long revision;
         public Profile profile = new Profile();
         public Run run;
+        public BackendProfile authority;
+        public RunTicket ticket;
+        public List<RunCommandEntry> commands = new List<RunCommandEntry>();
+        public SubmissionReceipt submission;
         public List<Receipt> receipts = new List<Receipt>();
     }
     public sealed class Command
@@ -114,5 +118,6 @@ namespace DiceWarrior.SymbolLoop
         public long revision;
         public int generation;
         public uint seed;
+        public BackendRequest backend;
     }
 }

@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "return System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == \"SymbolLoop.EditMode.Tests\").GetType(\"DiceWarrior.SymbolLoop.Tests.RunReplayTests\").GetMethod(\"GenerateGoldenVectors\").Invoke(null, null);"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": "victory:seed=33,commands=35,hp=49,won=True,regions=3,payout=50,shopBuys=0,die=0,gear=2; defeat:seed=51,commands=41,hp=0,won=False,regions=3,payout=30,shopBuys=0,die=0,gear=0; abandon-after-region:seed=19,commands=13,hp=60,won=False,regions=1,payout=10,shopBuys=0,die=0,gear=0; shop-equipment-resume:seed=1,commands=32,hp=74,won=True,regions=3,payout=50,shopBuys=2,die=1,gear=1"
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}
