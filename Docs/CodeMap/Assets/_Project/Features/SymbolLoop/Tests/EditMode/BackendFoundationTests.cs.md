@@ -8,3 +8,5 @@
 - 상태/수명: 테스트별 고유 임시 폴더, 허용 루트 확인 후 삭제. 사용자 저장/백업은 사용하지 않는다.
 - 검수: 기존 P1 권한 경계는 유지하면서 정상 제출 기대값만 P2 승인으로 갱신했다. 악성 로그/골든은 RunReplayTests, 원자 정산/구형 기록/빈도는 BackendReplayIntegrationTests가 맡는다. Mock 내부 파일 자체 변조 방어는 목적이 아니다.
 - P3: LostReplyBackend가 읽기 전용 GetRunStatus 계약을 내부 백엔드로 전달한다. 기존 승인 후 저장 실패/성장/백업 회귀는 계속 실행한다.
+
+- M0~M3 의존성: Mock 권한 타입은 Server/DiceWarrior.Authority 소스에서 빌드한 Editor 전용 Tests/Support/DiceWarrior.Authority.dll을 테스트 asmdef가 명시 참조한다. 실제 HTTP/SQLite 시험은 Server/DiceWarrior.HttpTests가 담당한다.

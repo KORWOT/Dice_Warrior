@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="e11a6f51-6f09-44c1-addb-996d4c9cf616" name="coli4@WOT 2026-10-22 08:10:16" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T08:10:16.7691404+09:00" queuing="2026-10-22T08:10:16.7691406+09:00" start="2026-10-22T08:10:13.8914647+09:00" finish="2026-10-22T08:10:16.7982041+09:00" />
+  <TestSettings name="default" id="39b9d992-76d8-4249-8e89-241fe9376be4">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-22_08_10_16" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="1f4c39f8-c120-4ee6-8dab-bc020d4be714" testId="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4" testName="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" computerName="WOT" duration="00:00:00.7753500" startTime="2026-10-22T08:10:15.9156877+09:00" endTime="2026-10-22T08:10:16.6909851+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f4c39f8-c120-4ee6-8dab-bc020d4be714">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: Approved&#xD;
+  But was:  TemporaryFailure&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests.UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\SqliteAuthorityTests.cs:line 26&#xD;
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.&lt;&gt;c__DisplayClass1_0.&lt;Execute&gt;b__0()&#xD;
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)&#xD;
+
+1)    at DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests.UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\SqliteAuthorityTests.cs:line 26&#xD;
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine&amp; stateMachine)&#xD;
+   at DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests.UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain()&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4">
+      <Execution id="1f4c39f8-c120-4ee6-8dab-bc020d4be714" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4" executionId="1f4c39f8-c120-4ee6-8dab-bc020d4be714" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running selected tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 1 of 1 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

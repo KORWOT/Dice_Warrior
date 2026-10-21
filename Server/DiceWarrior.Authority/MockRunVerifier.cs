@@ -36,7 +36,7 @@ namespace DiceWarrior.SymbolLoop
                 replay.Add(new RunCommandEntry { sequence = command.sequence, kind = command.kind, arg = command.arg,
                     targetId = command.targetId, clientCommandId = command.clientCommandId });
             }
-            if (Encoding.UTF8.GetByteCount(LoopJson.Encode(replay)) > MockAuthorityStore.MaxSubmissionBytes)
+            if (Encoding.UTF8.GetByteCount(LoopJson.Encode(replay)) > AuthorityValidation.MaxSubmissionBytes)
                 return Reject("REPLAY_LIMIT_EXCEEDED", "명령 로그 용량 제한을 초과했습니다.");
 
             Run run;
@@ -91,9 +91,9 @@ namespace DiceWarrior.SymbolLoop
             var profile = ticket.startingProfile;
             var rules = ticket.rules;
             return ValidId(ticket.serverRunId) && ticket.seed != 0 && profile != null &&
-                profile.userId == BackendProtocol.MockUser && profile.environment == "mock" && profile.revision >= 0 &&
+                ValidId(profile.userId) && profile.environment == "mock" && profile.revision >= 0 &&
                 profile.values != null && profile.values.currency >= 0 && profile.values.growth >= 0 &&
-                profile.values.growth <= MockAuthorityStore.MaxGrowth && ValidId(profile.values.startingDie) &&
+                profile.values.growth <= AuthorityValidation.MaxGrowth && ValidId(profile.values.startingDie) &&
                 ValidId(profile.values.startingWeapon) && rules != null && rules.dice != null && !rules.dice.Any(d => d == null) &&
                 rules.gear != null && !rules.gear.Any(g => g == null) && rules.basics != null && !rules.basics.Any(s => s == null) &&
                 rules.combos != null && !rules.combos.Any(s => s == null);

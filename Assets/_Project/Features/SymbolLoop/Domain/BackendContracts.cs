@@ -15,7 +15,7 @@ namespace DiceWarrior.SymbolLoop
         public const int MaxCommands = 2048;
     }
 
-    public enum BackendMode { Mock, Firebase }
+    public enum BackendMode { Mock = 0, Firebase = 1, HttpMock = 2 }
     public enum BackendStatus { Approved, Rejected, Conflict, PendingVerification, UnknownAfterTimeout, TemporaryFailure, Unsupported }
 
     [Serializable] public sealed class BackendProfile

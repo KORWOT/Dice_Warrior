@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsTestProject>true</IsTestProject>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DiceWarrior.Storage.Sqlite/DiceWarrior.Storage.Sqlite.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <None Include="../../Assets/_Project/Features/SymbolLoop/Tests/EditMode/ReplayGoldenVectors.json" Link="ReplayGoldenVectors.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

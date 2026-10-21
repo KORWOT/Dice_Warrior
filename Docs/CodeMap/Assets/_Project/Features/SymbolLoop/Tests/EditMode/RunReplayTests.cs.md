@@ -9,3 +9,5 @@
 - 상태/수명: 테스트별 메모리 복사만 사용하며 실제 사용자 저장/백업을 열지 않는다. GenerateGoldenVectors만 허용된 골든 JSON 경로에 최초 작성한다. InspectGoldenCandidate는 메모리에서만 고정 시드 정책 요약을 반환한다.
 - 검수 주의점: 생성기 출력은 자동 정답이 아니므로 최초 생성 후 사람/메인이 별도 확인하고 고정해야 한다. 매 검사에서 기대값을 생성하지 않는다. 명령 결과와 원본 입력을 비교하여 독립성을 확인하며, JSON 해시만 저장하는 대체 검사는 없다. 백엔드 원자 지급/구형 영수증·빈도 제한은 BackendReplayIntegrationTests 담당이다.
 - 고정 데이터: 승리 seed33/35명령/50지급, 패배 seed51/41명령/30지급, 1지역 후 포기 seed19/13명령/10지급, 상점·교체 seed1/32명령/50지급. 총 121명령/125상태. 네 벡터 재생과 다섯 경계 검사로 총 9개 실행 결과를 만든다. Unity 번들 NUnit에 맞춰 순차 단언을 사용한다.
+
+- M0~M3 의존성: Mock 권한 타입은 Server/DiceWarrior.Authority 소스에서 빌드한 Editor 전용 Tests/Support/DiceWarrior.Authority.dll을 테스트 asmdef가 명시 참조한다. 실제 HTTP/SQLite 시험은 Server/DiceWarrior.HttpTests가 담당한다.

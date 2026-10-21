@@ -12,12 +12,12 @@ namespace DiceWarrior.SymbolLoop
 {
     public sealed class MockGameBackend : IGameBackend
     {
-        readonly MockAuthorityStore store;
+        readonly IAuthorityRepository store;
         readonly Func<uint> seedSource;
         readonly Rules rules;
         readonly Func<long> nowMilliseconds;
 
-        public MockGameBackend(MockAuthorityStore store, Func<uint> seedSource = null, Rules rules = null, Func<long> nowMilliseconds = null)
+        public MockGameBackend(IAuthorityRepository store, Func<uint> seedSource = null, Rules rules = null, Func<long> nowMilliseconds = null)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
             this.seedSource = seedSource ?? CreateSeed;
@@ -58,14 +58,14 @@ namespace DiceWarrior.SymbolLoop
         {
             ct.ThrowIfCancellationRequested();
             // Snapshot every field before fingerprinting; caller-owned objects never become authority state.
-            if (request == null || !MockAuthorityStore.ValidId(request.requestId))
+            if (request == null || !AuthorityValidation.ValidId(request.requestId))
                 return Task.FromResult(new BackendReply { status = BackendStatus.Rejected, code = "INVALID_REQUEST_ID",
                     message = "유효한 요청 ID가 필요합니다." });
             if (request.commands != null && request.commands.Count > BackendProtocol.MaxCommands)
                 return Task.FromResult(new BackendReply { status = BackendStatus.Rejected, code = "COMMAND_LIMIT",
                     message = "런 명령 수가 개발용 Mock 한도를 초과했습니다." });
             string encoded = LoopJson.Encode(request);
-            if (Encoding.UTF8.GetByteCount(encoded) > MockAuthorityStore.MaxSubmissionBytes)
+            if (Encoding.UTF8.GetByteCount(encoded) > AuthorityValidation.MaxSubmissionBytes)
                 return Task.FromResult(new BackendReply { status = BackendStatus.Rejected, code = "REQUEST_TOO_LARGE",
                     message = "요청 용량이 512KiB를 초과했습니다." });
             var snapshot = LoopJson.Decode<BackendRequest>(encoded);
@@ -74,7 +74,7 @@ namespace DiceWarrior.SymbolLoop
                 var previous = document.operations.Find(item => item.id == snapshot.requestId);
                 if (previous != null) return new MockMutation { reply = previous.fingerprint == fingerprint
                     ? previous.reply : Reply(document, BackendStatus.Rejected, "REQUEST_ID_REUSED", "같은 요청 ID에 다른 내용이 사용되었습니다.") };
-                if (document.operations.Count >= MockAuthorityStore.MaxOperations)
+                if (document.operations.Count >= AuthorityValidation.MaxOperations)
                     return new MockMutation { reply = Reply(document, BackendStatus.Rejected, "OPERATION_LIMIT", "Mock 작업 보관 한도에 도달했습니다.") };
 
                 BackendReply reply;
@@ -94,7 +94,7 @@ namespace DiceWarrior.SymbolLoop
             var conflict = CheckRevision(document, request);
             if (conflict != null) return conflict;
             if (document.activeRunId != null) return Reply(document, BackendStatus.Conflict, "RUN_ACTIVE", "진행 중인 런을 먼저 제출하세요.");
-            if (document.runs.Count >= MockAuthorityStore.MaxRuns)
+            if (document.runs.Count >= AuthorityValidation.MaxRuns)
                 return Reply(document, BackendStatus.Rejected, "RUN_LIMIT", "Mock 런 보관 한도에 도달했습니다.");
             if (!rules.dice.Any(die => die.id == request.startingDie) ||
                 !rules.gear.Any(gear => gear.id == request.startingWeapon && gear.slot == 0))
@@ -118,7 +118,7 @@ namespace DiceWarrior.SymbolLoop
             if (conflict != null) return conflict;
             if (document.activeRunId != null) return Reply(document, BackendStatus.Conflict, "RUN_ACTIVE", "런 진행 중에는 영구 성장을 변경할 수 없습니다.");
             if (request.upgrade != "hp") return Reply(document, BackendStatus.Rejected, "INVALID_UPGRADE", "지원하지 않는 영구 성장입니다.");
-            if (document.profile.values.growth >= MockAuthorityStore.MaxGrowth)
+            if (document.profile.values.growth >= AuthorityValidation.MaxGrowth)
                 return Reply(document, BackendStatus.Rejected, "GROWTH_LIMIT", "성장 보관 한도에 도달했습니다.");
             long cost = 20L * (document.profile.values.growth + 1L);
             if (document.profile.values.currency < cost)
@@ -201,7 +201,7 @@ namespace DiceWarrior.SymbolLoop
                 var command = commands[index];
                 if (command == null || command.sequence != index + 1 ||
                     (command.kind != "travel" && command.kind != "combat" && command.kind != "choose" && command.kind != "lap" && command.kind != "abandon") ||
-                    !MockAuthorityStore.ValidId(command.clientCommandId) || !ids.Add(command.clientCommandId) ||
+                    !AuthorityValidation.ValidId(command.clientCommandId) || !ids.Add(command.clientCommandId) ||
                     (command.arg != null && command.arg.Length > 1024) ||
                     (command.targetId != null && command.targetId.Length > 128)) return false;
             }

@@ -13,14 +13,18 @@
 - [재현 검증 REPORT](Reports/SERVER_RUN_REPLAY_VALIDATION_REPORT.md): 골든 벡터·악성 입력·중복 지급 검사 증거.
 - [정산 안전성 PLAN](Plans/SERVER_SETTLEMENT_SAFETY_PLAN.md): P3 중복 정산·비동기 복구·동시 세션 계약.
 - [정산 안전성 REPORT](Reports/SERVER_SETTLEMENT_SAFETY_REPORT.md): 실제 동시 실행·과거 백업·응답 유실 복구 증거.
+- [독립 서버 PLAN](Plans/STANDALONE_MOCK_SERVER_01_PLAN.md): 승인된 M0~M3 서버 분리·SQLite·HTTP 계약.
+- [독립 서버 REPORT](Reports/STANDALONE_MOCK_SERVER_01_REPORT.md): 프로세스 간 정산·복구·Unity 연동 증거.
+- [서버 실행 안내](../Server/README.md): 실행 명령, Unity 접속 설정, API와 저장 경계.
+- 서버 이전 원안: 사용자가 제공한 `Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md`를 참고했다. 원안의 M4/M5 계측·대시보드·부하 시험은 후속이며, 승인된 M0~M3 계약은 위 독립 서버 PLAN에 기록한다. 원본 파일은 사용자 변경 제외 요청에 따라 로컬에 보존한다.
 - [현행 CodeMap](CodeMap/INDEX.md): 현재 소스의 역할과 직접 관계.
 - [v1 이력](Archive/v1/README.md): 폐기된 규칙과 과거 검증. 현행 요구사항이 아니다.
 - [서드파티 출처](ThirdParty/PRETENDARD.md): 유지하는 폰트 라이선스.
 
 2026-10-20 사용자 지시로 기존 v1 병행 모드와 호환성 P0는 중단했다. 과거 테스트 통과는 새 게임의 검증 근거로 사용하지 않는다.
 
-실행: `Assets/_Project/Scenes/Title.unity`를 열고 Play. 로비에서 시작 주사위·무기를 고른 뒤 새 여정을 시작한다.
-새 Mock 체크포인트는 `persistentDataPath/symbol-loop-backend-v1/mock/checkpoint.json`, 권한 프로필은 같은 폴더 `authority.json`을 사용한다. 기존 `symbol-loop-v1/player.json`은 보존하고 이관하지 않는다.
+실행: 저장소 루트 PowerShell에서 `./Server/Start-MockServer.ps1`로 서버를 켠 뒤 `Assets/_Project/Scenes/Title.unity`를 열고 Play. 로비에서 시작 주사위·무기를 고른 뒤 새 여정을 시작한다.
+기본 서버는 `http://127.0.0.1:5087`, 권한 DB는 `Server/data/authority.db`다. 새 체크포인트는 `persistentDataPath/symbol-loop-backend-v1/http-mock/<endpoint+계정 SHA256>/checkpoint.json`이다. 이전 `mock/checkpoint.json`·`authority.json`·`symbol-loop-v1/player.json`은 보존하고 자동 이관하지 않는다.
 이전 프로젝트와 달리 Title 한 씬에서 전체 여정을 진행한다. 현재 화면/수치는 MVP이며 최종 아트·밸런스·장치 검증은 별도다.
 
 ## 게임플레이 체크포인트 (44e6c31)
@@ -32,7 +36,7 @@
 
 [실제 화면 미리보기](Reports/Evidence/SymbolLoop/gameplay-preview.gif)
 
-## 현재 단계: P3 정산·복구·동시 실행 안전성
+## 현재 단계: 독립 Mock 서버 M0~M3
 
 런 시작·성장은 독립 Mock 백엔드가 승인하며, 새 테스트 계정에는 20재화를 최초 1회 지급한다. P2의 새 제출은 저장된 시작 티켓과 명령 로그를 독립 상태에 재현한 뒤 `완료 지역×10 + 최종 승리 20`을 한 번 지급한다. 승리·패배·포기 모두 같은 산식을 사용한다. 검증이 거절되면 영구 재화와 활성 런을 유지한다.
 
@@ -40,4 +44,6 @@
 
 P3는 통신 단절·응답 유실·취소 뒤에도 같은 요청을 보존해 재확인한다. 과거 로컬 백업은 서버 영수증과 최신 재화로 복구하며 교체되는 진행 원문을 별도로 보존한다. 동시 정산은 한 번만 지급하고, 같은 revision의 성장/정산 경합에서는 한 변경만 승인한다. 늦은 응답은 최신 런을 덮지 못한다. [P3 실제 검증과 한계](Reports/SERVER_SETTLEMENT_SAFETY_REPORT.md)를 따른다.
 
-이번 작업은 **P3에서 종료**한다. 동시성 검증은 같은 프로세스 안의 두 독립 로컬 세션과 공유 Mock 권한 저장소를 대상으로 한다. 별도 프로세스의 동일 파일 공유, 실제 두 기기·Firebase(P4)·Android 기기(P5)는 미구현/미검증이며 로컬 Mock은 운영 보안 서버가 아니다.
+P3의 프로세스 내부 검증 이후, M0~M3에서 권한 서비스·검증기를 Unity Assets 밖 `Server/`로 옮기고 SQLite와 실제 HTTP를 연결했다. Unity는 로컬 진행을 처리하며 프로필·시작·정산·성장을 서버에서 확인한다. 서버 미응답 시 로컬 지급으로 우회하지 않는다. 같은 DB를 여는 두 서버 프로세스의 100동시 정산과 10구매 경합, 응답 유실·서버 재시작 복구를 검사한다. 구체적인 최신 결과는 독립 서버 REPORT를 따른다.
+
+이번 범위는 **M3까지**다. M4/M5 사용량·비용 대시보드와 규모별 부하 시험, 실제 Firebase·두 기기·Android 검증은 후속 범위다. 개발 계정 헤더는 loopback/Development에서만 허용하며 운영 인증이 아니다.

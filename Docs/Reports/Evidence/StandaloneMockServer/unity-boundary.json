@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "command": "command run_script",
+  "data": {
+    "command": "run_script",
+    "parameters": {
+      "file": "Server/Tools/VerifyUnityBoundary.cs",
+      "entry": "VerifyUnityBoundary.Run"
+    },
+    "result": {
+      "diagnostics": [],
+      "compileMs": 1064,
+      "executeMs": 144,
+      "assemblyName": "PipelineRunScript_VerifyUnityBoundary_e9582fdd8f99469fbb2a741194b40c51",
+      "success": true,
+      "result": {
+        "editorOnly": true,
+        "explicitReferences": true,
+        "playerAuthorityReference": false,
+        "rulesMatch": true,
+        "rulesSha256": "A9FF4C352251F537C93752E9AF82ADBA2725465FEC8E868D9659512740910B38",
+        "sharedJsonAssembly": "SymbolLoop.Core"
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7802,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

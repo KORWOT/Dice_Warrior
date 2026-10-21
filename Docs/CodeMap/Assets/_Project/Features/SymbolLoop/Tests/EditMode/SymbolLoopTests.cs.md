@@ -7,3 +7,5 @@
 - 사용하는 쪽/관계 근거: SymbolLoop.EditMode.Tests assembly의 Unity Test Runner.
 - 상태/수명: 테스트별 고유 임시 경로, 종료 시 허용 루트 하위 여부 확인 후 정리. 실제 persistentDataPath 접근 없음.
 - 검수: 완주 정산은 P2 Approved/50지급/잔액70을 확인하고 성장 구매 후 잔액50과 다음 런 HP를 확인한다. 완주 통합 검사는 높은 HP/위력 fixture를 사용한다. 별도 기본 설정 시드 33 검사도 두지만 어느 쪽도 밸런스 승률 증거가 아니다. 실제 Title preview의 Missing Script/연결도 확인한다. 구형 v1 테스트/fixture를 실행하지 않는다.
+
+- M0~M3 의존성: Mock 권한 타입은 Server/DiceWarrior.Authority 소스에서 빌드한 Editor 전용 Tests/Support/DiceWarrior.Authority.dll을 테스트 asmdef가 명시 참조한다. 실제 HTTP/SQLite 시험은 Server/DiceWarrior.HttpTests가 담당한다.

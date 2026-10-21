@@ -1,0 +1,10 @@
+{
+  "remainingMandatoryFindings": 0,
+  "reviewBatches": 1,
+  "head": "61e811188e58740e1a0e329f10f6c9bd3e50533c",
+  "stagedPaths": [],
+  "sourceDriftAfterTests": [],
+  "missingDocumentLinks": [],
+  "repairVerificationBatches": 2,
+  "testDllMatchesBuild": true
+}

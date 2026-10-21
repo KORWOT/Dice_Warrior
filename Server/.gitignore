@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/TestResults/
+.nuget/
+data/
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.log
+# Unity's root ignore excludes generated csproj files; these server projects are authored sources.
+!**/*.csproj

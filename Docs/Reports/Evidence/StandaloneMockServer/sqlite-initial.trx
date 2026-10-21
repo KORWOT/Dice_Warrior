@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="1f97e231-a306-4c47-b932-c7cc7e36cd10" name="coli4@WOT 2026-10-22 08:12:58" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T08:12:58.1588702+09:00" queuing="2026-10-22T08:12:58.1588706+09:00" start="2026-10-22T08:12:57.3125820+09:00" finish="2026-10-22T08:12:58.4521450+09:00" />
+  <TestSettings name="default" id="4695b233-04d0-4694-bcd8-f89e0aa9fab5">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-22_08_12_58" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b10cb483-cfdb-4745-97c0-fffad410d0bb" testId="bb8725c7-4b5b-edd3-4dc5-8c40752dbf78" testName="SharedRulesMatchEveryFrozenUnityState(&quot;defeat&quot;)" computerName="WOT" duration="00:00:00.0008550" startTime="2026-10-22T08:12:57.8088846+09:00" endTime="2026-10-22T08:12:57.8097391+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b10cb483-cfdb-4745-97c0-fffad410d0bb">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(String name) in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 34&#xD;
+   at InvokeStub_GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0f8cc12e-20f9-435f-93f5-0f8467538e02" testId="34ebb14d-13bb-4161-7736-3326bb886532" testName="TenPurchasesAtOneRevisionOnlySpendOnceAcrossConnections" computerName="WOT" duration="00:00:00.2027760" startTime="2026-10-22T08:12:58.1829925+09:00" endTime="2026-10-22T08:12:58.3857685+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0f8cc12e-20f9-435f-93f5-0f8467538e02" />
+    <UnitTestResult executionId="59a3cee5-3eec-42ee-9e77-b0e501faf13e" testId="712191e5-9a15-8805-5158-9f331450735b" testName="ABlockedReplayDoesNotHoldWriterLockAndRetriesAfterAnotherConnectionCommits" computerName="WOT" duration="00:00:00.2482040" startTime="2026-10-22T08:12:57.8126477+09:00" endTime="2026-10-22T08:12:58.0608516+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="59a3cee5-3eec-42ee-9e77-b0e501faf13e" />
+    <UnitTestResult executionId="1af21bbf-41a5-4957-afb4-ff5336061179" testId="312c0fd2-48c7-f44b-5082-c58f1aeced2f" testName="OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen" computerName="WOT" duration="00:00:00.0181250" startTime="2026-10-22T08:12:58.1185496+09:00" endTime="2026-10-22T08:12:58.1366738+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1af21bbf-41a5-4957-afb4-ff5336061179">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests.OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\SqliteAuthorityTests.cs:line 95&#xD;
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.&lt;&gt;c__DisplayClass1_0.&lt;Execute&gt;b__0()&#xD;
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5e52e762-8d12-44a3-96f5-982c3535c821" testId="3f8806fe-13ca-7816-fd4b-b8b0582768a7" testName="SharedRulesMatchEveryFrozenUnityState(&quot;victory&quot;)" computerName="WOT" duration="00:00:00.0018130" startTime="2026-10-22T08:12:57.8070554+09:00" endTime="2026-10-22T08:12:57.8088679+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5e52e762-8d12-44a3-96f5-982c3535c821">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(String name) in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 34&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="85372c29-2b4f-431a-b3c1-fbba1df0b667" testId="5eb4d9d7-504a-819a-1db9-61da7fd63e2e" testName="SharedRulesMatchEveryFrozenUnityState(&quot;abandon-after-region&quot;)" computerName="WOT" duration="00:00:00.0006370" startTime="2026-10-22T08:12:57.8097493+09:00" endTime="2026-10-22T08:12:57.8103860+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="85372c29-2b4f-431a-b3c1-fbba1df0b667">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(String name) in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 34&#xD;
+   at InvokeStub_GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e4098b35-e97e-4de5-9fa6-43295d34c59e" testId="0df140a4-59fb-6be6-e94f-5223caaa020c" testName="FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart" computerName="WOT" duration="00:00:00.0182170" startTime="2026-10-22T08:12:58.0838961+09:00" endTime="2026-10-22T08:12:58.1021132+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e4098b35-e97e-4de5-9fa6-43295d34c59e">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests.FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\SqliteAuthorityTests.cs:line 123&#xD;
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.&lt;&gt;c__DisplayClass1_0.&lt;Execute&gt;b__0()&#xD;
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c4c1d875-9515-446a-848c-1a3c5e49043b" testId="2457c52e-62d9-20e4-b41c-0cca29fe4acc" testName="SeparateUsersCanReuseRequestIdsWithoutSharingProfileRunsOrReceipts" computerName="WOT" duration="00:00:00.0462819" startTime="2026-10-22T08:12:58.1366900+09:00" endTime="2026-10-22T08:12:58.1829718+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c4c1d875-9515-446a-848c-1a3c5e49043b" />
+    <UnitTestResult executionId="5f601f20-85c6-470e-b321-88157aad2bc4" testId="d569255d-908e-0e0b-48d9-21d96a4d9c89" testName="CancellationBeforeCommitLeavesOriginalBalanceAndCorruptDatabaseIsNotReset" computerName="WOT" duration="00:00:00.0230070" startTime="2026-10-22T08:12:58.0608706+09:00" endTime="2026-10-22T08:12:58.0838773+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5f601f20-85c6-470e-b321-88157aad2bc4" />
+    <UnitTestResult executionId="c7c59bb5-d50d-4c5b-8791-b0dab6a3f3a4" testId="1453eed1-96d8-17d6-3488-cecd2d3c2fd9" testName="RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures" computerName="WOT" duration="00:00:00.0437970" startTime="2026-10-22T08:12:57.7621228+09:00" endTime="2026-10-22T08:12:57.8058647+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7c59bb5-d50d-4c5b-8791-b0dab6a3f3a4">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 59&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d107baa2-2d3b-48c3-a28e-306fb66e18f6" testId="66b524d7-d155-a138-d954-852056bd5b15" testName="SharedRulesMatchEveryFrozenUnityState(&quot;shop-equipment-resume&quot;)" computerName="WOT" duration="00:00:00.0006190" startTime="2026-10-22T08:12:57.8103957+09:00" endTime="2026-10-22T08:12:57.8110147+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d107baa2-2d3b-48c3-a28e-306fb66e18f6">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(String name) in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 34&#xD;
+   at InvokeStub_GoldenReplayTests.SharedRulesMatchEveryFrozenUnityState(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fce36c20-5b71-4d37-84c6-5d0483669c36" testId="c6981a6a-4505-7fdd-d88c-498010ec346b" testName="MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun" computerName="WOT" duration="00:00:00.0163930" startTime="2026-10-22T08:12:58.1021332+09:00" endTime="2026-10-22T08:12:58.1185262+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fce36c20-5b71-4d37-84c6-5d0483669c36">
+      <Output>
+        <ErrorInfo>
+          <Message>Newtonsoft.Json.JsonSerializationException : Could not find member 'resumeAfter' on object of type 'Vector'. Path 'vectors[0].resumeAfter', line 1, position 1906.</Message>
+          <StackTrace>   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateList(IList list, JsonReader reader, JsonArrayContract contract, JsonProperty containerProperty, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateList(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, Object existingValue, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)&#xD;
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)&#xD;
+   at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonSerializer.Deserialize(JsonReader reader, Type objectType)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)&#xD;
+   at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)&#xD;
+   at DiceWarrior.SymbolLoop.LoopJson.Decode[T](String value) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SymbolLoop\Domain\LoopJson.cs:line 16&#xD;
+   at DiceWarrior.SymbolLoop.Tests.GoldenReplayTests.Read() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\GoldenReplayTests.cs:line 24&#xD;
+   at DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests.MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\SqliteAuthorityTests.cs:line 147&#xD;
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.&lt;&gt;c__DisplayClass1_0.&lt;Execute&gt;b__0()&#xD;
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cd202cd0-dee1-4f4c-802c-7d11eea8f632" testId="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4" testName="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" computerName="WOT" duration="00:00:00.0259250" startTime="2026-10-22T08:12:58.3857945+09:00" endTime="2026-10-22T08:12:58.4117191+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd202cd0-dee1-4f4c-802c-7d11eea8f632" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TenPurchasesAtOneRevisionOnlySpendOnceAcrossConnections" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="34ebb14d-13bb-4161-7736-3326bb886532">
+      <Execution id="0f8cc12e-20f9-435f-93f5-0f8467538e02" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="TenPurchasesAtOneRevisionOnlySpendOnceAcrossConnections" />
+    </UnitTest>
+    <UnitTest name="MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="c6981a6a-4505-7fdd-d88c-498010ec346b">
+      <Execution id="fce36c20-5b71-4d37-84c6-5d0483669c36" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;abandon-after-region&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="5eb4d9d7-504a-819a-1db9-61da7fd63e2e">
+      <Execution id="85372c29-2b4f-431a-b3c1-fbba1df0b667" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;abandon-after-region&quot;)" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;defeat&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="bb8725c7-4b5b-edd3-4dc5-8c40752dbf78">
+      <Execution id="b10cb483-cfdb-4745-97c0-fffad410d0bb" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;defeat&quot;)" />
+    </UnitTest>
+    <UnitTest name="SeparateUsersCanReuseRequestIdsWithoutSharingProfileRunsOrReceipts" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="2457c52e-62d9-20e4-b41c-0cca29fe4acc">
+      <Execution id="c4c1d875-9515-446a-848c-1a3c5e49043b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="SeparateUsersCanReuseRequestIdsWithoutSharingProfileRunsOrReceipts" />
+    </UnitTest>
+    <UnitTest name="RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="1453eed1-96d8-17d6-3488-cecd2d3c2fd9">
+      <Execution id="c7c59bb5-d50d-4c5b-8791-b0dab6a3f3a4" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures" />
+    </UnitTest>
+    <UnitTest name="ABlockedReplayDoesNotHoldWriterLockAndRetriesAfterAnotherConnectionCommits" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="712191e5-9a15-8805-5158-9f331450735b">
+      <Execution id="59a3cee5-3eec-42ee-9e77-b0e501faf13e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="ABlockedReplayDoesNotHoldWriterLockAndRetriesAfterAnotherConnectionCommits" />
+    </UnitTest>
+    <UnitTest name="CancellationBeforeCommitLeavesOriginalBalanceAndCorruptDatabaseIsNotReset" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="d569255d-908e-0e0b-48d9-21d96a4d9c89">
+      <Execution id="5f601f20-85c6-470e-b321-88157aad2bc4" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="CancellationBeforeCommitLeavesOriginalBalanceAndCorruptDatabaseIsNotReset" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;shop-equipment-resume&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="66b524d7-d155-a138-d954-852056bd5b15">
+      <Execution id="d107baa2-2d3b-48c3-a28e-306fb66e18f6" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;shop-equipment-resume&quot;)" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;victory&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="3f8806fe-13ca-7816-fd4b-b8b0582768a7">
+      <Execution id="5e52e762-8d12-44a3-96f5-982c3535c821" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;victory&quot;)" />
+    </UnitTest>
+    <UnitTest name="OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="312c0fd2-48c7-f44b-5082-c58f1aeced2f">
+      <Execution id="1af21bbf-41a5-4957-afb4-ff5336061179" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen" />
+    </UnitTest>
+    <UnitTest name="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4">
+      <Execution id="cd202cd0-dee1-4f4c-802c-7d11eea8f632" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" />
+    </UnitTest>
+    <UnitTest name="FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="0df140a4-59fb-6be6-e94f-5223caaa020c">
+      <Execution id="e4098b35-e97e-4de5-9fa6-43295d34c59e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="bb8725c7-4b5b-edd3-4dc5-8c40752dbf78" executionId="b10cb483-cfdb-4745-97c0-fffad410d0bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34ebb14d-13bb-4161-7736-3326bb886532" executionId="0f8cc12e-20f9-435f-93f5-0f8467538e02" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="712191e5-9a15-8805-5158-9f331450735b" executionId="59a3cee5-3eec-42ee-9e77-b0e501faf13e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="312c0fd2-48c7-f44b-5082-c58f1aeced2f" executionId="1af21bbf-41a5-4957-afb4-ff5336061179" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3f8806fe-13ca-7816-fd4b-b8b0582768a7" executionId="5e52e762-8d12-44a3-96f5-982c3535c821" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5eb4d9d7-504a-819a-1db9-61da7fd63e2e" executionId="85372c29-2b4f-431a-b3c1-fbba1df0b667" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0df140a4-59fb-6be6-e94f-5223caaa020c" executionId="e4098b35-e97e-4de5-9fa6-43295d34c59e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2457c52e-62d9-20e4-b41c-0cca29fe4acc" executionId="c4c1d875-9515-446a-848c-1a3c5e49043b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d569255d-908e-0e0b-48d9-21d96a4d9c89" executionId="5f601f20-85c6-470e-b321-88157aad2bc4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1453eed1-96d8-17d6-3488-cecd2d3c2fd9" executionId="c7c59bb5-d50d-4c5b-8791-b0dab6a3f3a4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="66b524d7-d155-a138-d954-852056bd5b15" executionId="d107baa2-2d3b-48c3-a28e-306fb66e18f6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6981a6a-4505-7fdd-d88c-498010ec346b" executionId="fce36c20-5b71-4d37-84c6-5d0483669c36" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4" executionId="cd202cd0-dee1-4f4c-802c-7d11eea8f632" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="13" executed="13" passed="5" failed="8" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 13 of 13 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

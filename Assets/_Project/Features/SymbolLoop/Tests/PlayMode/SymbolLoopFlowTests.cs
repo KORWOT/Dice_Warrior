@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FateDice;
@@ -26,10 +27,12 @@ namespace DiceWarrior.SymbolLoop.Tests
         Camera camera;
         RenderTexture target;
         SymbolLoopConfig config;
-        string directory;
+        string directory, checkpointPath;
+        readonly List<IDisposable> networkBackends=new List<IDisposable>();
         [UnitySetUp] public IEnumerator Setup()
         {
             directory=Path.Combine(Path.GetTempPath(),"DiceWarriorSymbolLoopUI",Guid.NewGuid().ToString("N"));
+            checkpointPath=Path.Combine(directory,"player.json");
             root=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Shared/UI/Prefabs/UIRoot.prefab"));
             ui=root.GetComponentInChildren<UIManager>(true);
             ui.prefabs=new BaseUI[]{AssetDatabase.LoadAssetAtPath<SymbolLoopScreen>("Assets/_Project/Features/SymbolLoop/Prefabs/SymbolLoopScreen.prefab")};
@@ -41,7 +44,7 @@ namespace DiceWarrior.SymbolLoop.Tests
             eventObject=new GameObject("Isolated events",typeof(EventSystem),typeof(InputSystemUIInputModule));
             appObject=new GameObject("Isolated symbol app"); appObject.SetActive(false);
             app=appObject.AddComponent<SymbolLoopApp>(); app.ui=ui; app.config=config;
-            app.Open(Path.Combine(directory,"player.json"),()=>33);
+            app.Open(checkpointPath,backend:LocalBackend());
             appObject.SetActive(true);
             yield return null;
             Canvas.ForceUpdateCanvases();
@@ -56,6 +59,7 @@ namespace DiceWarrior.SymbolLoop.Tests
             if(config) Object.Destroy(config);
             if(target) { target.Release(); Object.Destroy(target); }
             yield return null;
+            foreach(var backend in networkBackends) backend.Dispose(); networkBackends.Clear();
             string allowed=Path.GetFullPath(Path.Combine(Path.GetTempPath(),"DiceWarriorSymbolLoopUI"))+Path.DirectorySeparatorChar;
             if(directory!=null && Path.GetFullPath(directory).StartsWith(allowed,StringComparison.OrdinalIgnoreCase) && Directory.Exists(directory))
                 Directory.Delete(directory,true);
@@ -115,8 +119,10 @@ namespace DiceWarrior.SymbolLoop.Tests
         }
         [UnityTest] public IEnumerator PointerFlowCompletesCampaignAndRestoresSavedTurnWithoutExecutingAgain()
         {
+            yield return Reopen(NetworkBackend()); yield return WaitPlayback();
+            Assert.That(app.Backend.ProfileReady,Is.True,"The standalone test server must be running with seed 33.");
             AssertLayout(); Capture("lobby-720x1280");
-            Click("새 여정");
+            Click("새 여정"); yield return WaitPlayback();
             bool capturedBoard=false,capturedCombat=false;
             for(int i=0;i<160;i++)
             {
@@ -157,7 +163,7 @@ namespace DiceWarrior.SymbolLoop.Tests
         }
         IEnumerator WaitPlayback(Action observe=null)
         {
-            float deadline=Time.realtimeSinceStartup+12;
+            float deadline=Time.realtimeSinceStartup+20;
             while(app.IsPresenting)
             {
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline),"Presentation stuck");
@@ -170,7 +176,7 @@ namespace DiceWarrior.SymbolLoop.Tests
         void Scenario(Action<Run> configure)
         {
             var saved=app.Session.Snapshot; configure(saved.run); long previous=saved.revision; saved.revision++;
-            new LoopStore(Path.Combine(directory,"player.json")).Commit(saved,previous,saved.generation);
+            new LoopStore(checkpointPath).Commit(saved,previous,saved.generation);
             app.Session.Reload(); app.Render();
         }
         [UnityTest] public IEnumerator PawnVisitsEachCellAndInterruptedRollRestoresCommittedLanding()
@@ -264,17 +270,27 @@ namespace DiceWarrior.SymbolLoop.Tests
             Object.Destroy(appObject); yield return null;
             appObject=new GameObject("Reopened symbol app"); appObject.SetActive(false);
             app=appObject.AddComponent<SymbolLoopApp>(); app.ui=ui; app.config=config;
-            app.Open(Path.Combine(directory,"player.json"),()=>33,backend);
+            app.Open(checkpointPath,backend:backend ?? LocalBackend());
             appObject.SetActive(true); yield return null; Canvas.ForceUpdateCanvases();
+        }
+        IGameBackend LocalBackend()=>new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>33);
+        HttpGameBackend NetworkBackend(HttpMessageHandler handler=null)
+        {
+            string endpoint=Environment.GetEnvironmentVariable("DICE_WARRIOR_HTTP_TEST_URL");
+            Assert.That(string.IsNullOrWhiteSpace(endpoint),Is.False,
+                "DICE_WARRIOR_HTTP_TEST_URL must point to an isolated running standalone test host (seed 33, test faults enabled). No local fallback is allowed.");
+            var settings=new HttpBackendSettings {endpoint=endpoint,userId="unity-"+Guid.NewGuid().ToString("N"),timeoutSeconds=10};
+            checkpointPath=settings.CheckpointPath(directory);
+            var backend=new HttpGameBackend(settings,true,handler);networkBackends.Add(backend);return backend;
         }
         [UnityTest] public IEnumerator CorruptCheckpointRecoveryPreservesUnknownStartRequest()
         {
             app.Session.Execute(app.Session.Prepare("loadout","die:arcane"));
-            var command=app.Session.Prepare("start"); var disk=new LoopStore(Path.Combine(directory,"player.json"));
+            var command=app.Session.Prepare("start"); var disk=new LoopStore(checkpointPath);
             disk.WritePending(command);
             var backend=new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>33);
             var approved=backend.StartRunAsync(command.backend,CancellationToken.None).GetAwaiter().GetResult();
-            File.WriteAllText(Path.Combine(directory,"player.json"),"corrupt checkpoint");
+            File.WriteAllText(checkpointPath,"corrupt checkpoint");
             yield return Reopen(); Assert.That(app.Session,Is.Null);
             Click("백업 내용 확인"); yield return null; Click("이 백업으로 복원"); yield return null;
             Assert.That(disk.ReadPending().id,Is.EqualTo(command.id));
@@ -309,35 +325,30 @@ namespace DiceWarrior.SymbolLoop.Tests
             float deadline=Time.realtimeSinceStartup+5;
             while(app.Backend.Busy) { Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline)); yield return null; }
             Assert.That(app.Session.Snapshot.run.seed,Is.EqualTo(33));
-            Assert.That(new LoopStore(Path.Combine(directory,"player.json")).ReadPending(),Is.Null);
+            Assert.That(new LoopStore(checkpointPath).ReadPending(),Is.Null);
             appObject.SetActive(true); app.SendMessage("OnApplicationPause",false); yield return null;
             Assert.That(app.IsPresenting,Is.False); Assert.That(backend.starts,Is.EqualTo(1));
             Assert.That(((SymbolLoopScreen)ui.ActiveScreen).title.text,Does.StartWith("REGION"));
             Capture("backend-approved-after-pause");
         }
 
-        sealed class LostSettlementBackend : IGameBackend
+        sealed class LostSettlementResponse : DelegatingHandler
         {
-            readonly IGameBackend inner;
-            public readonly TaskCompletionSource<bool> release=new TaskCompletionSource<bool>();
-            public bool paid, lost;
-            public LostSettlementBackend(IGameBackend inner) { this.inner=inner; }
-            public Task<BackendReply> GetProfileAsync(CancellationToken ct)=>inner.GetProfileAsync(ct);
-            public Task<BackendReply> GetRunStatusAsync(string id,CancellationToken ct)=>inner.GetRunStatusAsync(id,ct);
-            public Task<BackendReply> StartRunAsync(BackendRequest r,CancellationToken ct)=>inner.StartRunAsync(r,ct);
-            public Task<BackendReply> UpgradeAsync(BackendRequest r,CancellationToken ct)=>inner.UpgradeAsync(r,ct);
-            public Task<BackendReply> GetOperationStatusAsync(string id,CancellationToken ct)=>inner.GetOperationStatusAsync(id,ct);
-            public async Task<BackendReply> SubmitRunAsync(BackendRequest r,CancellationToken ct)
+            bool sent;
+            public LostSettlementResponse():base(new HttpClientHandler {AllowAutoRedirect=false,UseCookies=false,UseProxy=false}) { }
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken ct)
             {
-                var reply=await inner.SubmitRunAsync(r,ct);
-                if(!lost) { lost=true;paid=true;await release.Task;throw new System.Net.Http.HttpRequestException("fixture-settlement-reply-lost"); }
-                return reply;
+                if(!sent && request.Method==HttpMethod.Post && request.RequestUri.AbsolutePath.EndsWith("/submit",StringComparison.Ordinal))
+                { sent=true;request.Headers.Add("X-DiceWarrior-Test-Fault","after-abort"); }
+                return base.SendAsync(request,ct);
             }
         }
         [UnityTest] public IEnumerator LostSettlementReplyShowsPendingAndRecoversAfterPauseAndReopen()
         {
-            var backend=new LostSettlementBackend(new MockGameBackend(new MockAuthorityStore(Path.Combine(directory,"authority.json")),()=>33));
-            yield return Reopen(backend); Click("새 여정");yield return WaitPlayback();
+            var backend=NetworkBackend(new LostSettlementResponse());
+            yield return Reopen(backend);yield return WaitPlayback();
+            Assert.That(app.Backend.ProfileReady,Is.True,"The standalone test server must be available.");
+            Click("새 여정");yield return WaitPlayback();
             // Resolve the ordinary seed33 commands directly; the separate pointer campaign test covers every turn.
             for(int i=0;app.Session.Snapshot.run.phase!=Phase.Result && i<200;i++)
             {
@@ -355,10 +366,10 @@ namespace DiceWarrior.SymbolLoop.Tests
                 app.Session.Execute(app.Session.Prepare(kind,arg));
             }
             Assert.That(app.Session.Snapshot.run.won,Is.True);app.Render();yield return null;
-            Click("기록 검증");Assert.That(backend.paid,Is.True);
-            var disk=new LoopStore(Path.Combine(directory,"player.json"));string requestId=disk.ReadPending().id;
-            app.SendMessage("OnApplicationPause",true);appObject.SetActive(false);backend.release.SetResult(true);
-            float deadline=Time.realtimeSinceStartup+5;
+            Click("기록 검증");
+            var disk=new LoopStore(checkpointPath);string requestId=disk.ReadPending().id;
+            app.SendMessage("OnApplicationPause",true);appObject.SetActive(false);
+            float deadline=Time.realtimeSinceStartup+15;
             while(app.Backend.Busy) { Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline));yield return null; }
             appObject.SetActive(true);app.SendMessage("OnApplicationPause",false);yield return null;
             Assert.That(((SymbolLoopScreen)ui.ActiveScreen).detail.text,Does.Contain("검증 대기"));

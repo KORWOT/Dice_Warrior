@@ -1,0 +1,9 @@
+  DiceWarrior.Shared -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Shared\bin\Debug\netstandard2.1\SymbolLoop.Core.dll
+  DiceWarrior.Authority -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Authority\bin\Debug\netstandard2.1\DiceWarrior.Authority.dll
+  DiceWarrior.Storage.Sqlite -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Storage.Sqlite\bin\Debug\net10.0\DiceWarrior.Storage.Sqlite.dll
+  DiceWarrior.Tests -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll
+D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: D:\UnityProject\Dice_Warrior\Temp\standalone-mock-server\sqlite-final.trx
+
+통과!  - 실패:     0, 통과:    13, 건너뜀:     0, 전체:    13, 기간: 2 s - DiceWarrior.Tests.dll (net10.0)

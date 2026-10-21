@@ -26,25 +26,38 @@ namespace DiceWarrior.SymbolLoop
         Rect safeArea;
         GameBackendCoordinator coordinator;
         IGameBackend gameBackend;
-        bool loading, paused;
+        bool loading, paused, ownsBackend;
         bool BackendPending => pending!=null && (LoopSession.IsBackend(pending.kind) || pending.backend!=null);
         readonly CancellationTokenSource lifetime=new CancellationTokenSource();
 
         void Start()
         {
             if(Application.platform==RuntimePlatform.Android) Screen.orientation=ScreenOrientation.Portrait;
-            Open(Path.Combine(Application.persistentDataPath,"symbol-loop-backend-v1","mock","checkpoint.json"));
+            if(store!=null) return;
+            try { OpenHttp(HttpBackendSettings.Load(SettingsPath),Application.persistentDataPath); }
+            catch(Exception e) { notice=e.Message; Render(); }
         }
-        // Integration tests provide an isolated path before Start; no scene-wide search or global override.
-        public void Open(string path, Func<uint> seedSource=null, IGameBackend backend=null, BackendMode mode=BackendMode.Mock)
+        static string SettingsPath=>Path.Combine(Application.persistentDataPath,"symbol-loop-backend-v1","http-settings.json");
+        static bool DevelopmentAllowed=>Application.isEditor || Debug.isDebugBuild;
+        public void OpenHttp(HttpBackendSettings settings,string persistentRoot)
         {
             if(store!=null) return;
-            store=new LoopStore(path);
-            gameBackend=backend ?? GameBackendFactory.Create(mode,
-                Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)),"authority.json"),seedSource);
+            string path=settings.CheckpointPath(persistentRoot);
+            var backend=new HttpGameBackend(settings,DevelopmentAllowed);
+            Open(path,backend:backend);
+            ownsBackend=true;
+        }
+        // Integration tests provide an isolated path before Start; no scene-wide search or global override.
+        public void Open(string path, Func<uint> seedSource=null, IGameBackend backend=null, BackendMode mode=BackendMode.HttpMock)
+        {
+            if(store!=null) return;
             bool pendingRead=false;
             try
             {
+                if(backend==null && seedSource!=null) throw new InvalidOperationException("시드 주입은 명시적인 테스트 백엔드와 함께 사용해야 합니다.");
+                gameBackend=backend ?? GameBackendFactory.Create(mode,SettingsPath,developmentAllowed:DevelopmentAllowed);
+                ownsBackend=backend==null;
+                store=new LoopStore(path);
                 pending=store.ReadPending(); pendingRead=true;
                 Session=new LoopSession(store,config.CreateRules());
                 coordinator=new GameBackendCoordinator(Session,store,gameBackend);
@@ -59,6 +72,8 @@ namespace DiceWarrior.SymbolLoop
             {
                 await coordinator.InitializeAsync(lifetime.Token);
                 notice=coordinator.LastReply?.message ?? "";
+                if(coordinator.LastReply?.code=="PROFILE_UNAVAILABLE")
+                    notice="독립 Mock 서버에 연결하지 못했습니다. 서버와 HTTP 설정을 확인한 뒤 권한 프로필을 다시 확인하세요. 기존 진행은 보존했습니다.";
             }
             catch(Exception e) { notice=e.Message; }
             finally { loading=false; if(this && ui) Render(); }
@@ -204,10 +219,14 @@ namespace DiceWarrior.SymbolLoop
             }
             else if(Session==null)
             {
-                data.detail="저장을 열 수 없습니다.\n"+notice;
-                Add("다시 불러오기",Reload);
-                if(confirmRecovery) { Add("이 백업으로 복원",Restore); Add("취소",()=>{confirmRecovery=false;notice="";Render();}); }
-                else Add("백업 내용 확인",InspectRecovery);
+                data.detail=(store==null?"HTTP Mock 설정을 열 수 없습니다.\n":"저장을 열 수 없습니다.\n")+notice;
+                if(store==null) Add("설정 다시 불러오기",Start);
+                else
+                {
+                    Add("다시 불러오기",Reload);
+                    if(confirmRecovery) { Add("이 백업으로 복원",Restore); Add("취소",()=>{confirmRecovery=false;notice="";Render();}); }
+                    else Add("백업 내용 확인",InspectRecovery);
+                }
             }
             else if(pending!=null || pendingUnavailable)
             {
@@ -347,6 +366,6 @@ namespace DiceWarrior.SymbolLoop
             data.labels=labels.ToArray(); data.actions=actions.ToArray();
             ui.Show<SymbolLoopScreen>(data);
         }
-        void OnDestroy() { lifetime.Cancel(); lifetime.Dispose(); if(ui) ui.CloseAll(); }
+        void OnDestroy() { lifetime.Cancel(); if(ownsBackend) (gameBackend as IDisposable)?.Dispose(); lifetime.Dispose(); if(ui) ui.CloseAll(); }
     }
 }

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework><IsTestProject>true</IsTestProject><IsPackable>false</IsPackable><ImplicitUsings>enable</ImplicitUsings><Nullable>annotations</Nullable></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DiceWarrior.MockServer/DiceWarrior.MockServer.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="../DiceWarrior.Shared/DiceWarrior.Shared.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <Compile Include="../../Assets/_Project/Features/SymbolLoop/Backend/HttpGameBackend.cs" Link="Client/HttpGameBackend.cs" />
+    <Compile Include="../../Assets/_Project/Features/SymbolLoop/Backend/HttpBackendSettings.cs" Link="Client/HttpBackendSettings.cs" />
+    <Compile Include="../../Assets/_Project/Features/SymbolLoop/Backend/GameBackendCoordinator.cs" Link="Client/GameBackendCoordinator.cs" />
+    <Compile Include="../../Assets/_Project/Features/SymbolLoop/Runtime/LoopSession.cs" Link="Client/LoopSession.cs" />
+    <Compile Include="../../Assets/_Project/Features/SymbolLoop/Runtime/LoopStore.cs" Link="Client/LoopStore.cs" />
+    <None Include="../../Assets/_Project/Features/SymbolLoop/Tests/EditMode/ReplayGoldenVectors.json" Link="ReplayGoldenVectors.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

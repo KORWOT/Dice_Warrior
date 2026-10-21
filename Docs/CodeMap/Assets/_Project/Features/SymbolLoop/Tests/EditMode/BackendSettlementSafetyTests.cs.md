@@ -8,3 +8,5 @@
 - 상태/수명: Temp/DiceWarriorSettlement/고유ID만 사용하고 허용 절대 루트 확인 후 정리한다. 동시 작업은 전용 worker와 10초 Barrier 제한을 사용한다. 사용자 저장에 접근하지 않는다.
 - 검수: 실제 Firebase 인증/네트워크/두 기기나 프로세스 간 파일 공유를 검증한 것으로 해석하지 않는다. 단절은 HttpRequestException, 취소는 OperationCanceledException 고장 주입이다. 결과 파일·실행 횟수는 P3 REPORT에 기록한다.
 - 늦은 응답 회귀: 첫 런의 프로필 조회를 보류한 동안 두 런을 정산한 뒤 과거 응답을 반환한다. 최신 체크포인트 바이트·두 번째 영수증·잔액120이 보존되고 오래된 조회는 준비 완료가 되지 않아야 한다.
+
+- M0~M3 의존성: Mock 권한 타입은 Server/DiceWarrior.Authority 소스에서 빌드한 Editor 전용 Tests/Support/DiceWarrior.Authority.dll을 테스트 asmdef가 명시 참조한다. 실제 HTTP/SQLite 시험은 Server/DiceWarrior.HttpTests가 담당한다.

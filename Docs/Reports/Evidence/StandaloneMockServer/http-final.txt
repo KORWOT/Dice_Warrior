@@ -1,0 +1,39 @@
+
+.NET 10.0을(를) 시작합니다.
+---------------------
+SDK 버전: 10.0.302
+
+원격 분석
+---------
+.NET 도구는 사용자 환경 개선을 위해 사용량 현황 데이터를 수집합니다. Microsoft에서 데이터를 수집하여 커뮤니티와 공유합니다. 원하는 셸을 사용하여 DOTNET_CLI_TELEMETRY_OPTOUT 환경 변수를 '1' 또는 'true'로 설정하여 원격 분석을 옵트아웃할 수 있습니다.
+
+.NET CLI 도구 원격 분석에 대한 자세한 내용은 https://aka.ms/dotnet-cli-telemetry를 참조하세요.
+
+----------------
+ASP.NET Core HTTPS 개발 인증서를 설치했습니다.
+인증서를 신뢰하려면 'dotnet dev-certs https --trust'를 실행하세요.
+HTTPS에 관한 자세한 정보: https://aka.ms/dotnet-https
+
+----------------
+첫 번째 앱 작성: https://aka.ms/dotnet-hello-world
+새로운 기능 확인: https://aka.ms/dotnet-whats-new
+설명서 살펴보기: https://aka.ms/dotnet-docs
+GitHub에서 문제 보고 및 소스 찾기: https://github.com/dotnet/core
+사용 가능한 명령을 보려면 'dotnet --help'를 사용하거나 https://aka.ms/dotnet-cli를 방문하세요.
+--------------------------------------------------------------------------------------
+  복원할 프로젝트를 확인하는 중...
+  D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Shared\DiceWarrior.Shared.csproj을(를) 741밀리초 동안 복원했습니다.
+  D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Authority\DiceWarrior.Authority.csproj을(를) 741밀리초 동안 복원했습니다.
+  D:\UnityProject\Dice_Warrior\Server\DiceWarrior.HttpTests\DiceWarrior.HttpTests.csproj을(를) 798밀리초 동안 복원했습니다.
+  D:\UnityProject\Dice_Warrior\Server\DiceWarrior.MockServer\DiceWarrior.MockServer.csproj을(를) 983밀리초 동안 복원했습니다.
+  D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Storage.Sqlite\DiceWarrior.Storage.Sqlite.csproj을(를) 983밀리초 동안 복원했습니다.
+  DiceWarrior.Shared -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Shared\bin\Debug\netstandard2.1\SymbolLoop.Core.dll
+  DiceWarrior.Authority -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Authority\bin\Debug\netstandard2.1\DiceWarrior.Authority.dll
+  DiceWarrior.Storage.Sqlite -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Storage.Sqlite\bin\Debug\net10.0\DiceWarrior.Storage.Sqlite.dll
+  DiceWarrior.MockServer -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.MockServer\bin\Debug\net10.0\DiceWarrior.MockServer.dll
+  DiceWarrior.HttpTests -> D:\UnityProject\Dice_Warrior\Server\DiceWarrior.HttpTests\bin\Debug\net10.0\DiceWarrior.HttpTests.dll
+D:\UnityProject\Dice_Warrior\Server\DiceWarrior.HttpTests\bin\Debug\net10.0\DiceWarrior.HttpTests.dll(.NETCoreApp,Version=v10.0)에 대한 테스트 실행
+지정된 패턴과 일치한 총 테스트 파일 수는 1개입니다.
+결과 파일: D:\UnityProject\Dice_Warrior\Temp\standalone-mock-server\http-final.trx
+
+통과!  - 실패:     0, 통과:    18, 건너뜀:     0, 전체:    18, 기간: 19 s - DiceWarrior.HttpTests.dll (net10.0)

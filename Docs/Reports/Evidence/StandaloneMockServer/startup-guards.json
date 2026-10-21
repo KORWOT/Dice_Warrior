@@ -1,0 +1,14 @@
+[
+  {
+    "passed": true,
+    "name": "Production",
+    "expectedMessage": true,
+    "exitCode": -532462766
+  },
+  {
+    "passed": true,
+    "name": "ExternalBind",
+    "expectedMessage": true,
+    "exitCode": -532462766
+  }
+]

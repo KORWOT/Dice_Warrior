@@ -9,3 +9,6 @@
 - P2 입출력: RunVerificationResult는 accepted/code/message/failedSequence/payout/finalRun을 반환한다. SubmissionReceipt는 승인된 검증 버전·완료 지역·승리·포기와 지급액을 저장한다. Request 형식은 바뀌지 않아 P1 요청 fingerprint를 유지한다.
 - 검수: 기존 P1 영수증은 PendingVerification/지급 0을 유지한다. 새 제출의 Approved는 MockRunVerifier 통과 후에만 생성한다. 타입/인터페이스 존재가 실서버 보안을 의미하지 않는다.
 - P3: IGameBackend.GetRunStatusAsync(serverRunId,ct)는 읽기 전용으로 소유 런의 시작 티켓/원 영수증/저장 명령과 최신 프로필을 반환한다. BackendReply.commands는 이 복구 응답에만 담으며 제출 요청·fingerprint 형식은 그대로다. 활성 런은 submission=null이다. 저장된 P1/P2 응답에 새 필드가 없어도 null로 읽는다.
+- M0~M3: BackendMode는 기존 Mock=0/Firebase=1 값을 유지하고 HttpMock=2를 추가한다. App 기본값은 HttpMock이며 legacy Mock은 Factory에서 거절한다. 서버/Unity 공유 DTO와 기존 요청 JSON 구조는 바꾸지 않는다.
+
+- 서버 관계: HTTP 호스트와 HttpGameBackend가 동일 DTO를 사용한다. MockRunVerifier는 Server에 있고 플레이어가 승인 영수증을 계산하지 않는다. 기존 숫자 enum과 protocol/rules/verification 버전을 유지한다.

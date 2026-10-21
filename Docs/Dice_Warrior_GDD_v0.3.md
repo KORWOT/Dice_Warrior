@@ -64,7 +64,7 @@ Android 세로 화면, 모험가 1명, 적 1명. 로비 준비 → 이동 D6 →
 새 런은 Mock 백엔드가 발급한 시드·규칙 버전·성장/출전 스냅샷으로 시작한다. 이동/전투 세션 명령은 후보 복제 → 토큰/규칙 검사 → 저장 성공 → 공개 순서다.
 요청 ID/입력/revision/복구 세대로 중복·오래된 입력을 구분한다. 재시도는 같은 요청을 사용한다.
 체크섬 파일과 마지막 정상 백업을 사용하고 손상 시 자동 초기화하지 않는다. 복구는 백업 확인 후 명시 입력으로 실행하고 세대를 올린다.
-새 체크포인트 경로는 `Application.persistentDataPath/symbol-loop-backend-v1/mock/checkpoint.json`, 독립 Mock 권한 저장은 같은 폴더의 `authority.json`이다. 이전 `symbol-loop-v1/player.json`과 백업은 열거나 삭제/이관하지 않는다.
+M0~M3 이후 체크포인트 경로는 `Application.persistentDataPath/symbol-loop-backend-v1/http-mock/<endpoint+계정 SHA256>/checkpoint.json`, 서버 권한 저장은 `Server/data/authority.db`다. 구형 `mock/checkpoint.json`·`authority.json`·`symbol-loop-v1/player.json`과 백업은 열거나 삭제/이관하지 않는다. 서버를 먼저 실행하는 방법은 [Server/README](../Server/README.md)를 따른다.
 Title.unity 하나에서 로비/보드/전투/보상/결과를 전환한다. 고정 UI는 Editor에서 작성한 프리팹, 반복 타일·선택지는 작성된 슬롯을 바인딩한다.
 공통 uGUI 기반과 폰트·외부 플러그인을 유지한다. 장치 실플레이·밸런스·최종 아트는 별도 확인 대상이다.
 
@@ -115,4 +115,14 @@ Mock 권한 저장소의 시작 티켓(시드·규칙·출전·성장)으로 새
 
 화면은 정산 중/결과 불명에 `보상 검증 대기`를 표시하며 확정 전 지급 성공으로 표시하지 않는다. pause/disable 뒤 재개와 화면 재생성에서도 미결 요청은 남고, 같은 요청 확인 후 승인 결과 화면으로 돌아간다. 오류 진단에는 원 요청·응답·실제 예외를 보존한다.
 
-검증 범위는 같은 프로세스의 독립 로컬 체크포인트 두 개와 공유 Mock 권한 저장소다. 실제 네트워크 대신 전송 전/지급 후 단절·취소를 주입한다. 별도 프로세스가 동일 Mock 파일을 직접 공유하는 구성은 지원하지 않는다. 실제 Firebase 트랜잭션·두 기기·Android 수명 주기는 P4/P5에서 별도로 검증한다. 이번 승인은 P3까지이며 그 다음 구현은 시작하지 않는다. 실제 증거는 [P3 PLAN](Plans/SERVER_SETTLEMENT_SAFETY_PLAN.md) / [P3 REPORT](Reports/SERVER_SETTLEMENT_SAFETY_REPORT.md)를 따른다.
+P3 당시 검증 범위는 같은 프로세스의 독립 로컬 체크포인트 두 개와 공유 Mock 권한 저장소였다. 실제 네트워크 대신 전송 전/지급 후 단절·취소를 주입했다. 별도 프로세스가 동일 Mock JSON 파일을 직접 공유하는 구성은 지원하지 않는다. 당시 승인은 P3까지였으며 증거는 [P3 PLAN](Plans/SERVER_SETTLEMENT_SAFETY_PLAN.md) / [P3 REPORT](Reports/SERVER_SETTLEMENT_SAFETY_REPORT.md)에 보존한다. 이후 승인된 HTTP/SQLite 작업은 아래 M0~M3 계약으로 구분한다.
+
+## 독립 Mock 서버 M0~M3 (2026-10-22)
+
+사용자 승인 범위는 별도 서버·SQLite·Unity HTTP 연결까지다. 같은 저장소의 `Server/`에 ASP.NET Core 호스트, 권한 서비스/검증기, SQLite 저장소를 둔다. 서버는 Unity 설치 없이 별도 프로세스로 실행한다. Domain 소스와 LoopJson을 링크 컴파일하며 게임 규칙·프로토콜·골든 벡터는 유지한다. 버전별 서버 콘텐츠 JSON과 Unity Config의 동치를 검사한다.
+
+Unity의 기본 백엔드는 HttpMock이다. 프로필·런 시작·제출·성장·작업 조회·런 조회의 6개 HTTP 경로를 사용하며, 즉시 이동/전투는 로컬에서 처리한다. 개발 계정은 루프백 헤더로 선택한다. Editor/개발 빌드와 서버 Development 환경에서만 허용한다. 응답 유실·취소·서버 재시작 후에도 기존 요청 ID/본문을 보존하고 영수증을 다시 확인한다. 자동 인프로세스 전환은 없다.
+
+SQLite는 WAL과 사용자별 저장 버전 비교를 사용한다. 런 재현은 쓰기 트랜잭션 밖에서 수행하고, 짧은 트랜잭션 안에서 최신 버전과 유니크 키를 확인하여 프로필·런·영수증·작업을 함께 확정한다. 같은 DB의 복수 서버 프로세스를 검사한다. 구형 파일 권한 저장소는 Editor 회귀 검사 전용 DLL로만 남기고 플레이어에는 포함하지 않는다.
+
+기존 P1 대기0/개발 계정 최초20 정책과 P2/P3 정산·복구 의미를 유지한다. 기존 실제 저장을 새 서버 DB로 자동 이관하지 않는다. M4/M5 계측·비용 대시보드·규모별 부하 시험과 실제 Firebase·Android는 후속 범위다. [M0~M3 PLAN](Plans/STANDALONE_MOCK_SERVER_01_PLAN.md) / [REPORT](Reports/STANDALONE_MOCK_SERVER_01_REPORT.md)에 실제 검증과 미검증을 기록한다.

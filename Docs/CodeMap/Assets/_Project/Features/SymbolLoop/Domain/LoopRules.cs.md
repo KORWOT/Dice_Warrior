@@ -10,3 +10,5 @@
 
 - 저장 검증: schema2, 연속 명령 순번, 승인 ticket/run ID, 캐시 구조를 검사한다. ValidSubmission은 구형 PendingVerification의 0지급과 Approved의 검증 버전/결과 범위를 구분한다. 정산된 Run은 동일 ID의 영수증 지급액과 일치해야 한다. 이 로컬 구조 검사가 권한 지급 근거는 아니다.
 - RNG: xorshift32는 0을 0x9e3779b9로 바꾼 뒤 XOR/좌13·우17·좌5를 순서대로 실행한다. Board의 지역 상수 곱셈은 명시적 unchecked uint이며 기존 결과는 그대로다. 보드 셔플은 i=11..2, j=1+Next%i, 시작칸 제외. 이동과 전투 RNG는 별개이며 Board RNG는 버린다.
+
+- 서버 관계: 같은 Domain 소스가 Server/DiceWarrior.Shared에서 링크 컴파일된다. 위 MockRunVerifier/MockAuthorityStore는 Server/DiceWarrior.Authority로 이동했으며 플레이어 Runtime의 호출 경로가 아니다.
