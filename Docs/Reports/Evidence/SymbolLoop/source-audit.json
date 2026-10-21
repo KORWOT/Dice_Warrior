@@ -1,0 +1,10 @@
+{
+  "owned_csharp": 18,
+  "missing_codemaps": [],
+  "missing_meta": [],
+  "protected_unchanged": {
+    "Assets/Settings/Mobile_RPAsset.asset": true,
+    "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset": true,
+    "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset": true
+  }
+}

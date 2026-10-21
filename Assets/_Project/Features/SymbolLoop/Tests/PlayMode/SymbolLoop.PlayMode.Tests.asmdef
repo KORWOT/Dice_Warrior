@@ -1,0 +1,6 @@
+{
+  "name": "SymbolLoop.PlayMode.Tests",
+  "references": ["SymbolLoop.Core","SymbolLoop.Runtime","FateDice.SharedUI","Unity.ugui","Unity.InputSystem"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

@@ -1,0 +1,6 @@
+{
+  "name": "SymbolLoop.Core",
+  "rootNamespace": "DiceWarrior.SymbolLoop",
+  "noEngineReferences": true,
+  "autoReferenced": true
+}

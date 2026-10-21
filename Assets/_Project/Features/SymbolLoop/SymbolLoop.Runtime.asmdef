@@ -1,0 +1,6 @@
+{
+  "name": "SymbolLoop.Runtime",
+  "rootNamespace": "DiceWarrior.SymbolLoop",
+  "references": ["SymbolLoop.Core", "FateDice.SharedUI", "Unity.ugui", "Unity.InputSystem"],
+  "autoReferenced": true
+}

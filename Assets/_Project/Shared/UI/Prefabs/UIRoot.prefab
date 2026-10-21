@@ -438,17 +438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: FateDice.SharedUI::FateDice.UIManager
   root: {fileID: 5874052404441891895}
-  prefabs:
-  - {fileID: 4989813310757986691, guid: 9ef8af1ab951d4440b69561ca55c310d, type: 3}
-  - {fileID: 4118377172360346020, guid: 747770d852c443b42aa531b23be015c2, type: 3}
-  - {fileID: 3986893024501830240, guid: cb6d0931cdb1b3441ad2f5f6984fd706, type: 3}
-  - {fileID: 3407421549480110222, guid: 901dc340dd3ef474d8d93169fe7c0fca, type: 3}
-  - {fileID: 4338527312951595023, guid: 116bb096a1346134aac2905cbb8ebcd2, type: 3}
-  - {fileID: 4018916638179879648, guid: d51ebf45723903b48b8dac67eeae0db3, type: 3}
-  - {fileID: 5203378270522707462, guid: 343e4553ae443d54dbc7d40e8d371e6f, type: 3}
-  - {fileID: 6069357695449677598, guid: 3f68bddcbef963f4bac9e317f51ec315, type: 3}
-  - {fileID: 4520665555890623716, guid: 767bc17765904c7459d90ef0c7944c29, type: 3}
-  - {fileID: 4530466945197945246, guid: 10d8ee727bee27948843d0077bfca742, type: 3}
+  prefabs: []
 --- !u!1 &7997298610349000870
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,7 @@
+{
+  "name": "SymbolLoop.EditMode.Tests",
+  "references": ["SymbolLoop.Core","SymbolLoop.Runtime","SymbolLoop.Editor","FateDice.SharedUI","Unity.ugui"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

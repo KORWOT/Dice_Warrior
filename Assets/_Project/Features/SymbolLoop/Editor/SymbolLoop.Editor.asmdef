@@ -1,0 +1,6 @@
+{
+  "name": "SymbolLoop.Editor",
+  "references": ["SymbolLoop.Runtime","SymbolLoop.Core","FateDice.SharedUI","Unity.ugui","Unity.InputSystem"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}
