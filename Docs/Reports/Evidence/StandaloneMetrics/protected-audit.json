@@ -1,0 +1,14 @@
+{
+  "head": "f51a4782d8aefd984f80243fa0c194b02ba85102",
+  "serverSourceCount": 28,
+  "staged": null,
+  "unexpected": [],
+  "changed": [
+    {
+      "state": "changed",
+      "path": "Assets/_Project/Features/SymbolLoop/Tests/Support/DiceWarrior.Authority.dll"
+    }
+  ],
+  "missingCodeMaps": [],
+  "protectedCount": 536
+}

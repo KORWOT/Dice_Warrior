@@ -15,8 +15,10 @@
 - [정산 안전성 REPORT](Reports/SERVER_SETTLEMENT_SAFETY_REPORT.md): 실제 동시 실행·과거 백업·응답 유실 복구 증거.
 - [독립 서버 PLAN](Plans/STANDALONE_MOCK_SERVER_01_PLAN.md): 승인된 M0~M3 서버 분리·SQLite·HTTP 계약.
 - [독립 서버 REPORT](Reports/STANDALONE_MOCK_SERVER_01_REPORT.md): 프로세스 간 정산·복구·Unity 연동 증거.
+- [M4 계측 PLAN](Plans/STANDALONE_MOCK_METRICS_04_PLAN.md): 로컬 실측·오프라인 비용·대시보드 계약.
+- [M4 계측 REPORT](Reports/STANDALONE_MOCK_METRICS_04_REPORT.md): 실제 검증·가격 근거·화면·내보내기 증거.
 - [서버 실행 안내](../Server/README.md): 실행 명령, Unity 접속 설정, API와 저장 경계.
-- 서버 이전 원안: 사용자가 제공한 `Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md`를 참고했다. 원안의 M4/M5 계측·대시보드·부하 시험은 후속이며, 승인된 M0~M3 계약은 위 독립 서버 PLAN에 기록한다. 원본 파일은 사용자 변경 제외 요청에 따라 로컬에 보존한다.
+- 서버 이전 원안: 사용자가 제공한 `Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md`를 참고했다. M0~M3와 추가 승인된 M4는 각각의 PLAN에 기록하고 M5 규모 부하 시험은 후속으로 둔다. 원본 파일은 사용자 변경 제외 요청에 따라 로컬에 보존한다.
 - [현행 CodeMap](CodeMap/INDEX.md): 현재 소스의 역할과 직접 관계.
 - [v1 이력](Archive/v1/README.md): 폐기된 규칙과 과거 검증. 현행 요구사항이 아니다.
 - [서드파티 출처](ThirdParty/PRETENDARD.md): 유지하는 폰트 라이선스.
@@ -36,7 +38,7 @@
 
 [실제 화면 미리보기](Reports/Evidence/SymbolLoop/gameplay-preview.gif)
 
-## 현재 단계: 독립 Mock 서버 M0~M3
+## 현재 단계: 독립 Mock 서버와 M4 계측
 
 런 시작·성장은 독립 Mock 백엔드가 승인하며, 새 테스트 계정에는 20재화를 최초 1회 지급한다. P2의 새 제출은 저장된 시작 티켓과 명령 로그를 독립 상태에 재현한 뒤 `완료 지역×10 + 최종 승리 20`을 한 번 지급한다. 승리·패배·포기 모두 같은 산식을 사용한다. 검증이 거절되면 영구 재화와 활성 런을 유지한다.
 
@@ -46,4 +48,6 @@ P3는 통신 단절·응답 유실·취소 뒤에도 같은 요청을 보존해 
 
 P3의 프로세스 내부 검증 이후, M0~M3에서 권한 서비스·검증기를 Unity Assets 밖 `Server/`로 옮기고 SQLite와 실제 HTTP를 연결했다. Unity는 로컬 진행을 처리하며 프로필·시작·정산·성장을 서버에서 확인한다. 서버 미응답 시 로컬 지급으로 우회하지 않는다. 같은 DB를 여는 두 서버 프로세스의 100동시 정산과 10구매 경합, 응답 유실·서버 재시작 복구를 검사한다. 구체적인 최신 결과는 독립 서버 REPORT를 따른다.
 
-이번 범위는 **M3까지**다. M4/M5 사용량·비용 대시보드와 규모별 부하 시험, 실제 Firebase·두 기기·Android 검증은 후속 범위다. 개발 계정 헤더는 loopback/Development에서만 허용하며 운영 인증이 아니다.
+M4는 실제 HTTP/SQLite·재현 시간·프로세스/파일 측정과 가상 Firestore 비용을 분리한 로컬 대시보드를 추가했다. 서버 실행 후 `http://127.0.0.1:5087/dev/dashboard`에서 조회한다. 서울 Standard/USD·무료 미차감이 기본이며 DAU/빈도/보관/CPU·메모리 가정을 바꾸고 JSON/CSV로 내보낼 수 있다. 사용자/런은 가명 키로만 보관한다. 미산정·기록 누락을 무료0으로 표시하지 않는다. [실행과 비용 가정](../Server/README.md#m4-계측과-비용-대시보드)을 참고한다.
+
+이번 범위는 **M4까지**다. M5 규모별 부하 시험, 실제 Firebase·두 기기·Android 검증은 후속이다. 개발 계정 헤더는 loopback/Development에서만 허용하며 운영 인증이 아니다.

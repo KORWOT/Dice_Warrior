@@ -1,0 +1,283 @@
+Browser tab: 1, Title: "Dice Warrior · 개발 계측", URL: "http://127.0.0.1:50986/dev/dashboard".
+1 AXWebArea Dice Warrior · 개발 계측, URL: 127.0.0.1:50986/dev/dashboard
+	2 container
+		3 link Description: ⚄ DICE WARRIOR, Value: 127.0.0.1:50986/dev/dashboard
+		4 container 대시보드 메뉴
+			5 button 01 사용량 개요
+				6 text 01
+				7 text 사용량 개요
+			8 button 02 API · 런 분석
+				9 text 02
+				10 text API · 런 분석
+			11 button 03 비용 시나리오
+				12 text 03
+				13 text 비용 시나리오
+			14 button 04 내보내기 · 범위
+				15 text 04
+				16 text 내보내기 · 범위
+	17 container
+		18 text DICE WARRIOR / M4
+		19 heading 사용량과 비용을 한눈에, Value: 1
+			20 text 사용량과 비용을 한눈에
+		21 text 로컬에서 측정하고, 명시한 가정으로 예상합니다.
+		22 button 새로고침 ↻, ID: refresh
+		23 text 로컬 Mock 실측과 Firestore 가상 추정을 구분해 표시합니다. Firebase 운영 실측 없음.
+		24 text Mock 실제 측정 Firestore 가상 모델 UTC 조회 기간
+		25 date field (settable) Description: 시작 날짜, ID: from
+			26 container
+				27 stepper
+				28 stepper
+				29 stepper
+			30 pop up button 날짜 선택도구 표시 날짜 선택도구 표시
+		31 text –
+		32 date field (settable) Description: 종료 날짜, ID: to
+			33 container
+				34 stepper
+				35 stepper
+				36 stepper
+			37 pop up button 날짜 선택도구 표시 날짜 선택도구 표시
+		38 text 갱신 2026. 10. 22. 오전 9:15:52
+		113 container endpoints
+			114 container
+				115 heading 일별 실제 사용량 · 가상 문서 비용, Value: 2
+					116 text 일별 실제 사용량 · 가상 문서 비용
+				117 table daily-table
+					118 row
+						119 cell
+							120 text 구분
+						121 cell
+							122 text 요청
+						123 cell
+							124 text 실패
+						125 cell
+							126 text 중복
+						127 cell
+							128 text 평균 ms
+						129 cell
+							130 text P95
+						131 cell
+							132 text P99
+						133 cell
+							134 text 로그 bytes
+						135 cell
+							136 text 재현 ms
+						137 cell
+							138 text SQL 실행
+						139 cell
+							140 text 가상 R/W/D
+						141 cell
+							142 text 문서 작업 USD
+					143 row
+						144 cell
+							145 text 2026-10-22
+						146 cell
+							147 text 8
+						148 cell
+							149 text 2
+						150 cell
+							151 text 3
+						152 cell
+							153 text 19.84
+						154 cell
+							155 text 58.9
+						156 cell
+							157 text 58.9
+						158 cell
+							159 text 11.6 KiB
+						160 cell
+							161 text 11.93
+						162 cell
+							163 text 73
+						164 cell
+							165 text 14 / 10 / 0
+						166 cell
+							167 text $0.000017
+				168 text 문서 작업 USD는 읽기·쓰기·삭제만의 가상 비용입니다. 무료 할당량·저장·전송·Cloud Run·세금은 제외하며 미산정 요청이 있으면 합계를 확정하지 않습니다.
+			169 container
+				170 heading API별 요청과 지연, Value: 2
+					171 text API별 요청과 지연
+				172 table endpoint-table
+					173 row
+						174 cell
+							175 text 구분
+						176 cell
+							177 text 요청
+						178 cell
+							179 text 실패
+						180 cell
+							181 text 중복
+						182 cell
+							183 text 평균 ms
+						184 cell
+							185 text P95
+						186 cell
+							187 text P99
+						188 cell
+							189 text 로그 bytes
+						190 cell
+							191 text 재현 ms
+						192 cell
+							193 text SQL 실행
+						194 cell
+							195 text 가상 R/W/D
+						196 cell
+							197 text 문서 작업 USD
+					198 row
+						199 cell
+							200 text grow
+						201 cell
+							202 text 2
+						203 cell
+							204 text 1
+						205 cell
+							206 text 1
+						207 cell
+							208 text 9.32
+						209 cell
+							210 text 12.39
+						211 cell
+							212 text 12.39
+						213 cell
+							214 text 0 B
+						215 cell
+							216 text 0
+						217 cell
+							218 text 19
+						219 cell
+							220 text 3 / 2 / 0
+						221 cell
+							222 text $0.000003
+					223 row
+						224 cell
+							225 text profile
+						226 cell
+							227 text 1
+						228 cell
+							229 text 0
+						230 cell
+							231 text 0
+						232 cell
+							233 text 58.9
+						234 cell
+							235 text 58.9
+						236 cell
+							237 text 58.9
+						238 cell
+							239 text 0 B
+						240 cell
+							241 text 0
+						242 cell
+							243 text 10
+						244 cell
+							245 text 1 / 0 / 0
+						246 cell
+							247 text $0.000000
+					248 row
+						249 cell
+							250 text settle
+						251 cell
+							252 text 3
+						253 cell
+							254 text 0
+						255 cell
+							256 text 2
+						257 cell
+							258 text 16.94
+						259 cell
+							260 text 32.73
+						261 cell
+							262 text 32.73
+						263 cell
+							264 text 11.6 KiB
+						265 cell
+							266 text 11.93
+						267 cell
+							268 text 32
+						269 cell
+							270 text 8 / 5 / 0
+						271 cell
+							272 text $0.000009
+					273 row
+						274 cell
+							275 text start
+						276 cell
+							277 text 2
+						278 cell
+							279 text 1
+						280 cell
+							281 text 0
+						282 cell
+							283 text 15.17
+						284 cell
+							285 text 28.92
+						286 cell
+							287 text 28.92
+						288 cell
+							289 text 0 B
+						290 cell
+							291 text 0
+						292 cell
+							293 text 12
+						294 cell
+							295 text 2 / 3 / 0
+						296 cell
+							297 text $0.000004
+				298 text P50/P95/P99는 보관된 완료 요청의 nearest-rank 값입니다. 성공·실패 모두 포함합니다.
+			299 container
+				300 heading 런별 기록, Value: 2
+					301 text 런별 기록
+				302 table run-table
+					303 row
+						304 cell
+							305 text 구분
+						306 cell
+							307 text 요청
+						308 cell
+							309 text 실패
+						310 cell
+							311 text 중복
+						312 cell
+							313 text 평균 ms
+						314 cell
+							315 text P95
+						316 cell
+							317 text P99
+						318 cell
+							319 text 로그 bytes
+						320 cell
+							321 text 재현 ms
+						322 cell
+							323 text SQL 실행
+						324 cell
+							325 text 가상 R/W/D
+						326 cell
+							327 text 문서 작업 USD
+					328 row
+						329 cell
+							330 text 3557f417af3dfd77c4204ef48cd9581caa957bfb51b1adadda1eabb6edb47fac
+						331 cell
+							332 text 4
+						333 cell
+							334 text 0
+						335 cell
+							336 text 2
+						337 cell
+							338 text 19.93
+						339 cell
+							340 text 32.73
+						341 cell
+							342 text 32.73
+						343 cell
+							344 text 11.6 KiB
+						345 cell
+							346 text 11.93
+						347 cell
+							348 text 44
+						349 cell
+							350 text 10 / 8 / 0
+						351 cell
+							352 text $0.000013
+				353 text 로컬 HMAC 가명 키 · 최대 200개 그룹 · 같은 서버 계측 디렉터리에서만 연결됩니다.
+		112 text LOCAL DEVELOPMENT ONLY 권한 DB · 계측 기록 · 가상 비용을 분리합니다.
+
+The focused UI element is 8 button 02 API · 런 분석

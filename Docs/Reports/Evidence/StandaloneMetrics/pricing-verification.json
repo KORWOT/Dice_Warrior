@@ -1,0 +1,37 @@
+{
+  "verifiedOn": "2026-10-22",
+  "region": "asia-northeast3",
+  "edition": "Standard",
+  "currency": "USD",
+  "method": "Public official HTML includes all selector rows. Read Seoul table rows, not the initially displayed Iowa rows. No billing API, SDK or cloud project used.",
+  "firestore": {
+    "source": "https://cloud.google.com/firestore/pricing",
+    "storageGiBMonth": "0.192",
+    "deletesPer100000": "0.013",
+    "writesPer100000": "0.115",
+    "readsPer100000": "0.038"
+  },
+  "cloudRun": {
+    "millionRequests": "0.40",
+    "cpuFreeCredit": "180000 * 0.000024 = 4.32 USD",
+    "memoryFreeCredit": "360000 * 0.0000025 = 0.90 USD",
+    "mode": "request-based",
+    "source": "https://cloud.google.com/run/pricing",
+    "memoryGiBSecond": "0.0000035",
+    "requestFreeCredit": "2 * 0.40 = 0.80 USD",
+    "cpuSecond": "0.0000336"
+  },
+  "network": {
+    "sourceRegion": "Seoul",
+    "tier": "Premium",
+    "destination": "Korea",
+    "source": "https://cloud.google.com/vpc/network-pricing",
+    "upTo10240GiB": "0.19",
+    "above10240GiB": "0.15"
+  },
+  "rawSourceHashes": {
+    "cloud-run-pricing-source.html": "E19B92D1418D45241A76BDE48180D03CC7F352A2D1AAD637F0D0F02FFC473DB4",
+    "network-pricing-source.html": "63FF6B68C6424AC25584F30BBEAA031109B3BE36933F8F4329A36AA2A11D94C6",
+    "firestore-pricing-source.html": "1DE37D6C5E7D93A1A7AC5157A6BCE9F06EF4A86C1C5FDBA72F3C86DB5BD91758"
+  }
+}

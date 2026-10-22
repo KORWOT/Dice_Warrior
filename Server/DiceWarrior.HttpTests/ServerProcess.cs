@@ -11,7 +11,7 @@ internal sealed class ServerProcess : IDisposable
     public string Url {get;}
     public string Database {get;}
     ServerProcess(Process process,string url,string database) {this.process=process;Url=url;Database=database;}
-    public static async Task<ServerProcess> Start(string database,uint seed=33,bool faults=true)
+    public static async Task<ServerProcess> Start(string database,uint seed=33,bool faults=true,IEnumerable<string>? extraArguments=null)
     {
         var root=new DirectoryInfo(AppContext.BaseDirectory);
         while(root!=null&&!Directory.Exists(Path.Combine(root.FullName,"Assets"))) root=root.Parent;
@@ -23,6 +23,7 @@ internal sealed class ServerProcess : IDisposable
         var start=new ProcessStartInfo("dotnet") {UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true};
         foreach(var arg in new[]{dll,"--environment","Development","--urls",url,"--Mock:DatabasePath",database,
             "--Mock:Seed",seed.ToString(System.Globalization.CultureInfo.InvariantCulture),"--Mock:EnableFaults",faults.ToString()}) start.ArgumentList.Add(arg);
+        if(extraArguments!=null) foreach(var argument in extraArguments) start.ArgumentList.Add(argument);
         var process=Process.Start(start)??throw new InvalidOperationException("Could not start Mock process.");
         var output=new System.Text.StringBuilder();
         process.OutputDataReceived+=(_,e)=>{lock(output) {if(output.Length<4096) output.AppendLine(e.Data);}};

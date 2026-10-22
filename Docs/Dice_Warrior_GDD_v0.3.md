@@ -125,4 +125,10 @@ Unity의 기본 백엔드는 HttpMock이다. 프로필·런 시작·제출·성�
 
 SQLite는 WAL과 사용자별 저장 버전 비교를 사용한다. 런 재현은 쓰기 트랜잭션 밖에서 수행하고, 짧은 트랜잭션 안에서 최신 버전과 유니크 키를 확인하여 프로필·런·영수증·작업을 함께 확정한다. 같은 DB의 복수 서버 프로세스를 검사한다. 구형 파일 권한 저장소는 Editor 회귀 검사 전용 DLL로만 남기고 플레이어에는 포함하지 않는다.
 
-기존 P1 대기0/개발 계정 최초20 정책과 P2/P3 정산·복구 의미를 유지한다. 기존 실제 저장을 새 서버 DB로 자동 이관하지 않는다. M4/M5 계측·비용 대시보드·규모별 부하 시험과 실제 Firebase·Android는 후속 범위다. [M0~M3 PLAN](Plans/STANDALONE_MOCK_SERVER_01_PLAN.md) / [REPORT](Reports/STANDALONE_MOCK_SERVER_01_REPORT.md)에 실제 검증과 미검증을 기록한다.
+기존 P1 대기0/개발 계정 최초20 정책과 P2/P3 정산·복구 의미를 유지한다. 기존 실제 저장을 새 서버 DB로 자동 이관하지 않는다. M0~M3 당시 후속이던 계측·비용은 아래 M4로 추가 승인됐다. [M0~M3 PLAN](Plans/STANDALONE_MOCK_SERVER_01_PLAN.md) / [REPORT](Reports/STANDALONE_MOCK_SERVER_01_REPORT.md)의 완료 증거는 보존한다.
+
+## M4 사용량·비용 확인 (2026-10-22)
+
+별도 서버의 /dev/dashboard에 로컬 HTTP·SQLite·재현 벽시계·프로세스/파일 실측, Firestore 문서 접근 가정, 운영 실측 없음의 세 범주를 구분한다. 계측 실패가 지급 결과를 바꾸지 않고, 응답 유실과 권한 승인도 각각 보존한다. 원본 신원·요청/런 ID·명령 내용 없이 가명 메타데이터만 유한 보관한다.
+
+서울 Firestore Standard/USD·무료 할당량 미차감을 기본으로 최소/기준/최악 비용 시나리오를 계산한다. 실제 Firebase 연결이나 운영 과금/성능 측정이 아니며 게임 경제·보상·규칙·프로토콜을 변경하지 않는다. 가격/무료 구간·전송·저장·Cloud Run 가정과 제외 비용을 명시하고 미지원/결과 불명은 미산정으로 둔다. [M4 PLAN](Plans/STANDALONE_MOCK_METRICS_04_PLAN.md) / [REPORT](Reports/STANDALONE_MOCK_METRICS_04_REPORT.md)와 [서버 안내](../Server/README.md)를 따른다. M5 규모별 부하 시험·실제 Firebase·Android는 후속 범위다.

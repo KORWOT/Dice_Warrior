@@ -66,6 +66,12 @@
           "SymbolLoop.Core": "[1.0.0, )"
         }
       },
+      "dicewarrior.metrics": {
+        "type": "Project",
+        "dependencies": {
+          "DiceWarrior.Authority": "[1.0.0, )"
+        }
+      },
       "dicewarrior.storage.sqlite": {
         "type": "Project",
         "dependencies": {

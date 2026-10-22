@@ -2,7 +2,7 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 31개, Server C# 15개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 31개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md)을 따른다.
 
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|
@@ -46,6 +46,19 @@ Unity 프로젝트 소유 C# 31개, Server C# 15개와 일회성 정리 도구 1
 | 서버 설정/콘텐츠 | [MockServerSettings](Server/DiceWarrior.MockServer/MockServerSettings.cs.md) | 루프백·DB·콘텐츠 해시·명시 시험 옵션 |
 | 개발 신원 | [DevelopmentIdentityResolver](Server/DiceWarrior.MockServer/DevelopmentIdentityResolver.cs.md) | 루프백 개발 헤더·계정 제한 |
 | HTTP API | [AuthorityEndpoints](Server/DiceWarrior.MockServer/AuthorityEndpoints.cs.md) | 6API·입력/신원 경계·오류·시험 장애 |
+| 안전 진단 계약 | [AuthorityDiagnostic](Server/DiceWarrior.Authority/AuthorityDiagnostic.cs.md) | 선택 observer·예외 무영향·실제 replay/duplicate/SQL 관측 |
+| 계측 DTO | [MeasurementContracts](Server/DiceWarrior.Metrics/MeasurementContracts.cs.md) | HTTP/권한 결과 분리·표본/보관·현재 호스트 게이지 |
+| 계측 저장 | [MetricsCollector](Server/DiceWarrior.Metrics/MetricsCollector.cs.md) | 가명 키·유한 journal·누락/손상 표시·fail-open |
+| 계측 집계 | [MetricsAggregation](Server/DiceWarrior.Metrics/MetricsAggregation.cs.md) | UTC 일별/API/런 집계·nearest-rank 지연 |
+| 가상 문서 계획 | [FirebaseOperationModel](Server/DiceWarrior.Metrics/FirebaseOperationModel.cs.md) | SQL과 독립된 정상/중복/오류/미산정 가정 |
+| 비용 계산 | [CostEstimator](Server/DiceWarrior.Metrics/CostEstimator.cs.md) | 최소/기준/최악·일별 무료 구간·저장/전송/Cloud Run |
+| 요금표 | [PricingCatalog](Server/DiceWarrior.Metrics/PricingCatalog.cs.md) | 서울 Standard/USD JSON·공식 근거·누락은 미산정 |
+| HTTP bytes | [MeasuredHttpStream](Server/DiceWarrior.MockServer/MeasuredHttpStream.cs.md) | 실제 엔터티 read/write bytes, 본문 미보관 |
+| 계측 화면/API | [MetricsEndpoints](Server/DiceWarrior.MockServer/MetricsEndpoints.cs.md) | 로컬 dashboard·집계/JSON/CSV·오프라인 비용 |
+| 계측 저장 검사 | [MetricsCollectorTests](Server/DiceWarrior.Metrics.Tests/MetricsCollectorTests.cs.md) | 병렬·재시작·보관/개인정보·장애 |
+| SQL 계측 검사 | [SqliteMetricsTests](Server/DiceWarrior.Metrics.Tests/SqliteMetricsTests.cs.md) | 실제 SQL/행·observer 예외에도 지급1회 |
+| 비용 검사 | [CostEstimatorTests](Server/DiceWarrior.Metrics.Tests/CostEstimatorTests.cs.md) | 손계산·무료/단위/가격 경계·가상 작업 구분 |
+| M4 HTTP 검사 | [TelemetryHttpTests](Server/DiceWarrior.HttpTests/TelemetryHttpTests.cs.md) | 실제 계측·응답유실·미산정·대시보드/내보내기 |
 | 서버 골든 검사 | [GoldenReplayTests](Server/DiceWarrior.Tests/GoldenReplayTests.cs.md) | 4벡터/125상태·직렬화 문화권 동치 |
 | SQLite 검사 | [SqliteAuthorityTests](Server/DiceWarrior.Tests/SqliteAuthorityTests.cs.md) | 동시 정산·구매·사용자 격리·원자 실패/재시작 |
 | HTTP 통합 검사 | [HttpAuthorityTests](Server/DiceWarrior.HttpTests/HttpAuthorityTests.cs.md) | 실제 프로세스·두 호스트 경합·복구·ID 경계 |
@@ -56,6 +69,7 @@ Unity 프로젝트 소유 C# 31개, Server C# 15개와 일회성 정리 도구 1
 
 직접 흐름: Title → SymbolLoopApp → GameBackendCoordinator → LoopSession → RunCommandRules → LoopRules/SymbolCombat. 후보 검증 후 LoopStore에 저장한다.
 권한 흐름: App → HttpGameBackend → 실제 HTTP → DevelopmentIdentityResolver/AuthorityEndpoints → MockGameBackend → IAuthorityRepository/SqliteAuthorityRepository. Session의 profile은 캐시이며 영구 재화를 직접 확정하지 않는다.
+계측 흐름: AuthorityEndpoints → RequestMeasurementScope → 안전 AuthorityTelemetry observer → 별도 MetricsCollector journal → MetricsAggregation/Firestore 가상 작업 모델 → /dev API → wwwroot 대시보드. CostEstimator는 명시 시나리오/가격 JSON만 사용하며 실제 Firebase에 연결하지 않는다. 권한 저장과 계측 파일은 별도 경계다.
 새 제출 흐름: 서버 MockGameBackend → MockRunVerifier → 공유 RunCommandRules/LoopRules/SymbolCombat → SQLite 지급 영수증/프로필 원자 저장. 시작 티켓과 골든 기대값으로 재현하며 클라이언트 최종 결과는 받지 않는다.
 P3 복구 흐름: Coordinator → GetRunStatusAsync → Session.ReconcileSubmission/RestoreActiveRun. 과거 로컬 상태는 Store.PreserveCheckpoint로 보존하고 서버 영수증/명령에서 복구한다. authority revision과 로컬 revision/generation이 늦은 응답·동시 저장을 차단한다.
 화면은 App → UIManager → SymbolLoopScreen → CommonButtonView로 연결한다.

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -16,14 +17,16 @@ namespace DiceWarrior.SymbolLoop
         readonly Func<uint> seedSource;
         readonly Rules rules;
         readonly Func<long> nowMilliseconds;
+        readonly IAuthorityTelemetry telemetry;
 
-        public MockGameBackend(IAuthorityRepository store, Func<uint> seedSource = null, Rules rules = null, Func<long> nowMilliseconds = null)
+        public MockGameBackend(IAuthorityRepository store, Func<uint> seedSource = null, Rules rules = null, Func<long> nowMilliseconds = null, IAuthorityTelemetry telemetry = null)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
             this.seedSource = seedSource ?? CreateSeed;
             this.rules = LoopJson.Copy(rules ?? new Rules());
             LoopRules.ValidateRules(this.rules);
             this.nowMilliseconds=nowMilliseconds ?? (()=>DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+            this.telemetry=telemetry;
         }
 
         public Task<BackendReply> GetProfileAsync(CancellationToken ct) => Execute(document => new MockMutation {
@@ -72,8 +75,12 @@ namespace DiceWarrior.SymbolLoop
             string fingerprint = LoopJson.Hash(kind + ":" + encoded);
             return Execute(document => {
                 var previous = document.operations.Find(item => item.id == snapshot.requestId);
-                if (previous != null) return new MockMutation { reply = previous.fingerprint == fingerprint
-                    ? previous.reply : Reply(document, BackendStatus.Rejected, "REQUEST_ID_REUSED", "같은 요청 ID에 다른 내용이 사용되었습니다.") };
+                if (previous != null)
+                {
+                    if(previous.fingerprint==fingerprint) AuthorityTelemetry.Emit(telemetry,"duplicate-operation");
+                    return new MockMutation { reply = previous.fingerprint == fingerprint
+                        ? previous.reply : Reply(document, BackendStatus.Rejected, "REQUEST_ID_REUSED", "같은 요청 ID에 다른 내용이 사용되었습니다.") };
+                }
                 if (document.operations.Count >= AuthorityValidation.MaxOperations)
                     return new MockMutation { reply = Reply(document, BackendStatus.Rejected, "OPERATION_LIMIT", "Mock 작업 보관 한도에 도달했습니다.") };
 
@@ -135,16 +142,22 @@ namespace DiceWarrior.SymbolLoop
             if (run == null || run.owner != document.profile.userId)
                 return Reply(document, BackendStatus.Rejected, "RUN_NOT_FOUND", "이 계정의 런을 찾을 수 없습니다.");
             if (run.submission != null)
+            {
+                AuthorityTelemetry.Emit(telemetry,"duplicate-submission");
                 return Reply(document, run.submission.status,
                     run.submission.status==BackendStatus.Approved?"RUN_VERIFIED":"PENDING_VERIFICATION",
                     run.submission.status==BackendStatus.Approved?"이미 승인된 정산 영수증입니다.":"기존 P1 검증 대기 기록을 그대로 보존합니다.", submission:run.submission);
+            }
             var conflict = CheckRevision(document, request);
             if (conflict != null) return conflict;
             if (document.activeRunId != request.serverRunId)
                 return Reply(document, BackendStatus.Conflict, "RUN_NOT_ACTIVE", "활성 런이 변경되었습니다.");
             if (!ValidCommands(request.commands))
                 return Reply(document, BackendStatus.Rejected, "INVALID_COMMANDS", "명령 로그의 순번, ID 또는 형식을 확인하세요.");
-            var verified=MockRunVerifier.Verify(run.ticket,request.commands,ct);
+            var replayClock=Stopwatch.StartNew();
+            RunVerificationResult verified;
+            try { verified=MockRunVerifier.Verify(run.ticket,request.commands,ct); }
+            finally { AuthorityTelemetry.Emit(telemetry,"replay",request.commands.Count,replayClock.Elapsed.TotalMilliseconds); }
             if(!verified.accepted)
                 return Reply(document,BackendStatus.Rejected,verified.code,
                     $"기록 검증 실패 · 명령 {verified.failedSequence}: {verified.message}");

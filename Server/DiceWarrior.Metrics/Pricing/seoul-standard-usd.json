@@ -1,0 +1,48 @@
+{
+  "version": "seoul-standard-usd-2026-10-22",
+  "verifiedOn": "2026-10-22",
+  "region": "asia-northeast3",
+  "edition": "Standard",
+  "currency": "USD",
+  "cloudRunBilling": "request-based",
+  "egressDestination": "Korea",
+  "storageMonthDays": 30,
+  "sources": [
+    "https://cloud.google.com/firestore/pricing",
+    "https://firebase.google.com/docs/firestore/pricing",
+    "https://cloud.google.com/run/pricing",
+    "https://cloud.google.com/vpc/network-pricing"
+  ],
+  "notes": [
+    "Official public Seoul selector tables, default on-demand USD rates; no commitments or negotiated discounts.",
+    "Storage monthly quote is normalized to a 30-day planning month. This is a scenario convention, not a billing calendar guarantee.",
+    "Cloud Run free CPU and memory are Tier 1 spending credits, not Seoul seconds deducted at Seoul rates.",
+    "Premium internet egress assumes Seoul to Korea. No North-America-only Cloud Run egress allowance applies.",
+    "Firestore server traffic stays in the same region; no direct Firestore internet transfer is assumed. Its separate 10 GiB monthly free quota must not discount Cloud Run internet egress.",
+    "Free quotas are optional assumptions about unused eligible allowance. They are not verified for an account."
+  ],
+  "rates": {
+    "firestore-reads": { "unit": "per-100000-documents", "usd": 0.038, "source": "https://cloud.google.com/firestore/pricing" },
+    "firestore-writes": { "unit": "per-100000-documents", "usd": 0.115, "source": "https://cloud.google.com/firestore/pricing" },
+    "firestore-deletes": { "unit": "per-100000-documents", "usd": 0.013, "source": "https://cloud.google.com/firestore/pricing" },
+    "firestore-storage": { "unit": "per-GiB-month", "usd": 0.192, "source": "https://cloud.google.com/firestore/pricing" },
+    "firestore-same-region-egress": { "unit": "per-GiB", "usd": 0, "source": "https://cloud.google.com/firestore/pricing" },
+    "cloud-run-cpu": { "unit": "per-vCPU-second", "usd": 0.0000336, "source": "https://cloud.google.com/run/pricing" },
+    "cloud-run-memory": { "unit": "per-GiB-second", "usd": 0.0000035, "source": "https://cloud.google.com/run/pricing" },
+    "cloud-run-requests": { "unit": "per-million-requests", "usd": 0.40, "source": "https://cloud.google.com/run/pricing" },
+    "cloud-run-egress": {
+      "unit": "per-GiB", "source": "https://cloud.google.com/vpc/network-pricing",
+      "tiers": [ { "upTo": 10240, "usd": 0.19 }, { "upTo": null, "usd": 0.15 } ]
+    }
+  },
+  "freeQuota": {
+    "firestoreReadsPerDay": 50000,
+    "firestoreWritesPerDay": 20000,
+    "firestoreDeletesPerDay": 20000,
+    "firestoreStorageGiB": 1,
+    "firestoreInternetEgressGiBPerMonth": 10,
+    "cloudRunCpuCreditUsdPerMonth": 4.32,
+    "cloudRunMemoryCreditUsdPerMonth": 0.90,
+    "cloudRunRequestCreditUsdPerMonth": 0.80
+  }
+}

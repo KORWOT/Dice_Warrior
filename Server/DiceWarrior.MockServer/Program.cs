@@ -1,4 +1,5 @@
 using DiceWarrior.MockServer;
+using DiceWarrior.Metrics;
 
 var builder=WebApplication.CreateBuilder(args);
 if(!builder.Environment.IsDevelopment())
@@ -11,6 +12,8 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSimpleConsole(options=>options.SingleLine=true);
 builder.Logging.SetMinimumLevel(LogLevel.Warning);
 var app=builder.Build();
-AuthorityEndpoints.Map(app,settings);
+var metrics=new MetricsCollector(builder.Configuration["Metrics:Directory"]??Path.Combine(Path.GetDirectoryName(settings.DatabasePath)!,"metrics"),settings.DatabasePath);
+AuthorityEndpoints.Map(app,settings,metrics);
+MetricsEndpoints.Map(app,metrics);
 Console.WriteLine($"Dice Warrior development Mock ready: {settings.Url}; SQLite WAL; protocol 1. No Firebase connection.");
 app.Run();

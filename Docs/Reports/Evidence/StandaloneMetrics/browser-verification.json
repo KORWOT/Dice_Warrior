@@ -1,0 +1,27 @@
+{
+  "scenario": {
+    "changedFreeTier": true,
+    "defaultBasisUsd": 2.468477495148926,
+    "displayedBasisUsd": 17.62,
+    "changedDau": 10000,
+    "defaultDau": 1000,
+    "defaultFreeTier": false
+  },
+  "firebaseConnected": false,
+  "scope": "isolated local fixture",
+  "export": "JSON/CSV fetched through HTTP; browser CSV link clicked; no raw ID/body in test assertions",
+  "checkedOn": "2026-10-22",
+  "surface": "Codex in-app browser",
+  "loadTestRun": false,
+  "overview": {
+    "estimatedWrites": 10,
+    "duplicates": 3,
+    "actualRows": 44,
+    "sqlCommands": 73,
+    "estimatedDeletes": 0,
+    "requests": 8,
+    "estimatedReads": 14,
+    "failures": 2
+  },
+  "groupTables": "UTC day / endpoint / HMAC run: actual SQL, log bytes, replay ms, estimated R/W/D and document-only USD displayed"
+}
