@@ -1,11 +1,9 @@
 # SymbolCombat.cs
 
-- SharedWorld 직접 관계: CompetitionCombat이 참가자 전투 필드만 임시 Run에 담아 버전에 맞는 Resolve 오버로드를 호출한다. 보드/보상/정산에는 이 Run을 쓰지 않는다. 기존2인자 API와 정확전체 동작은 보존한다.
-
-- 역할: 버전에 따라 전체/부분 기호 멀티셋을 판정하고 단일 적 턴을 처리한다.
-- 핵심 동작: 등록 전체 조합이 항상 우선이다. allowPartial=true이고3눈 전체 조합이 없으면 콘텐츠 순서상 첫 합법2눈 조합1개를 선택한다. 각 눈 인덱스는1회만 소비하고 남은 눈 기본기를 원래순서로 먼저, 조합을 마지막에 실행한다. 그 외는 모든 눈 기본기다. 장비 피해/보호는 기술 태그에 맞춰 적용한다.
-- 입출력: 기존 Plan(Rules,Symbol[])/Resolve(Run,Symbol[])는 allowPartial=false로 전달해 서명·정확전체 동작을 보존한다. 각각 bool allowPartial을 받는3인자 오버로드가 신규 동작을 제공한다.
-- 사용하는 대상: LoopData, LINQ. 사용하는 쪽: LoopRules.RollCombat, SymbolLoopTests.
-- 관계 근거: 직접 호출. 저장·UI·RNG를 소유하지 않는다.
-- 상태/수명: 적 보호막은 기술 묶음 전체에 차감 후 만료. 플레이어 보호막은 로컬 턴 변수. 적 사망 뒤 계획은 enemy-defeated로 기록.
-- 검수: v1에는 부분조합이 없다. v2에서 지팡이·지팡이·검은 마력탄→검기, 겹친 후보는 배열순서, 반복기호에는 서로 다른 인덱스가 필요하다. 3눈 전체조합 우선·기호 중복소비 금지·반격1회·처치뒤생략·보호막/장비를 검사한다. 이미 컴파일된 Authority DLL이 사용하는 기존2인자 메서드를 삭제하거나 선택적매개변수로 대체하지 않는다.
+- 역할: 전체/부분 기호 멀티셋을 판정하고 단일 적 전투 턴을 처리하는 공통 엔진.
+- 핵심 동작: 등록된 전체 조합 우선. allowPartial=true인3눈에 전체 조합이 없으면 콘텐츠 순서상 첫 합법2눈 조합을 고르고 남은 기본기를 원래 순서로 먼저 실행한다. 각 눈은1회만 소비한다.
+- 입출력: 기존 Plan(Rules,faces)/Resolve(Run,faces) 및 bool allowPartial 오버로드는 서명·기존 동작을 유지한다. 새 Resolve(Run,faces,bool,Func<Skill,int> damageBonus,Func<Skill,int> blockBonus)는 기술별 능력/패시브 가산을 받는다. 기존 오버로드는 run.power/guard를 전달한다.
+- 사용하는 대상: LoopData, LINQ, System.Func. 사용하는 쪽: LoopRules.RollCombat, CompetitionCombat, SymbolLoop/SharedWorld 검사.
+- 관계 근거: 직접 호출. SharedWorld는 개인 전투 필드만 임시 Run으로 전달하며 이 엔진을 이동/보상/정산에 사용하지 않는다.
+- 상태/수명: 장비는 기술 태그로 가산한다. 적 보호막은 기술 묶음에 걸쳐 소모 후 만료, 플레이어 보호막은 턴 지역 변수다. 적 사망 뒤 계획은 enemy-defeated로 기록하고 반격은 최대1회다.
+- 검수: 기본 피해/보호가 양수일 때만 해당 가산 함수를 호출하여 효과0에 새 효과가 생기지 않는다. v3의 계수·패시브는 SharedWorld가 제공하고 공통 엔진은 흡수/HP 클램프/생략/반격을 그대로 소유한다. 미리 컴파일된 Authority DLL의 기존2인자 메서드를 삭제·대체하지 않는다. v1/v2 기존 공식과 골든을 보호한다.

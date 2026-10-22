@@ -22,6 +22,9 @@ namespace DiceWarrior.SharedWorld
         public bool IsOpen=>active;
         public bool InLobby=>lobby;
         CompetitionStore store;
+        AdventurerSelectionStore adventurerStore;
+        AdventurerSelection adventurerSelection;
+        string adventurerError="";
         CompetitionDefinition definition;
         Profile profile;
         Func<uint> seedSource;
@@ -30,7 +33,7 @@ namespace DiceWarrior.SharedWorld
         bool active,busy,opened,ownsTransport,paused,lobby=true,confirmAbandon,confirmNewGame,confirmRestore,confirmAccountRestore,restorePreferences;
         string notice="",menu="",competitionError="";
         Coroutine presentation;
-        int width,height;
+        int width,height,detailPage;
         Rect safeArea;
 
         void Start()
@@ -59,7 +62,9 @@ namespace DiceWarrior.SharedWorld
         CompetitionDefinition LoadDefinition()
         {
             if(!content || !combatConfig) throw new InvalidOperationException("공동 세계 콘텐츠 연결을 확인해 주세요.");
-            var result=CompetitionContent.Load(content.text);result.combat=combatConfig.CreateRules();return result;
+            var result=CompetitionContent.Load(content.text);
+            if(!CompetitionV4Content.IsEnabled(result)) result.combat=combatConfig.CreateRules();
+            return result;
         }
         public void OpenHttp(HttpBackendSettings settings,string persistentRoot)
         {
@@ -79,6 +84,7 @@ namespace DiceWarrior.SharedWorld
             definition=LoopJson.Copy(rules);seedSource=seeds;transport=backend;
             Account=new CompetitionAccount(accountPath,Path.Combine(Path.GetDirectoryName(competitionPath),"lobby-loadout.json"),definition.combat,backend);
             active=opened=true;lobby=true;profile=Account.Profile;store=new CompetitionStore(competitionPath);
+            OpenAdventurers(competitionPath);
             LoadCompetition();AccountAction(ct=>Account.RefreshAsync(ct));
         }
         // Tests inject isolated state. The authored Title uses HTTP and server-confirmed profiles.
@@ -86,7 +92,24 @@ namespace DiceWarrior.SharedWorld
         {
             if(Account!=null) throw new InvalidOperationException("연결된 계정을 로컬 프로필로 대체할 수 없습니다.");
             active=opened=true;lobby=true;menu="";definition=LoopJson.Copy(rules);profile=LoopJson.Copy(startingProfile);seedSource=seeds;
-            store=new CompetitionStore(path);LoadCompetition();Render();
+            store=new CompetitionStore(path);OpenAdventurers(path);LoadCompetition();Render();
+        }
+        void OpenAdventurers(string path)
+        {
+            adventurerStore=CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition)?new AdventurerSelectionStore(Path.Combine(Path.GetDirectoryName(path),"adventurer-selection.json"),definition.adventurers.Select(a=>a.id).ToArray()):null;
+            ReadAdventurer();
+        }
+        void ReadAdventurer()
+        {
+            adventurerSelection=null;adventurerError="";
+            try { if(adventurerStore!=null) adventurerSelection=adventurerStore.Read(); }
+            catch(Exception error) { adventurerError="모험가 선택 저장 오류 · "+error.Message; }
+        }
+        void SelectAdventurer(string id)
+        {
+            try { adventurerSelection=adventurerStore.Select(id,adventurerSelection.revision);adventurerError=notice="";menu=""; }
+            catch(Exception error) { adventurerError=notice="모험가 선택 저장 오류 · "+error.Message; }
+            Render();
         }
         void LoadCompetition()
         {
@@ -125,10 +148,13 @@ namespace DiceWarrior.SharedWorld
                     if(!Account.Ready) throw new InvalidOperationException(AccountMessage());
                     profile=Account.Profile;
                 }
+                ReadAdventurer();
+                if(adventurerError!="") throw new InvalidOperationException(adventurerError);
                 uint seed=seedSource!=null?seedSource():BitConverter.ToUInt32(Guid.NewGuid().ToByteArray(),0)|1u;
                 string id=Guid.NewGuid().ToString("N");
-                if(replaceActive) Session.Restart(LoopJson.Copy(profile),seed,id);
-                else Session.Start(LoopJson.Copy(profile),seed,id);
+                string adventurer=adventurerSelection?.adventurerId ?? "wanderer";
+                if(replaceActive) Session.Restart(LoopJson.Copy(profile),seed,id,adventurer);
+                else Session.Start(LoopJson.Copy(profile),seed,id,adventurer);
                 lobby=false;menu="";notice="";
             }
             catch(Exception error) { if(this) notice=error.Message; }
@@ -218,6 +244,7 @@ namespace DiceWarrior.SharedWorld
             var data=new CompetitionScreenData {title="DICE WARRIOR · 공동 모험",subtitle="인간 1 + AI 3 · 경기 성장 보상은 검증 전까지 0",state=lobby?null:state,
                 status="같은 세계 · 각자의 모험",detail="",history="",onClose=CancelPresentation};
             var labels=new List<string>();var actions=new List<Action>();var enabled=new List<bool>();
+            bool modern=CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition);
             void Add(string label,Action action,bool available=true) { labels.Add(label);actions.Add(()=>{if(!busy) action();});enabled.Add(available && !busy); }
             void Cmd(string label,string kind,string arg="",bool available=true)=>Add(label,()=>Dispatch(kind,arg),available);
             if(confirmNewGame)
@@ -240,6 +267,12 @@ namespace DiceWarrior.SharedWorld
             else if(menu=="account" && Account!=null)
             {
                 data.detail=AccountMessage();
+                if(modern)
+                {
+                    long price=20L*((profile?.growth ?? 0)+1L);
+                    Add(Account.HasLegacyRun?"영구 성장 · 이전 기록 보존으로 보류":$"영구 HP +5 · {price} 재화",()=>AccountAction(ct=>Account.GrowAsync(ct)),Account.Ready && !Account.HasLegacyRun && profile.currency>=price);
+                    Add("프로필 다시 확인",()=>AccountAction(ct=>Account.RefreshAsync(ct)));
+                }
                 Add("계정 저장 다시 읽기",()=>AccountAction(async ct=>{Account.Reload();await Account.RefreshAsync(ct);}));
                 if(Account.Pending!=null)
                 {
@@ -261,13 +294,50 @@ namespace DiceWarrior.SharedWorld
                 else Add("HTTP 설정 다시 불러오기",OpenDefault);
                 if(Account!=null) Add("계정 관리",()=>{menu="account";Render();});
             }
+            else if(menu=="adventurers" && modern)
+            {
+                if(CompetitionV4Content.IsEnabled(definition)) CompetitionElementView.Roster(data,definition,profile,adventurerSelection?.adventurerId);
+                else CompetitionGrowthView.Roster(data,definition,profile,adventurerSelection?.adventurerId);
+                data.status="다음 모험 준비";data.detail="진행 중인 모험가와 경기 기록은 그대로 유지됩니다.";
+                foreach(var adventurer in definition.adventurers)
+                {
+                    string id=adventurer.id;
+                    Add(adventurer.name+" 선택",()=>SelectAdventurer(id),adventurerError=="");
+                }
+                if(adventurerError!="") Add("모험가 선택 다시 읽기",()=>{ReadAdventurer();notice="";Render();});
+                Add("돌아가기",()=>{menu="";Render();});
+            }
+            else if(menu=="stats" || menu=="skills" || menu=="elements" || menu=="tags" || menu=="effects")
+            {
+                var shown=lobby?null:state?.participants[0];
+                var shownDefinition=shown==null?definition:state.definition;
+                data.status=shown==null?"다음 모험 준비":"현재 경기의 동결된 성장";
+                if(CompetitionV4Content.IsEnabled(shownDefinition))
+                {
+                    int pages=CompetitionElementView.Details(data,shownDefinition,profile,shown,adventurerSelection?.adventurerId ?? "wanderer",menu,detailPage);
+                    detailPage=Math.Max(0,Math.Min(detailPage,pages-1));
+                    void Tab(string label,string target)=>Add(label,()=>{menu=target;detailPage=0;Render();});
+                    Tab("능력치","stats");Tab("주사위·스킬","skills");Tab("속성·상성","elements");Tab("태그 조회","tags");Tab("효과 출처","effects");
+                    if(pages>1)
+                    {
+                        Add("이전 페이지",()=>{--detailPage;Render();},detailPage>0);
+                        Add("다음 페이지",()=>{++detailPage;Render();},detailPage<pages-1);
+                    }
+                    Add("돌아가기",()=>{menu="";detailPage=0;Render();});
+                }
+                else
+                {
+                    CompetitionGrowthView.Details(data,shownDefinition,profile,shown,adventurerSelection?.adventurerId ?? "wanderer",menu=="skills");
+                    Add("능력치",()=>{menu="stats";Render();});Add("주사위·스킬",()=>{menu="skills";Render();});Add("돌아가기",()=>{menu="";Render();});
+                }
+            }
             else if(lobby || state==null)
             {
                 var selection=profile ?? new Profile();
                 string die=definition.combat.dice.FirstOrDefault(d=>d.id==selection.startingDie)?.name ?? "주사위 재선택 필요";
                 string weapon=definition.combat.gear.FirstOrDefault(g=>g.id==selection.startingWeapon)?.name ?? "무기 재선택 필요";
                 data.status=Account!=null && !Account.HasProfile?"서버 프로필 미확인":$"성장 재화 {selection.currency} · 영구 성장 {selection.growth}단계"+(Account!=null && !Account.Ready?" · 캐시":"");
-                data.detail=$"출전: {die} 주사위 / {weapon}\n고정된 12곳 · 3바퀴와 최종 시련 · 최대 30라운드\n네 모험가는 동일한 시작 성장 전력을 적용받습니다.";
+                data.detail=$"출전: {die} 주사위 / {weapon}\n고정된 12곳 · 3바퀴와 최종 시련 · 최대 30라운드\n네 모험가는 동일한 계정 성장 보정을 적용받습니다.";
                 data.history=AccountMessage();
                 if(menu=="loadout")
                 {
@@ -278,14 +348,20 @@ namespace DiceWarrior.SharedWorld
                 else
                 {
                     if(state!=null && !state.finished) Add("경기 이어하기",Resume);
-                    Add("새 게임",()=>{if(state==null) StartMatch();else {confirmNewGame=true;notice="";Render();}},Account==null || Account.Ready);
+                    Add("새 게임",()=>{if(state==null) StartMatch();else {confirmNewGame=true;notice="";Render();}},(Account==null || Account.Ready) && adventurerError=="");
                     if(state?.finished==true) Add("지난 경기 결과",Resume);
+                    if(modern) Add("모험가 선택",()=>{menu="adventurers";Render();});
                     Add("출전 선택",()=>{menu="loadout";Render();},Account==null || Account.LoadoutError==null);
+                    if(modern) Add("출전 능력치",()=>{menu="stats";detailPage=0;Render();},adventurerError=="" && (Account==null || Account.HasProfile));
                     if(Account!=null)
                     {
-                        long price=20L*(selection.growth+1L);
-                        Add(Account.HasLegacyRun?"영구 성장 · 이전 기록 보존으로 보류":$"영구 HP +5 · {price} 재화",()=>AccountAction(ct=>Account.GrowAsync(ct)),Account.Ready && !Account.HasLegacyRun && selection.currency>=price);
-                        Add("프로필 다시 확인",()=>AccountAction(ct=>Account.RefreshAsync(ct)));Add("계정 관리",()=>{menu="account";Render();});
+                        if(!modern)
+                        {
+                            long price=20L*(selection.growth+1L);
+                            Add(Account.HasLegacyRun?"영구 성장 · 이전 기록 보존으로 보류":$"영구 HP +5 · {price} 재화",()=>AccountAction(ct=>Account.GrowAsync(ct)),Account.Ready && !Account.HasLegacyRun && selection.currency>=price);
+                            Add("프로필 다시 확인",()=>AccountAction(ct=>Account.RefreshAsync(ct)));
+                        }
+                        Add("계정 관리",()=>{menu="account";Render();});
                     }
                     Add("경기 백업 확인",InspectBackup);
                 }
@@ -301,15 +377,18 @@ namespace DiceWarrior.SharedWorld
                     data.detail="당신의 모험을 포기할까요? 나머지 참가자는 계속 진행합니다.";Cmd("포기 확정","abandon");Add("계속 모험",()=>{confirmAbandon=false;Render();});
                 }
                 else if(state.finished)
-                { data.detail="경기 종료 · "+state.endReason+"\n영구 재화 지급 0 · 서버 검증/정산은 후속 단계입니다.";Add("로비로",Close); }
+                { data.detail="경기 종료 · "+state.endReason+"\n영구 재화 지급 0 · 서버 검증/정산은 후속 단계입니다.";Add("로비로",Close);Add("능력치 상세",()=>{menu="stats";detailPage=0;Render();}); }
                 else
                 {
                     switch(p.phase)
                     {
                         case CompetitionPhase.Map:Cmd("이동 주사위 굴리기","travel");break;
-                        case CompetitionPhase.Combat:data.detail=$"{p.enemy.name} · HP {p.enemy.hp}/{p.enemy.maxHp}\n{p.message}";Cmd("기호 주사위 굴리기","combat");break;
+                        case CompetitionPhase.Combat:
+                            data.detail=$"{p.enemy.name} · HP {p.enemy.hp}/{p.enemy.maxHp}\n"+(CompetitionV4Content.IsEnabled(state.definition)?CompetitionElementView.CombatSummary(state.definition,p):p.message);
+                            Cmd("기호 주사위 굴리기","combat");break;
                         case CompetitionPhase.Encounter:
-                            data.detail=state.definition.world.places[p.position].name+" · 사건 선택\n"+string.Join(" / ",p.offer.choices.Select(c=>c.description));
+                            data.detail=CompetitionV4Content.IsEnabled(state.definition)?string.Join("\n",p.offer.choices.Select(c=>CompetitionElementView.EncounterSummary(state.definition,c))):
+                                state.definition.world.places[p.position].name+" · 사건 선택\n"+string.Join(" / ",p.offer.choices.Select(c=>c.description));
                             foreach(var choice in p.offer.choices)
                             {
                                 string cost=choice.goldCost>0?$" · {choice.goldCost}골드":choice.hpCost>0?$" · HP {choice.hpCost}":"";
@@ -324,9 +403,11 @@ namespace DiceWarrior.SharedWorld
                         case CompetitionPhase.Complete:Cmd("다음 AI 라운드","advance");break;
                     }
                     Add("모험 종료",Close);if(!p.finished && !p.eliminated) Add("모험 포기",()=>{confirmAbandon=true;Render();});
+                    Add("능력치 상세",()=>{menu="stats";detailPage=0;Render();});
                 }
             }
             if(!string.IsNullOrEmpty(notice)) data.history=notice;
+            if(lobby && adventurerError!="") data.history=adventurerError;
             data.labels=labels.ToArray();data.actions=actions.ToArray();data.enabled=enabled.ToArray();
             if(data.labels.Length>8) throw new InvalidOperationException("화면 선택지는 8개를 초과할 수 없습니다.");
             ui.Show<CompetitionScreen>(data);

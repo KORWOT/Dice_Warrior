@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="392d8b28-3b3b-475f-a23a-82d2d72a6e11" name="coli4@WOT 2026-10-23 00:01:11" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T00:01:11.2235888+09:00" queuing="2026-10-23T00:01:11.2235890+09:00" start="2026-10-23T00:01:10.4930338+09:00" finish="2026-10-23T00:01:11.2289089+09:00" />
+  <TestSettings name="default" id="543bfd4d-a17a-4b5f-a4ae-8a138847cdfb">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-23_00_01_11" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c1e00123-5ee6-4c4e-acfc-db3a80e1842a" testId="072ef629-9a2e-82d1-bdcd-b914591d6a4d" testName="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;enemy&quot;)" computerName="WOT" duration="00:00:00.0072080" startTime="2026-10-23T00:01:11.1403518+09:00" endTime="2026-10-23T00:01:11.1475594+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c1e00123-5ee6-4c4e-acfc-db3a80e1842a">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 211&#xD;
+   at InvokeStub_CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(Object, Span`1)&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 211&#xD;
+   at InvokeStub_CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(Object, Span`1)&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1f4a58ba-6a10-47f4-8ed1-6b4888a2e424" testId="d780f409-087c-5d34-1523-310e77ada945" testName="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;skill&quot;)" computerName="WOT" duration="00:00:00.0122910" startTime="2026-10-23T00:01:11.1280321+09:00" endTime="2026-10-23T00:01:11.1403224+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f4a58ba-6a10-47f4-8ed1-6b4888a2e424">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 211&#xD;
+   at InvokeStub_CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(Object, Span`1)&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 211&#xD;
+   at InvokeStub_CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(Object, Span`1)&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8f9cbfdf-5911-41e0-86c1-0f384572c42e" testId="93aca775-6a0a-3037-6645-cd3322481113" testName="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;query&quot;)" computerName="WOT" duration="00:00:00.1048250" startTime="2026-10-23T00:01:11.0172379+09:00" endTime="2026-10-23T00:01:11.1220093+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8f9cbfdf-5911-41e0-86c1-0f384572c42e">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 199&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 199&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b562e15f-2a9b-44b2-a8d1-fe97e54206bf" testId="f215b517-a99f-6a5e-0659-8f565dcf2c94" testName="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;grant&quot;)" computerName="WOT" duration="00:00:00.0049540" startTime="2026-10-23T00:01:11.1230649+09:00" endTime="2026-10-23T00:01:11.1280190+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b562e15f-2a9b-44b2-a8d1-fe97e54206bf">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 204&#xD;
+   at InvokeStub_CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(Object, Span`1)&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(String field) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionV4Tests.cs:line 204&#xD;
+   at InvokeStub_CompetitionV4Tests.OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(Object, Span`1)&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;enemy&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="072ef629-9a2e-82d1-bdcd-b914591d6a4d">
+      <Execution id="c1e00123-5ee6-4c4e-acfc-db3a80e1842a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionV4Tests" name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;enemy&quot;)" />
+    </UnitTest>
+    <UnitTest name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;skill&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="d780f409-087c-5d34-1523-310e77ada945">
+      <Execution id="1f4a58ba-6a10-47f4-8ed1-6b4888a2e424" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionV4Tests" name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;skill&quot;)" />
+    </UnitTest>
+    <UnitTest name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;grant&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="f215b517-a99f-6a5e-0659-8f565dcf2c94">
+      <Execution id="b562e15f-2a9b-44b2-a8d1-fe97e54206bf" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionV4Tests" name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;grant&quot;)" />
+    </UnitTest>
+    <UnitTest name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;query&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="93aca775-6a0a-3037-6645-cd3322481113">
+      <Execution id="8f9cbfdf-5911-41e0-86c1-0f384572c42e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionV4Tests" name="OmittedOwnerOrDamageTypeCannotSilentlyDefaultToSourceOrPhysical(&quot;query&quot;)" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="072ef629-9a2e-82d1-bdcd-b914591d6a4d" executionId="c1e00123-5ee6-4c4e-acfc-db3a80e1842a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d780f409-087c-5d34-1523-310e77ada945" executionId="1f4a58ba-6a10-47f4-8ed1-6b4888a2e424" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="93aca775-6a0a-3037-6645-cd3322481113" executionId="8f9cbfdf-5911-41e0-86c1-0f384572c42e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f215b517-a99f-6a5e-0659-8f565dcf2c94" executionId="b562e15f-2a9b-44b2-a8d1-fe97e54206bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="4" executed="4" passed="0" failed="4" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running selected tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 4 of 4 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

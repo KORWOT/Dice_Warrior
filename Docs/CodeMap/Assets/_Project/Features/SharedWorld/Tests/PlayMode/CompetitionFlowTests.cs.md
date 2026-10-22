@@ -1,6 +1,8 @@
 # CompetitionFlowTests.cs
 
 - 역할: 새 authored 화면과 실제 포인터/프레임/저장 복귀를 격리된 PlayMode에서 검증한다.
+- TAG_STAT_ELEMENT_05: authored6행 연결 검사1개와 v4 흐름4개를 추가한다. JSON 전투 정의의 SO 덮기 방지/3종 선호·다음 경기 적용, v3 RGB 재개·취소 불변·확정 후 v4 전환과 원문 보존, Lv.3/3장비/3주사위의 모든 기술·태그·효과 페이지와6색·두세로비율·텍스트 높이, 확정 번개/냉기 부분 조합 및 적 약점/저항 표시·연출 중단 뒤 RNG 불변을 확인한다. 수치 기대값은 승인 표에서 직접 정한 리터럴이며 모든 상세 페이지 전후 스냅샷/파일 바이트가 같아야 한다.6행 연결 검사를 UI 제품 코드보다 먼저 작성했으며 실제 RED/GREEN 실행은 메인 담당이다.
+- GROWTH_04: 추가4검사로 기본 제공3종 선택→별도 저장/재개→다음 게임만 적용, 시작HP/현재RGB/장비/3주사위의9기술·색상·글자높이·safe area, 구형 v2 유지 후 v3 재시작, 손상 선호에도 기존 경기 재개를 확인한다. 상세 열기/탭 전환 전후 전체 스냅샷 동치로 RNG·명령 불변을 검사한다. authored 패널과 배열 참조도 검증한다.
 - 핵심 동작: 새 프리팹의4개 말 참조, 동일 칸 분리, 성장 동기화, 인간 이동/기호/적용 스킬 연출, AI 라운드 진행, 저장 재표시, 이동 연출 중 닫기/재열기 상태 동치,720×1280/720×1600 및 inset safe area를 검사한다.
 - 실제 진입 통합: CompetitionScreen 하나만 등록하고 직접 공동 로비를 연다. 출전 선택→성장 구매→최신 프로필 재확인→경기 시작→로비→재개와 App 재생성 후 선호 설정/경기 보존을 실제 포인터로 검증한다. 메모리 IGameBackend만 주입하고 지연 프로필 응답 중 비활성화해 BindingRevision이 변하지 않는지 확인한다.
 - FLOW_COMBO_03: `모험 종료`→동일 진행 이어하기, `새 게임` 경고/취소의 파일 불변과 확정 후 초기화·원문 보존·재로드를 실제 포인터로 검사한다. 새 게임 직전 프로필 조회 실패에도 기존 모험을 이어갈 수 있어야 한다. 별도 격리 경기의 3개 주사위를 지팡이·지팡이·검으로 고정해 실제 전투 명령/회전 후 마력탄 SKILL→검기 COMBO의 표시와 로그 순서를 확인한다. 경고/혼합 발동 PNG를 저장한다.
@@ -10,4 +12,4 @@
 - 사용하는 대상: CompetitionApp/Session/Screen/Playback, PointerEventData/Raycast, RenderTexture, 기존 LoopJson/LoopGlyphGraphic.
 - 사용하는 쪽·관계 근거: SharedWorld.PlayMode.Tests assembly를 Unity Test Runner/Pipeline이 실행한다. 실제 서버/사용자 저장을 열지 않는다.
 - 상태/수명: 각 검사별 고유 fixture를 만들고 자신의 오브젝트·RenderTexture·허용 임시 하위 폴더만 정리한다. 파일 잠금은 finally에서 반드시 해제한다. 실제 서버/사용자 DB·계정은 접근하지 않는다.
-- 검수 주의: MAIN_02의 실제 최초 RED는 새 로비 출전 선택 누락, FLOW_COMBO_03의 실제 최초 RED는 모험 종료 버튼 누락이었다. 구형 화면 진입 검사는 제거한 제품 흐름에 맞춰 위 직접 계정 검사로 교체했다. 현재 총 15개 검사의 실제 실행 결과는 SHARED_WORLD_FLOW_COMBO_03_REPORT가 기준이며 코드 존재만 PASS로 간주하지 않는다. Android 장치 검증을 대신하지 않는다.
+- 검수 주의: MAIN_02의 실제 최초 RED는 새 로비 출전 선택 누락, FLOW_COMBO_03의 실제 최초 RED는 모험 종료 버튼 누락이었다. 구형 화면 진입 검사는 제거한 제품 흐름에 맞춰 위 직접 계정 검사로 교체했다. 이전15개 증거는 FLOW_COMBO_03_REPORT, RGB19개 실제 결과는 GOD_ADVENTURER_GROWTH_04_REPORT, v4 추가 결과는 TAG_STAT_ELEMENT_05_REPORT를 따른다. 코드 존재만 PASS로 간주하지 않으며 Android 장치 검증을 대신하지 않는다.

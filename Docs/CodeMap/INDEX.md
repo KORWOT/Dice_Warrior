@@ -2,34 +2,50 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 47개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 63개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md)을 따른다.
 
 ## 공동 모험 메인 SharedWorld
 
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|
 | 경기 자료 | [CompetitionData](Assets/_Project/Features/SharedWorld/Domain/CompetitionData.cs.md) | 세계·참가자·사건·점수·명령 DTO |
+| v4 자료 | [CompetitionV4Data](Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Data.cs.md) | 6스탯·피해 타입·출처/Binding·typed 로그 |
+| 태그 | [CompetitionTags](Assets/_Project/Features/SharedWorld/Domain/CompetitionTags.cs.md) | Owner·출처·단계별 스냅샷·질의/충돌 |
+| 수치 합성 | [CompetitionModifiers](Assets/_Project/Features/SharedWorld/Domain/CompetitionModifiers.cs.md) | 출처 중복/중첩·만분율·최종 한 번 반올림 |
+| v4 콘텐츠 | [CompetitionV4Content](Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Content.cs.md) | 정본 참조/계수/Owner 검증·문맥 태그 조립 |
+| 6스탯 | [CompetitionAttributes](Assets/_Project/Features/SharedWorld/Domain/CompetitionAttributes.cs.md) | 기본/레벨/장비 출처·CON 파생HP·상태 검사 |
+| 속성 전투 | [CompetitionElements](Assets/_Project/Features/SharedWorld/Domain/CompetitionElements.cs.md) | 변환·상성·typed 전투·AI 읽기 점수 |
+| v4 상세 | [CompetitionElementView](Assets/_Project/Features/SharedWorld/Presentation/CompetitionElementView.cs.md) | 6스탯·기술·속성·태그/효과 출처 페이지 |
+| 태그 검사 | [CompetitionTagTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionTagTests.cs.md) | Owner/출처/충돌·깊은 사본·상한 |
+| 수치 검사 | [CompetitionModifierTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionModifierTests.cs.md) | 138/98·정수 합성·중첩/ID·상한 |
+| v4 규칙 검사 | [CompetitionV4Tests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV4Tests.cs.md) | 9기술·6스탯·상성·변환·AI 재현·v3 고정 해시 |
+| v4 저장 검사 | [CompetitionV4StoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV4StoreTests.cs.md) | 구형 재개/백업·v4 실제 저장/크기·실패/2048명령 |
+| RGB 성장 | [CompetitionStats](Assets/_Project/Features/SharedWorld/Domain/CompetitionStats.cs.md) | v3 기본/계정/레벨 출처·계수·모험가 패시브 |
 | 버전 콘텐츠 | [CompetitionContent](Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs.md) | JSON 장소/후보/정책의 참조·조건 검증 |
 | 분리 난수 | [CompetitionRandom](Assets/_Project/Features/SharedWorld/Domain/CompetitionRandom.cs.md) | 고정 문자열 혼합과 개인별4스트림 |
 | 경기 규칙 | [CompetitionRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs.md) | 동일 시작 전력·성장·상태/순위 검사 |
 | 사건 | [CompetitionEncounterRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs.md) | 착지 제안 고정·조건/비용·전투·보상 |
-| 전투 재사용 | [CompetitionCombat](Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs.md) | 동결된 v1/v2에 맞춰 전체/부분 조합을 선택하는 SymbolCombat 어댑터 |
+| 전투 재사용 | [CompetitionCombat](Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs.md) | 동결된 v1/v2/v3 SymbolCombat 어댑터와 v4 Elements 분기 |
 | AI | [CompetitionAi](Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs.md) | 동일 합법 명령을 사용하는 결정적3정책 |
 | 경기 명령 | [CompetitionCommandRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs.md) | 대상·인간명령·AI라운드·완주/종료 |
 | 세션 | [CompetitionSession](Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs.md) | 후보·중복/세대 검사·명시 Restart·저장 후 공개 |
 | 별도 저장 | [CompetitionStore](Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs.md) | schema1·CAS·백업/원문·완료/초기화 전 기록 보존 |
+| 모험가 선호 | [AdventurerSelectionStore](Assets/_Project/Features/SharedWorld/Runtime/AdventurerSelectionStore.cs.md) | 다음 출전 ID·revision·별도 체크섬/원자 저장 |
 | 계정 연결 | [CompetitionAccount](Assets/_Project/Features/SharedWorld/Runtime/CompetitionAccount.cs.md) | HTTP 권한·기존 기록 보존·별도 출전 선택·성장/미결 복구 |
 | 화면 흐름 | [CompetitionApp](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md) | 직접 로비·출전/성장·모험 종료/재개·새 게임 확인/복구 |
 | 화면 | [CompetitionScreen](Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs.md) | 12지명·네말·성적·사건·AI요약 |
+| 성장 상세 표시 | [CompetitionGrowthView](Assets/_Project/Features/SharedWorld/Presentation/CompetitionGrowthView.cs.md) | 모험가 카드·RGB/장비 출처·보유면과 가능한 기술 |
 | 연출 | [CompetitionPlayback](Assets/_Project/Features/SharedWorld/Presentation/CompetitionPlayback.cs.md) | 인간 칸이동/숫자·기호/스킬·AI간략 표시 |
 | 자산 연결 | [CompetitionAuthoring](Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs.md) | 신규프리팹·기존Title 보존 연결 |
 | 도메인 검사 | [CompetitionRulesTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionRulesTests.cs.md) | 공정성·지리/사건독립·끝조건·84기호동치 |
 | 고정 재현 검사 | [CompetitionGoldenTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenTests.cs.md) | 별도2벡터48인간명령50전체상태/RNG |
 | 부분 조합 검사 | [CompetitionPartialComboTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionPartialComboTests.cs.md) | v2 명령·후보/소비·피해/생략·AI 재현과 v1 보존 |
+| RGB 검사 | [CompetitionGrowthTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGrowthTests.cs.md) | v3 수치·패시브·레벨·AI 재현·구버전 보존 |
+| 모험가 선호 검사 | [AdventurerSelectionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/AdventurerSelectionStoreTests.cs.md) | 별도 선택·재개·경합·손상/잠금/백업 원문 보존 |
 | 저장 검사 | [CompetitionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionStoreTests.cs.md) | 실패/응답유실·동시경합·AI원자성·복구 |
 | UI 검사 | [CompetitionFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs.md) | 포인터·연출·재진입·두비율·로비연결 |
 
-직접 흐름: Title → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI/SymbolCombat → CompetitionStore. 계정은 CompetitionAccount → GameBackendCoordinator → LoopSession/LoopStore/HttpGameBackend로 분리한다. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/계정 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain8개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
+직접 흐름: Title → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI → 버전별 SymbolCombat 또는 CompetitionElements → CompetitionStore. 계정은 CompetitionAccount → GameBackendCoordinator → LoopSession/LoopStore/HttpGameBackend로 분리한다. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/계정 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain15개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
 
 ## 기존 SymbolLoop 및 독립 서버
 

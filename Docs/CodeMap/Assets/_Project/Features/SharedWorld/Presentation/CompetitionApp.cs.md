@@ -1,6 +1,10 @@
 # CompetitionApp.cs
 
 - 역할: Title에서 공동 모험 로비를 직접 열고 계정·출전 선택·경기 저장·표시 수명을 연결한다. 구형 1인 화면/App에 의존하지 않는다.
+- TAG_STAT_ELEMENT_05: v4 로더는 검증된 JSON combat을 기존 SO로 덮지 않는다. 모험가 선호는 v3/v4에서 열지만 계산 API는 버전별로 분리한다. v4의 Roster/상세/전투 상성 문구는 CompetitionElementView에 위임하고, 구형 저장 상세는 그 state.definition으로 기존 GrowthView를 호출한다. 상세5탭+이전/다음+뒤로는 최대8버튼이며 detailPage는 탭 전환/상세 진입 때0으로 초기화한다.
+- GROWTH_04: v3 로비는 모험가 선택/출전 능력치를 추가하고 성장 구매/프로필 재확인을 계정 관리로 모아 최대8버튼을 유지한다. 별도 AdventurerSelectionStore를 경기 폴더에 열고 새 게임 직전 다시 읽은 ID를 Session.Start/Restart에 전달한다. 구형 현재 경기 상세는 state.definition을 사용하며 새 v3 선택을 소급 적용하지 않는다.
+- 상세 관계: Render의 adventurers/stats/skills → CompetitionGrowthView → Screen의 authored 패널이다. 다음 출전 Preview와 경기 Describe를 구분한다. 메뉴는 명령/RNG를 실행하지 않고 뒤로는 원래 로비/경기로 복귀한다.
+- 선택 실패: 선택 저장·revision·손상 오류는 읽기 재시도만 제공하고 원문을 자동 복구하지 않는다. 새 게임/선택을 제한하되 경기 이어하기는 유지한다. 선택 ID는 신격/소유권이 아니다.
 - 핵심 동작: 기본 HTTP 설정에서 기존 endpoint/user 계정 경로를 구하고 CompetitionAccount를 연다. 로비에서 출전 주사위/무기 선택, 영구 성장 구매, 프로필 재확인, 새 게임/경기 이어하기, 계정/경기 백업 확인·명시 복원을 제공한다. 기존 경기가 있으면 새 게임은 확인/취소 경고를 먼저 표시하고, 확인 뒤 최신 프로필 조회와 Session.Restart 저장에 성공해야 새 경기로 전환한다. 시작 직전 최신 프로필과 별도 출전 선택을 네 참가자에게 동결한다.
 - 입출력: authored UIManager/TextAsset/SymbolLoopConfig, OpenHttp(settings,root), OpenAccount(accountPath,competitionPath,definition,backend,seedSource), Open(path,definition,profile,seedSource) 격리 주입. Session/Account/IsPresenting/IsOpen/InLobby를 공개한다. Close는 공동 로비로 돌아가며 경기 상태를 보존한다.
 - 사용하는 대상: CompetitionContent/Session/Store/Account/Screen/Playback, HttpBackendSettings/HttpGameBackend, LoopJson, Shared UI. 명령 저장 성공 이후 확정 전후 사본만 Playback에 전달한다.

@@ -59,6 +59,31 @@ namespace DiceWarrior.SharedWorld.Tests
             var data=new SerializedObject(screen);
             Assert.That(data.FindProperty("pawns").arraySize,Is.EqualTo(4));
             for(int i=0;i<4;i++) Assert.That(data.FindProperty("pawns").GetArrayElementAtIndex(i).objectReferenceValue,Is.Not.Null);
+            foreach(string field in new[]{"growthPanel","statRows","adventurerCards","growthTitle","growthSummary","growthBody","skillDetails"})
+                Assert.That(data.FindProperty(field).objectReferenceValue,Is.Not.Null,field);
+            foreach(string field in new[]{"statValues","statSources","cardTexts"})
+            {
+                var array=data.FindProperty(field);Assert.That(array.arraySize,Is.EqualTo(3));
+                for(int i=0;i<3;i++) Assert.That(array.GetArrayElementAtIndex(i).objectReferenceValue,Is.Not.Null,field);
+            }
+        }
+        [Test] public void AuthoredElementDetailsProvideSixReadableStatRows()
+        {
+            var prefab=AssetDatabase.LoadAssetAtPath<CompetitionScreen>(PrefabPath);
+            var data=new SerializedObject(prefab);
+            foreach(string field in new[]{"attributeRows","attributeBody"})
+            {
+                var property=data.FindProperty(field);
+                Assert.That(property,Is.Not.Null,"The six-stat view requires an authored "+field+" binding.");
+                Assert.That(property.objectReferenceValue,Is.Not.Null,field);
+            }
+            foreach(string field in new[]{"attributeValues","attributeSources"})
+            {
+                var property=data.FindProperty(field);
+                Assert.That(property,Is.Not.Null,"The six-stat view requires authored "+field+" bindings.");
+                Assert.That(property.arraySize,Is.EqualTo(6));
+                for(int i=0;i<6;i++) Assert.That(property.GetArrayElementAtIndex(i).objectReferenceValue,Is.Not.Null,field);
+            }
         }
         void Resize(int width,int height)
         {
@@ -105,6 +130,174 @@ namespace DiceWarrior.SharedWorld.Tests
                 Assert.That(points.Min(p=>p.y),Is.GreaterThanOrEqualTo(-1));Assert.That(points.Max(p=>p.y),Is.LessThanOrEqualTo(target.height+1));
             }
             foreach(var place in Screen.places) Assert.That(place.preferredHeight,Is.LessThanOrEqualTo(place.rectTransform.rect.height+1),place.text+" is clipped");
+        }
+        void UseGrowth()
+        {
+            var source=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-3.json");
+            Assert.That(source,Is.Not.Null,"New growth content must exist.");definition=CompetitionContent.Load(source.text);
+            app.Open(path,definition,new Profile {growth=2},()=>33);
+        }
+        string VisibleText()=>string.Join("\n",Screen.GetComponentsInChildren<Text>().Where(t=>t.gameObject.activeInHierarchy).Select(t=>t.text));
+        void AssertGrowthLayout()
+        {
+            AssertLayout();
+            Assert.That(Screen.growthPanel && Screen.growthPanel.activeInHierarchy,Is.True);
+            foreach(var text in Screen.GetComponentsInChildren<Text>().Where(t=>t.gameObject.activeInHierarchy && t.transform.IsChildOf(Screen.transform.Find("Portrait frame/Growth details"))))
+                Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),text.name+" is clipped: "+text.text);
+        }
+        [UnityTest] public IEnumerator AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen()
+        {
+            UseGrowth();yield return null;
+            Assert.That(Screen.buttons.Any(b=>b.gameObject.activeSelf && b.label.text=="모험가 선택"),Is.True,"The growth lobby must expose adventurers.");
+            Click("모험가 선택");yield return null;Assert.That(VisibleText(),Does.Contain("기본 제공"));AssertGrowthLayout();Capture("growth-adventurers");
+            Click("룬술사 선택");yield return null;Click("출전 능력치");yield return null;
+            Assert.That(VisibleText(),Does.Contain("룬술사").And.Contain("기존 계정 +10"));AssertGrowthLayout();Capture("growth-preview");
+            Click("돌아가기");yield return null;Click("새 게임");yield return WaitPlayback();
+            var human=app.Session.Snapshot.state.participants[0];Assert.That(human.adventurerId,Is.EqualTo("scholar"));Assert.That(human.maxHp,Is.EqualTo(70));Assert.That(human.power,Is.EqualTo(4));
+            string saved=LoopJson.Encode(app.Session.Snapshot);Click("능력치 상세");yield return null;
+            Assert.That(VisibleText(),Does.Contain("모험가 Lv.1").And.Contain("기존 계정 +10"));AssertGrowthLayout();Capture("growth-stats");
+            Click("주사위·스킬");yield return null;Assert.That(VisibleText(),Does.Contain("현재 가능한 기술").And.Contain("비전"));AssertGrowthLayout();Capture("growth-skills");
+            Resize(720,1600);yield return null;ui.Root.safeArea.anchorMin=new Vector2(.03f,.04f);ui.Root.safeArea.anchorMax=new Vector2(.97f,.96f);Canvas.ForceUpdateCanvases();app.Render();yield return null;AssertGrowthLayout();Capture("growth-safe-area");
+            Click("돌아가기");yield return null;Click("모험 종료");yield return null;Click("모험가 선택");yield return null;Click("성채의 수호자 선택");yield return null;
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            app.Close();UseGrowth();yield return null;Click("경기 이어하기");yield return null;
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Click("모험 종료");yield return null;Click("새 게임");yield return null;Click("새 게임 시작 확정");yield return WaitPlayback();
+            human=app.Session.Snapshot.state.participants[0];Assert.That(human.adventurerId,Is.EqualTo("vanguard"));Assert.That(human.guard,Is.EqualTo(6));Assert.That(human.level,Is.EqualTo(1));
+        }
+        [UnityTest] public IEnumerator LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart()
+        {
+            Click("새 게임");yield return WaitPlayback();string old=LoopJson.Encode(app.Session.Snapshot);
+            app.Close();UseGrowth();yield return null;Click("경기 이어하기");yield return null;Click("능력치 상세");yield return null;
+            Assert.That(VisibleText(),Does.Contain("기존 규칙").And.Contain("위력"));Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(old));
+            Click("돌아가기");yield return null;Click("모험 종료");yield return null;Click("새 게임");yield return null;Click("새 게임 시작 확정");yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.state.definition.rulesVersion,Is.EqualTo("shared-world-preview-3"));
+            Assert.That(File.ReadAllText(Directory.GetFiles(directory,"checkpoint.json.restarted-*").Single()),Does.Contain("shared-world-preview-2"));
+        }
+        [UnityTest] public IEnumerator CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable()
+        {
+            UseGrowth();yield return null;Click("새 게임");yield return WaitPlayback();string saved=LoopJson.Encode(app.Session.Snapshot);
+            app.Close();File.WriteAllText(Path.Combine(directory,"adventurer-selection.json"),"preserve-corrupt-selection");UseGrowth();yield return null;
+            var start=Screen.buttons.Single(b=>b.gameObject.activeSelf && b.label.text=="새 게임");Assert.That(start.button.interactable,Is.False);
+            Assert.That(VisibleText(),Does.Contain("모험가 선택"));
+            Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Assert.That(File.ReadAllText(Path.Combine(directory,"adventurer-selection.json")),Is.EqualTo("preserve-corrupt-selection"));
+        }
+        [UnityTest] public IEnumerator GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch()
+        {
+            UseGrowth();yield return null;Click("새 게임");yield return WaitPlayback();
+            var original=app.Session.Snapshot;var fixture=LoopJson.Copy(original);var state=fixture.state;var p=state.participants[0];
+            p.completedLaps=2;p.claimed=new List<string>{state.matchId+":"+p.id+":lap:1",state.matchId+":"+p.id+":lap:2"};
+            p.dice=definition.combat.dice.Select((d,i)=>new DieSlot {instanceId="detail-"+i,definitionId=d.id}).ToList();
+            p.level=3;p.hp=p.maxHp=82;p.power=8;p.guard=6;
+            p.equipment=Enumerable.Range(0,3).Select(slot=>definition.combat.gear.First(g=>g.slot==slot).id).ToArray();
+            fixture.revision++;new CompetitionStore(path).Commit(fixture,original.revision,original.generation);app.Session.Reload();app.Render();yield return null;
+            string saved=LoopJson.Encode(app.Session.Snapshot);Click("능력치 상세");yield return null;
+            Assert.That(VisibleText(),Does.Contain("모험가 Lv.3").And.Contain("런 레벨 2").And.Contain("피해 +"));AssertGrowthLayout();Capture("growth-level-equipment");
+            Assert.That(Screen.growthBody.text,Does.Not.Contain("강철 피해 +2 · 강철 피해 +2"));
+            Assert.That(Screen.statValues.Select(t=>(Color32)t.color),Is.EqualTo(new[]{new Color32(229,108,100,255),new Color32(82,185,135,255),new Color32(114,151,237,255)}));
+            Click("주사위·스킬");yield return null;
+            foreach(var skill in definition.combat.basics.Concat(definition.combat.combos)) Assert.That(VisibleText(),Does.Contain(skill.name));
+            AssertGrowthLayout();Capture("growth-three-dice");
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved),"Detailed views must not consume RNG or mutate growth.");
+        }
+        void UseElements()
+        {
+            var source=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json");
+            Assert.That(source,Is.Not.Null,"The v4 content must be authored separately.");
+            definition=CompetitionContent.Load(source.text);app.Open(path,definition,new Profile {growth=2},()=>33);
+        }
+        [UnityTest] public IEnumerator ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition()
+        {
+            UseElements();yield return null;
+            var json=LoopJson.Copy(definition);json.combat.dice[0].name="JSON 정본 주사위";
+            var asset=new TextAsset(LoopJson.Encode(json));
+            try
+            {
+                app.content=asset;app.combatConfig=AssetDatabase.LoadAssetAtPath<SymbolLoopConfig>("Assets/_Project/Features/SymbolLoop/Configs/SymbolLoopConfig.asset");
+                var loader=typeof(CompetitionApp).GetMethod("LoadDefinition",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+                var loaded=(CompetitionDefinition)loader.Invoke(app,null);
+                Assert.That(loaded.combat.dice[0].name,Is.EqualTo("JSON 정본 주사위"),"v4 must not replace frozen JSON rules with the legacy SO.");
+            }
+            finally {app.content=null;Object.Destroy(asset);}
+            Click("모험가 선택");yield return null;AssertGrowthLayout();Capture("element-adventurers");
+            Click("룬술사 선택");yield return null;Click("출전 능력치");yield return null;
+            Assert.That(Screen.attributeValues.Select(t=>t.text),Is.EqualTo(new[]{"힘  STR  3","민첩  DEX  4","체질  CON  5","지능  INT  7","정신  WIL  6","행운  LUK  5"}));
+            Assert.That(Screen.attributeBody.text,Does.Contain("기본 30 + 체질 30").And.Contain("기존 계정 10 = 70").And.Contain("회피 0%"));
+            AssertGrowthLayout();Capture("element-preview");Click("돌아가기");yield return null;
+            Click("새 게임");yield return WaitPlayback();Assert.That(app.Session.Snapshot.state.participants[0].adventurerId,Is.EqualTo("scholar"));
+            string saved=LoopJson.Encode(app.Session.Snapshot);
+            Click("모험 종료");yield return null;Click("모험가 선택");yield return null;Click("성채의 수호자 선택");yield return null;
+            Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Click("모험 종료");yield return null;Click("새 게임");yield return null;Click("새 게임 시작 확정");yield return WaitPlayback();
+            var next=app.Session.Snapshot.state.participants[0];Assert.That(next.adventurerId,Is.EqualTo("vanguard"));Assert.That(next.maxHp,Is.EqualTo(82));
+        }
+        [UnityTest] public IEnumerator RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart()
+        {
+            UseGrowth();yield return null;Click("새 게임");yield return WaitPlayback();string saved=LoopJson.Encode(app.Session.Snapshot);
+            app.Close();UseElements();yield return null;Click("경기 이어하기");yield return null;Click("능력치 상세");yield return null;
+            Assert.That(Screen.statRows.activeInHierarchy,Is.True);Assert.That(Screen.attributeRows.activeInHierarchy,Is.False);
+            Assert.That(VisibleText(),Does.Contain("무력").And.Contain("수호").And.Contain("비전"));Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Capture("element-legacy-rgb");Click("돌아가기");yield return null;Click("모험 종료");yield return null;
+            Click("새 게임");yield return null;Click("취소");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Click("새 게임");yield return null;Click("새 게임 시작 확정");yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.state.definition.rulesVersion,Is.EqualTo("shared-world-preview-4"));
+            Assert.That(File.ReadAllText(Directory.GetFiles(directory,"checkpoint.json.restarted-*").Single()),Does.Contain("shared-world-preview-3"));
+        }
+        [UnityTest] public IEnumerator ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch()
+        {
+            UseElements();yield return null;Click("새 게임");yield return WaitPlayback();
+            var original=app.Session.Snapshot;var fixture=LoopJson.Copy(original);var p=fixture.state.participants[0];
+            p.completedLaps=2;p.claimed=new List<string>{fixture.state.matchId+":"+p.id+":lap:1",fixture.state.matchId+":"+p.id+":lap:2"};
+            p.dice=fixture.state.definition.combat.dice.Select((d,i)=>new DieSlot {instanceId="element-detail-"+i,definitionId=d.id}).ToList();
+            p.level=3;p.hp=p.maxHp=82;p.power=9;p.guard=7;
+            p.equipment=Enumerable.Range(0,3).Select(slot=>definition.combat.gear.First(g=>g.slot==slot).id).ToArray();
+            fixture.revision++;new CompetitionStore(path).Commit(fixture,original.revision,original.generation);app.Session.Reload();app.Render();yield return null;
+            string saved=LoopJson.Encode(app.Session.Snapshot),raw=File.ReadAllText(path);Click("능력치 상세");yield return null;
+            Assert.That(Screen.attributeValues.Select(t=>t.text),Is.EqualTo(new[]{"힘  STR  9","민첩  DEX  8","체질  CON  7","지능  INT  5","정신  WIL  7","행운  LUK  6"}));
+            Assert.That(Screen.attributeBody.text,Does.Contain("기본 30 + 체질 42").And.Contain("기존 계정 10 = 82"));
+            Assert.That(Screen.attributeValues.Select(t=>(Color32)t.color),Is.EqualTo(new[]{new Color32(229,115,115,255),new Color32(215,166,75,255),new Color32(85,186,139,255),new Color32(112,159,233,255),new Color32(161,138,224,255),new Color32(216,135,187,255)}));
+            AssertGrowthLayout();Capture("element-six-stats");
+            string skills="";
+            foreach(var tab in new[]{"주사위·스킬","속성·상성","태그 조회","효과 출처"})
+            {
+                Click(tab);yield return null;int page=0;
+                while(true)
+                {
+                    AssertGrowthLayout();Assert.That(Screen.buttons.Count(b=>b.gameObject.activeSelf),Is.LessThanOrEqualTo(8));
+                    if(tab=="주사위·스킬") skills+=VisibleText();
+                    if(page==0) Capture(tab=="주사위·스킬"?"element-skills":tab=="속성·상성"?"element-affinity":tab=="태그 조회"?"element-tags":"element-sources");
+                    var next=Screen.buttons.FirstOrDefault(b=>b.gameObject.activeSelf && b.label.text=="다음 페이지");
+                    if(next==null || !next.button.interactable) break;
+                    Assert.That(++page,Is.LessThan(80),"The finite detail pages must end.");Click("다음 페이지");yield return null;
+                }
+            }
+            foreach(var name in new[]{"베기","마력탄","불꽃","방어","검기","화염탄","수호 베기","화염 검기","성채 베기"}) Assert.That(skills,Does.Contain(name));
+            Resize(720,1600);yield return null;ui.Root.safeArea.anchorMin=new Vector2(.03f,.04f);ui.Root.safeArea.anchorMax=new Vector2(.97f,.96f);Canvas.ForceUpdateCanvases();
+            Click("능력치");yield return null;AssertGrowthLayout();Capture("element-safe-area");
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(File.ReadAllText(path),Is.EqualTo(raw));
+        }
+        [UnityTest] public IEnumerator ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling()
+        {
+            UseElements();yield return null;Click("새 게임");yield return WaitPlayback();
+            var original=app.Session.Snapshot;var fixture=LoopJson.Copy(original);var state=fixture.state;var p=state.participants[0];
+            for(int i=0;i<3;i++) state.definition.combat.dice[i].faces=Enumerable.Repeat(i==2?Symbol.Sword:Symbol.Staff,6).ToArray();
+            p.completedLaps=2;p.claimed=new List<string>{state.matchId+":"+p.id+":lap:1",state.matchId+":"+p.id+":lap:2"};
+            p.dice=new List<DieSlot>{new DieSlot{instanceId="element-a",definitionId="balanced"},new DieSlot{instanceId="element-b",definitionId="arcane"},new DieSlot{instanceId="element-c",definitionId="steel"}};
+            var enemy=state.definition.v4.enemies.First(e=>e.encounterId!="final");enemy.attackType=DamageType.Physical;enemy.weakness=DamageType.Ice;enemy.resistance=DamageType.Lightning;
+            p.phase=CompetitionPhase.Encounter;p.offer=new EncounterOffer {id="element-offer",placeId=state.definition.world.places[p.position].id,stage=2,visit=1,
+                choices=new[]{new EncounterChoice {id=enemy.encounterId,label="속성 연출 검증",description="속성 연출 검증",kind=EncounterKind.Combat,available=true,enemyHp=500,enemyAttack=1},
+                    new EncounterChoice {id="harbor-work",label="항구의 짐 운반",description="항구의 짐 운반",kind=EncounterKind.Study,available=true}}};
+            fixture.revision++;new CompetitionStore(path).Commit(fixture,original.revision,original.generation);app.Session.Reload();app.Render();yield return null;
+            Assert.That(Screen.detail.text,Does.Contain("냉기 +20%").And.Contain("번개 −15%"));
+            Assert.That(Screen.detail.preferredHeight,Is.LessThanOrEqualTo(Screen.detail.rectTransform.rect.height+1));Capture("element-encounter-affinity");
+            Click("속성 연출 검증");yield return WaitPlayback();Assert.That(Screen.detail.text,Does.Contain("냉기 +20%").And.Contain("번개 −15%"));Capture("element-enemy-affinity");
+            var observed=new List<string>();Click("기호 주사위");yield return WaitPlayback(()=>{var id=Screen.playback.human.VisibleSkill;if(id!=null && !observed.Contains(id)) observed.Add(id);});
+            Assert.That(observed,Is.EqualTo(new[]{"bolt","arc-slash"}));var log=app.Session.Snapshot.state.participants[0].v4.lastTurn;
+            Assert.That(log.skills.Select(s=>s.damageType),Is.EqualTo(new[]{DamageType.Lightning,DamageType.Ice}));
+            Assert.That(log.skills.Select(s=>s.affinityBasisPoints),Is.EqualTo(new[]{8500,12000}));
+            Assert.That(Screen.detail.text,Does.Contain("최근 피해: 번개").And.Contain("냉기"));Capture("element-combat-result");
+            Click("기호 주사위");string saved=LoopJson.Encode(app.Session.Snapshot);appObject.SetActive(false);yield return null;appObject.SetActive(true);yield return null;
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(app.IsPresenting,Is.False);
         }
         [UnityTest] public IEnumerator PointerRoundShowsDiceSkillsAndAllFourParticipants()
         {

@@ -66,16 +66,18 @@ namespace DiceWarrior.SharedWorld
             if (choice.kind == EncounterKind.Combat)
             {
                 BeginCombat(p, choice.label, choice.enemyHp, choice.enemyAttack, false);
+                if (CompetitionV4Content.IsEnabled(state.definition)) { p.v4.enemyId = choice.id; p.v4.lastTurn = null; }
                 return false;
             }
             if (choice.kind == EncounterKind.Gear)
             {
                 var gear = state.definition.combat.gear.Single(g => g.id == choice.rewardId); p.equipment[gear.slot] = gear.id;
+                CompetitionAttributes.RefreshStats(state.definition, p);
             }
             else if (choice.kind == EncounterKind.Die)
                 p.dice[0] = new DieSlot { instanceId = p.offer.id + ":die", definitionId = choice.rewardId };
             p.hp = Math.Min(p.maxHp, p.hp + choice.heal);
-            Reward(p, choice);
+            Reward(state, p, choice);
             p.phase = CompetitionPhase.Map;
             p.message = choice.label + " · 완료";
             return true;
@@ -101,13 +103,13 @@ namespace DiceWarrior.SharedWorld
             {
                 if (p.enemy.boss)
                 {
-                    p.gold += rules.combatGold; CompetitionRules.AddXp(p, rules.combatXp);
+                    p.gold += rules.combatGold; CompetitionRules.AddXp(state.definition, p, rules.combatXp);
                     CompetitionRules.Honor(p, state.matchId + ":" + p.id + ":final", "최종 시련", state.definition.finalHonor);
                     p.trialSucceeded = true; p.finished = true; p.phase = CompetitionPhase.Complete; p.message = "최종 시련 성공!";
                 }
                 else
                 {
-                    Reward(p, p.offer.choices.Single(c => c.id == p.offer.selectedChoiceId));
+                    Reward(state, p, p.offer.choices.Single(c => c.id == p.offer.selectedChoiceId));
                     p.phase = CompetitionPhase.Map; p.message = p.enemy.name + " · 승리";
                 }
                 return true;
@@ -119,9 +121,11 @@ namespace DiceWarrior.SharedWorld
             return false;
         }
 
-        static void Reward(ParticipantState p, EncounterChoice choice)
+        static void Reward(CompetitionState state, ParticipantState p, EncounterChoice choice)
         {
-            p.gold += choice.gold; CompetitionRules.AddXp(p, choice.xp);
+            if (CompetitionV4Content.IsEnabled(state.definition) && state.definition.v4.treasureEncounterIds.Contains(choice.id))
+                p.gold = checked(p.gold + CompetitionAttributes.Describe(state.definition, p).attributes.luck / 5);
+            p.gold += choice.gold; CompetitionRules.AddXp(state.definition, p, choice.xp);
             CompetitionRules.Honor(p, p.offer.id + ":honor", choice.label, choice.honor);
         }
     }

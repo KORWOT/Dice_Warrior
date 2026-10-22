@@ -10,12 +10,12 @@ namespace DiceWarrior.SharedWorld
             var policy = state.definition.policies.Single(a => a.id == p.aiPolicyId);
             var legal = CompetitionEncounterRules.LegalChoices(state, p);
             if (legal.Length == 0) throw new InvalidOperationException("AI has no legal offered choice");
-            int best = legal.Max(c => Score(policy, p, c));
-            var tied = legal.Where(c => Score(policy, p, c) == best).ToArray();
+            int best = legal.Max(c => Score(state, policy, p, c));
+            var tied = legal.Where(c => Score(state, policy, p, c) == best).ToArray();
             return tied.Length == 1 ? tied[0].id : tied[CompetitionRandom.Next(ref p.aiRng, tied.Length)].id;
         }
 
-        static int Score(AiPolicyDefinition policy, ParticipantState p, EncounterChoice c)
+        static int Score(CompetitionState state, AiPolicyDefinition policy, ParticipantState p, EncounterChoice c)
         {
             int score;
             switch (c.kind)
@@ -32,6 +32,11 @@ namespace DiceWarrior.SharedWorld
             if (c.kind == EncounterKind.Heal && p.hp == p.maxHp) score = 0;
             if (c.kind == EncounterKind.Gear && p.equipment.Contains(c.rewardId)) score = 0;
             if (c.kind == EncounterKind.Die && p.dice[0].definitionId == c.rewardId) score = 0;
+            if (CompetitionV4Content.IsEnabled(state.definition))
+            {
+                if (c.kind == EncounterKind.Combat) score += CompetitionElements.MatchupScore(state.definition, p, c.id);
+                if (state.definition.v4.treasureEncounterIds.Contains(c.id)) score += Math.Min(2, CompetitionAttributes.Describe(state.definition, p).attributes.luck / 5);
+            }
             return score;
         }
 

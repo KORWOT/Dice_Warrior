@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="404e592a-893a-4145-b59f-a65d82ee9cd8" name="coli4@WOT 2026-10-22 23:36:44" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T23:36:44.3991808+09:00" queuing="2026-10-22T23:36:44.3991812+09:00" start="2026-10-22T23:36:43.7283698+09:00" finish="2026-10-22T23:36:44.4213889+09:00" />
+  <TestSettings name="default" id="4ebcf46f-02c8-452e-9a79-b09814e336c9">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-22_23_36_44" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e7d8b591-6d9f-437a-95ac-0a8b31b59a7e" testId="10a9f536-e813-fc3d-f983-1118f6b107ca" testName="StageVisibilityIsFrozenAndFutureGrantDoesNotRetroactivelyChangeSnapshot" computerName="WOT" duration="00:00:00.0003289" startTime="2026-10-22T23:36:44.3579417+09:00" endTime="2026-10-22T23:36:44.3582704+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e7d8b591-6d9f-437a-95ac-0a8b31b59a7e">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: 2&#xD;
+  But was:  0&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.StageVisibilityIsFrozenAndFutureGrantDoesNotRetroactivelyChangeSnapshot() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 98&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.StageVisibilityIsFrozenAndFutureGrantDoesNotRetroactivelyChangeSnapshot() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 98&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="af742a28-da38-43c8-b6eb-1f166458d1b6" testId="7cbe5fe1-84fe-0ac2-e1cb-928999422457" testName="ConflictIsLocalToOwnerAndRejectPolicyNeverDiscardsRawEvidence" computerName="WOT" duration="00:00:00.0055700" startTime="2026-10-22T23:36:44.3416040+09:00" endTime="2026-10-22T23:36:44.3471740+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="af742a28-da38-43c8-b6eb-1f166458d1b6">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: 2&#xD;
+  But was:  0&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.ConflictIsLocalToOwnerAndRejectPolicyNeverDiscardsRawEvidence() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 74&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.ConflictIsLocalToOwnerAndRejectPolicyNeverDiscardsRawEvidence() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 74&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ab3b6a6e-3808-4dc8-882e-cee5aa06e97a" testId="ebfe7ef1-1c11-4c29-e83f-3eb36ad832ef" testName="InvalidCatalogParentsGroupsAndOwnersAreRejected" computerName="WOT" duration="00:00:00.0006520" startTime="2026-10-22T23:36:44.3535409+09:00" endTime="2026-10-22T23:36:44.3541926+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab3b6a6e-3808-4dc8-882e-cee5aa06e97a">
+      <Output>
+        <ErrorInfo>
+          <Message>  cycle&#xD;
+  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.InvalidCatalogParentsGroupsAndOwnersAreRejected() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 136&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.InvalidCatalogParentsGroupsAndOwnersAreRejected() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 136&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d0570f75-2a74-419d-8185-f7ef582d3347" testId="169b5311-b398-874b-7958-012c8f40638f" testName="InputAndReturnedObjectsCannotMutateTheFrozenSnapshot" computerName="WOT" duration="00:00:00.0029110" startTime="2026-10-22T23:36:44.3506192+09:00" endTime="2026-10-22T23:36:44.3535299+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d0570f75-2a74-419d-8185-f7ef582d3347">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentOutOfRangeException : Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')</Message>
+          <StackTrace>   at System.SZArrayHelper.get_Item[T](Int32 index)&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.InputAndReturnedObjectsCannotMutateTheFrozenSnapshot() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 116&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ade4cb0d-a32c-44db-a79e-759d1794ae09" testId="01ba1897-f3a1-f0f0-20c5-003fe5e72bc0" testName="AllAnyNoneUseExplicitChildrenAndEmptyAnyDoesNotReject" computerName="WOT" duration="00:00:00.0218420" startTime="2026-10-22T23:36:44.3185462+09:00" endTime="2026-10-22T23:36:44.3403342+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ade4cb0d-a32c-44db-a79e-759d1794ae09">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True&#xD;
+  But was:  False&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.AllAnyNoneUseExplicitChildrenAndEmptyAnyDoesNotReject() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 47&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.AllAnyNoneUseExplicitChildrenAndEmptyAnyDoesNotReject() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 47&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="36de064f-b348-4c98-b93f-8fe9dc81b3e1" testId="bb5c295e-03ef-7151-c7a4-200e1978a6c3" testName="OrdinalOrderingIsStableAcrossInputEnumerationOrder" computerName="WOT" duration="00:00:00.0028820" startTime="2026-10-22T23:36:44.3546229+09:00" endTime="2026-10-22T23:36:44.3575045+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="36de064f-b348-4c98-b93f-8fe9dc81b3e1">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected is &lt;System.String[3]&gt;, actual is &lt;System.Linq.Enumerable+IListSelectIterator`2[DiceWarrior.SharedWorld.TagGrant,System.String]&gt;&#xD;
+  Values differ at index [0]&#xD;
+  Missing:  &lt; "a10", ... &gt;</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.OrdinalOrderingIsStableAcrossInputEnumerationOrder() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 128&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.OrdinalOrderingIsStableAcrossInputEnumerationOrder() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 128&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d6e8898b-1c76-4d26-a127-b6339dbe673b" testId="af569899-9857-080e-2b2c-361429ed73b7" testName="DuplicateMembershipKeepsEverySourceAndRemovalOnlyRemovesThatSource" computerName="WOT" duration="00:00:00.0004920" startTime="2026-10-22T23:36:44.3471880+09:00" endTime="2026-10-22T23:36:44.3476797+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6e8898b-1c76-4d26-a127-b6339dbe673b">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: 3&#xD;
+  But was:  0&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.DuplicateMembershipKeepsEverySourceAndRemovalOnlyRemovesThatSource() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 62&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.DuplicateMembershipKeepsEverySourceAndRemovalOnlyRemovesThatSource() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 62&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="978bcaf6-02fd-4da5-9a69-16585ba97ebc" testId="4cc35b39-1cd8-aa09-5be2-627de3f83b05" testName="PrioritySelectsOneTagPreservesProvenanceAndRestoresSuppressedTag" computerName="WOT" duration="00:00:00.0004190" startTime="2026-10-22T23:36:44.3575163+09:00" endTime="2026-10-22T23:36:44.3579350+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="978bcaf6-02fd-4da5-9a69-16585ba97ebc">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: 3&#xD;
+  But was:  0&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.PrioritySelectsOneTagPreservesProvenanceAndRestoresSuppressedTag() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 84&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.PrioritySelectsOneTagPreservesProvenanceAndRestoresSuppressedTag() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 84&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c6dfb337-72ca-49e9-a8da-61e396ba58be" testId="cdda2836-173c-a2b9-18d0-7bf6d57eaa69" testName="IdentityAndContextTagsNeverPropagateToAnotherOwner" computerName="WOT" duration="00:00:00.0003100" startTime="2026-10-22T23:36:44.3502975+09:00" endTime="2026-10-22T23:36:44.3506071+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c6dfb337-72ca-49e9-a8da-61e396ba58be">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True&#xD;
+  But was:  False&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.IdentityAndContextTagsNeverPropagateToAnotherOwner() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 35&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.IdentityAndContextTagsNeverPropagateToAnotherOwner() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 35&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e21e877c-c7fd-452e-bfe9-985899ecbfdd" testId="98071ee0-bd11-ff5b-ab13-9c74bb02509f" testName="InvalidGrantsAndQueriesCannotSilentlyMatch" computerName="WOT" duration="00:00:00.0004080" startTime="2026-10-22T23:36:44.3542039+09:00" endTime="2026-10-22T23:36:44.3546118+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e21e877c-c7fd-452e-bfe9-985899ecbfdd">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.InvalidGrantsAndQueriesCannotSilentlyMatch() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 151&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.InvalidGrantsAndQueriesCannotSilentlyMatch() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 151&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ae65c9e3-453f-4425-8b5c-32e4e476fb10" testId="56f6c858-e6e9-213d-7b32-eec961dd4b57" testName="FiniteBoundsRejectOversizedCatalogIdsQueriesAndStreamingGrants" computerName="WOT" duration="00:00:00.0025980" startTime="2026-10-22T23:36:44.3476863+09:00" endTime="2026-10-22T23:36:44.3502844+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ae65c9e3-453f-4425-8b5c-32e4e476fb10">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: &lt;System.ArgumentException&gt;&#xD;
+  But was:  null&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.FiniteBoundsRejectOversizedCatalogIdsQueriesAndStreamingGrants() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 168&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionTagTests.FiniteBoundsRejectOversizedCatalogIdsQueriesAndStreamingGrants() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionTagTests.cs:line 168&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="InputAndReturnedObjectsCannotMutateTheFrozenSnapshot" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="169b5311-b398-874b-7958-012c8f40638f">
+      <Execution id="d0570f75-2a74-419d-8185-f7ef582d3347" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="InputAndReturnedObjectsCannotMutateTheFrozenSnapshot" />
+    </UnitTest>
+    <UnitTest name="DuplicateMembershipKeepsEverySourceAndRemovalOnlyRemovesThatSource" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="af569899-9857-080e-2b2c-361429ed73b7">
+      <Execution id="d6e8898b-1c76-4d26-a127-b6339dbe673b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="DuplicateMembershipKeepsEverySourceAndRemovalOnlyRemovesThatSource" />
+    </UnitTest>
+    <UnitTest name="FiniteBoundsRejectOversizedCatalogIdsQueriesAndStreamingGrants" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="56f6c858-e6e9-213d-7b32-eec961dd4b57">
+      <Execution id="ae65c9e3-453f-4425-8b5c-32e4e476fb10" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="FiniteBoundsRejectOversizedCatalogIdsQueriesAndStreamingGrants" />
+    </UnitTest>
+    <UnitTest name="IdentityAndContextTagsNeverPropagateToAnotherOwner" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="cdda2836-173c-a2b9-18d0-7bf6d57eaa69">
+      <Execution id="c6dfb337-72ca-49e9-a8da-61e396ba58be" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="IdentityAndContextTagsNeverPropagateToAnotherOwner" />
+    </UnitTest>
+    <UnitTest name="OrdinalOrderingIsStableAcrossInputEnumerationOrder" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="bb5c295e-03ef-7151-c7a4-200e1978a6c3">
+      <Execution id="36de064f-b348-4c98-b93f-8fe9dc81b3e1" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="OrdinalOrderingIsStableAcrossInputEnumerationOrder" />
+    </UnitTest>
+    <UnitTest name="StageVisibilityIsFrozenAndFutureGrantDoesNotRetroactivelyChangeSnapshot" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="10a9f536-e813-fc3d-f983-1118f6b107ca">
+      <Execution id="e7d8b591-6d9f-437a-95ac-0a8b31b59a7e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="StageVisibilityIsFrozenAndFutureGrantDoesNotRetroactivelyChangeSnapshot" />
+    </UnitTest>
+    <UnitTest name="ConflictIsLocalToOwnerAndRejectPolicyNeverDiscardsRawEvidence" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="7cbe5fe1-84fe-0ac2-e1cb-928999422457">
+      <Execution id="af742a28-da38-43c8-b6eb-1f166458d1b6" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="ConflictIsLocalToOwnerAndRejectPolicyNeverDiscardsRawEvidence" />
+    </UnitTest>
+    <UnitTest name="AllAnyNoneUseExplicitChildrenAndEmptyAnyDoesNotReject" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="01ba1897-f3a1-f0f0-20c5-003fe5e72bc0">
+      <Execution id="ade4cb0d-a32c-44db-a79e-759d1794ae09" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="AllAnyNoneUseExplicitChildrenAndEmptyAnyDoesNotReject" />
+    </UnitTest>
+    <UnitTest name="PrioritySelectsOneTagPreservesProvenanceAndRestoresSuppressedTag" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="4cc35b39-1cd8-aa09-5be2-627de3f83b05">
+      <Execution id="978bcaf6-02fd-4da5-9a69-16585ba97ebc" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="PrioritySelectsOneTagPreservesProvenanceAndRestoresSuppressedTag" />
+    </UnitTest>
+    <UnitTest name="InvalidGrantsAndQueriesCannotSilentlyMatch" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="98071ee0-bd11-ff5b-ab13-9c74bb02509f">
+      <Execution id="e21e877c-c7fd-452e-bfe9-985899ecbfdd" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="InvalidGrantsAndQueriesCannotSilentlyMatch" />
+    </UnitTest>
+    <UnitTest name="InvalidCatalogParentsGroupsAndOwnersAreRejected" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="ebfe7ef1-1c11-4c29-e83f-3eb36ad832ef">
+      <Execution id="ab3b6a6e-3808-4dc8-882e-cee5aa06e97a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionTagTests" name="InvalidCatalogParentsGroupsAndOwnersAreRejected" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="10a9f536-e813-fc3d-f983-1118f6b107ca" executionId="e7d8b591-6d9f-437a-95ac-0a8b31b59a7e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7cbe5fe1-84fe-0ac2-e1cb-928999422457" executionId="af742a28-da38-43c8-b6eb-1f166458d1b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ebfe7ef1-1c11-4c29-e83f-3eb36ad832ef" executionId="ab3b6a6e-3808-4dc8-882e-cee5aa06e97a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="169b5311-b398-874b-7958-012c8f40638f" executionId="d0570f75-2a74-419d-8185-f7ef582d3347" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="01ba1897-f3a1-f0f0-20c5-003fe5e72bc0" executionId="ade4cb0d-a32c-44db-a79e-759d1794ae09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb5c295e-03ef-7151-c7a4-200e1978a6c3" executionId="36de064f-b348-4c98-b93f-8fe9dc81b3e1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="af569899-9857-080e-2b2c-361429ed73b7" executionId="d6e8898b-1c76-4d26-a127-b6339dbe673b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4cc35b39-1cd8-aa09-5be2-627de3f83b05" executionId="978bcaf6-02fd-4da5-9a69-16585ba97ebc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cdda2836-173c-a2b9-18d0-7bf6d57eaa69" executionId="c6dfb337-72ca-49e9-a8da-61e396ba58be" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="98071ee0-bd11-ff5b-ab13-9c74bb02509f" executionId="e21e877c-c7fd-452e-bfe9-985899ecbfdd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="56f6c858-e6e9-213d-7b32-eec961dd4b57" executionId="ae65c9e3-453f-4425-8b5c-32e4e476fb10" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="11" executed="11" passed="0" failed="11" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running selected tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 11 of 11 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

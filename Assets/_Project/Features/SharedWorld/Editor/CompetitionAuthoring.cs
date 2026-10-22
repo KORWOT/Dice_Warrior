@@ -15,7 +15,7 @@ namespace DiceWarrior.SharedWorld.Editor
     {
         public const string ScenePath="Assets/_Project/Scenes/Title.unity";
         public const string PrefabPath="Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab";
-        public const string ContentPath="Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json";
+        public const string ContentPath="Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json";
         static Font font;
         [MenuItem("Dice Warrior/Build Shared World Main")]
         public static void Build()
@@ -78,6 +78,7 @@ namespace DiceWarrior.SharedWorld.Editor
                 human.rollLabel=Text(tray,"Tray label","",14,20,5,620,26,TextAnchor.MiddleCenter);
                 human.numericDie=Die(tray,"Travel D6",272,30);human.symbolDice=new LoopDieGraphic[3];human.dieLabels=new Text[3];
                 for(int i=0;i<3;i++) { human.symbolDice[i]=Die(tray,"Symbol die "+i,100+i*172,30);human.dieLabels[i]=Text(tray,"Die caption "+i,"",16,80+i*172,141,156,28,TextAnchor.MiddleCenter); }
+                GrowthDetails(frame,screen);
                 screen.detail=Text(frame,"Current encounter","",17,32,871,656,72);
                 screen.history=Text(frame,"AI round summary","",15,32,945,656,68);screen.history.color=new Color(.61f,.76f,.78f);
                 var buttons=Panel(frame,"Actions",30,1016,660,224,Color.clear);
@@ -109,6 +110,45 @@ namespace DiceWarrior.SharedWorld.Editor
             PrefabUtility.RecordPrefabInstancePropertyModifications(manager);
             EditorUtility.SetDirty(app);EditorUtility.SetDirty(manager);EditorSceneManager.MarkSceneDirty(scene);
             if(!EditorSceneManager.SaveScene(scene,ScenePath)) throw new IOException("Scene save failed");
+        }
+        static void GrowthDetails(RectTransform frame,CompetitionScreen screen)
+        {
+            var panel=Panel(frame,"Growth details",30,246,660,610,new Color(.055f,.1f,.15f));screen.growthPanel=panel.gameObject;
+            screen.growthTitle=Text(panel,"Details title","",24,20,16,620,36);
+            screen.growthTitle.color=new Color(.95f,.83f,.55f);
+            screen.growthSummary=Text(panel,"Details summary","",18,20,60,620,72);
+            var rows=Panel(panel,"RGB stats",20,140,620,204,Color.clear);screen.statRows=rows.gameObject;
+            screen.statValues=new Text[3];screen.statSources=new Text[3];
+            var colors=new[]{new Color32(229,108,100,255),new Color32(82,185,135,255),new Color32(114,151,237,255)};
+            var glyphs=new[]{LoopGlyph.Sword,LoopGlyph.Shield,LoopGlyph.Staff};
+            for(int i=0;i<3;i++)
+            {
+                Glyph(rows,"Stat icon "+i,glyphs[i],0,i*68+6,38,38).color=colors[i];
+                screen.statValues[i]=Text(rows,"Stat value "+i,"",24,52,i*68,568,34);screen.statValues[i].color=colors[i];
+                screen.statSources[i]=Text(rows,"Stat sources "+i,"",17,52,i*68+35,568,29);
+            }
+            screen.growthBody=Text(panel,"Growth sources","",17,20,356,620,238);
+            var attributes=Panel(panel,"Classic attributes",20,140,620,264,Color.clear);screen.attributeRows=attributes.gameObject;
+            screen.attributeValues=new Text[6];screen.attributeSources=new Text[6];
+            var attributeColors=new[]{new Color32(229,115,115,255),new Color32(215,166,75,255),new Color32(85,186,139,255),new Color32(112,159,233,255),new Color32(161,138,224,255),new Color32(216,135,187,255)};
+            var attributeGlyphs=new[]{LoopGlyph.Sword,LoopGlyph.Star,LoopGlyph.Pawn,LoopGlyph.Staff,LoopGlyph.Shield,LoopGlyph.Gem};
+            for(int i=0;i<6;i++)
+            {
+                Glyph(attributes,"Attribute icon "+i,attributeGlyphs[i],0,i*44+6,30,30).color=attributeColors[i];
+                screen.attributeValues[i]=Text(attributes,"Attribute value "+i,"",21,42,i*44+4,220,34);screen.attributeValues[i].color=attributeColors[i];
+                screen.attributeSources[i]=Text(attributes,"Attribute sources "+i,"",15,270,i*44+2,350,40);
+            }
+            screen.attributeBody=Text(panel,"Attribute HP and growth","",17,20,416,620,178);
+            attributes.gameObject.SetActive(false);screen.attributeBody.gameObject.SetActive(false);
+            screen.skillDetails=Text(panel,"Dice and skills","",17,20,140,620,454);
+            var cards=Panel(panel,"Adventurer cards",20,140,620,454,Color.clear);screen.adventurerCards=cards.gameObject;screen.cardTexts=new Text[3];
+            for(int i=0;i<3;i++)
+            {
+                var card=Panel(cards,"Adventurer card "+i,0,i*149,620,137,new Color(.085f,.15f,.21f));
+                Panel(card,"Accent",0,0,5,137,colors[new[]{0,2,1}[i]]);
+                screen.cardTexts[i]=Text(card,"Adventurer description","",19,18,12,584,113);
+            }
+            panel.gameObject.SetActive(false);
         }
         static Text Text(Transform parent,string name,string value,int size,float x,float y,float width,float height,TextAnchor alignment=TextAnchor.UpperLeft)
         {

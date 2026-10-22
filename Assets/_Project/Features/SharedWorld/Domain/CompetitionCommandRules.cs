@@ -43,6 +43,7 @@ namespace DiceWarrior.SharedWorld
                     Empty(arg);
                     if (p.phase != CompetitionPhase.Map) throw new InvalidOperationException("보드 이동 차례가 아닙니다.");
                     p.lastTravel = 1 + CompetitionRandom.Next(ref p.travelRng, 6); p.lastTurn = null; p.offer = null; p.enemy = null; p.encounterTurns = 0;
+                    if (CompetitionV4Content.IsEnabled(state.definition)) { p.v4.enemyId = null; p.v4.lastTurn = null; }
                     if (p.position + p.lastTravel >= state.definition.world.places.Length)
                     {
                         p.position = 0; p.phase = CompetitionPhase.LapReward; p.message = "한 바퀴 완주! 보상을 받으세요.";
@@ -73,7 +74,7 @@ namespace DiceWarrior.SharedWorld
             string id = state.matchId + ":" + p.id + ":lap:" + lap;
             if (p.claimed.Contains(id)) throw new InvalidOperationException("Lap already claimed");
             p.claimed.Add(id); p.completedLaps = lap; p.gold += rules.lapGold;
-            CompetitionRules.AddXp(p, rules.lapXp); p.hp = Math.Min(p.maxHp, p.hp + rules.lapHeal);
+            CompetitionRules.AddXp(state.definition, p, rules.lapXp); p.hp = Math.Min(p.maxHp, p.hp + rules.lapHeal);
             if (lap < state.definition.lapsToFinish)
             {
                 p.dice.Add(new DieSlot { instanceId = id + ":die", definitionId = arg.Length == 0 ? rules.dice[lap].id : arg });
@@ -81,7 +82,9 @@ namespace DiceWarrior.SharedWorld
                 return true;
             }
             p.equipment[gear.slot] = gear.id;
+            CompetitionAttributes.RefreshStats(state.definition, p);
             CompetitionEncounterRules.BeginCombat(p, "순환의 수호자", rules.bossHp, rules.bossAttack, true);
+            if (CompetitionV4Content.IsEnabled(state.definition)) { p.v4.enemyId = "final"; p.v4.lastTurn = null; }
             return false;
         }
 

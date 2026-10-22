@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4e991faf-3da9-4daa-8ce3-de6307370652" name="coli4@WOT 2026-10-22 23:33:59" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T23:33:59.8425313+09:00" queuing="2026-10-22T23:33:59.8425315+09:00" start="2026-10-22T23:33:59.1697515+09:00" finish="2026-10-22T23:33:59.8476154+09:00" />
+  <TestSettings name="default" id="02e9f6a2-e92b-4849-aede-5efcdc14f0a4">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-22_23_33_59" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="a0cdf724-7e46-4ddc-b06e-07a33bd83ffb" testId="9e699ba5-becf-2b75-d01d-da089dfd23bf" testName="CaptureV3CompatibilityBeforeV4Implementation" computerName="WOT" duration="00:00:00.0913940" startTime="2026-10-22T23:33:59.6706557+09:00" endTime="2026-10-22T23:33:59.7619932+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0cdf724-7e46-4ddc-b06e-07a33bd83ffb">
+      <Output>
+        <StdOut>wanderer|368D89575E0BDF99C20E5FE36440EBF55546C02C40A4462D72EEA951D3393AEB|B40A05D6D2308AE8D95D6B60377561041075F7462A689939A4233FA65C8BFE01&#xD;
+scholar|EF7C6F0E05FC8758A6D6582761162CF608D99EF3B0D524D141458510FFB231C7|06B2D29271BD5D8F4405D84AB76D6312B665185762419C88D3FDA76E9194FFC8&#xD;
+vanguard|68F01858EEC661CC5D824171188CB8572707F43BCB8C0BCADBC31ABB919A3DCD|FC2F99E4DA8AE7A9FF08FC20766DDF754998681E865BCE999210A4FD8C53F80A</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="CaptureV3CompatibilityBeforeV4Implementation" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="9e699ba5-becf-2b75-d01d-da089dfd23bf">
+      <Execution id="a0cdf724-7e46-4ddc-b06e-07a33bd83ffb" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionV4Tests" name="CaptureV3CompatibilityBeforeV4Implementation" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9e699ba5-becf-2b75-d01d-da089dfd23bf" executionId="a0cdf724-7e46-4ddc-b06e-07a33bd83ffb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running selected tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 1 of 1 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+wanderer|368D89575E0BDF99C20E5FE36440EBF55546C02C40A4462D72EEA951D3393AEB|B40A05D6D2308AE8D95D6B60377561041075F7462A689939A4233FA65C8BFE01&#xD;
+scholar|EF7C6F0E05FC8758A6D6582761162CF608D99EF3B0D524D141458510FFB231C7|06B2D29271BD5D8F4405D84AB76D6312B665185762419C88D3FDA76E9194FFC8&#xD;
+vanguard|68F01858EEC661CC5D824171188CB8572707F43BCB8C0BCADBC31ABB919A3DCD|FC2F99E4DA8AE7A9FF08FC20766DDF754998681E865BCE999210A4FD8C53F80A&#xD;
+&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

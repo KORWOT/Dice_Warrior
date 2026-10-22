@@ -2,6 +2,8 @@
 
 - 역할: 공동 모험 메인의 CompetitionScreen 프리팹과 Title 연결을 Editor API로 작성한다.
 - 핵심 동작: 고정12칸/네 말/참가자4행/주사위/전투 무대/버튼8개를 authored 참조로 만든다. 기존 Title의 UIManager에 CompetitionScreen 하나만 등록하고 CompetitionApp의 UI/콘텐츠/전투 Config를 연결한다. 구형 App·화면 생성 경로는 없다.
+- GROWTH_04: GrowthDetails는 동일720×1280 프레임 안에 선택 카드3개, RGB 색/검·방패·지팡이 아이콘3행, 출처/장비, 주사위·스킬 텍스트 영역을 작성한다. 패널은 기본 비활성이고 Screen이 기존 참조를 바인딩한다.
+- TAG_STAT_ELEMENT_05: ContentPath는 별도 shared-world-preview-4.json이다. 기존 RGB3행과 카드/버튼을 보존하고, 같은 상세 패널에6스탯 각44px 행/색상/아이콘/출처와 HP 본문을 별도로 작성한다. 실제 Scene/Prefab 갱신은 메인이 승인된 두 자산에 Editor API로 실행한다. 코드 작성 자체는 자산 검증 PASS가 아니다.
 - 입출력: Build → Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab, Assets/_Project/Scenes/Title.unity. ContentPath의 JSON과 기존 SymbolLoopConfig를 참조한다.
 - 사용하는 대상: AssetDatabase/PrefabUtility/EditorSceneManager, CompetitionScreen/App/Playback, 기존 SymbolLoopPlayback/Die/Glyph, 공용 UIRoot/CommonButtonView/Pretendard TTF.
 - 사용하는 쪽·관계 근거: 명시 Editor 메뉴 또는 메인 에이전트의 CLI eval. 런타임에서 실행하지 않는다.

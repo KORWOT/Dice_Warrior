@@ -1,0 +1,134 @@
+{
+  "baseline": "000662b7dd6fa9c743d082b827603c046948cb81",
+  "userProtectedCount": 9,
+  "protectedCount": 16,
+  "protected": [
+    {
+      "path": "Assets/Settings/Mobile_RPAsset.asset",
+      "sha256": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset",
+      "sha256": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset",
+      "sha256": "0688B5CE5A24B3CA38DC86A2CE04A7128CA44A2629F150D02ECA4642E2908337",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/ProjectSettings.asset",
+      "sha256": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json",
+      "sha256": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json",
+      "sha256": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md",
+      "sha256": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Shared_World_AI_Competition_Migration_Plan_v0.1.md",
+      "sha256": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_God_Adventurer_Growth_Direction_GDD_v0.2.md",
+      "sha256": "8D3783A9659B5A0918740CEA199FBF8EB728CC1A9ABE133FBCFC05203FB98C8F",
+      "unchanged": true
+    },
+    {
+      "path": "Packages/manifest.json",
+      "sha256": "B40ED5EB37EF235F89855FA6012B8AEC04507A8AEC966DF0857FA83B70EE09F7",
+      "unchanged": true
+    },
+    {
+      "path": "Packages/packages-lock.json",
+      "sha256": "AFF027C148EA1597437AF85287AEFFA56308B41B32A9893893DD8663FDD4615D",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json",
+      "sha256": "7DBBA3759E294E0EC4EE86E8404894B54A9096D320F789B819F4AEB60C775DE5",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenVectors.json",
+      "sha256": "AB4CE8DC0B9A9575FBF1B329462005DCE8DCCA4655A18821B34607541B76591F",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Tests/EditMode/ReplayGoldenVectors.json",
+      "sha256": "863DE8B00364ABBE6D99107C1BF191E6C8060D26A3332E7B9B78BCC6AE30090E",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab.meta",
+      "sha256": "70DB33D1425CAE1C122A4A5EBDA1DA5F52F37E7266659849501F84C9C8508F04",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Scenes/Title.unity.meta",
+      "sha256": "273B86A758ACDA5BD8CD8CF5D15F2BAEACB0986B4C25462CFEAA6170DB1E86E7",
+      "unchanged": true
+    }
+  ],
+  "csharpCount": 52,
+  "modifiedCsharpCount": 16,
+  "missingCodeMaps": [],
+  "missingMeta": [],
+  "newMeta": [
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-3.json.meta",
+      "guid": "d906ccab339a417392080edecef981a1",
+      "matches": 1
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionStats.cs.meta",
+      "guid": "9387f4bf0b20418f961afd912657c9c3",
+      "matches": 1
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionGrowthView.cs.meta",
+      "guid": "8431206e5a954e7893bf0be734d90778",
+      "matches": 1
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Runtime/AdventurerSelectionStore.cs.meta",
+      "guid": "8f1f97a1bda249e08aca58c32985dc74",
+      "matches": 1
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/AdventurerSelectionStoreTests.cs.meta",
+      "guid": "4cd6f08a295d475cba20674935fb0851",
+      "matches": 1
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGrowthTests.cs.meta",
+      "guid": "a5b99715aac44c5e8a4dae5cd0a45502",
+      "matches": 1
+    }
+  ],
+  "brokenLinks": [],
+  "diffCheckExit": 0,
+  "stagedCount": 0,
+  "serverV1ContentUnchanged": true,
+  "verifiedSourceCount": 26,
+  "editorScene": "Assets/_Project/Scenes/Title.unity",
+  "editorSceneDirty": false,
+  "playMode": "stopped",
+  "diffCheckScope": "Code and documents; Unity-authored empty YAML fields excluded",
+  "repairCycles": 1,
+  "remainingMandatoryFindings": 0
+}

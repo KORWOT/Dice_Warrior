@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2a518a55-1713-4619-8b76-efe96124f7cf" name="coli4@WOT 2026-10-22 22:17:53" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T22:17:53.0386238+09:00" queuing="2026-10-22T22:17:53.0386241+09:00" start="2026-10-22T22:17:51.4076261+09:00" finish="2026-10-22T22:17:53.0590573+09:00" />
+  <TestSettings name="default" id="e12b0d10-035f-4766-97fd-70dc5874f1a8">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-22_22_17_53" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fd4c5fa6-7c4a-4c37-a435-d3e8c69874df" testId="e31f5395-683d-7351-262f-9d82895cfad4" testName="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;scholar&quot;,4,4,6)" computerName="WOT" duration="00:00:00.0011230" startTime="2026-10-22T22:17:52.9888872+09:00" endTime="2026-10-22T22:17:52.9900097+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fd4c5fa6-7c4a-4c37-a435-d3e8c69874df">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True&#xD;
+  But was:  False&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(String id, Int32 strength, Int32 guard, Int32 arcane) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 26&#xD;
+   at InvokeStub_CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(Object, Span`1)&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(String id, Int32 strength, Int32 guard, Int32 arcane) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 26&#xD;
+   at InvokeStub_CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(Object, Span`1)&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="66a2a358-c4d2-40c4-90cc-582c9880bc39" testId="2bcd389c-1f8d-0815-588d-38d90764c6ca" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;guard&quot;,0,0,0,7,7,10)" computerName="WOT" duration="00:00:00.0005970" startTime="2026-10-22T22:17:52.9942546+09:00" endTime="2026-10-22T22:17:52.9948514+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66a2a358-c4d2-40c4-90cc-582c9880bc39">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="03500f1c-9c8c-4b70-ad7c-e3c8376ef1f0" testId="8ed9fd84-6d14-8f0f-75e7-5f72d6e3e894" testName="LegacyVersionsOmitNewNestedFieldsAndKeepTheirUniformPower" computerName="WOT" duration="00:00:00.0583440" startTime="2026-10-22T22:17:52.9177908+09:00" endTime="2026-10-22T22:17:52.9761340+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="03500f1c-9c8c-4b70-ad7c-e3c8376ef1f0" />
+    <UnitTestResult executionId="777ddcbf-5b25-4492-9bce-44f205d293c7" testId="6b9a65c4-f5f3-d7b0-6eec-4554775c199d" testName="EncounterXpRaisesAllThreeStatsAndHpWithoutChangingAccountAndNewMatchResetsRun" computerName="WOT" duration="00:00:00.1075240" startTime="2026-10-22T22:17:52.7980027+09:00" endTime="2026-10-22T22:17:52.9054694+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="777ddcbf-5b25-4492-9bce-44f205d293c7">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.EncounterXpRaisesAllThreeStatsAndHpWithoutChangingAccountAndNewMatchResetsRun() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 104&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="75fc5753-c04c-464d-b5d9-2f9a13d5ed2f" testId="5dee5164-a850-2c1d-b429-49d8ed0f5207" testName="InvalidStatsScalingAndVersionPayloadsAreRejected" computerName="WOT" duration="00:00:00.0110490" startTime="2026-10-22T22:17:52.9067186+09:00" endTime="2026-10-22T22:17:52.9177681+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="75fc5753-c04c-464d-b5d9-2f9a13d5ed2f">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.InvalidStatsScalingAndVersionPayloadsAreRejected() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 167&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f057d6d9-bf5c-4d72-a6e0-6f73f1c37a3f" testId="ed7d1d71-1087-2ba8-3a1b-840bc6812be5" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;bolt&quot;,5,8,5,0,0,0)" computerName="WOT" duration="00:00:00.0008320" startTime="2026-10-22T22:17:52.9927811+09:00" endTime="2026-10-22T22:17:52.9936133+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f057d6d9-bf5c-4d72-a6e0-6f73f1c37a3f">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="04fb25f2-c35a-4c0d-92ee-186f36567592" testId="9859441c-904e-a40e-0a30-4e1fbc54402b" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;fire-bolt&quot;,17,20,17,0,0,0)" computerName="WOT" duration="00:00:00.0005900" startTime="2026-10-22T22:17:52.9954617+09:00" endTime="2026-10-22T22:17:52.9960515+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04fb25f2-c35a-4c0d-92ee-186f36567592">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a023e544-ba1d-4e22-8864-6c0003ff2364" testId="2412c4c4-2fbb-b446-821f-e437da44f420" testName="V3HumanCommandsReplayAllAiStateAndResumeAcrossSerialization" computerName="WOT" duration="00:00:00.0009350" startTime="2026-10-22T22:17:52.9978885+09:00" endTime="2026-10-22T22:17:52.9988229+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a023e544-ba1d-4e22-8864-6c0003ff2364">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.V3HumanCommandsReplayAllAiStateAndResumeAcrossSerialization() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 139&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="35996e8d-896c-4eed-a35a-0d9ffa7d0dfa" testId="cb94bfbd-ee99-f496-134e-2b18c93a4d90" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;citadel&quot;,15,13,13,18,18,21)" computerName="WOT" duration="00:00:00.0005850" startTime="2026-10-22T22:17:52.9972736+09:00" endTime="2026-10-22T22:17:52.9978582+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="35996e8d-896c-4eed-a35a-0d9ffa7d0dfa">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="deaa1b8f-6036-490c-ac8a-acac89b2304f" testId="b229f65c-bd4b-446b-8c7b-f31e4574c989" testName="PartialSkillsShareShieldSkipAfterKillAndCannotCreateZeroEffects" computerName="WOT" duration="00:00:00.0008740" startTime="2026-10-22T22:17:52.9772085+09:00" endTime="2026-10-22T22:17:52.9780822+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="deaa1b8f-6036-490c-ac8a-acac89b2304f">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.PartialSkillsShareShieldSkipAfterKillAndCannotCreateZeroEffects() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 88&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bb5f8646-336b-4018-9cc1-019847c44780" testId="09283f47-161f-8274-7721-3639c2b83a78" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;arc-slash&quot;,20,17,17,0,0,0)" computerName="WOT" duration="00:00:00.0005970" startTime="2026-10-22T22:17:52.9948585+09:00" endTime="2026-10-22T22:17:52.9954549+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb5f8646-336b-4018-9cc1-019847c44780">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d10f1299-b482-4eb5-abbc-44e0626eed16" testId="c18ff942-b307-e477-a927-10a512b57c11" testName="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;wanderer&quot;,6,4,4)" computerName="WOT" duration="00:00:00.0107580" startTime="2026-10-22T22:17:52.9781062+09:00" endTime="2026-10-22T22:17:52.9888640+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d10f1299-b482-4eb5-abbc-44e0626eed16">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True&#xD;
+  But was:  False&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(String id, Int32 strength, Int32 guard, Int32 arcane) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 26&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(String id, Int32 strength, Int32 guard, Int32 arcane) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 26&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="69ba27d8-5e26-4bab-b6bf-fc253adf6649" testId="c0545629-7409-29d8-3cbb-f96168875ae3" testName="MixedCoefficientFloorsOnceThenAppliesFireGearAndPassive" computerName="WOT" duration="00:00:00.0010349" startTime="2026-10-22T22:17:52.9761602+09:00" endTime="2026-10-22T22:17:52.9771954+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="69ba27d8-5e26-4bab-b6bf-fc253adf6649">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.MixedCoefficientFloorsOnceThenAppliesFireGearAndPassive() in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 79&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2bfc3330-1123-4d25-bca4-7c4df316b06a" testId="a97fc140-a1a3-eb90-4865-6a14ccbbbb2d" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;flame&quot;,7,10,7,0,0,0)" computerName="WOT" duration="00:00:00.0006269" startTime="2026-10-22T22:17:52.9936203+09:00" endTime="2026-10-22T22:17:52.9942472+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bfc3330-1123-4d25-bca4-7c4df316b06a">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="46777696-72b9-447c-91b3-c6919e6c4a85" testId="dcaa248a-3512-ca8c-a8bc-7b923daccad4" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;flame-arc&quot;,28,29,27,0,0,0)" computerName="WOT" duration="00:00:00.0006160" startTime="2026-10-22T22:17:52.9966509+09:00" endTime="2026-10-22T22:17:52.9972666+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46777696-72b9-447c-91b3-c6919e6c4a85">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e5107668-63a3-4439-912f-9e009d7f8833" testId="7a45782b-af24-5509-3d7d-afb2f46d6f7b" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;guard-slash&quot;,12,10,10,9,9,12)" computerName="WOT" duration="00:00:00.0005860" startTime="2026-10-22T22:17:52.9960582+09:00" endTime="2026-10-22T22:17:52.9966440+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e5107668-63a3-4439-912f-9e009d7f8833">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at InvokeStub_CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d9960599-79e4-46a4-ab37-b628969cd49a" testId="1da71f39-4f3f-b9c5-2929-a3817d498a55" testName="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;vanguard&quot;,4,6,4)" computerName="WOT" duration="00:00:00.0006860" startTime="2026-10-22T22:17:52.9900216+09:00" endTime="2026-10-22T22:17:52.9907070+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9960599-79e4-46a4-ab37-b628969cd49a">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected: True&#xD;
+  But was:  False&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(String id, Int32 strength, Int32 guard, Int32 arcane) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 26&#xD;
+   at InvokeStub_CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(Object, Span`1)&#xD;
+
+1)    at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(String id, Int32 strength, Int32 guard, Int32 arcane) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 26&#xD;
+   at InvokeStub_CompetitionGrowthTests.SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(Object, Span`1)&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="66cc7c72-02c6-444a-b5fc-9aa1cc7f5bfb" testId="905ee186-52ed-36b8-59c8-194a605f4224" testName="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;slash&quot;,11,8,8,0,0,0)" computerName="WOT" duration="00:00:00.0011370" startTime="2026-10-22T22:17:52.9916328+09:00" endTime="2026-10-22T22:17:52.9927694+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="66cc7c72-02c6-444a-b5fc-9aa1cc7f5bfb">
+      <Output>
+        <ErrorInfo>
+          <Message>System.ArgumentException : Unsupported competition definition</Message>
+          <StackTrace>   at DiceWarrior.SharedWorld.CompetitionContent.Validate(CompetitionDefinition d) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionContent.cs:line 25&#xD;
+   at DiceWarrior.SharedWorld.CompetitionRules.Start(CompetitionDefinition definition, Profile profile, UInt32 seed, String matchId, String adventurerId) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Domain\CompetitionRules.cs:line 11&#xD;
+   at DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests.SkillUsesItsStatTagGearAndAdventurerPassive(String skillId, Int32 swordDamage, Int32 runeDamage, Int32 guardianDamage, Int32 swordBlock, Int32 runeBlock, Int32 guardianBlock) in D:\UnityProject\Dice_Warrior\Assets\_Project\Features\SharedWorld\Tests\EditMode\CompetitionGrowthTests.cs:line 63&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithManyArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="MixedCoefficientFloorsOnceThenAppliesFireGearAndPassive" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="c0545629-7409-29d8-3cbb-f96168875ae3">
+      <Execution id="69ba27d8-5e26-4bab-b6bf-fc253adf6649" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="MixedCoefficientFloorsOnceThenAppliesFireGearAndPassive" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;arc-slash&quot;,20,17,17,0,0,0)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="09283f47-161f-8274-7721-3639c2b83a78">
+      <Execution id="bb5f8646-336b-4018-9cc1-019847c44780" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;arc-slash&quot;,20,17,17,0,0,0)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;slash&quot;,11,8,8,0,0,0)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="905ee186-52ed-36b8-59c8-194a605f4224">
+      <Execution id="66cc7c72-02c6-444a-b5fc-9aa1cc7f5bfb" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;slash&quot;,11,8,8,0,0,0)" />
+    </UnitTest>
+    <UnitTest name="InvalidStatsScalingAndVersionPayloadsAreRejected" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="5dee5164-a850-2c1d-b429-49d8ed0f5207">
+      <Execution id="75fc5753-c04c-464d-b5d9-2f9a13d5ed2f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="InvalidStatsScalingAndVersionPayloadsAreRejected" />
+    </UnitTest>
+    <UnitTest name="LegacyVersionsOmitNewNestedFieldsAndKeepTheirUniformPower" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="8ed9fd84-6d14-8f0f-75e7-5f72d6e3e894">
+      <Execution id="03500f1c-9c8c-4b70-ad7c-e3c8376ef1f0" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="LegacyVersionsOmitNewNestedFieldsAndKeepTheirUniformPower" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;guard-slash&quot;,12,10,10,9,9,12)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="7a45782b-af24-5509-3d7d-afb2f46d6f7b">
+      <Execution id="e5107668-63a3-4439-912f-9e009d7f8833" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;guard-slash&quot;,12,10,10,9,9,12)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;bolt&quot;,5,8,5,0,0,0)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="ed7d1d71-1087-2ba8-3a1b-840bc6812be5">
+      <Execution id="f057d6d9-bf5c-4d72-a6e0-6f73f1c37a3f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;bolt&quot;,5,8,5,0,0,0)" />
+    </UnitTest>
+    <UnitTest name="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;wanderer&quot;,6,4,4)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="c18ff942-b307-e477-a927-10a512b57c11">
+      <Execution id="d10f1299-b482-4eb5-abbc-44e0626eed16" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;wanderer&quot;,6,4,4)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;flame-arc&quot;,28,29,27,0,0,0)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="dcaa248a-3512-ca8c-a8bc-7b923daccad4">
+      <Execution id="46777696-72b9-447c-91b3-c6919e6c4a85" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;flame-arc&quot;,28,29,27,0,0,0)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;guard&quot;,0,0,0,7,7,10)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="2bcd389c-1f8d-0815-588d-38d90764c6ca">
+      <Execution id="66a2a358-c4d2-40c4-90cc-582c9880bc39" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;guard&quot;,0,0,0,7,7,10)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;citadel&quot;,15,13,13,18,18,21)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="cb94bfbd-ee99-f496-134e-2b18c93a4d90">
+      <Execution id="35996e8d-896c-4eed-a35a-0d9ffa7d0dfa" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;citadel&quot;,15,13,13,18,18,21)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;fire-bolt&quot;,17,20,17,0,0,0)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="9859441c-904e-a40e-0a30-4e1fbc54402b">
+      <Execution id="04fb25f2-c35a-4c0d-92ee-186f36567592" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;fire-bolt&quot;,17,20,17,0,0,0)" />
+    </UnitTest>
+    <UnitTest name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;flame&quot;,7,10,7,0,0,0)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="a97fc140-a1a3-eb90-4865-6a14ccbbbb2d">
+      <Execution id="2bfc3330-1123-4d25-bca4-7c4df316b06a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SkillUsesItsStatTagGearAndAdventurerPassive(&quot;flame&quot;,7,10,7,0,0,0)" />
+    </UnitTest>
+    <UnitTest name="V3HumanCommandsReplayAllAiStateAndResumeAcrossSerialization" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="2412c4c4-2fbb-b446-821f-e437da44f420">
+      <Execution id="a023e544-ba1d-4e22-8864-6c0003ff2364" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="V3HumanCommandsReplayAllAiStateAndResumeAcrossSerialization" />
+    </UnitTest>
+    <UnitTest name="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;vanguard&quot;,4,6,4)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="1da71f39-4f3f-b9c5-2929-a3817d498a55">
+      <Execution id="d9960599-79e4-46a4-ab37-b628969cd49a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;vanguard&quot;,4,6,4)" />
+    </UnitTest>
+    <UnitTest name="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;scholar&quot;,4,4,6)" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="e31f5395-683d-7351-262f-9d82895cfad4">
+      <Execution id="fd4c5fa6-7c4a-4c37-a435-d3e8c69874df" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="SelectedAdventurerAndAiReceiveApprovedStatsAndSameAccountHp(&quot;scholar&quot;,4,4,6)" />
+    </UnitTest>
+    <UnitTest name="PartialSkillsShareShieldSkipAfterKillAndCannotCreateZeroEffects" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="b229f65c-bd4b-446b-8c7b-f31e4574c989">
+      <Execution id="deaa1b8f-6036-490c-ac8a-acac89b2304f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="PartialSkillsShareShieldSkipAfterKillAndCannotCreateZeroEffects" />
+    </UnitTest>
+    <UnitTest name="EncounterXpRaisesAllThreeStatsAndHpWithoutChangingAccountAndNewMatchResetsRun" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="6b9a65c4-f5f3-d7b0-6eec-4554775c199d">
+      <Execution id="777ddcbf-5b25-4492-9bce-44f205d293c7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGrowthTests" name="EncounterXpRaisesAllThreeStatsAndHpWithoutChangingAccountAndNewMatchResetsRun" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="e31f5395-683d-7351-262f-9d82895cfad4" executionId="fd4c5fa6-7c4a-4c37-a435-d3e8c69874df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2bcd389c-1f8d-0815-588d-38d90764c6ca" executionId="66a2a358-c4d2-40c4-90cc-582c9880bc39" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8ed9fd84-6d14-8f0f-75e7-5f72d6e3e894" executionId="03500f1c-9c8c-4b70-ad7c-e3c8376ef1f0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6b9a65c4-f5f3-d7b0-6eec-4554775c199d" executionId="777ddcbf-5b25-4492-9bce-44f205d293c7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5dee5164-a850-2c1d-b429-49d8ed0f5207" executionId="75fc5753-c04c-464d-b5d9-2f9a13d5ed2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed7d1d71-1087-2ba8-3a1b-840bc6812be5" executionId="f057d6d9-bf5c-4d72-a6e0-6f73f1c37a3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9859441c-904e-a40e-0a30-4e1fbc54402b" executionId="04fb25f2-c35a-4c0d-92ee-186f36567592" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2412c4c4-2fbb-b446-821f-e437da44f420" executionId="a023e544-ba1d-4e22-8864-6c0003ff2364" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cb94bfbd-ee99-f496-134e-2b18c93a4d90" executionId="35996e8d-896c-4eed-a35a-0d9ffa7d0dfa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b229f65c-bd4b-446b-8c7b-f31e4574c989" executionId="deaa1b8f-6036-490c-ac8a-acac89b2304f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="09283f47-161f-8274-7721-3639c2b83a78" executionId="bb5f8646-336b-4018-9cc1-019847c44780" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c18ff942-b307-e477-a927-10a512b57c11" executionId="d10f1299-b482-4eb5-abbc-44e0626eed16" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0545629-7409-29d8-3cbb-f96168875ae3" executionId="69ba27d8-5e26-4bab-b6bf-fc253adf6649" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a97fc140-a1a3-eb90-4865-6a14ccbbbb2d" executionId="2bfc3330-1123-4d25-bca4-7c4df316b06a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dcaa248a-3512-ca8c-a8bc-7b923daccad4" executionId="46777696-72b9-447c-91b3-c6919e6c4a85" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7a45782b-af24-5509-3d7d-afb2f46d6f7b" executionId="e5107668-63a3-4439-912f-9e009d7f8833" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1da71f39-4f3f-b9c5-2929-a3817d498a55" executionId="d9960599-79e4-46a4-ab37-b628969cd49a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="905ee186-52ed-36b8-59c8-194a605f4224" executionId="66cc7c72-02c6-444a-b5fc-9aa1cc7f5bfb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="18" executed="18" passed="1" failed="17" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running selected tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 18 of 18 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

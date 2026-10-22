@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DiceWarrior.SymbolLoop;
+using Newtonsoft.Json;
 
 namespace DiceWarrior.SharedWorld
 {
@@ -16,6 +17,8 @@ namespace DiceWarrior.SharedWorld
         public EncounterDefinition[] encounters;
         public AdventurerDefinition[] adventurers;
         public AiPolicyDefinition[] policies;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public CompetitionGrowthDefinition growth;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public CompetitionV4Definition v4;
     }
     [Serializable] public sealed class WorldDefinition
     {
@@ -38,6 +41,28 @@ namespace DiceWarrior.SharedWorld
     [Serializable] public sealed class AdventurerDefinition
     {
         public string id, name;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public AdventurerStatsDefinition stats;
+    }
+    [Serializable] public sealed class AdventurerStatsDefinition
+    {
+        public int hp, strength, guard, arcane;
+        public string passiveName, passiveDescription;
+        public string[] damageTags;
+        public int damageBonus, blockBonus;
+    }
+    [Serializable] public sealed class CompetitionGrowthDefinition
+    {
+        public int hpPerLevel, statPerLevel;
+        public SkillScalingDefinition[] scaling;
+    }
+    [Serializable] public sealed class SkillScalingDefinition
+    {
+        public string skillId;
+        public int strength, arcane, divisor;
+    }
+    [Serializable] public sealed class ParticipantGrowthState
+    {
+        public int accountHp;
     }
     [Serializable] public sealed class AiPolicyDefinition
     {
@@ -80,6 +105,8 @@ namespace DiceWarrior.SharedWorld
         public Enemy enemy;
         public TurnLog lastTurn;
         public string message;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public ParticipantGrowthState growth;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public V4ParticipantState v4;
     }
     [Serializable] public sealed class ParticipantSummary
     {

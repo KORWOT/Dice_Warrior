@@ -51,7 +51,11 @@ namespace DiceWarrior.SymbolLoop
         public static TurnLog Resolve(Run run, Symbol[] faces) => Resolve(run, faces, false);
 
         public static TurnLog Resolve(Run run, Symbol[] faces, bool allowPartial)
+            => Resolve(run, faces, allowPartial, skill => run.power, skill => run.guard);
+
+        public static TurnLog Resolve(Run run, Symbol[] faces, bool allowPartial, Func<Skill, int> damageBonus, Func<Skill, int> blockBonus)
         {
+            if (damageBonus == null || blockBonus == null) throw new ArgumentNullException("Combat scaling");
             if (run.enemy == null || run.enemy.hp <= 0 || run.hp <= 0) throw new InvalidOperationException("Combat ended");
             var enemy = run.enemy;
             var log = new TurnLog {number=++run.turn, faces=(Symbol[])faces.Clone(), intent=enemy.intent,
@@ -67,12 +71,12 @@ namespace DiceWarrior.SymbolLoop
                 {
                     var gear = run.equipment.Where(id => id != null).Select(id => run.rules.gear.Single(g => g.id == id))
                         .Where(g => g.tag == skill.tag).ToArray();
-                    int damage = skill.damage > 0 ? skill.damage + run.power + gear.Sum(g => g.damage) : 0;
+                    int damage = skill.damage > 0 ? skill.damage + damageBonus(skill) + gear.Sum(g => g.damage) : 0;
                     int absorbed = Math.Min(enemy.shield, damage);
                     enemy.shield -= absorbed;
                     step.damage = Math.Min(enemy.hp, damage - absorbed);
                     enemy.hp -= step.damage;
-                    step.block = skill.block > 0 ? skill.block + run.guard + gear.Sum(g => g.block) : 0;
+                    step.block = skill.block > 0 ? skill.block + blockBonus(skill) + gear.Sum(g => g.block) : 0;
                     playerBlock += step.block;
                 }
                 step.enemyHpAfter = enemy.hp;

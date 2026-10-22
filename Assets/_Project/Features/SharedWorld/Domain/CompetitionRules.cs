@@ -17,20 +17,34 @@ namespace DiceWarrior.SharedWorld
             for (int i = 0; i < 4; ++i)
             {
                 string id = i == 0 ? "human" : "ai-" + i;
-                var adventurer = i == 0 ? definition.adventurers.Single(a => a.id == adventurerId) : definition.adventurers[i];
+                var adventurer = i == 0 ? definition.adventurers.Single(a => a.id == adventurerId) : CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition) ?
+                    definition.adventurers.Single(a => a.id == AiAdventurer(definition.policies[i - 1].id)) : definition.adventurers[i];
                 var p = new ParticipantState { id = id, adventurerId = adventurer.id, name = adventurer.name, isHuman = i == 0,
                     aiPolicyId = i == 0 ? null : definition.policies[i - 1].id, sponsorId = i == 0 ? "플레이어의 후원자" : definition.policies[i - 1].sponsorName,
                     hp = definition.combat.hp + profile.growth * 5, maxHp = definition.combat.hp + profile.growth * 5,
                     power = definition.combat.power, guard = definition.combat.guard, visits = new int[12], rank = 1,
                     travelRng = CompetitionRandom.Split(seed, id, "travel"), combatRng = CompetitionRandom.Split(seed, id, "combat"),
                     eventRng = CompetitionRandom.Split(seed, id, "event"), aiRng = CompetitionRandom.Split(seed, id, "ai"), message = "탐험을 시작합니다." };
+                if (CompetitionStats.IsEnabled(definition))
+                {
+                    p.growth = new ParticipantGrowthState { accountHp = profile.growth * 5 };
+                    var stats = CompetitionStats.Describe(definition, p);
+                    p.hp = p.maxHp = stats.maxHp; p.power = stats.strength; p.guard = stats.guard;
+                }
                 p.dice.Add(new DieSlot { instanceId = matchId + ":" + id + ":starter", definitionId = profile.startingDie });
                 p.equipment[0] = profile.startingWeapon;
+                if (CompetitionV4Content.IsEnabled(definition))
+                {
+                    p.v4 = new V4ParticipantState { accountHp = profile.growth * 5 };
+                    CompetitionAttributes.RefreshStats(definition, p); p.hp = p.maxHp;
+                }
                 state.participants[i] = p;
             }
             Validate(state);
             return state;
         }
+
+        static string AiAdventurer(string policyId) => policyId == "war" ? "wanderer" : policyId == "wisdom" ? "scholar" : "vanguard";
 
         public static void Validate(CompetitionState state)
         {
@@ -71,6 +85,17 @@ namespace DiceWarrior.SharedWorld
                     p.offer.choices.Select(c => c.id).Distinct().Count() != p.offer.choices.Length)) throw new ArgumentException("Invalid offer choices");
                 if (!p.claimed.SequenceEqual(Enumerable.Range(1, p.completedLaps).Select(lap => state.matchId + ":" + p.id + ":lap:" + lap)))
                     throw new ArgumentException("Invalid lap claims");
+                if (CompetitionStats.IsEnabled(state.definition))
+                {
+                    if (state.startingProfile.growth > 1000 || p.growth == null || p.growth.accountHp != state.startingProfile.growth * 5 ||
+                        p.level > 1000000 || p.xp >= p.level * 8 || (!p.isHuman && p.adventurerId != AiAdventurer(p.aiPolicyId)))
+                        throw new ArgumentException("Invalid participant growth");
+                    var stats = CompetitionStats.Describe(state.definition, p);
+                    if (p.maxHp != stats.maxHp || p.power != stats.strength || p.guard != stats.guard)
+                        throw new ArgumentException("Inconsistent participant stats");
+                }
+                else if (p.growth != null) throw new ArgumentException("Legacy participant cannot contain RGB growth");
+                CompetitionAttributes.ValidateParticipant(state, p);
             }
         }
         public static ParticipantState Human(CompetitionState state) => state.participants[0];
@@ -85,12 +110,20 @@ namespace DiceWarrior.SharedWorld
                     ranked[i].honor == ranked[i - 1].honor && ranked[i].hp == ranked[i - 1].hp ? ranked[i - 1].rank : i + 1;
         }
 
-        internal static void AddXp(ParticipantState p, int amount)
+        internal static void AddXp(CompetitionDefinition definition, ParticipantState p, int amount)
         {
             p.xp += amount;
             while (p.xp >= p.level * 8)
             {
-                p.xp -= p.level * 8; ++p.level; p.maxHp += 6; p.hp = Math.Min(p.maxHp, p.hp + 6); ++p.power; ++p.guard;
+                if (CompetitionV4Content.IsEnabled(definition))
+                {
+                    p.xp -= p.level * 8; ++p.level;
+                    CompetitionAttributes.RefreshStats(definition, p); continue;
+                }
+                int hpGain = CompetitionStats.IsEnabled(definition) ? definition.growth.hpPerLevel : 6;
+                int statGain = CompetitionStats.IsEnabled(definition) ? definition.growth.statPerLevel : 1;
+                p.xp -= p.level * 8; ++p.level; p.maxHp += hpGain; p.hp = Math.Min(p.maxHp, p.hp + hpGain);
+                p.power += statGain; p.guard += statGain;
             }
         }
         internal static void Honor(ParticipantState p, string id, string reason, int amount)
