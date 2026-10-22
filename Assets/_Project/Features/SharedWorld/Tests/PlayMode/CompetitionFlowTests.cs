@@ -108,7 +108,7 @@ namespace DiceWarrior.SharedWorld.Tests
         }
         [UnityTest] public IEnumerator PointerRoundShowsDiceSkillsAndAllFourParticipants()
         {
-            Click("경기 시작");yield return WaitPlayback();
+            Click("새 게임");yield return WaitPlayback();
             Assert.That(Screen.pawns.Select(p=>p.anchoredPosition).Distinct().Count(),Is.EqualTo(4),"Same-cell participants need separate slots");
             Assert.That(app.Session.Snapshot.state.participants.Select(p=>p.maxHp).Distinct().Count(),Is.EqualTo(1));
             AssertLayout();Capture("board-720x1280");bool numberRoll=false,symbolRoll=false,skill=false;
@@ -134,7 +134,7 @@ namespace DiceWarrior.SharedWorld.Tests
         }
         [UnityTest] public IEnumerator InterruptedMovementReopensSavedStateWithoutRepeatingAi()
         {
-            Click("경기 시작");yield return WaitPlayback();Click("이동 주사위");yield return null;
+            Click("새 게임");yield return WaitPlayback();Click("이동 주사위");yield return null;
             Assert.That(app.IsPresenting,Is.True);string committed=LoopJson.Encode(app.Session.Snapshot);
             app.Close();app.Open(path,definition,new Profile {growth=2},()=>33);yield return null;Click("경기 이어하기");yield return null;
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(committed));Assert.That(app.IsPresenting,Is.False);
@@ -144,15 +144,58 @@ namespace DiceWarrior.SharedWorld.Tests
         {
             Assert.That(Screen.buttons.Any(b=>b.gameObject.activeSelf && b.label.text=="출전 선택"),Is.True,"The main lobby must expose loadout choices directly.");
             Click("출전 선택");yield return null;Click("비전 주사위");Click("출전 선택");yield return null;Click("불꽃 지팡이");
-            Click("경기 시작");yield return WaitPlayback();
+            Click("새 게임");yield return WaitPlayback();
             var state=app.Session.Snapshot.state;
             Assert.That(state.startingProfile.startingDie,Is.EqualTo("arcane"));Assert.That(state.startingProfile.startingWeapon,Is.EqualTo("wand"));
-            string saved=LoopJson.Encode(app.Session.Snapshot);Click("로비로");yield return null;
+            string saved=LoopJson.Encode(app.Session.Snapshot);Click("모험 종료");yield return null;
             Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+        }
+        [UnityTest] public IEnumerator ExitPreservesAdventureAndNewGameRequiresConfirmation()
+        {
+            Click("새 게임");yield return WaitPlayback();
+            app.Session.Execute(app.Session.Prepare("travel"));app.Render();yield return null;
+            string saved=LoopJson.Encode(app.Session.Snapshot),raw=File.ReadAllText(path);
+            Assert.That(Screen.buttons.Any(b=>b.gameObject.activeSelf && b.label.text=="모험 종료"),Is.True);
+            Click("모험 종료");yield return null;
+            Assert.That(app.InLobby,Is.True);Assert.That(File.ReadAllText(path),Is.EqualTo(raw));
+            Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Click("모험 종료");yield return null;Click("새 게임");yield return null;
+            Assert.That(Screen.detail.text,Does.Contain("초기화"));
+            Assert.That(File.ReadAllText(path),Is.EqualTo(raw));Click("취소");yield return null;
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Click("새 게임");yield return null;Capture("new-game-warning");Click("새 게임 시작 확정");yield return WaitPlayback();
+            Assert.That(app.InLobby,Is.False);Assert.That(app.Session.Snapshot.commands,Is.Empty);
+            Assert.That(app.Session.Snapshot.state.actionNumber,Is.Zero);
+            Assert.That(app.Session.Snapshot.state.participants.All(p=>p.position==0 && p.dice.Count==1),Is.True);
+            Assert.That(Directory.GetFiles(directory,"checkpoint.json.restarted-*").Select(File.ReadAllText),Does.Contain(raw));
+            string replacement=LoopJson.Encode(app.Session.Snapshot);app.Session.Reload();
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(replacement));
+        }
+        [UnityTest] public IEnumerator ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels()
+        {
+            Click("새 게임");yield return WaitPlayback();
+            var original=app.Session.Snapshot;var fixture=LoopJson.Copy(original);var state=fixture.state;var p=state.participants[0];
+            for(int i=0;i<3;i++) state.definition.combat.dice[i].faces=Enumerable.Repeat(i==2?Symbol.Sword:Symbol.Staff,6).ToArray();
+            p.completedLaps=2;p.claimed=new List<string>{state.matchId+":"+p.id+":lap:1",state.matchId+":"+p.id+":lap:2"};
+            p.dice=new List<DieSlot>{new DieSlot{instanceId="a",definitionId="balanced"},new DieSlot{instanceId="b",definitionId="arcane"},new DieSlot{instanceId="c",definitionId="steel"}};
+            p.phase=CompetitionPhase.Combat;p.enemy=new Enemy{name="혼합 스킬 검증",hp=500,maxHp=500,attack=1,intent=Intent.Attack};
+            fixture.revision++;
+            new CompetitionStore(path).Commit(fixture,original.revision,original.generation);app.Session.Reload();app.Render();yield return null;
+            var observed=new List<string>();bool basicLabel=false,comboLabel=false,mixedCue=false,captured=false;
+            Click("기호 주사위");
+            yield return WaitPlayback(()=>{
+                var visual=Screen.playback.human;string id=visual.VisibleSkill;
+                if(id!=null && !observed.Contains(id)) observed.Add(id);
+                if(id=="bolt") basicLabel|=visual.skillName.text.StartsWith("SKILL");
+                if(id=="arc-slash") { comboLabel|=visual.skillName.text.StartsWith("COMBO");if(comboLabel && !captured) {Capture("pair-combo");captured=true;} }
+                mixedCue|=visual.cue.text.Contains("기본기 + 조합");
+            });
+            Assert.That(observed,Is.EqualTo(new[]{"bolt","arc-slash"}));Assert.That(basicLabel && comboLabel && mixedCue,Is.True);
+            Assert.That(app.Session.Snapshot.state.participants[0].lastTurn.skills.Select(s=>s.skillId),Is.EqualTo(observed));
         }
         [UnityTest] public IEnumerator PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible()
         {
-            Click("경기 시작");yield return WaitPlayback();
+            Click("새 게임");yield return WaitPlayback();
             foreach(int height in new[]{1280,1600})
             {
                 Resize(720,height);yield return null;ui.Root.safeArea.anchorMin=new Vector2(.025f,.035f);ui.Root.safeArea.anchorMax=new Vector2(.975f,.955f);
@@ -187,12 +230,12 @@ namespace DiceWarrior.SharedWorld.Tests
             Click("영구 HP");yield return WaitPlayback();
             Assert.That(backend.UpgradeApplications,Is.EqualTo(1));Assert.That(app.Account.Profile.growth,Is.EqualTo(1));Assert.That(app.Account.Profile.currency,Is.EqualTo(80));
             backend.Current=new BackendProfile {revision=3,values=new Profile {growth=2,currency=80}};
-            Click("경기 시작");yield return WaitPlayback();
+            Click("새 게임");yield return WaitPlayback();
             var state=app.Session.Snapshot.state;
             Assert.That(state.startingProfile.growth,Is.EqualTo(2));Assert.That(state.startingProfile.startingDie,Is.EqualTo("arcane"));
             Assert.That(state.startingProfile.startingWeapon,Is.EqualTo("wand"));Assert.That(state.participants.All(p=>p.maxHp==definition.combat.hp+10),Is.True);
             string saved=LoopJson.Encode(app.Session.Snapshot);
-            Click("로비로");Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            Click("모험 종료");Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
             yield return ReopenAccount(backend);
             Assert.That(app.Account.Profile.startingDie,Is.EqualTo("arcane"));Assert.That(app.Account.Profile.startingWeapon,Is.EqualTo("wand"));
             Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));AssertNoSoloRequests(backend);
@@ -200,9 +243,20 @@ namespace DiceWarrior.SharedWorld.Tests
         [UnityTest] public IEnumerator UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry()
         {
             var backend=new ProfileBackend {FailProfile=true};yield return ReopenAccount(backend);
-            Assert.That(app.Account.Ready,Is.False);Assert.That(Button("경기 시작").button.interactable,Is.False);Assert.That(app.Session.Snapshot.state,Is.Null);
+            Assert.That(app.Account.Ready,Is.False);Assert.That(Button("새 게임").button.interactable,Is.False);Assert.That(app.Session.Snapshot.state,Is.Null);
             backend.FailProfile=false;Click("프로필 다시 확인");yield return WaitPlayback();
-            Assert.That(app.Account.Ready,Is.True);Click("경기 시작");yield return WaitPlayback();Assert.That(app.Session.Snapshot.state,Is.Not.Null);AssertNoSoloRequests(backend);
+            Assert.That(app.Account.Ready,Is.True);Click("새 게임");yield return WaitPlayback();Assert.That(app.Session.Snapshot.state,Is.Not.Null);AssertNoSoloRequests(backend);
+        }
+        [UnityTest] public IEnumerator NewGameProfileFailureKeepsSavedAdventureAvailableToResume()
+        {
+            var backend=new ProfileBackend();yield return ReopenAccount(backend);
+            Click("새 게임");yield return WaitPlayback();Click("모험 종료");yield return null;
+            string original=File.ReadAllText(path);string saved=LoopJson.Encode(app.Session.Snapshot);
+            Click("새 게임");yield return null;backend.FailProfile=true;Click("새 게임 시작 확정");yield return WaitPlayback();
+            Assert.That(app.InLobby,Is.True);Assert.That(File.ReadAllText(path),Is.EqualTo(original));
+            Assert.That(Directory.GetFiles(directory,"checkpoint.json.restarted-*"),Is.Empty);
+            Click("경기 이어하기");yield return null;
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));AssertNoSoloRequests(backend);
         }
         [UnityTest] public IEnumerator PendingGrowthReopensAndRetriesOnlyItsOriginalRequest()
         {
@@ -243,7 +297,7 @@ namespace DiceWarrior.SharedWorld.Tests
             yield return ReopenAccount(backend);
             Assert.That(app.Account.HasLegacyRun,Is.True);Assert.That(Button("영구 성장").button.interactable,Is.False);
             Capture("legacy-growth-held");
-            Click("출전 선택");Click("비전 주사위");Click("경기 시작");yield return WaitPlayback();
+            Click("출전 선택");Click("비전 주사위");Click("새 게임");yield return WaitPlayback();
             Assert.That(app.Session.Snapshot.state.startingProfile.startingDie,Is.EqualTo("arcane"));
             Assert.That(File.ReadAllText(AccountPath),Is.EqualTo(original),"New selection must never rewrite the old active adventure.");
             Assert.That(backend.UpgradeCalls,Is.Zero);AssertNoSoloRequests(backend);
@@ -266,7 +320,7 @@ namespace DiceWarrior.SharedWorld.Tests
             var backend=new ProfileBackend();var disk=new LoopStore(AccountPath);var oldSession=new LoopSession(disk,definition.combat);
             oldSession.RefreshProfile(backend.Current);var pending=oldSession.Prepare("start");disk.WritePending(pending);
             string original=LoopJson.Encode(pending);yield return ReopenAccount(backend);
-            Assert.That(LoopJson.Encode(app.Account.Pending),Is.EqualTo(original));Assert.That(Button("경기 시작").button.interactable,Is.False);
+            Assert.That(LoopJson.Encode(app.Account.Pending),Is.EqualTo(original));Assert.That(Button("새 게임").button.interactable,Is.False);
             Click("계정 관리");Assert.That(Button("같은 요청 다시 확인"),Is.Not.Null);
             Assert.That(backend.ProfileReads,Is.Zero);AssertNoSoloRequests(backend);
         }

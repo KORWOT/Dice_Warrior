@@ -12,7 +12,7 @@ namespace DiceWarrior.SharedWorld
     public interface ICompetitionStore
     {
         CompetitionDocument Read();
-        void Commit(CompetitionDocument candidate, long expectedRevision, int expectedGeneration);
+        void Commit(CompetitionDocument candidate, long expectedRevision, int expectedGeneration, bool replaceActive = false);
         CompetitionDocument InspectBackup();
         CompetitionDocument RestoreBackup();
     }
@@ -39,7 +39,7 @@ namespace DiceWarrior.SharedWorld
                 return result;
             }
         }
-        public void Commit(CompetitionDocument candidate, long expectedRevision, int expectedGeneration)
+        public void Commit(CompetitionDocument candidate, long expectedRevision, int expectedGeneration, bool replaceActive = false)
         {
             lock (Gate)
             {
@@ -50,8 +50,8 @@ namespace DiceWarrior.SharedWorld
                     throw new InvalidOperationException("경기 저장 상태가 변경되었습니다.");
                 if (disk.state != null && candidate.state?.matchId != disk.state.matchId)
                 {
-                    if (!disk.state.finished) throw new InvalidOperationException("진행 중인 경기는 교체할 수 없습니다.");
-                    PreserveRaw(".completed-");
+                    if (!disk.state.finished && !replaceActive) throw new InvalidOperationException("진행 중인 경기는 확인 후 새 게임으로 교체해야 합니다.");
+                    PreserveRaw(disk.state.finished ? ".completed-" : ".restarted-");
                 }
                 Write(candidate, true);
             }

@@ -1,0 +1,104 @@
+{
+  "protected": [
+    {
+      "path": "Assets/Settings/Mobile_RPAsset.asset",
+      "userOwned": true,
+      "sha256": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset",
+      "userOwned": true,
+      "sha256": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset",
+      "userOwned": true,
+      "sha256": "0688B5CE5A24B3CA38DC86A2CE04A7128CA44A2629F150D02ECA4642E2908337",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/ProjectSettings.asset",
+      "userOwned": true,
+      "sha256": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json",
+      "userOwned": true,
+      "sha256": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json",
+      "userOwned": true,
+      "sha256": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md",
+      "userOwned": true,
+      "sha256": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Shared_World_AI_Competition_Migration_Plan_v0.1.md",
+      "userOwned": true,
+      "sha256": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenVectors.json",
+      "userOwned": false,
+      "sha256": "AB4CE8DC0B9A9575FBF1B329462005DCE8DCCA4655A18821B34607541B76591F",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Tests/EditMode/ReplayGoldenVectors.json",
+      "userOwned": false,
+      "sha256": "863DE8B00364ABBE6D99107C1BF191E6C8060D26A3332E7B9B78BCC6AE30090E",
+      "unchanged": true
+    },
+    {
+      "path": "Server/DiceWarrior.MockServer/Content/symbol-loop-mvp-1.json",
+      "userOwned": false,
+      "sha256": "9D70A890E52126E5AB67C3DB6C32F7A79575D14373143C2FD544936F83D1E6B8",
+      "unchanged": true
+    },
+    {
+      "path": "Packages/manifest.json",
+      "userOwned": false,
+      "sha256": "B40ED5EB37EF235F89855FA6012B8AEC04507A8AEC966DF0857FA83B70EE09F7",
+      "unchanged": true
+    },
+    {
+      "path": "Packages/packages-lock.json",
+      "userOwned": false,
+      "sha256": "AFF027C148EA1597437AF85287AEFFA56308B41B32A9893893DD8663FDD4615D",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Scenes/Title.unity",
+      "userOwned": false,
+      "sha256": "ECFAA07A98030A8CB61C162F5FC599453CCC17CDDAC286AC847134408F14F468",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+      "userOwned": false,
+      "sha256": "77F37F8D2DCF16D753AC65E3613F4621956DBB9273A40048857B6BB2F9688256",
+      "unchanged": true
+    }
+  ],
+  "unitySourceCount": 47,
+  "missingCodeMaps": [],
+  "missingMeta": [],
+  "staged": [],
+  "baseline": "c9e8a57c560352672fd145bed9529ff80e0ff525",
+  "diffCheckExit": 0,
+  "changedTrackedMeta": [],
+  "newGuidMatchCount": 1,
+  "missingDocumentLinks": [],
+  "sourceHashDrift": []
+}

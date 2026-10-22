@@ -28,7 +28,7 @@ namespace DiceWarrior.SharedWorld.Tests
             public CompetitionDocument value = new CompetitionDocument();
             public bool fail, failAfterWrite;
             public CompetitionDocument Read() => LoopJson.Copy(value);
-            public void Commit(CompetitionDocument candidate, long revision, int generation)
+            public void Commit(CompetitionDocument candidate, long revision, int generation, bool replaceActive = false)
             {
                 if (fail) throw new IOException("Injected write failure");
                 if (value.revision != revision || value.generation != generation) throw new InvalidOperationException("Stale checkpoint");
@@ -187,6 +187,43 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(Directory.GetFiles(directory, "*.completed-*").Select(File.ReadAllText), Does.Contain(previous));
             Assert.That(File.ReadAllText(legacy), Is.EqualTo("user-owned-v1-data"));
             Assert.That(session.Snapshot.commands, Is.Empty); Assert.That(session.Snapshot.state.matchId, Is.EqualTo("new-match"));
+        }
+        [Test] public void ConfirmedRestartArchivesActiveRunAndClearsOnlyCompetitionProgress()
+        {
+            var store = new CompetitionStore(FilePath); var session = new CompetitionSession(store, Definition());
+            var profile = new Profile { growth = 3, currency = 123 };
+            session.Start(profile, 33, "active-old"); session.Execute(session.Prepare("travel"));
+            string original = File.ReadAllText(FilePath), before = LoopJson.Encode(session.Snapshot);
+            Assert.Throws<InvalidOperationException>(()=>session.Start(profile, 51, "no-confirm"));
+            Assert.That(File.ReadAllText(FilePath), Is.EqualTo(original));
+            var staleCommand = session.Prepare("abandon");
+            session.Restart(profile, 51, "confirmed-new");
+            Assert.That(Directory.GetFiles(directory, "*.restarted-*").Select(File.ReadAllText), Does.Contain(original));
+            Assert.That(LoopJson.Encode(store.InspectBackup()), Is.EqualTo(before));
+            var after = session.Snapshot;
+            Assert.That(after.state.matchId, Is.EqualTo("confirmed-new"));
+            Assert.That(after.state.worldRound, Is.EqualTo(1)); Assert.That(after.commands, Is.Empty); Assert.That(after.receipts, Is.Empty);
+            Assert.That(after.state.participants.All(p=>p.position==0 && p.completedLaps==0 && p.dice.Count==1 && p.hp==75), Is.True);
+            Assert.That(profile.currency, Is.EqualTo(123)); Assert.That(profile.growth, Is.EqualTo(3));
+            Assert.Throws<InvalidOperationException>(()=>session.Execute(staleCommand));
+            Assert.That(LoopJson.Encode(new CompetitionSession(store,Definition()).Snapshot), Is.EqualTo(LoopJson.Encode(after)));
+        }
+        [Test] public void FailedOrStaleRestartPreservesCurrentAdventure()
+        {
+            var memory = new MemoryStore(); var session = new CompetitionSession(memory, Definition());
+            session.Start(new Profile(), 33, "before-failure"); string before = LoopJson.Encode(session.Snapshot);
+            memory.fail=true;
+            Assert.Throws<IOException>(()=>session.Restart(new Profile(), 51, "failed-restart"));
+            Assert.That(LoopJson.Encode(memory.Read()), Is.EqualTo(before)); Assert.That(LoopJson.Encode(session.Snapshot), Is.EqualTo(before));
+            var store = new CompetitionStore(FilePath); var first = new CompetitionSession(store, Definition());
+            first.Start(new Profile(),33,"concurrent"); var stale = new CompetitionSession(store,Definition());
+            first.Execute(first.Prepare("travel")); string current=File.ReadAllText(FilePath);
+            Assert.Throws<InvalidOperationException>(()=>stale.Restart(new Profile(),51,"stale-reset"));
+            Assert.That(File.ReadAllText(FilePath),Is.EqualTo(current));
+            Assert.That(Directory.GetFiles(directory,"*.restarted-*"),Is.Empty);
+            using(var held=new FileStream(FilePath,FileMode.Open,FileAccess.Read,FileShare.None))
+                Assert.Throws<IOException>(()=>first.Restart(new Profile(),51,"locked-reset"));
+            Assert.That(File.ReadAllText(FilePath),Is.EqualTo(current));
         }
     }
 }

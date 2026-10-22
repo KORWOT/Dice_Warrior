@@ -13,7 +13,7 @@ namespace DiceWarrior.SharedWorld.Tests
         [Serializable] public sealed class GoldenFile
         {
             public int format = 1;
-            public string rulesVersion = CompetitionContent.RulesVersion;
+            public string rulesVersion = CompetitionContent.LegacyVersion;
             public List<GoldenVector> vectors = new List<GoldenVector>();
         }
         [Serializable] public sealed class GoldenVector
@@ -40,7 +40,7 @@ namespace DiceWarrior.SharedWorld.Tests
                 Assert.Fail("Frozen competition vectors are missing; a separate observation was captured for initial inspection.");
             }
             var file = LoopJson.Decode<GoldenFile>(File.ReadAllText(path));
-            Assert.That(file.format, Is.EqualTo(1)); Assert.That(file.rulesVersion, Is.EqualTo(CompetitionContent.RulesVersion));
+            Assert.That(file.format, Is.EqualTo(1)); Assert.That(file.rulesVersion, Is.EqualTo(CompetitionContent.LegacyVersion));
             Assert.That(file.vectors.Count, Is.EqualTo(2));
             var previousCulture = CultureInfo.CurrentCulture;
             try
@@ -50,7 +50,9 @@ namespace DiceWarrior.SharedWorld.Tests
                     CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo(culture);
                     foreach (var vector in file.vectors)
                     {
-                        var match = CompetitionRules.Start(CompetitionRulesTests.Definition(), vector.profile, vector.seed, vector.matchId);
+                        var definition = CompetitionRulesTests.Definition();
+                        definition.rulesVersion = file.rulesVersion;
+                        var match = CompetitionRules.Start(definition, vector.profile, vector.seed, vector.matchId);
                         Check(vector, match, 0);
                         for (int i = 0; i < vector.commands.Count; ++i)
                         {
@@ -70,7 +72,9 @@ namespace DiceWarrior.SharedWorld.Tests
         static GoldenVector Capture(string name, uint seed, bool abandon)
         {
             var vector = new GoldenVector { name = name, matchId = "golden-" + name, seed = seed, profile = new Profile { growth = 2 }, resumeAfter = 12 };
-            var match = CompetitionRules.Start(CompetitionRulesTests.Definition(), vector.profile, seed, vector.matchId);
+            var definition = CompetitionRulesTests.Definition();
+            definition.rulesVersion = CompetitionContent.LegacyVersion;
+            var match = CompetitionRules.Start(definition, vector.profile, seed, vector.matchId);
             Observe(vector, match);
             for (int i = 0; i < 2048 && !match.finished; ++i)
             {

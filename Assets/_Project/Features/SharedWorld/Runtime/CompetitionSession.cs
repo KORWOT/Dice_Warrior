@@ -32,15 +32,19 @@ namespace DiceWarrior.SharedWorld
             Reload();
         }
         public void Start(Profile profile, uint seed, string matchId, string adventurerId = "wanderer")
+            => StartCore(profile, seed, matchId, adventurerId, false);
+        public void Restart(Profile profile, uint seed, string matchId, string adventurerId = "wanderer")
+            => StartCore(profile, seed, matchId, adventurerId, true);
+        void StartCore(Profile profile, uint seed, string matchId, string adventurerId, bool replaceActive)
         {
             var disk = store.Read();
             RequireFresh(disk, document.revision, document.generation);
-            if (disk.state != null && !disk.state.finished) throw new InvalidOperationException("진행 중인 경기를 먼저 마쳐 주세요.");
+            if (disk.state != null && !disk.state.finished && !replaceActive) throw new InvalidOperationException("진행 중인 경기를 먼저 마쳐 주세요.");
             if (disk.state?.matchId == matchId) throw new InvalidOperationException("새 경기는 다른 ID가 필요합니다.");
             var candidate = LoopJson.Copy(disk);
             candidate.state = CompetitionRules.Start(LoopJson.Copy(definition), LoopJson.Copy(profile), seed, matchId, adventurerId);
             candidate.commands.Clear(); candidate.receipts.Clear();
-            Save(candidate, disk);
+            Save(candidate, disk, replaceActive);
         }
         public CompetitionCommand Prepare(string kind, string arg = "")
         {
@@ -84,11 +88,11 @@ namespace DiceWarrior.SharedWorld
             if (disk.revision != revision || disk.generation != generation)
                 throw new InvalidOperationException("저장 상태가 변경되었습니다. 다시 불러와 주세요.");
         }
-        void Save(CompetitionDocument candidate, CompetitionDocument previous)
+        void Save(CompetitionDocument candidate, CompetitionDocument previous, bool replaceActive = false)
         {
             candidate.revision = checked(previous.revision + 1);
             CompetitionStore.ValidateDocument(candidate);
-            store.Commit(candidate, previous.revision, previous.generation);
+            store.Commit(candidate, previous.revision, previous.generation, replaceActive);
             document = candidate;
         }
         public void Reload()

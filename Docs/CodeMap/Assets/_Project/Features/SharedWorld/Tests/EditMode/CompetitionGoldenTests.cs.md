@@ -8,3 +8,4 @@
 - 관계 근거: 같은 csproj 테스트 파일 링크와 골든 JSON 출력 복사.
 - 상태/수명: 골든은 읽기 전용. 누락 시 별도 출력 폴더 observation 파일만 생성하고 반드시 실패한다. 기대 파일을 자동 덮어쓰지 않는다.
 - 검수: 최초 관측 이후 지명/라운드/명령 경로와 독립 uint FNV 계산의 시작 난수 일치를 확인해 동결했다. 기존 v1 골든은 변경하지 않는다. 골든 재생 성공과 실제 UI/서버 권한 검증은 별도다.
+- 규칙v2 도입: fixture.rulesVersion은 LegacyVersion(1)으로 검증하고 로드한 정의의 버전만 fixture 값으로 복원한다. 기존50개 상태해시/RNG/48명령 fixture를 재작성하지 않으며 신규v2의 부분조합·기록 재현은 CompetitionPartialComboTests가 별도 검사한다.

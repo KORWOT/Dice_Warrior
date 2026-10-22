@@ -6,7 +6,8 @@ namespace DiceWarrior.SharedWorld
 {
     public static class CompetitionContent
     {
-        public const string RulesVersion = "shared-world-preview-1";
+        public const string RulesVersion = "shared-world-preview-2";
+        public const string LegacyVersion = "shared-world-preview-1";
         public const string AiVersion = "shared-world-ai-1";
         public const string ScoreVersion = "shared-world-score-1";
 
@@ -19,7 +20,7 @@ namespace DiceWarrior.SharedWorld
 
         public static void Validate(CompetitionDefinition d)
         {
-            if (d == null || d.rulesVersion != RulesVersion || d.aiVersion != AiVersion || d.scoreVersion != ScoreVersion ||
+            if (d == null || (d.rulesVersion != RulesVersion && d.rulesVersion != LegacyVersion) || d.aiVersion != AiVersion || d.scoreVersion != ScoreVersion ||
                 d.maxRounds < 1 || d.maxRounds > 30 || d.maxCombatTurns < 1 || d.maxCombatTurns > 64 || d.lapsToFinish != 3 || d.finalHonor < 0)
                 throw new ArgumentException("Unsupported competition definition");
             LoopRules.ValidateRules(d.combat);

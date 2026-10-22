@@ -27,7 +27,7 @@ namespace DiceWarrior.SharedWorld
         Func<uint> seedSource;
         IGameBackend transport;
         readonly CancellationTokenSource lifetime=new CancellationTokenSource();
-        bool active,busy,opened,ownsTransport,paused,lobby=true,confirmAbandon,confirmRestore,confirmAccountRestore,restorePreferences;
+        bool active,busy,opened,ownsTransport,paused,lobby=true,confirmAbandon,confirmNewGame,confirmRestore,confirmAccountRestore,restorePreferences;
         string notice="",menu="",competitionError="";
         Coroutine presentation;
         int width,height;
@@ -112,7 +112,8 @@ namespace DiceWarrior.SharedWorld
             catch(Exception error) { if(this) { profile=Account.Profile;notice=error.Message; } }
             finally { busy=false;if(this) Render(); }
         }
-        async void StartMatch()
+        void StartMatch()=>StartMatch(false);
+        async void StartMatch(bool replaceActive)
         {
             if(busy || Session==null) return;busy=true;Render();
             try
@@ -125,7 +126,10 @@ namespace DiceWarrior.SharedWorld
                     profile=Account.Profile;
                 }
                 uint seed=seedSource!=null?seedSource():BitConverter.ToUInt32(Guid.NewGuid().ToByteArray(),0)|1u;
-                Session.Start(LoopJson.Copy(profile),seed,Guid.NewGuid().ToString("N"));lobby=false;menu="";notice="";
+                string id=Guid.NewGuid().ToString("N");
+                if(replaceActive) Session.Restart(LoopJson.Copy(profile),seed,id);
+                else Session.Start(LoopJson.Copy(profile),seed,id);
+                lobby=false;menu="";notice="";
             }
             catch(Exception error) { if(this) notice=error.Message; }
             finally { busy=false;if(this) Render(); }
@@ -178,7 +182,7 @@ namespace DiceWarrior.SharedWorld
         public void Close()
         {
             if(busy && presentation==null) return;
-            CancelPresentation();lobby=true;menu="";confirmAbandon=false;Render();
+            CancelPresentation();lobby=true;menu="";confirmAbandon=false;confirmNewGame=false;Render();
         }
         void Reload() { LoadCompetition();lobby=true;Render(); }
         void InspectBackup()
@@ -216,7 +220,14 @@ namespace DiceWarrior.SharedWorld
             var labels=new List<string>();var actions=new List<Action>();var enabled=new List<bool>();
             void Add(string label,Action action,bool available=true) { labels.Add(label);actions.Add(()=>{if(!busy) action();});enabled.Add(available && !busy); }
             void Cmd(string label,string kind,string arg="",bool available=true)=>Add(label,()=>Dispatch(kind,arg),available);
-            if(confirmAccountRestore)
+            if(confirmNewGame)
+            {
+                data.status="새 게임을 시작할까요?";
+                data.detail="현재 모험 진행을 초기화하고 새 게임을 시작합니다.\n영구 성장과 재화는 유지됩니다.";
+                Add("새 게임 시작 확정",()=>{confirmNewGame=false;StartMatch(true);});
+                Add("취소",()=>{confirmNewGame=false;Render();});
+            }
+            else if(confirmAccountRestore)
             {
                 data.detail="백업을 복원하면 이후의 로컬 상태가 되돌아갑니다. 계정 권한은 서버에서 다시 확인합니다.";
                 Add("계정 백업 복원 확정",()=>{confirmAccountRestore=false;AccountAction(ct=>Account.RestoreBackupAsync(restorePreferences,ct));});
@@ -267,7 +278,7 @@ namespace DiceWarrior.SharedWorld
                 else
                 {
                     if(state!=null && !state.finished) Add("경기 이어하기",Resume);
-                    else Add("경기 시작",StartMatch,Account==null || Account.Ready);
+                    Add("새 게임",()=>{if(state==null) StartMatch();else {confirmNewGame=true;notice="";Render();}},Account==null || Account.Ready);
                     if(state?.finished==true) Add("지난 경기 결과",Resume);
                     Add("출전 선택",()=>{menu="loadout";Render();},Account==null || Account.LoadoutError==null);
                     if(Account!=null)
@@ -312,7 +323,7 @@ namespace DiceWarrior.SharedWorld
                             break;
                         case CompetitionPhase.Complete:Cmd("다음 AI 라운드","advance");break;
                     }
-                    Add("로비로",Close);if(!p.finished && !p.eliminated) Add("모험 포기",()=>{confirmAbandon=true;Render();});
+                    Add("모험 종료",Close);if(!p.finished && !p.eliminated) Add("모험 포기",()=>{confirmAbandon=true;Render();});
                 }
             }
             if(!string.IsNullOrEmpty(notice)) data.history=notice;

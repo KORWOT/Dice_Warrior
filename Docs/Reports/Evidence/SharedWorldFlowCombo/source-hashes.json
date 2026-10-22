@@ -1,0 +1,58 @@
+[
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json",
+    "sha256": "7DBBA3759E294E0EC4EE86E8404894B54A9096D320F789B819F4AEB60C775DE5"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs",
+    "sha256": "7EF10D1352C480E26B215A23A91769AA5B2E79258149FB7FA1D7839B9F5FC8F0"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs",
+    "sha256": "5F3915C8C341DC34B529CE2A6610930FE5F931C31BD9422A1F507C08841E52A1"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs",
+    "sha256": "32422B6E1773CDA8F81DB8844688AB3A0676171CCF12FAB2CACD1AAAB0CAF3AF"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs",
+    "sha256": "B5CFB27C19233685905827BA6A582DC736EA272D7E6BA5873734C8E30952E665"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs",
+    "sha256": "4C21933975B54B27DFDCCD700987CC9A7889CE392BC0927B104C016B9B278F96"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs",
+    "sha256": "D84335CC2A5E6D42E0BDE462D151B190478D4C0DFDA4BB7DD60DC1AFCC972929"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenTests.cs",
+    "sha256": "FDB1ADA40A3A27CEFE7DA57EB742D1ACE17F295E05DA1A61AB283DA5B8145AFA"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionPartialComboTests.cs",
+    "sha256": "1D36A6AA6DCDD6660B7CB1C2611FFA591CF73080765FC6F17817E289557C72F2"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionPartialComboTests.cs.meta",
+    "sha256": "0F80AD43D3885234DBA29990E671A1A5A0D58B796E56575B47C201E1A10D4F17"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionStoreTests.cs",
+    "sha256": "272EEB341B31824D126378E4303E900CA5869566D41773796969E912863903D9"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs",
+    "sha256": "EB8B51450242BAEB5726B661DD2E4801D5A0EA9EB8F0335AB8534D7AFBB75029"
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs",
+    "sha256": "F8E5784E8B6E74B4A24E755791E19A89E12B46B4E2D9F1BAFC60A2578A1A9C96"
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopPlayback.cs",
+    "sha256": "A72A2C50595FA4B38C8B32CADD49704AAA19BA179B85B79B6FB1CED6B931400F"
+  }
+]

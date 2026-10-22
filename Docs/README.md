@@ -3,6 +3,7 @@
 현재 메인은 **고정12지명·인간1+AI3의 공동 모험**이다. 기존1인 모험판은 제거하고 전투·계정·과거 서버 기록에 필요한 공용 코드만 보존한다. 새 경기 순위는 시험 결과이며 영구 재화는 지급하지 않는다.
 
 - [현행 기획 v0.3](Dice_Warrior_GDD_v0.3.md): 게임 규칙과 시험 수치.
+- [종료·새 게임·부분 조합 PLAN](Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md) / [REPORT](Reports/SHARED_WORLD_FLOW_COMBO_03_REPORT.md): 진행 보존, 경고 후 새 경기, 3주사위의 2눈 조합과 남은 기본기.
 - [메인 전환 PLAN](Plans/SHARED_WORLD_MAIN_02_PLAN.md) / [REPORT](Reports/SHARED_WORLD_MAIN_02_REPORT.md): 공동 모험 직접 진입·로비·구형 모험판 제거·이전 기록 보존.
 - [공동 세계 PLAN](Plans/SHARED_WORLD_COMPETITION_01_PLAN.md): 승인된 C0~C5·경기/AI/저장/화면 계약과 보호 범위.
 - [공동 세계 REPORT](Reports/SHARED_WORLD_COMPETITION_01_REPORT.md): 실제 검증·실행 방법·C6/C7 후속 경계.
@@ -29,6 +30,8 @@
 2026-10-20 사용자 지시로 Archive/v1의 이전 구조와 호환성 P0는 중단했다. 이는 현재 보존하는 SymbolLoop 규칙/정산 v1과 별개다. 과거 테스트 통과는 새 게임의 검증 근거로 사용하지 않는다.
 
 실행: 저장소 루트 PowerShell에서 `./Server/Start-MockServer.ps1`로 서버를 켠 뒤 `Assets/_Project/Scenes/Title.unity`를 열고 Play. 공동 모험 로비에서 출전을 고른 뒤 경기를 시작하거나 이어간다. 이전1인 모험 시작/복귀 화면은 제공하지 않는다.
+`모험 종료`는 진행을 보존하고 로비로 돌아간다. `경기 이어하기`로 같은 위치·사건을 재개한다. 별도의 `새 게임`은 기존 경기가 있으면 초기화 경고를 표시하며, 확인 후 새 저장에 성공해야 교체한다. 영구 재화·성장은 유지하고 이전 진행 원문은 복구 사본에 남긴다.
+새 경기 v2는 3눈 조합을 우선하고 없으면 2눈 조합과 남은 기본기를 실행한다. 지팡이·지팡이·검은 마력탄(비전 기본기)→검기다. 기존 v1 경기의 판정은 보존되므로 새 조합 규칙을 쓰려면 `새 게임`을 시작한다.
 기본 서버는 `http://127.0.0.1:5087`, 권한 DB는 `Server/data/authority.db`다. 새 체크포인트는 `persistentDataPath/symbol-loop-backend-v1/http-mock/<endpoint+계정 SHA256>/checkpoint.json`이다. 이전 `mock/checkpoint.json`·`authority.json`·`symbol-loop-v1/player.json`은 보존하고 자동 이관하지 않는다.
 공동 세계는 위 계정별 폴더 아래 `shared-world-preview-v1/checkpoint.json`에 별도 저장한다. 프로필 조회·영구 성장 구매·기존 미결 복구는 기존 서버를 사용하고 새 경기/AI 명령·순위는 로컬 기록이다. 새 경기 서버 재현·정산 C6과 대량 시뮬레이션 C7은 아직 포함하지 않는다.
 이전1인 active run은 기록만 보존하고 해당 계정의 영구 성장 구매를 보류한다. 공동 모험 출전 선택/시작/재개는 가능하다. 서버 정산 전까지 공동 모험의 순위로 성장 재화를 지급하지 않는다.

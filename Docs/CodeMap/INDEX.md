@@ -2,7 +2,7 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 46개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 현재 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 47개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md)을 따른다.
 
 ## 공동 모험 메인 SharedWorld
 
@@ -13,18 +13,19 @@ Unity 프로젝트 소유 C# 46개, Server C# 28개와 일회성 정리 도구 1
 | 분리 난수 | [CompetitionRandom](Assets/_Project/Features/SharedWorld/Domain/CompetitionRandom.cs.md) | 고정 문자열 혼합과 개인별4스트림 |
 | 경기 규칙 | [CompetitionRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs.md) | 동일 시작 전력·성장·상태/순위 검사 |
 | 사건 | [CompetitionEncounterRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs.md) | 착지 제안 고정·조건/비용·전투·보상 |
-| 전투 재사용 | [CompetitionCombat](Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs.md) | 기존 SymbolCombat 임시 어댑터 |
+| 전투 재사용 | [CompetitionCombat](Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs.md) | 동결된 v1/v2에 맞춰 전체/부분 조합을 선택하는 SymbolCombat 어댑터 |
 | AI | [CompetitionAi](Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs.md) | 동일 합법 명령을 사용하는 결정적3정책 |
 | 경기 명령 | [CompetitionCommandRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs.md) | 대상·인간명령·AI라운드·완주/종료 |
-| 세션 | [CompetitionSession](Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs.md) | 후보·중복/세대 검사·저장 후 공개 |
-| 별도 저장 | [CompetitionStore](Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs.md) | schema1·CAS·백업/원문·완료기록 보존 |
+| 세션 | [CompetitionSession](Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs.md) | 후보·중복/세대 검사·명시 Restart·저장 후 공개 |
+| 별도 저장 | [CompetitionStore](Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs.md) | schema1·CAS·백업/원문·완료/초기화 전 기록 보존 |
 | 계정 연결 | [CompetitionAccount](Assets/_Project/Features/SharedWorld/Runtime/CompetitionAccount.cs.md) | HTTP 권한·기존 기록 보존·별도 출전 선택·성장/미결 복구 |
-| 화면 흐름 | [CompetitionApp](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md) | 직접 메인 로비·출전/성장·경기 재개/복구 화면 |
+| 화면 흐름 | [CompetitionApp](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md) | 직접 로비·출전/성장·모험 종료/재개·새 게임 확인/복구 |
 | 화면 | [CompetitionScreen](Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs.md) | 12지명·네말·성적·사건·AI요약 |
 | 연출 | [CompetitionPlayback](Assets/_Project/Features/SharedWorld/Presentation/CompetitionPlayback.cs.md) | 인간 칸이동/숫자·기호/스킬·AI간략 표시 |
 | 자산 연결 | [CompetitionAuthoring](Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs.md) | 신규프리팹·기존Title 보존 연결 |
 | 도메인 검사 | [CompetitionRulesTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionRulesTests.cs.md) | 공정성·지리/사건독립·끝조건·84기호동치 |
 | 고정 재현 검사 | [CompetitionGoldenTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenTests.cs.md) | 별도2벡터48인간명령50전체상태/RNG |
+| 부분 조합 검사 | [CompetitionPartialComboTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionPartialComboTests.cs.md) | v2 명령·후보/소비·피해/생략·AI 재현과 v1 보존 |
 | 저장 검사 | [CompetitionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionStoreTests.cs.md) | 실패/응답유실·동시경합·AI원자성·복구 |
 | UI 검사 | [CompetitionFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs.md) | 포인터·연출·재진입·두비율·로비연결 |
 
@@ -35,7 +36,7 @@ Unity 프로젝트 소유 C# 46개, Server C# 28개와 일회성 정리 도구 1
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|
 | 데이터 | [LoopData](Assets/_Project/Features/SymbolLoop/Domain/LoopData.cs.md) | 규칙·런·프로필·로그·명령·영수증 |
-| 전투 | [SymbolCombat](Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs.md) | 정확한 전체 조합, 순서대로 기본기, 턴 보호막/반격 |
+| 전투 | [SymbolCombat](Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs.md) | 기존 전체 조합 API·선택적 2눈 부분 조합·턴 보호막/반격 |
 | 캠페인 | [LoopRules](Assets/_Project/Features/SymbolLoop/Domain/LoopRules.cs.md) | 12칸/3지역/완주/성장/선택/보스와 검증 |
 | 공통 명령 규칙 | [RunCommandRules](Assets/_Project/Features/SymbolLoop/Domain/RunCommandRules.cs.md) | 세션/권한 재현의 순수 런 명령·대상 규칙 |
 | 백엔드 계약 | [BackendContracts](Assets/_Project/Features/SymbolLoop/Domain/BackendContracts.cs.md) | 버전·요청·응답·시작 티켓·명령 로그와 IGameBackend |

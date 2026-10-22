@@ -2,7 +2,8 @@
 
 - 역할: SharedWorld 후보 공개·파일 경합·복구 보존의 독립 회귀 검사. Unity와 .NET에서 같은 소스를 컴파일한다.
 - 핵심 동작: 실패 주입 저장소로 시작/명령 실패와 같은 ID 재시도를 검증한다. 실제 고유 임시 파일로 두 세션 경합, 백업/손상 원문, 복구 세대, 주 파일 유실, 잘못된 대상/revision을 확인한다.
-- 입출력: shared-world-preview-1 콘텐츠, Profile와 고정 seed; NUnit 결과와 격리 임시 디렉터리.
+- 새 게임 회귀: Start의 활성 교체 거절과 명시 Restart의 원문/백업 보존, 새 ID/초기 위치/주사위·HP·빈 명령/영수증, 입력 Profile 불변과 재로드 동치를 검사한다. 주입 저장 실패·오래된 세션 CAS·실제 파일 독점 잠금에 실패해도 디스크와 공개 상태가 유지되는지 확인한다. MemoryStore는 Commit의 replaceActive 인자를 받는 직접 대역이다.
+- 입출력: 기존 shared-world-preview-1.json 경로의 v2 콘텐츠, Profile와 고정 seed; NUnit 결과와 격리 임시 디렉터리.
 - 사용하는 대상: CompetitionSession/CompetitionStore, 공용 도메인, LoopJson. 사용하는 쪽: SharedWorld.EditMode.Tests 및 DiceWarrior.Competition.Tests.
 - 관계 근거: 새 서버 시험 프로젝트가 Runtime/Tests 소스를 링크하며 Unity 테스트 asmdef가 실제 Runtime을 참조한다.
 - 상태/수명: 매 검사 고유 임시 폴더; 정리 전 절대 경로가 지정 시험 루트 내부인지 확인한다. 실제 사용자 저장에 접근하지 않는다.

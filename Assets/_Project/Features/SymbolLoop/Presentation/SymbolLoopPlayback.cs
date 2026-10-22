@@ -43,7 +43,7 @@ namespace DiceWarrior.SymbolLoop
             cue.text=run==null ? "시작 준비를 마치고 여정을 떠나세요" : Cue(run);
             numericDie.gameObject.SetActive(!combat);
             numericDie.Configure(run==null || run.lastTravel==0 ? 1 : run.lastTravel);
-            rollLabel.text=combat ? "SYMBOL DICE  /  전체 조합" : "TRAVEL D6  /  이동 주사위";
+            rollLabel.text=combat ? "SYMBOL DICE  /  기호 조합" : "TRAVEL D6  /  이동 주사위";
             for(int i=0;i<symbolDice.Length;i++)
             {
                 bool active=combat && i<run.dice.Count;
@@ -134,13 +134,14 @@ namespace DiceWarrior.SymbolLoop
             });
             for(int i=0;i<before.dice.Count;i++) { symbolDice[i].Pose(1,i); symbolDice[i].rectTransform.localScale=Vector3.one; dieLabels[i].text=SymbolName(log.faces[i]); }
             DiceRolling=false;
-            bool combo=before.rules.combos.Any(s=>s.id==log.skills[0].skillId);
-            cue.text=combo ? "전체 기호 일치 · 조합 스킬!" : "눈마다 기본기 발동";
+            bool hasCombo=log.skills.Any(step=>before.rules.combos.Any(s=>s.id==step.skillId));
+            cue.text=hasCombo ? (log.skills.Count==1 ? "전체 기호 일치 · 조합 스킬!" : "남은 눈 기본기 + 조합 스킬!") : "눈마다 기본기 발동";
             yield return new WaitForSecondsRealtime(.28f);
             int block=0;
             foreach(var skill in log.skills)
             {
                 if(skill.status!="applied") continue;
+                bool combo=before.rules.combos.Any(s=>s.id==skill.skillId);
                 VisibleSkill=skill.skillId; skillName.text=(combo ? "COMBO  ·  " : "SKILL  ·  ")+skill.name;
                 var definition=before.rules.combos.Concat(before.rules.basics).Single(s=>s.id==skill.skillId);
                 LoopGlyph glyph=definition.tag=="guard" ? LoopGlyph.Shield : definition.tag=="fire" ? LoopGlyph.Fire : definition.tag=="arcane" ? LoopGlyph.Staff : LoopGlyph.Sword;

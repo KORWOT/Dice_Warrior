@@ -95,7 +95,7 @@ namespace DiceWarrior.SharedWorld
             var rules = state.definition.combat;
             var faces = p.dice.Select(d => rules.dice.Single(x => x.id == d.definitionId))
                 .Select(d => d.faces[CompetitionRandom.Next(ref p.combatRng, 6)]).ToArray();
-            CompetitionCombat.Resolve(rules, p, faces); ++p.encounterTurns;
+            CompetitionCombat.Resolve(state.definition, p, faces); ++p.encounterTurns;
             if (p.hp <= 0) { CompetitionRules.Eliminate(p, "전투에서 탈락했습니다."); return true; }
             if (p.enemy.hp <= 0)
             {
