@@ -2,9 +2,9 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 49개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 시험 모드는 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 46개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 현재 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md)을 따른다.
 
-## 공동 세계 시험 모드 SharedWorld
+## 공동 모험 메인 SharedWorld
 
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|
@@ -18,7 +18,8 @@ Unity 프로젝트 소유 C# 49개, Server C# 28개와 일회성 정리 도구 1
 | 경기 명령 | [CompetitionCommandRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs.md) | 대상·인간명령·AI라운드·완주/종료 |
 | 세션 | [CompetitionSession](Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs.md) | 후보·중복/세대 검사·저장 후 공개 |
 | 별도 저장 | [CompetitionStore](Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs.md) | schema1·CAS·백업/원문·완료기록 보존 |
-| 화면 흐름 | [CompetitionApp](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md) | v1 로비 진입·성장조회·경기/복구 화면 |
+| 계정 연결 | [CompetitionAccount](Assets/_Project/Features/SharedWorld/Runtime/CompetitionAccount.cs.md) | HTTP 권한·기존 기록 보존·별도 출전 선택·성장/미결 복구 |
+| 화면 흐름 | [CompetitionApp](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md) | 직접 메인 로비·출전/성장·경기 재개/복구 화면 |
 | 화면 | [CompetitionScreen](Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs.md) | 12지명·네말·성적·사건·AI요약 |
 | 연출 | [CompetitionPlayback](Assets/_Project/Features/SharedWorld/Presentation/CompetitionPlayback.cs.md) | 인간 칸이동/숫자·기호/스킬·AI간략 표시 |
 | 자산 연결 | [CompetitionAuthoring](Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs.md) | 신규프리팹·기존Title 보존 연결 |
@@ -27,7 +28,7 @@ Unity 프로젝트 소유 C# 49개, Server C# 28개와 일회성 정리 도구 1
 | 저장 검사 | [CompetitionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionStoreTests.cs.md) | 실패/응답유실·동시경합·AI원자성·복구 |
 | UI 검사 | [CompetitionFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs.md) | 포인터·연출·재진입·두비율·로비연결 |
 
-직접 흐름: SymbolLoopApp의 타입 독립 진입 이벤트 → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI/SymbolCombat → CompetitionStore. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/백엔드 조회 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain8개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
+직접 흐름: Title → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI/SymbolCombat → CompetitionStore. 계정은 CompetitionAccount → GameBackendCoordinator → LoopSession/LoopStore/HttpGameBackend로 분리한다. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/계정 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain8개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
 
 ## 기존 SymbolLoop 및 독립 서버
 
@@ -52,14 +53,10 @@ Unity 프로젝트 소유 C# 49개, Server C# 28개와 일회성 정리 도구 1
 | 명령 | [LoopSession](Assets/_Project/Features/SymbolLoop/Runtime/LoopSession.cs.md) | 로컬 후보 저장 후 공개, 백엔드 승인 적용 |
 | 저장 | [LoopStore](Assets/_Project/Features/SymbolLoop/Runtime/LoopStore.cs.md) | 체크섬·원자 교체·백업·세대·미결 입력 |
 | 설정 | [SymbolLoopConfig](Assets/_Project/Features/SymbolLoop/Configs/SymbolLoopConfig.cs.md) | MVP 콘텐츠 SO와 새 런 복사 |
-| 화면 흐름 | [SymbolLoopApp](Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopApp.cs.md) | 로비/여정/결과/복구와 세션 연결 |
-| 화면 표시 | [SymbolLoopScreen](Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopScreen.cs.md) | 고정 타일·주사위·버튼 바인딩 |
 | 연출 재생 | [SymbolLoopPlayback](Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopPlayback.cs.md) | 칸별 이동·기호 굴림·스킬/반격 순차 표시 |
 | 입체 주사위 | [LoopDieGraphic](Assets/_Project/Features/SymbolLoop/Presentation/LoopDieGraphic.cs.md) | 6면 회전·감속·결과 면 투영 |
 | 벡터 아트 | [LoopGlyphGraphic](Assets/_Project/Features/SymbolLoop/Presentation/LoopGlyphGraphic.cs.md) | 기호·말·수호자·칸·효과 그림 |
-| 자산 작성 | [SymbolLoopAuthoring](Assets/_Project/Features/SymbolLoop/Editor/SymbolLoopAuthoring.cs.md) | Editor API로 프리팹/SO/Title 연결 |
 | 규칙/저장 검증 | [SymbolLoopTests](Assets/_Project/Features/SymbolLoop/Tests/EditMode/SymbolLoopTests.cs.md) | 조합·완주·원자성·복구 |
-| 실제 UI 검증 | [SymbolLoopFlowTests](Assets/_Project/Features/SymbolLoop/Tests/PlayMode/SymbolLoopFlowTests.cs.md) | 포인터 완주/재표시/두 세로 화면 |
 | 공통 UI | [BaseUI](Assets/_Project/Shared/UI/Presentation/BaseUI.cs.md) | typed 화면 바인딩·닫기 수명 |
 | 공통 UI | [UIManager](Assets/_Project/Shared/UI/Presentation/UIManager.cs.md) | 명시 등록·캐시·레이어·입력 |
 | 공통 UI | [UIRoot](Assets/_Project/Shared/UI/Presentation/UIRoot.cs.md) | Canvas·safe area·레이어 |
@@ -94,12 +91,12 @@ Unity 프로젝트 소유 C# 49개, Server C# 28개와 일회성 정리 도구 1
 | Unity 경계 확인 | [VerifyUnityBoundary](Server/Tools/VerifyUnityBoundary.cs.md) | 플레이어 권한 참조 없음·Config 동치·시험 URL |
 | 정리 증거 | [RemoveLegacy](artifacts/symbol-loop-replacement/RemoveLegacy.cs.md) | 승인된 구형 자산 삭제와 직접 참조 검사 |
 
-직접 흐름: Title → SymbolLoopApp → GameBackendCoordinator → LoopSession → RunCommandRules → LoopRules/SymbolCombat. 후보 검증 후 LoopStore에 저장한다.
+보존된 v1 경로: GameBackendCoordinator → LoopSession → RunCommandRules → LoopRules/SymbolCombat. 기존 서버 기록 재현/계정 복구를 유지하며 새1인 모험 UI는 없다. 후보 검증 후 LoopStore에 저장한다.
 권한 흐름: App → HttpGameBackend → 실제 HTTP → DevelopmentIdentityResolver/AuthorityEndpoints → MockGameBackend → IAuthorityRepository/SqliteAuthorityRepository. Session의 profile은 캐시이며 영구 재화를 직접 확정하지 않는다.
 계측 흐름: AuthorityEndpoints → RequestMeasurementScope → 안전 AuthorityTelemetry observer → 별도 MetricsCollector journal → MetricsAggregation/Firestore 가상 작업 모델 → /dev API → wwwroot 대시보드. CostEstimator는 명시 시나리오/가격 JSON만 사용하며 실제 Firebase에 연결하지 않는다. 권한 저장과 계측 파일은 별도 경계다.
 새 제출 흐름: 서버 MockGameBackend → MockRunVerifier → 공유 RunCommandRules/LoopRules/SymbolCombat → SQLite 지급 영수증/프로필 원자 저장. 시작 티켓과 골든 기대값으로 재현하며 클라이언트 최종 결과는 받지 않는다.
 P3 복구 흐름: Coordinator → GetRunStatusAsync → Session.ReconcileSubmission/RestoreActiveRun. 과거 로컬 상태는 Store.PreserveCheckpoint로 보존하고 서버 영수증/명령에서 복구한다. authority revision과 로컬 revision/generation이 늦은 응답·동시 저장을 차단한다.
-화면은 App → UIManager → SymbolLoopScreen → CommonButtonView로 연결한다.
-App → SymbolLoopPlayback → LoopDieGraphic/LoopGlyphGraphic으로 확정 결과를 재생한다. Screen은 Playback.Snap으로 저장 상태를 바로 표시한다.
+화면은 CompetitionApp → UIManager → CompetitionScreen → CommonButtonView로 연결한다.
+CompetitionPlayback → SymbolLoopPlayback → LoopDieGraphic/LoopGlyphGraphic으로 확정 전투를 재생한다. Screen은 Playback.Snap으로 저장 상태를 바로 표시한다.
 Core assembly는 Unity 의존이 없고 서버 Shared가 같은 Domain 소스를 링크한다. Runtime은 Core/SharedUI/uGUI/InputSystem을 참조한다. 서버 권한 소스는 Assets 밖이며 Editor 테스트만 명시 참조 DLL을 사용한다. 플레이어 그래프에는 권한 DLL/SQLite가 없다.
-구형 게임 모드나 호환 어댑터는 없다.
+구형1인 모험판은 제거했다. 남은 SymbolLoop 계약은 공유전투와 기존 계정·서버 기록 재현/복구에 사용하며 별도 게임 화면으로 진입하지 않는다.

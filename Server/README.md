@@ -26,7 +26,9 @@ dotnet run --project Server/DiceWarrior.MockServer -- --environment Development 
 
 ## Unity 연결
 
-서버를 실행한 뒤 기존 `Assets/_Project/Scenes/Title.unity`에서 Play한다. 별도 설정 파일이 없으면 기본 주소와 `mock-player-01` 계정/15초 제한을 사용한다. HTTP 실패 때 인프로세스 Mock으로 전환하지 않는다. 서버가 없으면 연결 안내와 재확인 버튼이 나온다.
+서버를 실행한 뒤 `Assets/_Project/Scenes/Title.unity`에서 Play하면 공동 모험 메인 로비가 열린다. 별도 설정 파일이 없으면 기본 주소와 `mock-player-01` 계정/15초 제한을 사용한다. HTTP 실패 때 인프로세스 Mock으로 전환하지 않는다. 서버가 없으면 연결 안내와 재확인 버튼이 나온다.
+
+기존1인 모험판은 제거했지만 v1 계정/런/영수증을 삭제·자동 정산하지 않는다. 사용자 결정에 따라 이전 activeRunId가 있으면 그 계정의 영구 성장 구매를 보류하며 공동 모험 출전 선택/시작/재개는 허용한다. 신규 경기는 v1 시작/정산 API를 사용하지 않는다. 계정/HTTP 계약 자체는 이번 메인 전환에서 변경하지 않는다.
 
 필요할 때만 `Application.persistentDataPath/symbol-loop-backend-v1/http-settings.json`에 다음 설정을 직접 작성한다. 설정 변경 뒤 화면/앱을 다시 연다.
 

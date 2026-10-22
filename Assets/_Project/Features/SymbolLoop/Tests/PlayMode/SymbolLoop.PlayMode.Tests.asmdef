@@ -1,8 +1,0 @@
-{
-  "name": "SymbolLoop.PlayMode.Tests",
-  "references": ["SymbolLoop.Core","SymbolLoop.Runtime","FateDice.SharedUI","Unity.ugui","Unity.InputSystem"],
-  "overrideReferences": true,
-  "precompiledReferences": ["Newtonsoft.Json.dll","DiceWarrior.Authority.dll"],
-  "optionalUnityReferences": ["TestAssemblies"],
-  "autoReferenced": false
-}

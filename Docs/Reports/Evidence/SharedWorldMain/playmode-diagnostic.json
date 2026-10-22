@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "command": "command test_status",
+  "data": {
+    "command": "test_status",
+    "parameters": {},
+    "result": "{\r\n  \"status\": \"completed\",\r\n  \"duration\": 0.18,\r\n  \"summary\": {\r\n    \"total\": 1,\r\n    \"passed\": 0,\r\n    \"failed\": 1,\r\n    \"skipped\": 0,\r\n    \"inconclusive\": 0\r\n  },\r\n  \"results\": [\r\n    {\r\n      \"FullName\": \"DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition\",\r\n      \"Status\": \"Failed\",\r\n      \"Duration\": 0.1626599,\r\n      \"Message\": \"  불꽃 지팡이 · 불 피해 +3 is obstructed; position=(191.00, 127.00); active=True; interactable=True; graphics=Border: active=True, depth=-1, absoluteDepth=-1, raycast=False | Background: active=True, depth=-1, absoluteDepth=-1, raycast=True | Label: active=True, depth=-1, absoluteDepth=-1, raycast=False | Icon: active=False, depth=-1, absoluteDepth=-1, raycast=False | Icon fallback: active=False, depth=-1, absoluteDepth=-1, raycast=False; groups=Action 4: blocks=True, interactable=True, alpha=1 | CompetitionScreen(Clone): blocks=True, interactable=True, alpha=1 | Safe Area: blocks=True, interactable=True, alpha=1\\r\\n  Expected: <Action 4 (UnityEngine.UI.Button)>\\r\\n  But was:  null\\r\\n\",\r\n      \"StackTrace\": \"at DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ClickButton (FateDice.CommonButtonView button) [0x001d6] in D:\\\\UnityProject\\\\Dice_Warrior\\\\Assets\\\\_Project\\\\Features\\\\SharedWorld\\\\Tests\\\\PlayMode\\\\CompetitionFlowTests.cs:84\\r\\nat DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.Click (System.String prefix) [0x0002a] in D:\\\\UnityProject\\\\Dice_Warrior\\\\Assets\\\\_Project\\\\Features\\\\SharedWorld\\\\Tests\\\\PlayMode\\\\CompetitionFlowTests.cs:73\\r\\nat DiceWarrior.SharedWorld.Tests.CompetitionFlowTests+<MainLobbyOffersLoadoutAndReturnsToTheSameCompetition>d__25.MoveNext () [0x00091] in D:\\\\UnityProject\\\\Dice_Warrior\\\\Assets\\\\_Project\\\\Features\\\\SharedWorld\\\\Tests\\\\PlayMode\\\\CompetitionFlowTests.cs:146\\r\\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\\\\Library\\\\PackageCache\\\\com.unity.test-framework@7a3849e09bd0\\\\UnityEngine.TestRunner\\\\NUnitExtensions\\\\Attributes\\\\TestEnumerator.cs:52\\r\\n\"\r\n    }\r\n  ]\r\n}",
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

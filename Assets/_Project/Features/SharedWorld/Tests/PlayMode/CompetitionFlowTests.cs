@@ -34,7 +34,7 @@ namespace DiceWarrior.SharedWorld.Tests
             directory=Path.Combine(Path.GetTempPath(),"DiceWarriorCompetitionUI",Guid.NewGuid().ToString("N"));path=Path.Combine(directory,"checkpoint.json");
             definition=CompetitionContent.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json").text);
             root=Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Shared/UI/Prefabs/UIRoot.prefab"));
-            ui=root.GetComponentInChildren<UIManager>(true);ui.prefabs=new BaseUI[]{AssetDatabase.LoadAssetAtPath<CompetitionScreen>(PrefabPath),AssetDatabase.LoadAssetAtPath<SymbolLoopScreen>("Assets/_Project/Features/SymbolLoop/Prefabs/SymbolLoopScreen.prefab")};
+            ui=root.GetComponentInChildren<UIManager>(true);ui.prefabs=new BaseUI[]{AssetDatabase.LoadAssetAtPath<CompetitionScreen>(PrefabPath)};
             cameraObject=new GameObject("Competition capture camera");camera=cameraObject.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;
             ui.Root.canvas.renderMode=RenderMode.ScreenSpaceCamera;ui.Root.canvas.worldCamera=camera;ui.Root.canvas.planeDistance=1;Resize(720,1280);
             eventObject=new GameObject("Competition test events",typeof(EventSystem),typeof(InputSystemUIInputModule));
@@ -76,7 +76,12 @@ namespace DiceWarrior.SharedWorld.Tests
         {
             var rect=(RectTransform)button.transform;var input=new PointerEventData(eventObject.GetComponent<EventSystem>()) {position=RectTransformUtility.WorldToScreenPoint(camera,rect.TransformPoint(rect.rect.center)),button=PointerEventData.InputButton.Left};
             var hits=new List<RaycastResult>();eventObject.GetComponent<EventSystem>().RaycastAll(input,hits);
-            Assert.That(hits.Select(h=>h.gameObject.GetComponentInParent<Button>()).FirstOrDefault(b=>b),Is.EqualTo(button.button),button.label.text+" is obstructed");
+            var hit=hits.Select(h=>h.gameObject.GetComponentInParent<Button>()).FirstOrDefault(b=>b);
+            string diagnostic=button.label.text+" is obstructed; position="+input.position+"; active="+button.gameObject.activeInHierarchy+"; interactable="+button.button.interactable+
+                "; graphics="+string.Join(" | ",button.GetComponentsInChildren<Graphic>(true).Select(g=>$"{g.name}: active={g.isActiveAndEnabled}, depth={g.depth}, absoluteDepth={g.canvasRenderer.absoluteDepth}, raycast={g.raycastTarget}"))+
+                "; groups="+string.Join(" | ",button.GetComponentsInParent<CanvasGroup>(true).Select(g=>$"{g.name}: blocks={g.blocksRaycasts}, interactable={g.interactable}, alpha={g.alpha}"));
+            if(hit!=button.button) Capture("pointer-failure-"+button.gameObject.name);
+            Assert.That(hit,Is.EqualTo(button.button),diagnostic);
             ExecuteEvents.Execute(button.button.gameObject,input,ExecuteEvents.pointerClickHandler);Canvas.ForceUpdateCanvases();
         }
         IEnumerator WaitPlayback(Action observe=null)
@@ -103,7 +108,7 @@ namespace DiceWarrior.SharedWorld.Tests
         }
         [UnityTest] public IEnumerator PointerRoundShowsDiceSkillsAndAllFourParticipants()
         {
-            Click("시험 경기 시작");yield return WaitPlayback();
+            Click("경기 시작");yield return WaitPlayback();
             Assert.That(Screen.pawns.Select(p=>p.anchoredPosition).Distinct().Count(),Is.EqualTo(4),"Same-cell participants need separate slots");
             Assert.That(app.Session.Snapshot.state.participants.Select(p=>p.maxHp).Distinct().Count(),Is.EqualTo(1));
             AssertLayout();Capture("board-720x1280");bool numberRoll=false,symbolRoll=false,skill=false;
@@ -129,15 +134,25 @@ namespace DiceWarrior.SharedWorld.Tests
         }
         [UnityTest] public IEnumerator InterruptedMovementReopensSavedStateWithoutRepeatingAi()
         {
-            Click("시험 경기 시작");yield return WaitPlayback();Click("이동 주사위");yield return null;
+            Click("경기 시작");yield return WaitPlayback();Click("이동 주사위");yield return null;
             Assert.That(app.IsPresenting,Is.True);string committed=LoopJson.Encode(app.Session.Snapshot);
-            app.Close();app.Open(path,definition,new Profile {growth=2},()=>33);yield return null;
+            app.Close();app.Open(path,definition,new Profile {growth=2},()=>33);yield return null;Click("경기 이어하기");yield return null;
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(committed));Assert.That(app.IsPresenting,Is.False);
             Assert.That(Screen.playback.VisiblePosition,Is.EqualTo(app.Session.Snapshot.state.participants[0].position));
         }
+        [UnityTest] public IEnumerator MainLobbyOffersLoadoutAndReturnsToTheSameCompetition()
+        {
+            Assert.That(Screen.buttons.Any(b=>b.gameObject.activeSelf && b.label.text=="출전 선택"),Is.True,"The main lobby must expose loadout choices directly.");
+            Click("출전 선택");yield return null;Click("비전 주사위");Click("출전 선택");yield return null;Click("불꽃 지팡이");
+            Click("경기 시작");yield return WaitPlayback();
+            var state=app.Session.Snapshot.state;
+            Assert.That(state.startingProfile.startingDie,Is.EqualTo("arcane"));Assert.That(state.startingProfile.startingWeapon,Is.EqualTo("wand"));
+            string saved=LoopJson.Encode(app.Session.Snapshot);Click("로비로");yield return null;
+            Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+        }
         [UnityTest] public IEnumerator PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible()
         {
-            Click("시험 경기 시작");yield return WaitPlayback();
+            Click("경기 시작");yield return WaitPlayback();
             foreach(int height in new[]{1280,1600})
             {
                 Resize(720,height);yield return null;ui.Root.safeArea.anchorMin=new Vector2(.025f,.035f);ui.Root.safeArea.anchorMax=new Vector2(.975f,.955f);
@@ -148,64 +163,143 @@ namespace DiceWarrior.SharedWorld.Tests
                 }
             }
         }
-        [UnityTest] public IEnumerator LegacyLobbyEntryRefreshesProfileAndKeepsModeOwnershipAcrossDelayedResponse()
+        string AccountPath=>Path.Combine(directory,"account","checkpoint.json");
+        CommonButtonView Button(string prefix)=>Screen.buttons.First(b=>b.gameObject.activeSelf && b.label.text.StartsWith(prefix,StringComparison.Ordinal));
+        IEnumerator ReopenAccount(ProfileBackend backend,bool wait=true)
         {
-            var legacyObject=new GameObject("Isolated legacy mode entry");legacyObject.SetActive(false);
-            var legacy=legacyObject.AddComponent<SymbolLoopApp>();var backend=new ProfileBackend();
+            Object.Destroy(appObject);yield return null;
+            appObject=new GameObject("Isolated main account app");appObject.SetActive(false);
+            app=appObject.AddComponent<CompetitionApp>();app.ui=ui;
+            app.OpenAccount(AccountPath,path,definition,backend,()=>33);appObject.SetActive(true);yield return null;
+            if(wait) yield return WaitPlayback();
+        }
+        static void AssertNoSoloRequests(ProfileBackend backend)
+        { Assert.That(backend.StartCalls,Is.Zero);Assert.That(backend.SubmitCalls,Is.Zero); }
+        [UnityTest] public IEnumerator DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth()
+        {
+            var backend=new ProfileBackend();backend.HoldNextProfile();yield return ReopenAccount(backend,false);
+            Assert.That(ui.ActiveScreen,Is.TypeOf<CompetitionScreen>());Assert.That(app.InLobby,Is.True);Assert.That(app.IsPresenting,Is.True);
+            var screen=Screen;long binding=screen.BindingRevision;
+            appObject.SetActive(false);backend.ReleaseProfile();yield return WaitPlayback();
+            Assert.That(screen.BindingRevision,Is.EqualTo(binding),"A delayed profile response must not rebind a disabled app.");
+            appObject.SetActive(true);yield return null;Assert.That(app.Account.Ready,Is.True);
+            Capture("main-lobby");Click("출전 선택");Capture("loadout");Click("비전 주사위");Click("출전 선택");Click("불꽃 지팡이");
+            Click("영구 HP");yield return WaitPlayback();
+            Assert.That(backend.UpgradeApplications,Is.EqualTo(1));Assert.That(app.Account.Profile.growth,Is.EqualTo(1));Assert.That(app.Account.Profile.currency,Is.EqualTo(80));
+            backend.Current=new BackendProfile {revision=3,values=new Profile {growth=2,currency=80}};
+            Click("경기 시작");yield return WaitPlayback();
+            var state=app.Session.Snapshot.state;
+            Assert.That(state.startingProfile.growth,Is.EqualTo(2));Assert.That(state.startingProfile.startingDie,Is.EqualTo("arcane"));
+            Assert.That(state.startingProfile.startingWeapon,Is.EqualTo("wand"));Assert.That(state.participants.All(p=>p.maxHp==definition.combat.hp+10),Is.True);
+            string saved=LoopJson.Encode(app.Session.Snapshot);
+            Click("로비로");Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
+            yield return ReopenAccount(backend);
+            Assert.That(app.Account.Profile.startingDie,Is.EqualTo("arcane"));Assert.That(app.Account.Profile.startingWeapon,Is.EqualTo("wand"));
+            Click("경기 이어하기");yield return null;Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));AssertNoSoloRequests(backend);
+        }
+        [UnityTest] public IEnumerator UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry()
+        {
+            var backend=new ProfileBackend {FailProfile=true};yield return ReopenAccount(backend);
+            Assert.That(app.Account.Ready,Is.False);Assert.That(Button("경기 시작").button.interactable,Is.False);Assert.That(app.Session.Snapshot.state,Is.Null);
+            backend.FailProfile=false;Click("프로필 다시 확인");yield return WaitPlayback();
+            Assert.That(app.Account.Ready,Is.True);Click("경기 시작");yield return WaitPlayback();Assert.That(app.Session.Snapshot.state,Is.Not.Null);AssertNoSoloRequests(backend);
+        }
+        [UnityTest] public IEnumerator PendingGrowthReopensAndRetriesOnlyItsOriginalRequest()
+        {
+            var backend=new ProfileBackend {LoseUpgradeReply=true};yield return ReopenAccount(backend);
+            Click("영구 HP");yield return WaitPlayback();
+            var pending=app.Account.Pending;Assert.That(pending,Is.Not.Null);string original=LoopJson.Encode(pending);
+            Assert.That(app.Account.Profile.growth,Is.Zero);Assert.That(backend.UpgradeApplications,Is.EqualTo(1));
+            yield return ReopenAccount(backend);
+            Assert.That(LoopJson.Encode(app.Account.Pending),Is.EqualTo(original));Assert.That(backend.UpgradeCalls,Is.EqualTo(1),"Opening the lobby must not automatically resubmit.");
+            Assert.That(Button("영구 HP").button.interactable,Is.False);
+            Click("계정 관리");Click("같은 요청 다시 확인");yield return WaitPlayback();
+            Assert.That(app.Account.Pending,Is.Null);Assert.That(app.Account.Profile.growth,Is.EqualTo(1));Assert.That(app.Account.Profile.currency,Is.EqualTo(80));
+            Assert.That(backend.UpgradeApplications,Is.EqualTo(1));Assert.That(backend.UpgradeRequests.Select(r=>r.requestId).Distinct().Single(),Is.EqualTo(pending.id));
+            Assert.That(backend.UpgradeRequests.Select(LoopJson.Encode).Distinct().Count(),Is.EqualTo(1));AssertNoSoloRequests(backend);
+        }
+        [UnityTest] public IEnumerator LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable()
+        {
+            var backend=new ProfileBackend();yield return ReopenAccount(backend);FileStream held=null;
             try
             {
-                app.Close();appObject.SetActive(false);
-                legacy.ui=ui;legacy.config=AssetDatabase.LoadAssetAtPath<SymbolLoopConfig>("Assets/_Project/Features/SymbolLoop/Configs/SymbolLoopConfig.asset");
-                app.legacy=legacy;app.combatConfig=legacy.config;app.content=AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json");
-                appObject.SetActive(true);
-                legacy.Open(Path.Combine(directory,"legacy","checkpoint.json"),backend:backend);legacyObject.SetActive(true);
-                yield return null;
-                Assert.That(legacy.Backend.ProfileReady,Is.True);Assert.That(ui.ActiveScreen,Is.TypeOf<SymbolLoopScreen>());
-                backend.HoldNextProfile();
-                var entry=((SymbolLoopScreen)ui.ActiveScreen).buttons.Single(b=>b.gameObject.activeSelf && b.label.text=="공동 세계 시험");
-                ClickButton(entry);yield return null;
-                Assert.That(ui.ActiveScreen,Is.TypeOf<CompetitionScreen>());Assert.That(app.IsPresenting,Is.True);
-                var pendingScreen=ui.ActiveScreen;long binding=pendingScreen.BindingRevision;
-                appObject.SetActive(false);
-                legacy.Render();legacy.enabled=false;legacy.enabled=true;
-                legacy.SendMessage("OnApplicationPause",true,SendMessageOptions.RequireReceiver);
-                legacy.SendMessage("OnApplicationPause",false,SendMessageOptions.RequireReceiver);
-                Assert.That(ui.ActiveScreen,Is.SameAs(pendingScreen),"Legacy lifecycle must not take ownership of the new mode.");
-                backend.Current=new BackendProfile {revision=2,values=new Profile {growth=4,currency=20}};backend.ReleaseProfile();
-                yield return WaitPlayback();
-                Assert.That(ui.ActiveScreen,Is.SameAs(pendingScreen));
-                Assert.That(pendingScreen.BindingRevision,Is.EqualTo(binding),"A delayed profile response must not rebind a disabled competition app.");
-                appObject.SetActive(true);yield return null;
-                Assert.That(ui.ActiveScreen,Is.TypeOf<CompetitionScreen>());Assert.That(app.Session.Snapshot.state,Is.Null);
-                backend.Current=new BackendProfile {revision=3,values=new Profile {growth=5,currency=20}};
-                Click("시험 경기 시작");yield return WaitPlayback();
-                var state=app.Session.Snapshot.state;
-                Assert.That(backend.ProfileReads,Is.EqualTo(3),"Lobby load, mode entry and match start each confirm the profile.");
-                Assert.That(state.startingProfile.growth,Is.EqualTo(5));
-                Assert.That(state.participants.All(p=>p.maxHp==definition.combat.hp+25),Is.True);
-                Assert.That(legacy.Session.Snapshot.run,Is.Null);Assert.That(legacy.Session.Snapshot.profile.currency,Is.EqualTo(20));
-                string saved=LoopJson.Encode(app.Session.Snapshot);legacy.Render();Assert.That(ui.ActiveScreen,Is.TypeOf<CompetitionScreen>());
-                Click("기존 모험으로");yield return null;
-                Assert.That(ui.ActiveScreen,Is.TypeOf<SymbolLoopScreen>());Assert.That(app.IsOpen,Is.False);
-                Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
-                Assert.That(((SymbolLoopScreen)ui.ActiveScreen).buttons.Any(b=>b.gameObject.activeSelf && b.label.text=="공동 세계 시험"),Is.True);
+                backend.OnApprovedUpgrade=()=>held=new FileStream(AccountPath,FileMode.Open,FileAccess.Read,FileShare.None);
+                Click("영구 HP");yield return WaitPlayback();
+                Assert.That(app.Account.Pending,Is.Not.Null,"A failed local apply must still expose its durable pending operation.");
+                string id=app.Account.Pending.id;Assert.That(app.Account.Ready,Is.False);Assert.That(Button("영구 HP").button.interactable,Is.False);
+                Assert.That(backend.UpgradeApplications,Is.EqualTo(1));held.Dispose();held=null;backend.OnApprovedUpgrade=null;
+                Click("계정 관리");Click("같은 요청 다시 확인");yield return WaitPlayback();
+                Assert.That(app.Account.Pending,Is.Null);Assert.That(app.Account.Profile.growth,Is.EqualTo(1));
+                Assert.That(backend.UpgradeApplications,Is.EqualTo(1));Assert.That(backend.UpgradeRequests.All(r=>r.requestId==id),Is.True);AssertNoSoloRequests(backend);
             }
-            finally { appObject.SetActive(false);app.legacy=null;Object.Destroy(legacyObject); }
+            finally { held?.Dispose(); }
+        }
+        [UnityTest] public IEnumerator OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable()
+        {
+            var backend=new ProfileBackend();
+            backend.ActiveRun=new RunTicket {serverRunId="preserved-solo-run",seed=33,rules=LoopJson.Copy(definition.combat),startingProfile=LoopJson.Copy(backend.Current)};
+            var accountStore=new LoopStore(AccountPath);var oldSession=new LoopSession(accountStore,definition.combat);
+            oldSession.RestoreActiveRun(backend.ActiveRun,backend.Current);string original=File.ReadAllText(AccountPath);
+            yield return ReopenAccount(backend);
+            Assert.That(app.Account.HasLegacyRun,Is.True);Assert.That(Button("영구 성장").button.interactable,Is.False);
+            Capture("legacy-growth-held");
+            Click("출전 선택");Click("비전 주사위");Click("경기 시작");yield return WaitPlayback();
+            Assert.That(app.Session.Snapshot.state.startingProfile.startingDie,Is.EqualTo("arcane"));
+            Assert.That(File.ReadAllText(AccountPath),Is.EqualTo(original),"New selection must never rewrite the old active adventure.");
+            Assert.That(backend.UpgradeCalls,Is.Zero);AssertNoSoloRequests(backend);
+        }
+        [UnityTest] public IEnumerator CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery()
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(AccountPath));Directory.CreateDirectory(directory);
+            const string badAccount="broken-account-original",badCompetition="broken-competition-original";
+            File.WriteAllText(AccountPath,badAccount);File.WriteAllText(path,badCompetition);
+            var backend=new ProfileBackend();yield return ReopenAccount(backend);
+            Assert.That(app.Account.StorageError,Is.Not.Empty);Assert.That(app.Session,Is.Null);
+            Assert.That(File.ReadAllText(AccountPath),Is.EqualTo(badAccount));Assert.That(File.ReadAllText(path),Is.EqualTo(badCompetition));
+            Assert.That(Button("경기 저장 다시 읽기"),Is.Not.Null);Click("계정 관리");Assert.That(Button("계정 저장 다시 읽기"),Is.Not.Null);
+            Click("계정 저장 다시 읽기");yield return WaitPlayback();
+            Assert.That(File.ReadAllText(AccountPath),Is.EqualTo(badAccount));Assert.That(File.ReadAllText(path),Is.EqualTo(badCompetition));
+            Assert.That(backend.ProfileReads,Is.Zero);AssertNoSoloRequests(backend);
+        }
+        [UnityTest] public IEnumerator ExistingSoloPendingIsRetainedWithoutImplicitSubmission()
+        {
+            var backend=new ProfileBackend();var disk=new LoopStore(AccountPath);var oldSession=new LoopSession(disk,definition.combat);
+            oldSession.RefreshProfile(backend.Current);var pending=oldSession.Prepare("start");disk.WritePending(pending);
+            string original=LoopJson.Encode(pending);yield return ReopenAccount(backend);
+            Assert.That(LoopJson.Encode(app.Account.Pending),Is.EqualTo(original));Assert.That(Button("경기 시작").button.interactable,Is.False);
+            Click("계정 관리");Assert.That(Button("같은 요청 다시 확인"),Is.Not.Null);
+            Assert.That(backend.ProfileReads,Is.Zero);AssertNoSoloRequests(backend);
         }
         sealed class ProfileBackend : IGameBackend
         {
-            public BackendProfile Current=new BackendProfile {revision=1,values=new Profile {growth=3,currency=20}};
-            public int ProfileReads;
+            public BackendProfile Current=new BackendProfile {revision=1,values=new Profile {currency=100}};
+            public RunTicket ActiveRun;
+            public int ProfileReads,StartCalls,SubmitCalls,UpgradeCalls,UpgradeApplications;
+            public bool FailProfile,LoseUpgradeReply;
+            public Action OnApprovedUpgrade;
+            public readonly List<BackendRequest> UpgradeRequests=new List<BackendRequest>();
+            readonly Dictionary<string,BackendReply> replies=new Dictionary<string,BackendReply>();
             TaskCompletionSource<BackendReply> held;
             public void HoldNextProfile()=>held=new TaskCompletionSource<BackendReply>();
             public void ReleaseProfile() { var pending=held;held=null;pending.SetResult(Reply()); }
-            BackendReply Reply()=>new BackendReply {status=BackendStatus.Approved,profile=LoopJson.Copy(Current)};
-            public Task<BackendReply> GetProfileAsync(CancellationToken ct) { ++ProfileReads;return held!=null?held.Task:Task.FromResult(Reply()); }
-            static Task<BackendReply> Unexpected()=>Task.FromException<BackendReply>(new InvalidOperationException("This fixture only serves profile reads."));
-            public Task<BackendReply> StartRunAsync(BackendRequest request,CancellationToken ct)=>Unexpected();
-            public Task<BackendReply> SubmitRunAsync(BackendRequest request,CancellationToken ct)=>Unexpected();
-            public Task<BackendReply> UpgradeAsync(BackendRequest request,CancellationToken ct)=>Unexpected();
-            public Task<BackendReply> GetOperationStatusAsync(string requestId,CancellationToken ct)=>Unexpected();
+            BackendReply Reply()=>new BackendReply {status=BackendStatus.Approved,profile=LoopJson.Copy(Current),run=LoopJson.Copy(ActiveRun)};
+            public Task<BackendReply> GetProfileAsync(CancellationToken ct)
+            { ++ProfileReads;return held!=null?held.Task:FailProfile?Task.FromException<BackendReply>(new TimeoutException("Isolated profile unavailable")):Task.FromResult(Reply()); }
+            static Task<BackendReply> Unexpected()=>Task.FromException<BackendReply>(new InvalidOperationException("No new solo requests are allowed by this fixture."));
+            public Task<BackendReply> StartRunAsync(BackendRequest request,CancellationToken ct) { ++StartCalls;return Unexpected(); }
+            public Task<BackendReply> SubmitRunAsync(BackendRequest request,CancellationToken ct) { ++SubmitCalls;return Unexpected(); }
+            public Task<BackendReply> UpgradeAsync(BackendRequest request,CancellationToken ct)
+            {
+                ++UpgradeCalls;UpgradeRequests.Add(LoopJson.Copy(request));
+                if(replies.TryGetValue(request.requestId,out var recorded)) return Task.FromResult(LoopJson.Copy(recorded));
+                Assert.That(request.kind,Is.EqualTo("grow"));Assert.That(request.expectedRevision,Is.EqualTo(Current.revision));Assert.That(ActiveRun,Is.Null);
+                Current.values.currency-=20*(Current.values.growth+1);++Current.values.growth;++Current.revision;++UpgradeApplications;
+                recorded=Reply();replies.Add(request.requestId,LoopJson.Copy(recorded));OnApprovedUpgrade?.Invoke();
+                if(LoseUpgradeReply) { LoseUpgradeReply=false;return Task.FromException<BackendReply>(new TimeoutException("Approved reply lost")); }
+                return Task.FromResult(recorded);
+            }
+            public Task<BackendReply> GetOperationStatusAsync(string requestId,CancellationToken ct)
+                =>Task.FromResult(replies.TryGetValue(requestId,out var reply)?LoopJson.Copy(reply):new BackendReply {status=BackendStatus.Rejected,code="OPERATION_NOT_FOUND"});
             public Task<BackendReply> GetRunStatusAsync(string serverRunId,CancellationToken ct)=>Unexpected();
         }
     }

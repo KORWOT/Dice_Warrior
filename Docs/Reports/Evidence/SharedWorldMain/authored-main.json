@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "DiceWarrior.SharedWorld.Editor.CompetitionAuthoring.Build();\nvar scene=UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();\nvar all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<UnityEngine.Transform>(true));\nvar apps=all.SelectMany(t=>t.GetComponents<DiceWarrior.SharedWorld.CompetitionApp>()).ToArray();\nvar manager=all.SelectMany(t=>t.GetComponents<FateDice.UIManager>()).Single();\nvar missing=all.Sum(t=>UnityEditor.GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject));\nif(apps.Length!=1 || manager.prefabs.Length!=1 || !(manager.prefabs[0] is DiceWarrior.SharedWorld.CompetitionScreen) || missing!=0) throw new System.InvalidOperationException(\"Main scene contract failed\");\nreturn new {scene=scene.path,sceneGuid=UnityEditor.AssetDatabase.AssetPathToGUID(scene.path),appCount=apps.Length,uiCount=manager.prefabs.Length,missingScripts=missing,config=UnityEditor.AssetDatabase.GetAssetPath(apps[0].combatConfig),prefabGuid=UnityEditor.AssetDatabase.AssetPathToGUID(DiceWarrior.SharedWorld.Editor.CompetitionAuthoring.PrefabPath),dirty=scene.isDirty,roots=scene.GetRootGameObjects().Select(r=>r.name).ToArray()};"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "scene": "Assets/_Project/Scenes/Title.unity",
+        "sceneGuid": "704a25bb52fa1c1448dd86a54349b281",
+        "appCount": 1,
+        "uiCount": 1,
+        "missingScripts": 0,
+        "config": "Assets/_Project/Features/SymbolLoop/Configs/SymbolLoopConfig.asset",
+        "prefabGuid": "ae62a590a196a5944815a56b969507cf",
+        "dirty": false,
+        "roots": [
+          "UIRoot",
+          "EventSystem",
+          "Shared World Application"
+        ]
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "if(UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode) throw new System.InvalidOperationException(\"Stop Play first\");\nfor(int i=0;i<UnityEngine.SceneManagement.SceneManager.sceneCount;i++) if(UnityEngine.SceneManagement.SceneManager.GetSceneAt(i).isDirty) throw new System.InvalidOperationException(\"Unsaved scene\");\nvar paths=new[]{\"Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopApp.cs\",\"Assets/_Project/Features/SymbolLoop/Presentation/SymbolLoopScreen.cs\",\"Assets/_Project/Features/SymbolLoop/Editor/SymbolLoopAuthoring.cs\",\"Assets/_Project/Features/SymbolLoop/Editor/SymbolLoop.Editor.asmdef\",\"Assets/_Project/Features/SymbolLoop/Prefabs/SymbolLoopScreen.prefab\",\"Assets/_Project/Features/SymbolLoop/Tests/PlayMode/SymbolLoopFlowTests.cs\",\"Assets/_Project/Features/SymbolLoop/Tests/PlayMode/SymbolLoop.PlayMode.Tests.asmdef\"};\nUnityEditor.AssetDatabase.StartAssetEditing();\ntry { foreach(var path in paths) if(!UnityEditor.AssetDatabase.DeleteAsset(path)) throw new System.IO.IOException(\"Delete failed: \"+path); }\nfinally { UnityEditor.AssetDatabase.StopAssetEditing(); }\nforeach(var folder in new[]{\"Assets/_Project/Features/SymbolLoop/Editor\",\"Assets/_Project/Features/SymbolLoop/Prefabs\",\"Assets/_Project/Features/SymbolLoop/Tests/PlayMode\"}) { if(System.IO.Directory.Exists(folder) && System.IO.Directory.GetFileSystemEntries(folder).Length==0 && !UnityEditor.AssetDatabase.DeleteAsset(folder)) throw new System.IO.IOException(\"Empty folder delete failed\"); }\nreturn \"Deleted 7 allowlisted assets and empty folders with AssetDatabase; shared combat and account sources retained\";"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": "Deleted 7 allowlisted assets and empty folders with AssetDatabase; shared combat and account sources retained"
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

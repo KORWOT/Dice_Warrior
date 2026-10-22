@@ -10,7 +10,8 @@
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <Compile Include="../../Assets/_Project/Features/SharedWorld/Tests/EditMode/*.cs" Link="Tests/%(Filename)%(Extension)" />
-    <Compile Include="../../Assets/_Project/Features/SharedWorld/Runtime/*.cs" Link="Runtime/%(Filename)%(Extension)" />
+    <Compile Include="../../Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs" Link="Runtime/CompetitionSession.cs" />
+    <Compile Include="../../Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs" Link="Runtime/CompetitionStore.cs" />
     <None Include="../../Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json" Link="shared-world-preview-1.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenVectors.json" Link="CompetitionGoldenVectors.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('../../Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenVectors.json')" />
   </ItemGroup>

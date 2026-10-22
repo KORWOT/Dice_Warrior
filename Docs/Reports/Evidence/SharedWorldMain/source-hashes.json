@@ -1,0 +1,38 @@
+[
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs",
+    "sha256": "C6BEA7290DFB548E44DBA3289BFA22945BC7AB8349B575D5FB82484C5DFA1891"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Runtime/CompetitionAccount.cs",
+    "sha256": "9D75484B2B49E475494969DF7DCA80A1F3EE3154A8C83D957595610B2E116EA3"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs",
+    "sha256": "7BCE4E778748741772E333C55457BAF6779673B904ADD1338FD1CEA5EA68338A"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs",
+    "sha256": "15150F4B2CC2701D0724197F5DD1AB3C8D33C9A6375961D9A6E76E74B49E67D9"
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Tests/EditMode/SymbolLoopTests.cs",
+    "sha256": "2A70D2E1765128FA3312277741F1D36ABBBE8B5B158C854D7410BD7524B2A272"
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Tests/EditMode/SymbolLoop.EditMode.Tests.asmdef",
+    "sha256": "8F35744866728A2D662313274F02225437E4317EA72D6F77D495302A14B02639"
+  },
+  {
+    "path": "Assets/_Project/Scenes/Title.unity",
+    "sha256": "ECFAA07A98030A8CB61C162F5FC599453CCC17CDDAC286AC847134408F14F468"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+    "sha256": "77F37F8D2DCF16D753AC65E3613F4621956DBB9273A40048857B6BB2F9688256"
+  },
+  {
+    "path": "Server/DiceWarrior.Competition.Tests/DiceWarrior.Competition.Tests.csproj",
+    "sha256": "928F7B45AEBED46AB0891C9976222F540D01E7648E0822630E62E732703237B5"
+  }
+]

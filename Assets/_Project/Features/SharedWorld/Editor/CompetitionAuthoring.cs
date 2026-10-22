@@ -17,7 +17,7 @@ namespace DiceWarrior.SharedWorld.Editor
         public const string PrefabPath="Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab";
         public const string ContentPath="Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json";
         static Font font;
-        [MenuItem("Dice Warrior/Build Shared World Preview")]
+        [MenuItem("Dice Warrior/Build Shared World Main")]
         public static void Build()
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Stop play first");
@@ -34,7 +34,7 @@ namespace DiceWarrior.SharedWorld.Editor
                 var screen=go.GetComponent<CompetitionScreen>();screen.group=go.GetComponent<CanvasGroup>();
                 var frame=new GameObject("Portrait frame",typeof(RectTransform)).GetComponent<RectTransform>();frame.SetParent(go.transform,false);
                 frame.anchorMin=frame.anchorMax=frame.pivot=new Vector2(.5f,.5f);frame.sizeDelta=new Vector2(720,1280);screen.content=frame;
-                screen.title=Text(frame,"Title","공동 세계 · 모험가 경쟁",29,30,18,660,44);screen.title.color=new Color(.95f,.83f,.55f);
+                screen.title=Text(frame,"Title","DICE WARRIOR · 공동 모험",29,30,18,660,44);screen.title.color=new Color(.95f,.83f,.55f);
                 screen.subtitle=Text(frame,"Subtitle","개발 시험 · 영구 재화 지급 없음",17,30,65,660,28);
                 screen.status=Text(frame,"Round status","",18,30,94,660,30);
                 var roster=Panel(frame,"Participants",30,126,660,112,new Color(.07f,.12f,.18f));screen.roster=new Text[4];
@@ -98,14 +98,16 @@ namespace DiceWarrior.SharedWorld.Editor
             }
             finally { UnityEngine.Object.DestroyImmediate(go); }
             var scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
-            var roots=scene.GetRootGameObjects();var legacy=roots.SelectMany(r=>r.GetComponentsInChildren<SymbolLoopApp>(true)).Single();
+            var roots=scene.GetRootGameObjects();
+            var manager=roots.SelectMany(r=>r.GetComponentsInChildren<UIManager>(true)).Single();
             var app=roots.SelectMany(r=>r.GetComponentsInChildren<CompetitionApp>(true)).SingleOrDefault();
             if(!app) { var obj=new GameObject("Shared World Application");SceneManager.MoveGameObjectToScene(obj,scene);app=obj.AddComponent<CompetitionApp>(); }
-            app.legacy=legacy;app.ui=legacy.ui;app.combatConfig=legacy.config;app.content=content;
+            app.ui=manager;app.combatConfig=AssetDatabase.LoadAssetAtPath<SymbolLoopConfig>("Assets/_Project/Features/SymbolLoop/Configs/SymbolLoopConfig.asset");app.content=content;
+            if(!app.combatConfig) throw new InvalidOperationException("Missing shared combat configuration");
             var prefab=AssetDatabase.LoadAssetAtPath<CompetitionScreen>(PrefabPath);
-            legacy.ui.prefabs=legacy.ui.prefabs.Where(p=>!(p is CompetitionScreen)).Concat(new BaseUI[]{prefab}).ToArray();
-            PrefabUtility.RecordPrefabInstancePropertyModifications(legacy.ui);
-            EditorUtility.SetDirty(app);EditorUtility.SetDirty(legacy.ui);EditorSceneManager.MarkSceneDirty(scene);
+            manager.prefabs=new BaseUI[]{prefab};
+            PrefabUtility.RecordPrefabInstancePropertyModifications(manager);
+            EditorUtility.SetDirty(app);EditorUtility.SetDirty(manager);EditorSceneManager.MarkSceneDirty(scene);
             if(!EditorSceneManager.SaveScene(scene,ScenePath)) throw new IOException("Scene save failed");
         }
         static Text Text(Transform parent,string name,string value,int size,float x,float y,float width,float height,TextAnchor alignment=TextAnchor.UpperLeft)

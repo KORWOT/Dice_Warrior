@@ -237,29 +237,41 @@ namespace DiceWarrior.SymbolLoop.Tests
         }
         [Test] public void AuthoredPrefabHasAllLocalBindingsAndNoLegacyDependencies()
         {
-            var prefab=AssetDatabase.LoadAssetAtPath<SymbolLoopScreen>(Editor.SymbolLoopAuthoring.PrefabPath);
-            Assert.That(prefab,Is.Not.Null); Assert.That(prefab.buttons.Length,Is.EqualTo(8));
-            Assert.That(prefab.tiles.Length,Is.EqualTo(12)); Assert.That(prefab.dice.Length,Is.EqualTo(3));
-            Assert.That(prefab.focus,Is.Not.Null);
-            Assert.That(prefab.content,Is.Not.Null);
-            foreach(var button in prefab.buttons)
+            const string scenePath="Assets/_Project/Scenes/Title.unity";
+            const string prefabPath="Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab";
+            var prefab=AssetDatabase.LoadAssetAtPath<FateDice.BaseUI>(prefabPath);
+            Assert.That(prefab,Is.Not.Null);
+            var data=new SerializedObject(prefab);
+            foreach(var field in new[]{"buttons","places","cells","pawns","roster","tileFrames"})
+            {
+                var references=data.FindProperty(field);Assert.That(references,Is.Not.Null,field);
+                Assert.That(references.arraySize,Is.EqualTo(field=="buttons"?8:field=="pawns"||field=="roster"?4:12),field);
+                for(int i=0;i<references.arraySize;i++) Assert.That(references.GetArrayElementAtIndex(i).objectReferenceValue,Is.Not.Null,field);
+            }
+            Assert.That(data.FindProperty("content").objectReferenceValue,Is.Not.Null);
+            var playback=prefab.GetComponent<SymbolLoopPlayback>();
+            Assert.That(playback,Is.Not.Null);Assert.That(playback.symbolDice.Length,Is.EqualTo(3));
+            Assert.That(playback.numericDie,Is.Not.Null);
+            foreach(var die in playback.symbolDice) Assert.That(die,Is.Not.Null);
+            foreach(var button in prefab.GetComponentsInChildren<FateDice.CommonButtonView>(true))
                 Assert.That(button.button && button.label && button.background && button.border && button.icon && button.iconFallback && button.group,Is.True);
-            var deps=AssetDatabase.GetDependencies(Editor.SymbolLoopAuthoring.ScenePath,true);
+            Assert.That(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>("Assets/_Project/Features/SymbolLoop/Prefabs/SymbolLoopScreen.prefab"),Is.Null);
+            var deps=AssetDatabase.GetDependencies(scenePath,true);
             Assert.That(deps.Any(p=>p.Contains("/Features/Run/")||p.Contains("/Features/Fate/")||p.Contains("/Features/Combat/")),Is.False);
-            var scene=EditorSceneManager.OpenPreviewScene(Editor.SymbolLoopAuthoring.ScenePath);
+            Assert.That(deps.Any(p=>p.EndsWith("/SymbolLoopApp.cs")||p.EndsWith("/SymbolLoopScreen.prefab")),Is.False);
+            var scene=EditorSceneManager.OpenPreviewScene(scenePath);
             try
             {
                 var objects=scene.GetRootGameObjects();
                 Assert.That(objects.SelectMany(o=>o.GetComponentsInChildren<Transform>(true))
                     .Sum(t=>GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject)),Is.Zero);
-                var app=objects.SelectMany(o=>o.GetComponentsInChildren<SymbolLoopApp>(true)).Single();
-                Assert.That(app.config,Is.Not.Null); Assert.That(app.ui,Is.Not.Null);
-                // C5 adds one authored mode; the original v1 prefab and its bindings remain unchanged.
-                Assert.That(app.ui.prefabs.OfType<SymbolLoopScreen>().Single(),Is.EqualTo(prefab));
-                Assert.That(app.ui.prefabs.Length,Is.EqualTo(2));
-                Assert.That(app.ui.prefabs.Count(p=>p.GetType().FullName=="DiceWarrior.SharedWorld.CompetitionScreen"),Is.EqualTo(1));
-                var competitionPrefab=AssetDatabase.LoadAssetAtPath<FateDice.BaseUI>("Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab");
-                Assert.That(competitionPrefab,Is.Not.Null);Assert.That(app.ui.prefabs,Does.Contain(competitionPrefab));
+                var components=objects.SelectMany(o=>o.GetComponentsInChildren<MonoBehaviour>(true)).ToArray();
+                Assert.That(components.Any(c=>c.GetType().Name=="SymbolLoopApp"),Is.False);
+                var app=components.Single(c=>c.GetType().FullName=="DiceWarrior.SharedWorld.CompetitionApp");
+                var serialized=new SerializedObject(app);
+                foreach(var field in new[]{"ui","combatConfig","content"}) Assert.That(serialized.FindProperty(field).objectReferenceValue,Is.Not.Null,field);
+                var manager=(FateDice.UIManager)serialized.FindProperty("ui").objectReferenceValue;
+                Assert.That(manager.prefabs.Single(),Is.EqualTo(prefab));
             }
             finally { EditorSceneManager.ClosePreviewScene(scene); }
         }

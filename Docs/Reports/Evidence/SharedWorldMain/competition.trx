@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7f07a564-6f48-4792-8767-49bd61afd65d" name="coli4@WOT 2026-10-22 15:03:36" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-22T15:03:36.6039268+09:00" queuing="2026-10-22T15:03:36.6039269+09:00" start="2026-10-22T15:03:35.6518739+09:00" finish="2026-10-22T15:03:37.0154762+09:00" />
+  <TestSettings name="default" id="98b94a63-dca1-4a97-a602-0c387388a2f2">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-22_15_03_36" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="08d2c4e6-0bbb-4cd1-8a86-9307877a54b7" testId="eea53f00-15f9-0b45-6e0c-389320ae251e" testName="ForeignTargetAndInvalidRevisionCannotWriteCheckpoint" computerName="WOT" duration="00:00:00.0151220" startTime="2026-10-22T15:03:36.6955218+09:00" endTime="2026-10-22T15:03:36.7106430+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="08d2c4e6-0bbb-4cd1-8a86-9307877a54b7" />
+    <UnitTestResult executionId="426d0b48-1d4a-4d0c-982e-610d89ed4a7f" testId="e4f0de0e-ea29-cfc7-abbe-14b6ca5f266e" testName="BackupRestorePreservesDamagedBytesAndInvalidatesOldCommands" computerName="WOT" duration="00:00:00.0512600" startTime="2026-10-22T15:03:36.6238713+09:00" endTime="2026-10-22T15:03:36.6751307+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="426d0b48-1d4a-4d0c-982e-610d89ed4a7f" />
+    <UnitTestResult executionId="503715a1-8adb-41ec-a3c3-a5d00c931978" testId="d124bc3b-7f85-61dd-cdb1-b0a81fcbf70e" testName="SavedOfferDoesNotRerollAndChoicesCannotBypassCosts" computerName="WOT" duration="00:00:00.0178830" startTime="2026-10-22T15:03:36.5719257+09:00" endTime="2026-10-22T15:03:36.5898079+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="503715a1-8adb-41ec-a3c3-a5d00c931978" />
+    <UnitTestResult executionId="cf59b48a-8a12-4435-a104-e3769474b209" testId="526278dd-6214-5786-8c41-be92b71948df" testName="HumanLogReplaysAiAndEntireStateAcrossSaveResume" computerName="WOT" duration="00:00:00.0322750" startTime="2026-10-22T15:03:36.5269931+09:00" endTime="2026-10-22T15:03:36.5592674+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf59b48a-8a12-4435-a104-e3769474b209" />
+    <UnitTestResult executionId="8ca98228-3928-482e-900f-c288260783ad" testId="fb8bd663-d35f-88e7-7d02-4bf23958b106" testName="LostWriteAcknowledgementRecoversExistingReceiptWithoutRepeatingAction" computerName="WOT" duration="00:00:00.0124550" startTime="2026-10-22T15:03:36.7106630+09:00" endTime="2026-10-22T15:03:36.7231178+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8ca98228-3928-482e-900f-c288260783ad" />
+    <UnitTestResult executionId="2f81442c-5a0c-45ef-bb77-f409a5f37608" testId="da5c332c-4424-6177-eac4-6363d9883ab4" testName="FailedCommandCanRetrySameIdAndNeverPublishesUncommittedState" computerName="WOT" duration="00:00:00.0164830" startTime="2026-10-22T15:03:36.6751489+09:00" endTime="2026-10-22T15:03:36.6916316+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f81442c-5a0c-45ef-bb77-f409a5f37608" />
+    <UnitTestResult executionId="27276518-c951-40c3-b7a1-b7a312beed63" testId="04602570-dbe8-157c-e772-147edc18a950" testName="TwoSessionsRejectStaleInputAndFileCommitHasOneWinner" computerName="WOT" duration="00:00:00.0285210" startTime="2026-10-22T15:03:36.9482790+09:00" endTime="2026-10-22T15:03:36.9767997+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="27276518-c951-40c3-b7a1-b7a312beed63" />
+    <UnitTestResult executionId="2e25b738-6cb2-4b63-9077-3bd5b285fc48" testId="a6ecada8-1e5b-f50d-542e-8a264fb49ece" testName="LapClaimsKeepGeographyAndGrowOnlyTheClaimingParticipant" computerName="WOT" duration="00:00:00.0026930" startTime="2026-10-22T15:03:36.5612178+09:00" endTime="2026-10-22T15:03:36.5639110+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e25b738-6cb2-4b63-9077-3bd5b285fc48" />
+    <UnitTestResult executionId="62b43c63-bfcc-4b58-a72e-b95fe7db0066" testId="a5fab689-d16d-3b00-d079-7b8c507bcf94" testName="AbandonedHumanCanSpectateAndRoundLimitEndsTheMatch" computerName="WOT" duration="00:00:00.0093660" startTime="2026-10-22T15:03:36.5020409+09:00" endTime="2026-10-22T15:03:36.5114063+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62b43c63-bfcc-4b58-a72e-b95fe7db0066" />
+    <UnitTestResult executionId="055f68fe-0a53-4a8a-b4af-af01867980bb" testId="803884d3-19b9-35b3-b6ad-93f170952898" testName="FrozenHumanCommandsReproduceAllParticipantsAndRngOnBothRuntimes" computerName="WOT" duration="00:00:00.3379750" startTime="2026-10-22T15:03:36.1613442+09:00" endTime="2026-10-22T15:03:36.4992563+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="055f68fe-0a53-4a8a-b4af-af01867980bb" />
+    <UnitTestResult executionId="82900d80-2c17-4cf3-a8e9-a04bfa50cd84" testId="62d4d9d4-2074-74ff-9724-04283fac415d" testName="StartingNextMatchArchivesCompletedCheckpointWithoutTouchingLegacyFile" computerName="WOT" duration="00:00:00.1885400" startTime="2026-10-22T15:03:36.7597180+09:00" endTime="2026-10-22T15:03:36.9482580+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82900d80-2c17-4cf3-a8e9-a04bfa50cd84" />
+    <UnitTestResult executionId="fc38c9a1-8017-401e-af52-e63862a5810f" testId="c75fcb29-3daa-29a6-7748-ef8162d29b59" testName="MatchStartsWithFixedWorldAndFourIndependentEqualGrowthAdventurers" computerName="WOT" duration="00:00:00.0054810" startTime="2026-10-22T15:03:36.5639206+09:00" endTime="2026-10-22T15:03:36.5694017+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fc38c9a1-8017-401e-af52-e63862a5810f" />
+    <UnitTestResult executionId="5eb771f4-7147-45fc-812b-306673373768" testId="9f54db9c-78b8-2df6-5dea-064ac5861532" testName="HumanEncounterCompletionMovesEveryActiveAiExactlyOnceOnTheSameWorld" computerName="WOT" duration="00:00:00.0046580" startTime="2026-10-22T15:03:36.5223182+09:00" endTime="2026-10-22T15:03:36.5269761+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5eb771f4-7147-45fc-812b-306673373768" />
+    <UnitTestResult executionId="99b501bd-70bc-4a48-85b1-4973743dfedd" testId="d4692e94-5dcb-9e7e-16b2-35986000bdd9" testName="CombatAdapterPreservesAll84ExactSymbolResults" computerName="WOT" duration="00:00:00.0069920" startTime="2026-10-22T15:03:36.5114289+09:00" endTime="2026-10-22T15:03:36.5184201+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99b501bd-70bc-4a48-85b1-4973743dfedd" />
+    <UnitTestResult executionId="b24d4938-484e-4cef-a0aa-518114283235" testId="3a847bd9-9f74-7cc5-6b15-1c7cd3664def" testName="SnapshotAndStartInputsCannotMutatePublishedState" computerName="WOT" duration="00:00:00.0064930" startTime="2026-10-22T15:03:36.7532062+09:00" endTime="2026-10-22T15:03:36.7596992+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b24d4938-484e-4cef-a0aa-518114283235" />
+    <UnitTestResult executionId="033eba20-7df9-4b17-9dce-ee1dfce7729d" testId="a6858d59-a8ec-2143-61e6-d2245ded6e31" testName="MissingPrimaryWithBackupIsNotSilentlyReinitialized" computerName="WOT" duration="00:00:00.0244810" startTime="2026-10-22T15:03:36.7231367+09:00" endTime="2026-10-22T15:03:36.7476175+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="033eba20-7df9-4b17-9dce-ee1dfce7729d" />
+    <UnitTestResult executionId="f9ab4d0b-d254-4abe-a919-10b4d8600e3a" testId="40569dd1-ff8f-c70b-2c8f-1cb184d42b72" testName="CombatTurnCapEliminatesWithoutFakeVictoryOrHonor" computerName="WOT" duration="00:00:00.0024030" startTime="2026-10-22T15:03:36.5184707+09:00" endTime="2026-10-22T15:03:36.5208732+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9ab4d0b-d254-4abe-a919-10b4d8600e3a" />
+    <UnitTestResult executionId="d47f768c-d0cd-4066-b413-c4220a50fde2" testId="4048a5b4-214a-a899-8ae3-2ac703398f41" testName="ContentRejectsMissingReferencesAndNoLegalFallback" computerName="WOT" duration="00:00:00.0014120" startTime="2026-10-22T15:03:36.5208925+09:00" endTime="2026-10-22T15:03:36.5223041+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d47f768c-d0cd-4066-b413-c4220a50fde2" />
+    <UnitTestResult executionId="d956d87f-78a5-4a87-99ce-c6cb9a026139" testId="24956acf-a5a3-18d9-534e-64862bb9766b" testName="IdenticalResultsShareRankWithoutParticipantIdBreakingTheTie" computerName="WOT" duration="00:00:00.0019090" startTime="2026-10-22T15:03:36.5592929+09:00" endTime="2026-10-22T15:03:36.5612016+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d956d87f-78a5-4a87-99ce-c6cb9a026139" />
+    <UnitTestResult executionId="1db42358-2e3d-4a14-96ef-fab94df10a63" testId="21b456b7-603a-97ef-d573-dfd78922dfb1" testName="FailedStartDoesNotPublishCandidateOrOverwriteProfile" computerName="WOT" duration="00:00:00.0038580" startTime="2026-10-22T15:03:36.6916514+09:00" endTime="2026-10-22T15:03:36.6955090+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1db42358-2e3d-4a14-96ef-fab94df10a63" />
+    <UnitTestResult executionId="1b35c2ce-14a7-47b5-9288-cb28fb93ecb9" testId="3943692f-a7fa-937f-7174-7cffec94914b" testName="NewMatchCannotReplaceActiveGame" computerName="WOT" duration="00:00:00.0055520" startTime="2026-10-22T15:03:36.7476375+09:00" endTime="2026-10-22T15:03:36.7531894+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1b35c2ce-14a7-47b5-9288-cb28fb93ecb9" />
+    <UnitTestResult executionId="39c8dd11-a779-454d-b1da-d3dca83e267d" testId="c0cb73b9-1f27-08be-92da-631c9cd15e74" testName="AiRoundAndHumanCommandCommitTogetherOrNotAtAll" computerName="WOT" duration="00:00:00.0339080" startTime="2026-10-22T15:03:36.5899411+09:00" endTime="2026-10-22T15:03:36.6238492+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39c8dd11-a779-454d-b1da-d3dca83e267d" />
+    <UnitTestResult executionId="94943fe2-d031-4047-aa3f-0526ddd0948a" testId="f6e1b626-e8a0-93f3-1bea-ca6dd747fdfb" testName="SamePlaceUsesPersonalStageAndEventStreamsNeverChangeTravelOrCombat" computerName="WOT" duration="00:00:00.0024610" startTime="2026-10-22T15:03:36.5694088+09:00" endTime="2026-10-22T15:03:36.5718694+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="94943fe2-d031-4047-aa3f-0526ddd0948a" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SamePlaceUsesPersonalStageAndEventStreamsNeverChangeTravelOrCombat" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="f6e1b626-e8a0-93f3-1bea-ca6dd747fdfb">
+      <Execution id="94943fe2-d031-4047-aa3f-0526ddd0948a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="SamePlaceUsesPersonalStageAndEventStreamsNeverChangeTravelOrCombat" />
+    </UnitTest>
+    <UnitTest name="LapClaimsKeepGeographyAndGrowOnlyTheClaimingParticipant" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="a6ecada8-1e5b-f50d-542e-8a264fb49ece">
+      <Execution id="2e25b738-6cb2-4b63-9077-3bd5b285fc48" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="LapClaimsKeepGeographyAndGrowOnlyTheClaimingParticipant" />
+    </UnitTest>
+    <UnitTest name="StartingNextMatchArchivesCompletedCheckpointWithoutTouchingLegacyFile" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="62d4d9d4-2074-74ff-9724-04283fac415d">
+      <Execution id="82900d80-2c17-4cf3-a8e9-a04bfa50cd84" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="StartingNextMatchArchivesCompletedCheckpointWithoutTouchingLegacyFile" />
+    </UnitTest>
+    <UnitTest name="BackupRestorePreservesDamagedBytesAndInvalidatesOldCommands" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="e4f0de0e-ea29-cfc7-abbe-14b6ca5f266e">
+      <Execution id="426d0b48-1d4a-4d0c-982e-610d89ed4a7f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="BackupRestorePreservesDamagedBytesAndInvalidatesOldCommands" />
+    </UnitTest>
+    <UnitTest name="FailedCommandCanRetrySameIdAndNeverPublishesUncommittedState" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="da5c332c-4424-6177-eac4-6363d9883ab4">
+      <Execution id="2f81442c-5a0c-45ef-bb77-f409a5f37608" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="FailedCommandCanRetrySameIdAndNeverPublishesUncommittedState" />
+    </UnitTest>
+    <UnitTest name="HumanEncounterCompletionMovesEveryActiveAiExactlyOnceOnTheSameWorld" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="9f54db9c-78b8-2df6-5dea-064ac5861532">
+      <Execution id="5eb771f4-7147-45fc-812b-306673373768" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="HumanEncounterCompletionMovesEveryActiveAiExactlyOnceOnTheSameWorld" />
+    </UnitTest>
+    <UnitTest name="TwoSessionsRejectStaleInputAndFileCommitHasOneWinner" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="04602570-dbe8-157c-e772-147edc18a950">
+      <Execution id="27276518-c951-40c3-b7a1-b7a312beed63" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="TwoSessionsRejectStaleInputAndFileCommitHasOneWinner" />
+    </UnitTest>
+    <UnitTest name="CombatAdapterPreservesAll84ExactSymbolResults" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="d4692e94-5dcb-9e7e-16b2-35986000bdd9">
+      <Execution id="99b501bd-70bc-4a48-85b1-4973743dfedd" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="CombatAdapterPreservesAll84ExactSymbolResults" />
+    </UnitTest>
+    <UnitTest name="HumanLogReplaysAiAndEntireStateAcrossSaveResume" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="526278dd-6214-5786-8c41-be92b71948df">
+      <Execution id="cf59b48a-8a12-4435-a104-e3769474b209" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="HumanLogReplaysAiAndEntireStateAcrossSaveResume" />
+    </UnitTest>
+    <UnitTest name="MissingPrimaryWithBackupIsNotSilentlyReinitialized" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="a6858d59-a8ec-2143-61e6-d2245ded6e31">
+      <Execution id="033eba20-7df9-4b17-9dce-ee1dfce7729d" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="MissingPrimaryWithBackupIsNotSilentlyReinitialized" />
+    </UnitTest>
+    <UnitTest name="ContentRejectsMissingReferencesAndNoLegalFallback" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="4048a5b4-214a-a899-8ae3-2ac703398f41">
+      <Execution id="d47f768c-d0cd-4066-b413-c4220a50fde2" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="ContentRejectsMissingReferencesAndNoLegalFallback" />
+    </UnitTest>
+    <UnitTest name="MatchStartsWithFixedWorldAndFourIndependentEqualGrowthAdventurers" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="c75fcb29-3daa-29a6-7748-ef8162d29b59">
+      <Execution id="fc38c9a1-8017-401e-af52-e63862a5810f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="MatchStartsWithFixedWorldAndFourIndependentEqualGrowthAdventurers" />
+    </UnitTest>
+    <UnitTest name="IdenticalResultsShareRankWithoutParticipantIdBreakingTheTie" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="24956acf-a5a3-18d9-534e-64862bb9766b">
+      <Execution id="d956d87f-78a5-4a87-99ce-c6cb9a026139" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="IdenticalResultsShareRankWithoutParticipantIdBreakingTheTie" />
+    </UnitTest>
+    <UnitTest name="LostWriteAcknowledgementRecoversExistingReceiptWithoutRepeatingAction" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="fb8bd663-d35f-88e7-7d02-4bf23958b106">
+      <Execution id="8ca98228-3928-482e-900f-c288260783ad" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="LostWriteAcknowledgementRecoversExistingReceiptWithoutRepeatingAction" />
+    </UnitTest>
+    <UnitTest name="NewMatchCannotReplaceActiveGame" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="3943692f-a7fa-937f-7174-7cffec94914b">
+      <Execution id="1b35c2ce-14a7-47b5-9288-cb28fb93ecb9" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="NewMatchCannotReplaceActiveGame" />
+    </UnitTest>
+    <UnitTest name="SavedOfferDoesNotRerollAndChoicesCannotBypassCosts" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="d124bc3b-7f85-61dd-cdb1-b0a81fcbf70e">
+      <Execution id="503715a1-8adb-41ec-a3c3-a5d00c931978" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="SavedOfferDoesNotRerollAndChoicesCannotBypassCosts" />
+    </UnitTest>
+    <UnitTest name="FailedStartDoesNotPublishCandidateOrOverwriteProfile" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="21b456b7-603a-97ef-d573-dfd78922dfb1">
+      <Execution id="1db42358-2e3d-4a14-96ef-fab94df10a63" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="FailedStartDoesNotPublishCandidateOrOverwriteProfile" />
+    </UnitTest>
+    <UnitTest name="FrozenHumanCommandsReproduceAllParticipantsAndRngOnBothRuntimes" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="803884d3-19b9-35b3-b6ad-93f170952898">
+      <Execution id="055f68fe-0a53-4a8a-b4af-af01867980bb" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionGoldenTests" name="FrozenHumanCommandsReproduceAllParticipantsAndRngOnBothRuntimes" />
+    </UnitTest>
+    <UnitTest name="AbandonedHumanCanSpectateAndRoundLimitEndsTheMatch" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="a5fab689-d16d-3b00-d079-7b8c507bcf94">
+      <Execution id="62b43c63-bfcc-4b58-a72e-b95fe7db0066" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="AbandonedHumanCanSpectateAndRoundLimitEndsTheMatch" />
+    </UnitTest>
+    <UnitTest name="ForeignTargetAndInvalidRevisionCannotWriteCheckpoint" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="eea53f00-15f9-0b45-6e0c-389320ae251e">
+      <Execution id="08d2c4e6-0bbb-4cd1-8a86-9307877a54b7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="ForeignTargetAndInvalidRevisionCannotWriteCheckpoint" />
+    </UnitTest>
+    <UnitTest name="CombatTurnCapEliminatesWithoutFakeVictoryOrHonor" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="40569dd1-ff8f-c70b-2c8f-1cb184d42b72">
+      <Execution id="f9ab4d0b-d254-4abe-a919-10b4d8600e3a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionRulesTests" name="CombatTurnCapEliminatesWithoutFakeVictoryOrHonor" />
+    </UnitTest>
+    <UnitTest name="SnapshotAndStartInputsCannotMutatePublishedState" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="3a847bd9-9f74-7cc5-6b15-1c7cd3664def">
+      <Execution id="b24d4938-484e-4cef-a0aa-518114283235" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="SnapshotAndStartInputsCannotMutatePublishedState" />
+    </UnitTest>
+    <UnitTest name="AiRoundAndHumanCommandCommitTogetherOrNotAtAll" storage="d:\unityproject\dice_warrior\server\dicewarrior.competition.tests\bin\debug\net10.0\dicewarrior.competition.tests.dll" id="c0cb73b9-1f27-08be-92da-631c9cd15e74">
+      <Execution id="39c8dd11-a779-454d-b1da-d3dca83e267d" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SharedWorld.Tests.CompetitionStoreTests" name="AiRoundAndHumanCommandCommitTogetherOrNotAtAll" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="eea53f00-15f9-0b45-6e0c-389320ae251e" executionId="08d2c4e6-0bbb-4cd1-8a86-9307877a54b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e4f0de0e-ea29-cfc7-abbe-14b6ca5f266e" executionId="426d0b48-1d4a-4d0c-982e-610d89ed4a7f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d124bc3b-7f85-61dd-cdb1-b0a81fcbf70e" executionId="503715a1-8adb-41ec-a3c3-a5d00c931978" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="526278dd-6214-5786-8c41-be92b71948df" executionId="cf59b48a-8a12-4435-a104-e3769474b209" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb8bd663-d35f-88e7-7d02-4bf23958b106" executionId="8ca98228-3928-482e-900f-c288260783ad" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da5c332c-4424-6177-eac4-6363d9883ab4" executionId="2f81442c-5a0c-45ef-bb77-f409a5f37608" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="04602570-dbe8-157c-e772-147edc18a950" executionId="27276518-c951-40c3-b7a1-b7a312beed63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6ecada8-1e5b-f50d-542e-8a264fb49ece" executionId="2e25b738-6cb2-4b63-9077-3bd5b285fc48" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a5fab689-d16d-3b00-d079-7b8c507bcf94" executionId="62b43c63-bfcc-4b58-a72e-b95fe7db0066" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="803884d3-19b9-35b3-b6ad-93f170952898" executionId="055f68fe-0a53-4a8a-b4af-af01867980bb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="62d4d9d4-2074-74ff-9724-04283fac415d" executionId="82900d80-2c17-4cf3-a8e9-a04bfa50cd84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c75fcb29-3daa-29a6-7748-ef8162d29b59" executionId="fc38c9a1-8017-401e-af52-e63862a5810f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9f54db9c-78b8-2df6-5dea-064ac5861532" executionId="5eb771f4-7147-45fc-812b-306673373768" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d4692e94-5dcb-9e7e-16b2-35986000bdd9" executionId="99b501bd-70bc-4a48-85b1-4973743dfedd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a847bd9-9f74-7cc5-6b15-1c7cd3664def" executionId="b24d4938-484e-4cef-a0aa-518114283235" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6858d59-a8ec-2143-61e6-d2245ded6e31" executionId="033eba20-7df9-4b17-9dce-ee1dfce7729d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="40569dd1-ff8f-c70b-2c8f-1cb184d42b72" executionId="f9ab4d0b-d254-4abe-a919-10b4d8600e3a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4048a5b4-214a-a899-8ae3-2ac703398f41" executionId="d47f768c-d0cd-4066-b413-c4220a50fde2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="24956acf-a5a3-18d9-534e-64862bb9766b" executionId="d956d87f-78a5-4a87-99ce-c6cb9a026139" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="21b456b7-603a-97ef-d573-dfd78922dfb1" executionId="1db42358-2e3d-4a14-96ef-fab94df10a63" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3943692f-a7fa-937f-7174-7cffec94914b" executionId="1b35c2ce-14a7-47b5-9288-cb28fb93ecb9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0cb73b9-1f27-08be-92da-631c9cd15e74" executionId="39c8dd11-a779-454d-b1da-d3dca83e267d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f6e1b626-e8a0-93f3-1bea-ca6dd747fdfb" executionId="94943fe2-d031-4047-aa3f-0526ddd0948a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="23" executed="23" passed="23" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Competition.Tests\bin\Debug\net10.0\DiceWarrior.Competition.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 23 of 23 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

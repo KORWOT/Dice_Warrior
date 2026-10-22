@@ -5,8 +5,8 @@
 - 역할: 로컬 런 명령과 체크포인트 공개 경계. 영구 재화의 직접 지급/차감은 제거했다.
 - 핵심 동작: 최신 파일/영수증/토큰 → 후보 복제 → 로컬 규칙 → 명령 로그 → 검증/Commit → 공개. Prepare는 백엔드 요청을 고정하며 ApplyBackend는 확정 응답만 반영한다.
 - 입출력: ILoopStore/Rules, Prepare/Execute/ValidateBackendCommand/RefreshProfile/RestoreActiveRun/ApplyBackend/Reload/Snapshot.
-- 사용하는 대상: RunCommandRules/LoopRules/LoopJson/BackendContracts/ILoopStore. 사용하는 쪽: App과 Coordinator, 두 검사 assembly.
-- 관계 근거: App은 Coordinator.ExecuteAsync를 호출하고 Coordinator가 Session의 로컬 실행/승인 적용을 구분한다.
+- 사용하는 대상: RunCommandRules/LoopRules/LoopJson/BackendContracts/ILoopStore. 사용하는 쪽: CompetitionAccount와 Coordinator, 기존 계정/재현 검사.
+- 관계 근거: CompetitionAccount는 Coordinator.ExecuteAsync로 영구 성장과 기존 미결 요청을 처리한다. 별도 로컬 출전 선택용 세션은 기존 active run의 RequireLobby 제약 및 저장과 분리한다. 신규 공동 경기 상태는 CompetitionSession 책임이다.
 - 상태/수명: start는 서버 티켓의 시드/규칙/성장/출전으로 생성한다. settle은 서버 영수증의 지급액/상태와 프로필을 반영한다. 구형 pending은 지급 0으로 유지한다. grow는 서버 프로필을 반영한다. 과거 응답으로 더 최신 캐시 revision을 낮추지 않는다.
 - 검수: 로컬 Execute(start/grow/settle)는 거절. 승인 후 저장 실패는 같은 ID 응답 재적용. 기존 성장은 시작 시 동결되고 진행 런을 소급 변경하지 않는다.
 
