@@ -1,0 +1,7 @@
+{
+  "name": "SharedWorld.Core",
+  "rootNamespace": "DiceWarrior.SharedWorld",
+  "references": ["SymbolLoop.Core"],
+  "noEngineReferences": true,
+  "autoReferenced": true
+}

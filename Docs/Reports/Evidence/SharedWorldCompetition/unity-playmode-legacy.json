@@ -1,0 +1,62 @@
+{
+  "status": "completed",
+  "duration": 107.03,
+  "summary": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.CorruptCheckpointRecoveryPreservesUnknownStartRequest",
+      "Status": "Passed",
+      "Duration": 0.2510208,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.DelayedApprovalSurvivesPauseDisableAndBlocksDuplicateInput",
+      "Status": "Passed",
+      "Duration": 0.0905982,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.LostSettlementReplyShowsPendingAndRecoversAfterPauseAndReopen",
+      "Status": "Passed",
+      "Duration": 1.0527623,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.PawnVisitsEachCellAndInterruptedRollRestoresCommittedLanding",
+      "Status": "Passed",
+      "Duration": 4.1635284,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.PointerFlowCompletesCampaignAndRestoresSavedTurnWithoutExecutingAgain",
+      "Status": "Passed",
+      "Duration": 83.9683732,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.SymbolDiceAndEffectsFollowCommittedComboFallbackAndKillLogs",
+      "Status": "Passed",
+      "Duration": 17.2935231,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SymbolLoop.Tests.SymbolLoopFlowTests.TallPortraitShowsChoicesWithoutClipping",
+      "Status": "Passed",
+      "Duration": 0.1691193,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

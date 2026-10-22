@@ -1,5 +1,7 @@
 # UIManager.cs
 
+- SharedWorld 직접 관계: Title의 기존 등록 목록에 CompetitionScreen 프리팹이 추가된다. 기존 SymbolLoopApp은 타입 독립 이벤트로 진입하고 표시를 일시중지하므로 신규 화면을 다시 덮지 않는다. UIManager 소스/공용 프리팹은 변경하지 않는다.
+
 - 역할: 명시 등록된 BaseUI 프리팹의 타입별 캐시, 기본 화면 1개와 팝업 스택.
 - 동작/입출력: Show/ShowPopup/CloseTopPopup/CloseAll/SetInputLocked. 비활성 캐시 아래 생성 후 바인딩하고 활성 레이어로 옮긴다. 새 바인딩 실패 시 이전 화면/포커스를 보호한다.
 - 사용하는 대상: UIRoot/BaseUI/EventSystem. 사용하는 쪽: SymbolLoopApp의 Show<SymbolLoopScreen>/CloseAll, Authoring의 직접 prefab 등록, FlowTests.

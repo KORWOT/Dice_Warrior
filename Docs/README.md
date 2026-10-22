@@ -1,8 +1,10 @@
 # Dice Warrior 문서
 
-현재 게임은 **기호 조합 자동 전투 + 12칸 순환 캠페인**을 사용한다. 전면 교체 MVP에 칸별 말 이동·숫자/기호 주사위 회전·스킬/반격 연출을 연결하고 전용 검사와 실제 캡처로 확인했다.
+현재 게임은 **기호 조합 자동 전투**를 공유하는 기존 순환 캠페인과 **고정12지명·인간1+AI3 공동 세계 시험 모드**를 제공한다. 새 모드의 순위는 시험 결과이며 영구 재화는 지급하지 않는다.
 
 - [현행 기획 v0.3](Dice_Warrior_GDD_v0.3.md): 게임 규칙과 시험 수치.
+- [공동 세계 PLAN](Plans/SHARED_WORLD_COMPETITION_01_PLAN.md): 승인된 C0~C5·경기/AI/저장/화면 계약과 보호 범위.
+- [공동 세계 REPORT](Reports/SHARED_WORLD_COMPETITION_01_REPORT.md): 실제 검증·실행 방법·C6/C7 후속 경계.
 - [교체 PLAN](Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md): 정리 대상·보호 대상·구현 순서·완료 기준.
 - [교체 REPORT](Reports/SYMBOL_LOOP_REPLACEMENT_REPORT.md): 실제 진행과 검증 상태.
 - [화면 PLAN](Plans/SYMBOL_LOOP_PRESENTATION_PLAN.md): 칸별 이동·입체 주사위·스킬 연출 계약.
@@ -23,10 +25,11 @@
 - [v1 이력](Archive/v1/README.md): 폐기된 규칙과 과거 검증. 현행 요구사항이 아니다.
 - [서드파티 출처](ThirdParty/PRETENDARD.md): 유지하는 폰트 라이선스.
 
-2026-10-20 사용자 지시로 기존 v1 병행 모드와 호환성 P0는 중단했다. 과거 테스트 통과는 새 게임의 검증 근거로 사용하지 않는다.
+2026-10-20 사용자 지시로 Archive/v1의 이전 구조와 호환성 P0는 중단했다. 이는 현재 보존하는 SymbolLoop 규칙/정산 v1과 별개다. 과거 테스트 통과는 새 게임의 검증 근거로 사용하지 않는다.
 
-실행: 저장소 루트 PowerShell에서 `./Server/Start-MockServer.ps1`로 서버를 켠 뒤 `Assets/_Project/Scenes/Title.unity`를 열고 Play. 로비에서 시작 주사위·무기를 고른 뒤 새 여정을 시작한다.
+실행: 저장소 루트 PowerShell에서 `./Server/Start-MockServer.ps1`로 서버를 켠 뒤 `Assets/_Project/Scenes/Title.unity`를 열고 Play. 로비에서 시작 주사위·무기를 고른 뒤 **공동 세계 시험 → 시험 경기 시작**을 누른다. 기존 1인 여정도 로비에서 계속 선택할 수 있다.
 기본 서버는 `http://127.0.0.1:5087`, 권한 DB는 `Server/data/authority.db`다. 새 체크포인트는 `persistentDataPath/symbol-loop-backend-v1/http-mock/<endpoint+계정 SHA256>/checkpoint.json`이다. 이전 `mock/checkpoint.json`·`authority.json`·`symbol-loop-v1/player.json`은 보존하고 자동 이관하지 않는다.
+공동 세계는 위 계정별 폴더 아래 `shared-world-preview-v1/checkpoint.json`에 별도 저장한다. 시작 성장 확인만 기존 서버를 사용하고 새 경기/AI 명령·순위는 로컬 기록이다. 새 경기 서버 재현·정산 C6과 대량 시뮬레이션 C7은 아직 포함하지 않는다.
 이전 프로젝트와 달리 Title 한 씬에서 전체 여정을 진행한다. 현재 화면/수치는 MVP이며 최종 아트·밸런스·장치 검증은 별도다.
 
 ## 게임플레이 체크포인트 (44e6c31)

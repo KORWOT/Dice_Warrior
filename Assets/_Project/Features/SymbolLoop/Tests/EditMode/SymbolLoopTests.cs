@@ -254,7 +254,12 @@ namespace DiceWarrior.SymbolLoop.Tests
                     .Sum(t=>GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(t.gameObject)),Is.Zero);
                 var app=objects.SelectMany(o=>o.GetComponentsInChildren<SymbolLoopApp>(true)).Single();
                 Assert.That(app.config,Is.Not.Null); Assert.That(app.ui,Is.Not.Null);
-                Assert.That(app.ui.prefabs.Single(),Is.EqualTo(prefab));
+                // C5 adds one authored mode; the original v1 prefab and its bindings remain unchanged.
+                Assert.That(app.ui.prefabs.OfType<SymbolLoopScreen>().Single(),Is.EqualTo(prefab));
+                Assert.That(app.ui.prefabs.Length,Is.EqualTo(2));
+                Assert.That(app.ui.prefabs.Count(p=>p.GetType().FullName=="DiceWarrior.SharedWorld.CompetitionScreen"),Is.EqualTo(1));
+                var competitionPrefab=AssetDatabase.LoadAssetAtPath<FateDice.BaseUI>("Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab");
+                Assert.That(competitionPrefab,Is.Not.Null);Assert.That(app.ui.prefabs,Does.Contain(competitionPrefab));
             }
             finally { EditorSceneManager.ClosePreviewScene(scene); }
         }

@@ -1,0 +1,8 @@
+{
+  "name": "SharedWorld.PlayMode.Tests",
+  "references": ["SharedWorld.Core", "SharedWorld.Runtime", "SymbolLoop.Core", "SymbolLoop.Runtime", "FateDice.SharedUI", "Unity.ugui", "Unity.InputSystem"],
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

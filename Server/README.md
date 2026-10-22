@@ -2,6 +2,8 @@
 
 Unity와 별도 프로세스의 ASP.NET Core HTTP + SQLite 서버다. M0~M3 권한 분리에 이어 M4 로컬 사용량 계측·오프라인 비용 추정·대시보드를 제공한다. 실제 Firebase 연결·과금·배포와 M5 규모 부하 시험은 포함하지 않는다. [M0~M3 REPORT](../Docs/Reports/STANDALONE_MOCK_SERVER_01_REPORT.md)와 [M4 REPORT](../Docs/Reports/STANDALONE_MOCK_METRICS_04_REPORT.md)를 구분한다.
 
+공동 세계 C0~C5는 새 `SharedWorld.Core` 순수 도메인을 `DiceWarrior.Competition.Shared`에서 동일 소스로 컴파일하고 `DiceWarrior.Competition.Tests`에서 검사한다. 기존 호스트의 v1 콘텐츠/HTTP/SQLite/계측은 변경하지 않는다. 새 경기는 기존 프로필 조회만 사용하며 시작/AI/순위는 별도 로컬 시험 기록이고 지급액은0이다. 새 권한 시작 티켓·AI 재현·정산 API는 C6 후속으로, 현재 API에 새 경기 로그를 제출하지 않는다. [공동 세계 PLAN](../Docs/Plans/SHARED_WORLD_COMPETITION_01_PLAN.md)을 따른다.
+
 ## 실행
 
 설치된 .NET SDK10.0.302를 사용한다. 저장소 루트 PowerShell에서 실행하고 이 터미널을 유지한다.

@@ -2,7 +2,34 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 31개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 49개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 시험 모드는 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md)을 따른다.
+
+## 공동 세계 시험 모드 SharedWorld
+
+| 기능 | 스크립트 / 요약 | 현재 역할 |
+|---|---|---|
+| 경기 자료 | [CompetitionData](Assets/_Project/Features/SharedWorld/Domain/CompetitionData.cs.md) | 세계·참가자·사건·점수·명령 DTO |
+| 버전 콘텐츠 | [CompetitionContent](Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs.md) | JSON 장소/후보/정책의 참조·조건 검증 |
+| 분리 난수 | [CompetitionRandom](Assets/_Project/Features/SharedWorld/Domain/CompetitionRandom.cs.md) | 고정 문자열 혼합과 개인별4스트림 |
+| 경기 규칙 | [CompetitionRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs.md) | 동일 시작 전력·성장·상태/순위 검사 |
+| 사건 | [CompetitionEncounterRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs.md) | 착지 제안 고정·조건/비용·전투·보상 |
+| 전투 재사용 | [CompetitionCombat](Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs.md) | 기존 SymbolCombat 임시 어댑터 |
+| AI | [CompetitionAi](Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs.md) | 동일 합법 명령을 사용하는 결정적3정책 |
+| 경기 명령 | [CompetitionCommandRules](Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs.md) | 대상·인간명령·AI라운드·완주/종료 |
+| 세션 | [CompetitionSession](Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs.md) | 후보·중복/세대 검사·저장 후 공개 |
+| 별도 저장 | [CompetitionStore](Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs.md) | schema1·CAS·백업/원문·완료기록 보존 |
+| 화면 흐름 | [CompetitionApp](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md) | v1 로비 진입·성장조회·경기/복구 화면 |
+| 화면 | [CompetitionScreen](Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs.md) | 12지명·네말·성적·사건·AI요약 |
+| 연출 | [CompetitionPlayback](Assets/_Project/Features/SharedWorld/Presentation/CompetitionPlayback.cs.md) | 인간 칸이동/숫자·기호/스킬·AI간략 표시 |
+| 자산 연결 | [CompetitionAuthoring](Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs.md) | 신규프리팹·기존Title 보존 연결 |
+| 도메인 검사 | [CompetitionRulesTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionRulesTests.cs.md) | 공정성·지리/사건독립·끝조건·84기호동치 |
+| 고정 재현 검사 | [CompetitionGoldenTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionGoldenTests.cs.md) | 별도2벡터48인간명령50전체상태/RNG |
+| 저장 검사 | [CompetitionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionStoreTests.cs.md) | 실패/응답유실·동시경합·AI원자성·복구 |
+| UI 검사 | [CompetitionFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs.md) | 포인터·연출·재진입·두비율·로비연결 |
+
+직접 흐름: SymbolLoopApp의 타입 독립 진입 이벤트 → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI/SymbolCombat → CompetitionStore. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/백엔드 조회 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain8개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
+
+## 기존 SymbolLoop 및 독립 서버
 
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|

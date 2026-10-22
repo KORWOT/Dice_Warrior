@@ -1,0 +1,6 @@
+{
+  "name": "SharedWorld.Runtime",
+  "rootNamespace": "DiceWarrior.SharedWorld",
+  "references": ["SharedWorld.Core", "SymbolLoop.Core", "SymbolLoop.Runtime", "FateDice.SharedUI", "Unity.ugui", "Unity.InputSystem"],
+  "autoReferenced": true
+}

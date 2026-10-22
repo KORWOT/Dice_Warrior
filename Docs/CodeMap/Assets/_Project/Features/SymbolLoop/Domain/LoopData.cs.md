@@ -1,5 +1,7 @@
 # LoopData.cs
 
+- SharedWorld 직접 관계: 신규 모드는 Rules/Profile/DieSlot/Enemy/TurnLog/Receipt 자료형을 재사용하지만 기존 Run/PlayerDocument/BackendRequest 저장·정산 계약을 바꾸지 않는다. CompetitionState/ParticipantState/CompetitionDocument는 별도 형식이다.
+
 - 역할: 기호·타일·단계·규칙·런·표시 프로필·로컬 영수증과 명령 DTO.
 - 핵심 동작: schema=2 체크포인트에 authority 캐시, 승인 ticket, 확정 명령 commands, 제출 submission을 분리한다. profile은 UI/출전 선택용 캐시다.
 - 입출력: Rules/Run/Profile/PlayerDocument/Command. Command.backend에 같은 요청 재시도용 전체 BackendRequest를 보존한다.

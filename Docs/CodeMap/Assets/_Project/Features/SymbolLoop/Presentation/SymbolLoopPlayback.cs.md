@@ -1,5 +1,7 @@
 # SymbolLoopPlayback.cs
 
+- SharedWorld 직접 관계: 신규 CompetitionPlayback이 표시 전용 Run과 확정 TurnLog로 전투 연출을 재사용한다. 신규 프리팹의 직렬화된 human 참조를 사용하며 기존 프리팹/본 소스는 바꾸지 않는다. 새 모드의 네 말/숫자 이동은 CompetitionPlayback 책임이다.
+
 - 역할: 확정 전후 Run 사본만 받아 이동과 전투의 시각적 순서를 재생한다.
 - 핵심 동작: Travel은 숫자 굴림→칸별 포물선 이동→착지. 초과 칸은 출발점에서 버린다. Combat은 기호 굴림→전체 조합/기본기 안내→applied 스킬→실제 HP/보호 변화→기록된 적 행동. 생략 스킬/없는 반격 재생 안 함.
 - 입출력: 명령 종류, before/after Run → pawn/dice/stage/effect/text/HP bar. Snap은 확정 상태로 모든 임시 자세를 복원한다. 표시 값 getter는 검증에도 사용한다.

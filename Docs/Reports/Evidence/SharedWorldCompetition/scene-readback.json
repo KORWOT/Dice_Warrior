@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty) throw new System.InvalidOperationException(\"Scene has unsaved changes\"); DiceWarrior.SharedWorld.Editor.CompetitionAuthoring.Build(); UnityEditor.SceneManagement.EditorSceneManager.OpenScene(\"Assets/_Project/Scenes/Title.unity\"); var app=UnityEngine.Object.FindFirstObjectByType<DiceWarrior.SharedWorld.CompetitionApp>(); return new { legacy=app.legacy!=null, ui=app.ui!=null, content=app.content!=null, config=app.combatConfig!=null, registrations=app.ui.prefabs.Length, sharedUi=app.ui==app.legacy.ui, titleGuid=UnityEditor.AssetDatabase.AssetPathToGUID(\"Assets/_Project/Scenes/Title.unity\"), prefabGuid=UnityEditor.AssetDatabase.AssetPathToGUID(\"Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab\") };"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "legacy": true,
+        "ui": true,
+        "content": true,
+        "config": true,
+        "registrations": 2,
+        "sharedUi": true,
+        "titleGuid": "704a25bb52fa1c1448dd86a54349b281",
+        "prefabGuid": "ae62a590a196a5944815a56b969507cf"
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

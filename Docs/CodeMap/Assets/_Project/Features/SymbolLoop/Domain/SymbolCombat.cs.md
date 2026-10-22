@@ -1,5 +1,7 @@
 # SymbolCombat.cs
 
+- SharedWorld 직접 관계: CompetitionCombat이 참가자 전투 필드만 임시 Run에 담아 Resolve를 호출한다. 보드/보상/정산에는 이 Run을 쓰지 않는다. 기존 판정 소스는 유지하며 새 어댑터 검사에서84개 기호 배열의 결과를 비교한다.
+
 - 역할: 전체 기호 멀티셋 판정과 단일 적 턴 처리.
 - 핵심 동작: 전체 signature가 등록 조합과 같으면 한 기술, 아니면 눈 인덱스마다 기본기. 기술 태그에 맞는 장비만 피해/보호 보정.
 - 입출력: Plan(Rules, Symbol[]) → Skill[]; Resolve(Run 후보, Symbol[]) → 확정 TurnLog와 후보 변경.

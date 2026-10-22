@@ -17,6 +17,9 @@ namespace DiceWarrior.SymbolLoop
         public LoopSession Session { get; private set; }
         public bool IsPresenting => busy || loading || (coordinator?.Busy ?? false);
         public GameBackendCoordinator Backend => coordinator;
+        public event Action CompetitionRequested;
+        public string CheckpointPath { get; private set; }
+        bool externalView;
         Coroutine presentation;
         LoopStore store;
         Command pending;
@@ -58,6 +61,7 @@ namespace DiceWarrior.SymbolLoop
                 gameBackend=backend ?? GameBackendFactory.Create(mode,SettingsPath,developmentAllowed:DevelopmentAllowed);
                 ownsBackend=backend==null;
                 store=new LoopStore(path);
+                CheckpointPath=Path.GetFullPath(path);
                 pending=store.ReadPending(); pendingRead=true;
                 Session=new LoopSession(store,config.CreateRules());
                 coordinator=new GameBackendCoordinator(Session,store,gameBackend);
@@ -201,8 +205,11 @@ namespace DiceWarrior.SymbolLoop
         static string TileName(Tile tile) => new[]{"출발","전투","이벤트","보물","상점","휴식"}[(int)tile];
         static string IntentName(Enemy enemy) => enemy.intent==Intent.Defend ? $"방어 {enemy.attack}" :
             enemy.intent==Intent.Heavy ? $"강공격 {enemy.attack+enemy.attack/2}" : $"공격 {enemy.attack}";
+        public void SuspendView() { CancelPresentation(false); externalView=true; }
+        public void ResumeView() { externalView=false; Render(); }
         public void Render()
         {
+            if(externalView) return;
             CancelPresentation(false);
             var data=new LoopScreenData {title="DICE WARRIOR", subtitle="기호를 모으고, 순환을 넘어라",detail="",history="",stats="",center=""};
             var labels=new List<string>(); var actions=new List<Action>();
@@ -266,6 +273,8 @@ namespace DiceWarrior.SymbolLoop
                             Cmd((doc.profile.startingWeapon==gear.id?"✓ ":"")+gear.name,"loadout","weapon:"+gear.id);
                     }
                     else Add("권한 프로필 다시 확인",()=>{_=RefreshBackend();});
+                    if(CompetitionRequested!=null && coordinator.ProfileReady)
+                        Add("공동 세계 시험",()=>CompetitionRequested?.Invoke());
                     data.history+="\nMock 재화는 테스트 전용입니다. 새 기록은 재현 검증 후 정산합니다.";
                 }
                 else

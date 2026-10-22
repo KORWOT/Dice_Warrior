@@ -1,0 +1,128 @@
+[
+  {
+    "path": "Assets/Settings/Mobile_RPAsset.asset",
+    "userOwned": true,
+    "expected": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A",
+    "actual": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset",
+    "userOwned": true,
+    "expected": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1",
+    "actual": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset",
+    "userOwned": true,
+    "expected": "0688B5CE5A24B3CA38DC86A2CE04A7128CA44A2629F150D02ECA4642E2908337",
+    "actual": "0688B5CE5A24B3CA38DC86A2CE04A7128CA44A2629F150D02ECA4642E2908337",
+    "unchanged": true
+  },
+  {
+    "path": "ProjectSettings/ProjectSettings.asset",
+    "userOwned": true,
+    "expected": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667",
+    "actual": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667",
+    "unchanged": true
+  },
+  {
+    "path": "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json",
+    "userOwned": true,
+    "expected": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698",
+    "actual": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698",
+    "unchanged": true
+  },
+  {
+    "path": "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json",
+    "userOwned": true,
+    "expected": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44",
+    "actual": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44",
+    "unchanged": true
+  },
+  {
+    "path": "Docs/Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md",
+    "userOwned": true,
+    "expected": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C",
+    "actual": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C",
+    "unchanged": true
+  },
+  {
+    "path": "Docs/Dice_Warrior_Shared_World_AI_Competition_Migration_Plan_v0.1.md",
+    "userOwned": true,
+    "expected": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC",
+    "actual": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopData.cs",
+    "userOwned": false,
+    "expected": "A1B6C9C2B7EDF43CE13637D203FA12C4AD01E809822E361F829DDF14574FED2D",
+    "actual": "A1B6C9C2B7EDF43CE13637D203FA12C4AD01E809822E361F829DDF14574FED2D",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopRules.cs",
+    "userOwned": false,
+    "expected": "402FDB2778E99CFBAEFD37AF2137879EFDB7B95845F0805D00FE42146D5AD538",
+    "actual": "402FDB2778E99CFBAEFD37AF2137879EFDB7B95845F0805D00FE42146D5AD538",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs",
+    "userOwned": false,
+    "expected": "60B87E2B4FC84CD97B86387D06F26811B12085A31C9C64588BE00BC91CBFBCA6",
+    "actual": "60B87E2B4FC84CD97B86387D06F26811B12085A31C9C64588BE00BC91CBFBCA6",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Domain/RunCommandRules.cs",
+    "userOwned": false,
+    "expected": "DBDFB4CFB58E2639971592747B64AFCEF246EC2231EB063BBC7CAF42BFE9BD85",
+    "actual": "DBDFB4CFB58E2639971592747B64AFCEF246EC2231EB063BBC7CAF42BFE9BD85",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Domain/BackendContracts.cs",
+    "userOwned": false,
+    "expected": "8030B2B146F9528CFE761FE78B0F0100BCE44BA54211EEA0DB5A9F123B9C677A",
+    "actual": "8030B2B146F9528CFE761FE78B0F0100BCE44BA54211EEA0DB5A9F123B9C677A",
+    "unchanged": true
+  },
+  {
+    "path": "Assets/_Project/Features/SymbolLoop/Tests/EditMode/ReplayGoldenVectors.json",
+    "userOwned": false,
+    "expected": "863DE8B00364ABBE6D99107C1BF191E6C8060D26A3332E7B9B78BCC6AE30090E",
+    "actual": "863DE8B00364ABBE6D99107C1BF191E6C8060D26A3332E7B9B78BCC6AE30090E",
+    "unchanged": true
+  },
+  {
+    "path": "Server/DiceWarrior.MockServer/Content/symbol-loop-mvp-1.json",
+    "userOwned": false,
+    "expected": "9D70A890E52126E5AB67C3DB6C32F7A79575D14373143C2FD544936F83D1E6B8",
+    "actual": "9D70A890E52126E5AB67C3DB6C32F7A79575D14373143C2FD544936F83D1E6B8",
+    "unchanged": true
+  },
+  {
+    "path": "Packages/manifest.json",
+    "userOwned": false,
+    "expected": "B40ED5EB37EF235F89855FA6012B8AEC04507A8AEC966DF0857FA83B70EE09F7",
+    "actual": "B40ED5EB37EF235F89855FA6012B8AEC04507A8AEC966DF0857FA83B70EE09F7",
+    "unchanged": true
+  },
+  {
+    "path": "Packages/packages-lock.json",
+    "userOwned": false,
+    "expected": "AFF027C148EA1597437AF85287AEFFA56308B41B32A9893893DD8663FDD4615D",
+    "actual": "AFF027C148EA1597437AF85287AEFFA56308B41B32A9893893DD8663FDD4615D",
+    "unchanged": true
+  },
+  {
+    "path": "ProjectSettings/EditorBuildSettings.asset",
+    "userOwned": false,
+    "expected": "03D5C56CEAED123D5F7E9C42ADD0CB088025E814FE363AD7748D6090F1E930C3",
+    "actual": "03D5C56CEAED123D5F7E9C42ADD0CB088025E814FE363AD7748D6090F1E930C3",
+    "unchanged": true
+  }
+]

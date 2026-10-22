@@ -1,0 +1,9 @@
+{
+  "name": "SharedWorld.EditMode.Tests",
+  "references": ["SharedWorld.Core","SharedWorld.Runtime","SymbolLoop.Core"],
+  "overrideReferences": true,
+  "precompiledReferences": ["Newtonsoft.Json.dll"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

@@ -1,5 +1,7 @@
 # LoopRules.cs
 
+- SharedWorld 직접 관계: CompetitionContent는 기존 전투 Rules 검증을 사용하고 CompetitionRandom/사건 스트림은 공개 Next를 재사용한다. 신규 이동·완주·사건/AI는 별도 규칙이며 Board/Travel/ClaimLap/Validate의 기존 v1 의미를 변경하지 않는다.
+
 - 역할: 런 생성·순환 보드·착지·선택·완주·성장·보스·상태 검증.
 - 핵심 동작: 시드/지역 전용 보드 생성, 저장된 이동/전투 RNG 분리. 12 이상 이동은 초과 소멸 및 LapReward. 지역1/2 슬롯 증가, 지역3 장비 보상 뒤 보스.
 - 입출력: Rules/Profile/seed → Run; Travel/ClaimLap/Choose/RollCombat은 전달받은 후보만 변경. Validate는 부적합 후보/저장을 거절.

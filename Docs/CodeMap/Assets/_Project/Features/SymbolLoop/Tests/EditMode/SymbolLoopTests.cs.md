@@ -1,5 +1,7 @@
 # SymbolLoopTests.cs
 
+- C5 구성 검증 갱신: Title에 신규 CompetitionScreen을 추가하는 승인된 변경 때문에 `app.ui.prefabs.Single()`의 전역 단일 화면 가정만 수정했다. 기존 SymbolLoopScreen이 정확히1개이고 동일 프리팹인지, 추가 CompetitionScreen1개/총2개인지 확인한다. 기존 v1 전투/보상/저장/골든 기대값은 변경하지 않는다.
+
 - 역할: 새 계약에 직접 해당하는 기호/보드/성장/저장 경계 검증.
 - 핵심 동작: 84 ordered outcomes를 독립 기대 표로 비교, D1/D2/태그/완주/비용/규칙 동결/정산/저장 실패/복구/미결 입력 검사.
 - 입출력: 고정 시드/명시 후보/실제 임시 파일과 고장 주입 ILoopStore → NUnit assertions.

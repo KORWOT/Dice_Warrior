@@ -1,0 +1,6 @@
+{
+  "name": "SharedWorld.Editor",
+  "references": ["SharedWorld.Core", "SharedWorld.Runtime", "SymbolLoop.Core", "SymbolLoop.Runtime", "FateDice.SharedUI", "Unity.ugui"],
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}

@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "duration": 0.22,
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyLobbyEntryRefreshesProfileAndKeepsModeOwnershipAcrossDelayedResponse",
+      "Status": "Failed",
+      "Duration": 0.1949794,
+      "Message": "  A delayed profile response must not rebind a disabled competition app.\r\n  Expected: 4\r\n  But was:  5\r\n",
+      "StackTrace": "at DiceWarrior.SharedWorld.Tests.CompetitionFlowTests+<LegacyLobbyEntryRefreshesProfileAndKeepsModeOwnershipAcrossDelayedResponse>d__26.MoveNext () [0x00335] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionFlowTests.cs:177\r\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@7a3849e09bd0\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:52\r\n"
+    }
+  ]
+}

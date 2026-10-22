@@ -1,0 +1,584 @@
+{
+  "rulesVersion": "shared-world-preview-1",
+  "aiVersion": "shared-world-ai-1",
+  "scoreVersion": "shared-world-score-1",
+  "maxRounds": 30,
+  "maxCombatTurns": 64,
+  "lapsToFinish": 3,
+  "finalHonor": 5,
+  "world": {
+    "id": "first-shared-world",
+    "version": "named-world-1",
+    "name": "별의 순환",
+    "places": [
+      {
+        "id": "fate-square",
+        "name": "운명의 광장",
+        "description": "출발과 완주 보상",
+        "encounterIds": []
+      },
+      {
+        "id": "starlight-harbor",
+        "name": "별빛 항구",
+        "description": "여행자와 상인이 모이는 항구",
+        "encounterIds": [
+          "harbor-work",
+          "harbor-trade",
+          "harbor-heal"
+        ]
+      },
+      {
+        "id": "twilight-forest",
+        "name": "황혼의 숲",
+        "description": "야생과 정령의 숲",
+        "encounterIds": [
+          "forest-herb",
+          "forest-wolf",
+          "forest-corrupt",
+          "forest-risk"
+        ]
+      },
+      {
+        "id": "crossroads-pass",
+        "name": "갈림길 고개",
+        "description": "위험과 정보를 고르는 고개",
+        "encounterIds": [
+          "pass-scout",
+          "pass-risk",
+          "pass-bandit"
+        ]
+      },
+      {
+        "id": "moon-well",
+        "name": "달의 샘",
+        "description": "회복과 성장의 샘",
+        "encounterIds": [
+          "well-rest",
+          "well-train",
+          "well-purify"
+        ]
+      },
+      {
+        "id": "watcher-gate",
+        "name": "파수꾼 관문",
+        "description": "통행의 자격을 시험하는 관문",
+        "encounterIds": [
+          "gate-duel",
+          "gate-record",
+          "gate-elite"
+        ]
+      },
+      {
+        "id": "fallen-citadel",
+        "name": "몰락한 왕의 성채",
+        "description": "강적과 유물이 잠든 성채",
+        "encounterIds": [
+          "citadel-elite",
+          "citadel-scout",
+          "citadel-curse"
+        ]
+      },
+      {
+        "id": "ancient-library",
+        "name": "고대 서고",
+        "description": "마법과 지식의 서고",
+        "encounterIds": [
+          "library-read",
+          "library-wand",
+          "library-trial"
+        ]
+      },
+      {
+        "id": "constellation-market",
+        "name": "별무리 시장",
+        "description": "장비와 주사위를 거래하는 시장",
+        "encounterIds": [
+          "market-mail",
+          "market-die",
+          "market-news",
+          "market-charm"
+        ]
+      },
+      {
+        "id": "abyss-rift",
+        "name": "심연의 균열",
+        "description": "위험을 감수하는 탐험가의 균열",
+        "encounterIds": [
+          "rift-fight",
+          "rift-watch",
+          "rift-risk"
+        ]
+      },
+      {
+        "id": "wind-hill",
+        "name": "바람 언덕",
+        "description": "숨을 돌리고 세계를 살피는 언덕",
+        "encounterIds": [
+          "hill-rest",
+          "hill-scout",
+          "hill-supply"
+        ]
+      },
+      {
+        "id": "gods-altar",
+        "name": "신들의 제단",
+        "description": "후원자 앞에서 명예를 증명하는 제단",
+        "encounterIds": [
+          "altar-pray",
+          "altar-trial",
+          "altar-sacrifice"
+        ]
+      }
+    ]
+  },
+  "encounters": [
+    {
+      "id": "harbor-work",
+      "label": "항구의 짐 운반",
+      "description": "항구의 짐 운반",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 3,
+      "gold": 6,
+      "honor": 1
+    },
+    {
+      "id": "harbor-trade",
+      "label": "상인의 강철검",
+      "description": "상인의 강철검",
+      "kind": 4,
+      "maxLaps": 3,
+      "weight": 1,
+      "goldCost": 20,
+      "rewardId": "blade"
+    },
+    {
+      "id": "harbor-heal",
+      "label": "선원의 약 구입",
+      "description": "선원의 약 구입",
+      "kind": 1,
+      "maxLaps": 3,
+      "weight": 1,
+      "goldCost": 12,
+      "heal": 25
+    },
+    {
+      "id": "forest-herb",
+      "label": "은빛 약초 채집",
+      "description": "은빛 약초 채집",
+      "kind": 1,
+      "maxLaps": 3,
+      "weight": 1,
+      "heal": 12,
+      "xp": 2,
+      "honor": 1
+    },
+    {
+      "id": "forest-wolf",
+      "label": "숲길의 늑대",
+      "description": "숲길의 늑대",
+      "kind": 0,
+      "maxLaps": 0,
+      "weight": 1,
+      "gold": 12,
+      "xp": 5,
+      "honor": 1
+    },
+    {
+      "id": "forest-corrupt",
+      "label": "오염된 수호자 정화",
+      "description": "오염된 수호자 정화",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "minLaps": 1,
+      "enemyHpBonus": 8,
+      "enemyAttackBonus": 1,
+      "gold": 20,
+      "xp": 7,
+      "honor": 2
+    },
+    {
+      "id": "forest-risk",
+      "label": "정령의 가시 선물",
+      "description": "정령의 가시 선물",
+      "kind": 3,
+      "maxLaps": 3,
+      "weight": 1,
+      "hpCost": 8,
+      "minHp": 9,
+      "gold": 22,
+      "xp": 4,
+      "honor": 1
+    },
+    {
+      "id": "pass-scout",
+      "label": "안전한 길 정찰",
+      "description": "안전한 길 정찰",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 4,
+      "honor": 1
+    },
+    {
+      "id": "pass-risk",
+      "label": "절벽길 보급품 회수",
+      "description": "절벽길 보급품 회수",
+      "kind": 3,
+      "maxLaps": 3,
+      "weight": 1,
+      "hpCost": 8,
+      "minHp": 9,
+      "gold": 25,
+      "honor": 1
+    },
+    {
+      "id": "pass-bandit",
+      "label": "고개의 도적 퇴치",
+      "description": "고개의 도적 퇴치",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "gold": 15,
+      "xp": 5,
+      "honor": 1
+    },
+    {
+      "id": "well-rest",
+      "label": "달빛에 몸을 맡기기",
+      "description": "달빛에 몸을 맡기기",
+      "kind": 1,
+      "maxLaps": 3,
+      "weight": 1,
+      "heal": 22
+    },
+    {
+      "id": "well-train",
+      "label": "샘가에서 수련",
+      "description": "샘가에서 수련",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 8,
+      "honor": 1
+    },
+    {
+      "id": "well-purify",
+      "label": "탁해진 샘 정화",
+      "description": "탁해진 샘 정화",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "minLaps": 1,
+      "enemyHpBonus": 4,
+      "gold": 16,
+      "xp": 8,
+      "honor": 2
+    },
+    {
+      "id": "gate-duel",
+      "label": "파수꾼의 대련",
+      "description": "파수꾼의 대련",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "gold": 12,
+      "xp": 6,
+      "honor": 1
+    },
+    {
+      "id": "gate-record",
+      "label": "관문의 기록 조사",
+      "description": "관문의 기록 조사",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 4,
+      "honor": 1
+    },
+    {
+      "id": "gate-elite",
+      "label": "관문장의 시련",
+      "description": "관문장의 시련",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "minLaps": 1,
+      "enemyHpBonus": 12,
+      "enemyAttackBonus": 2,
+      "gold": 24,
+      "xp": 9,
+      "honor": 2
+    },
+    {
+      "id": "citadel-elite",
+      "label": "왕의 망령과 대결",
+      "description": "왕의 망령과 대결",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "enemyHpBonus": 10,
+      "enemyAttackBonus": 2,
+      "gold": 24,
+      "xp": 8,
+      "honor": 2
+    },
+    {
+      "id": "citadel-scout",
+      "label": "무너진 성벽 탐색",
+      "description": "무너진 성벽 탐색",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 5,
+      "gold": 4,
+      "honor": 1
+    },
+    {
+      "id": "citadel-curse",
+      "label": "저주받은 금고 열기",
+      "description": "저주받은 금고 열기",
+      "kind": 3,
+      "maxLaps": 3,
+      "weight": 1,
+      "minHp": 13,
+      "hpCost": 12,
+      "gold": 30,
+      "honor": 1
+    },
+    {
+      "id": "library-read",
+      "label": "잊힌 주문 해독",
+      "description": "잊힌 주문 해독",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 8,
+      "honor": 1
+    },
+    {
+      "id": "library-wand",
+      "label": "불꽃 지팡이 교환",
+      "description": "불꽃 지팡이 교환",
+      "kind": 4,
+      "maxLaps": 3,
+      "weight": 1,
+      "goldCost": 20,
+      "rewardId": "wand"
+    },
+    {
+      "id": "library-trial",
+      "label": "봉인된 지식의 시험",
+      "description": "봉인된 지식의 시험",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "minLaps": 1,
+      "enemyHpBonus": 5,
+      "gold": 18,
+      "xp": 10,
+      "honor": 2
+    },
+    {
+      "id": "market-mail",
+      "label": "수호 갑옷 구입",
+      "description": "수호 갑옷 구입",
+      "kind": 4,
+      "maxLaps": 3,
+      "weight": 1,
+      "goldCost": 20,
+      "rewardId": "mail"
+    },
+    {
+      "id": "market-die",
+      "label": "비전 주사위 교환",
+      "description": "비전 주사위 교환",
+      "kind": 5,
+      "maxLaps": 3,
+      "weight": 1,
+      "goldCost": 20,
+      "rewardId": "arcane"
+    },
+    {
+      "id": "market-news",
+      "label": "시장의 소문 듣기",
+      "description": "시장의 소문 듣기",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 3,
+      "honor": 1
+    },
+    {
+      "id": "market-charm",
+      "label": "비전 장신구 구입",
+      "description": "비전 장신구 구입",
+      "kind": 4,
+      "maxLaps": 3,
+      "weight": 1,
+      "minLaps": 1,
+      "goldCost": 20,
+      "rewardId": "charm"
+    },
+    {
+      "id": "rift-fight",
+      "label": "균열의 괴물 사냥",
+      "description": "균열의 괴물 사냥",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "enemyHpBonus": 12,
+      "enemyAttackBonus": 2,
+      "gold": 26,
+      "xp": 9,
+      "honor": 2
+    },
+    {
+      "id": "rift-watch",
+      "label": "먼 거리에서 관찰",
+      "description": "먼 거리에서 관찰",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 4,
+      "honor": 1
+    },
+    {
+      "id": "rift-risk",
+      "label": "심연의 결정 추출",
+      "description": "심연의 결정 추출",
+      "kind": 3,
+      "maxLaps": 3,
+      "weight": 1,
+      "hpCost": 10,
+      "minHp": 11,
+      "gold": 28,
+      "xp": 5,
+      "honor": 1
+    },
+    {
+      "id": "hill-rest",
+      "label": "바람 아래 휴식",
+      "description": "바람 아래 휴식",
+      "kind": 1,
+      "maxLaps": 3,
+      "weight": 1,
+      "heal": 18
+    },
+    {
+      "id": "hill-scout",
+      "label": "별자리 길잡이 조사",
+      "description": "별자리 길잡이 조사",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "xp": 6,
+      "honor": 1
+    },
+    {
+      "id": "hill-supply",
+      "label": "버려진 보급품 발견",
+      "description": "버려진 보급품 발견",
+      "kind": 2,
+      "maxLaps": 3,
+      "weight": 1,
+      "gold": 8,
+      "xp": 2,
+      "honor": 1
+    },
+    {
+      "id": "altar-pray",
+      "label": "후원자에게 기도",
+      "description": "후원자에게 기도",
+      "kind": 1,
+      "maxLaps": 3,
+      "weight": 1,
+      "heal": 12,
+      "xp": 3,
+      "honor": 1
+    },
+    {
+      "id": "altar-trial",
+      "label": "제단의 시련",
+      "description": "제단의 시련",
+      "kind": 0,
+      "maxLaps": 3,
+      "weight": 1,
+      "enemyHpBonus": 6,
+      "enemyAttackBonus": 1,
+      "gold": 18,
+      "xp": 8,
+      "honor": 2
+    },
+    {
+      "id": "altar-sacrifice",
+      "label": "제단에 피의 맹세",
+      "description": "제단에 피의 맹세",
+      "kind": 3,
+      "maxLaps": 3,
+      "weight": 1,
+      "hpCost": 8,
+      "minHp": 9,
+      "xp": 10,
+      "honor": 1
+    }
+  ],
+  "adventurers": [
+    {
+      "id": "wanderer",
+      "name": "길잡이"
+    },
+    {
+      "id": "vanguard",
+      "name": "선봉대원"
+    },
+    {
+      "id": "scholar",
+      "name": "별의 학자"
+    },
+    {
+      "id": "seeker",
+      "name": "보물 탐험가"
+    }
+  ],
+  "policies": [
+    {
+      "id": "war",
+      "sponsorName": "전쟁의 후원자",
+      "combat": 9,
+      "heal": 2,
+      "study": 3,
+      "risk": 4,
+      "gear": 7,
+      "die": 4,
+      "leave": 0,
+      "lowHpPercent": 40
+    },
+    {
+      "id": "wisdom",
+      "sponsorName": "지혜의 후원자",
+      "combat": 2,
+      "heal": 6,
+      "study": 9,
+      "risk": 1,
+      "gear": 5,
+      "die": 3,
+      "leave": 0,
+      "lowHpPercent": 55
+    },
+    {
+      "id": "luck",
+      "sponsorName": "행운의 후원자",
+      "combat": 6,
+      "heal": 2,
+      "study": 2,
+      "risk": 9,
+      "gear": 5,
+      "die": 8,
+      "leave": 0,
+      "lowHpPercent": 30
+    }
+  ]
+}

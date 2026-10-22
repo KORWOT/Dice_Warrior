@@ -1,0 +1,122 @@
+[
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\SharedWorld.Runtime.asmdef",
+    "sha256": "651C67E412F2262561039FA1DE051A93CA6E2ED5259202A933BDAB882E7C4D48"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Content\\shared-world-preview-1.json",
+    "sha256": "91FF75E7AB806F60235633F161E0E26B1BD2BA9AF926C6A320BD489A6CA8A64F"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionAi.cs",
+    "sha256": "EE525F70DF7647CF3AE006C96C365A81BF397F1D02BA08A4B48A164E0BE401FD"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionCombat.cs",
+    "sha256": "B9AB8D6F6883007B0EF6C0000CC244860F7756491B9E7232B95419C2A32941DA"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionCommandRules.cs",
+    "sha256": "29B4CD204C4380CB05262B1E8B691114ED7325ACEB519C18DB8487831CE70202"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionContent.cs",
+    "sha256": "B680E6B9BF1C11E2D06AD87C067093817E6575B500B8D393054677369F2CB564"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionData.cs",
+    "sha256": "74C0781842332881B508EB84E978C3C0D110FA02C2906C9E92E2C4C0AEC52F27"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionEncounterRules.cs",
+    "sha256": "1FED0FE16884C0F7649456DD28E36F97BB35CE976B46A21050F954A728E55DE0"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionRandom.cs",
+    "sha256": "33880C2F3B15B256AA705EE9F5B471F1F4E67DE5EEC61ADE29CD1F69D7A8E4E0"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\CompetitionRules.cs",
+    "sha256": "206602F3D4ABA63A87738F93FCBFAD663F306AEC0F8A1287FF349180C92CE7CC"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Domain\\SharedWorld.Core.asmdef",
+    "sha256": "1B47060BB4E4C9E9C6195AADC32ED0254D4BB37EC53215D376F7A05A70B91F75"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Editor\\CompetitionAuthoring.cs",
+    "sha256": "FDCFF987FC73B7B9670CC6C1DF72E2DC0100245EE500E40F1245B8308E95D3C8"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Editor\\SharedWorld.Editor.asmdef",
+    "sha256": "32DBD3DB61C951B06DA6F9C8FF588C28119A97CF9C4BC69970B9FF4C8060DF50"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Prefabs\\CompetitionScreen.prefab",
+    "sha256": "4A792BED25FDF5F5214B7E9F120A522EE2754904ED466F048AF4E410A6D8B78F"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Presentation\\CompetitionApp.cs",
+    "sha256": "81ABF7075B345A166A4A07C4A8E5E344CC825849D850E0B73E4631FECEF95A14"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Presentation\\CompetitionPlayback.cs",
+    "sha256": "B33F93D856DAAC328EAF7A1FA38CF5FAC5F52C419891D35DC32DE72D69B2809D"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Presentation\\CompetitionScreen.cs",
+    "sha256": "4E19F577D7FEBA903A76C5535E30412197677FCBF3139F499EA166B76EE48DF6"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Runtime\\CompetitionSession.cs",
+    "sha256": "6E97B9F6EAAABAA324D40BB67C308FF3DE49F4136DC679362ED9989748454961"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Runtime\\CompetitionStore.cs",
+    "sha256": "EAB7DFF805338DBB9C19B8F3F84F869065A848F4AED830262262A52A7D8FAF05"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\EditMode\\CompetitionGoldenTests.cs",
+    "sha256": "BDA1077425389452A249BA04E0BBB0BB995DFDA5DCCA9807E5D76274C2253428"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\EditMode\\CompetitionGoldenVectors.json",
+    "sha256": "AB4CE8DC0B9A9575FBF1B329462005DCE8DCCA4655A18821B34607541B76591F"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\EditMode\\CompetitionRulesTests.cs",
+    "sha256": "CA4992B8E7330B07D8D44413EE985E640D561B2E7FC8A5028E7C009A4977BBA6"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\EditMode\\CompetitionStoreTests.cs",
+    "sha256": "EC6519306162D511DF0719A73E29A804D5B9367156CF84F24B3CAA5A36D320E0"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\EditMode\\SharedWorld.EditMode.Tests.asmdef",
+    "sha256": "09CE7732A1C88E9F39507F593CA63FFD6E68CA3678B0941F67D26ECC661604AD"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionFlowTests.cs",
+    "sha256": "02A06797718C416F6CFF89AD74BF4DF1CBDD16F7CEF415F26386F775E8E85D5F"
+  },
+  {
+    "path": "Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\SharedWorld.PlayMode.Tests.asmdef",
+    "sha256": "FCEA3809E6F704CB8B32FDCBF0C409262217A65967C829BB7B9D3148576D6354"
+  },
+  {
+    "path": "Server\\DiceWarrior.Competition.Shared\\DiceWarrior.Competition.Shared.csproj",
+    "sha256": "166DDBA07B59F0C647CABB6823ABC66CA82284BE37ED63A1D116074229F92044"
+  },
+  {
+    "path": "Server\\DiceWarrior.Competition.Shared\\packages.lock.json",
+    "sha256": "BA99968D2933BE09F99ED5169AED19EA7D97556D26AF30F660E47A069BF57FFF"
+  },
+  {
+    "path": "Server\\DiceWarrior.Competition.Tests\\DiceWarrior.Competition.Tests.csproj",
+    "sha256": "6FC3301803D88F4AFEB1676FB2C73D793CF7698D064D4B3ABB5B2FF200A5D3AC"
+  },
+  {
+    "path": "Server\\DiceWarrior.Competition.Tests\\packages.lock.json",
+    "sha256": "42A382C22F1D70162648B9FF1E9C176BFE24F06476DBC0507C1C2AD9D4272D67"
+  }
+]
