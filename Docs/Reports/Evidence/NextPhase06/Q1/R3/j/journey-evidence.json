@@ -1,0 +1,26 @@
+{
+  "completed": true,
+  "actions": 45,
+  "resumedCombat": true,
+  "sawAi": true,
+  "sawOffer": true,
+  "observedDamageTypes": [
+    "Fire",
+    "Ice",
+    "Lightning",
+    "Physical"
+  ],
+  "serverProfileUnchanged": true,
+  "actualHttp": [
+    {
+      "route": "GET /v1/profile",
+      "requests": 6,
+      "transportErrors": 0,
+      "faults": [],
+      "bodyHashes": []
+    }
+  ],
+  "firestoreIsHypothetical": true,
+  "costIsActualBilling": false,
+  "finalMatchHash": "C05C358E9B881B459892FEEDAF268FB7A115B9568ACAFC9A6D27FE8107AC760D"
+}

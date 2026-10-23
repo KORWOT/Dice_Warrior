@@ -1,0 +1,121 @@
+Browser tab: 2, Title: "Dice Warrior · 개발 계측", URL: "http://127.0.0.1:55619/dev/dashboard".
+0 AXWebArea Dice Warrior · 개발 계측, URL: 127.0.0.1:55619/dev/dashboard
+	1 container
+		2 link Description: ⚄ DICE WARRIOR, Value: 127.0.0.1:55619/dev/dashboard
+		3 text DEVELOPMENT CONSOLE
+		4 container 대시보드 메뉴
+			5 button 01 사용량 개요
+				6 text 01
+				7 text 사용량 개요
+			8 button 02 API · 런 분석
+				9 text 02
+				10 text API · 런 분석
+			11 button 03 비용 시나리오
+				12 text 03
+				13 text 비용 시나리오
+			14 button 04 내보내기 · 범위
+				15 text 04
+				16 text 내보내기 · 범위
+		17 text  로컬 Mock 서버
+		18 container
+			19 text Firebase 운영 실측 없음
+			20 text 실제 Firebase 연결 없음
+		21 text M4 · OBSERVABILITY
+	22 container
+		23 text DICE WARRIOR / M4
+		24 heading 사용량과 비용을 한눈에, Value: 1
+			25 text 사용량과 비용을 한눈에
+		26 text 로컬에서 측정하고, 명시한 가정으로 예상합니다.
+		27 button 새로고침 ↻, ID: refresh
+		63 text 로컬 Mock 실측과 Firestore 가상 추정을 구분해 표시합니다. Firebase 운영 실측 없음.
+		29 text Mock 실제 측정 Firestore 가상 모델 UTC 조회 기간
+		30 date field (settable) Description: 시작 날짜, ID: from
+			31 container
+				32 stepper
+				33 stepper
+				34 stepper
+			35 pop up button 날짜 선택도구 표시 날짜 선택도구 표시
+		36 text –
+		37 date field (settable) Description: 종료 날짜, ID: to
+			38 container
+				39 stepper
+				40 stepper
+				41 stepper
+			42 pop up button 날짜 선택도구 표시 날짜 선택도구 표시
+		64 text 갱신 2026. 10. 23. 오후 12:37:55
+		43 container overview
+			65 container summary
+				66 text 완료 API 요청
+				67 text 25
+				68 text 보관 표본 · 고유 사용자 4명
+				69 text 요청 지연 P95
+				70 text 105.8 ms
+				71 text P50 5.49 · P99 1,000.19 ms
+				72 text 실패 · 미완료
+				73 text 16%
+				74 text 4건 · 중복 요청 1건
+				75 text HTTP 엔터티 전송
+				76 text 15.2 KiB
+				77 text 요청 709 B / 응답 14.5 KiB
+			44 container
+				45 heading 일별 요청, Value: 2
+					46 text 일별 요청
+				47 text 실측 · 보관 구간
+				78 container daily
+					79 text 2026-10-23 25
+				48 text UTC 날짜 기준 · 실패와 중복 요청 포함
+			49 container
+				50 heading Firestore 논리 작업, Value: 2
+					51 text Firestore 논리 작업
+				52 text 가상
+				80 container logical
+					81 text 문서 읽기
+					82 text 26
+					83 text 문서 쓰기 / 삭제
+					84 text 5 / 0
+					85 text 인덱스 / 최소 쿼리 읽기
+					86 text 0 / 0
+					87 text 트랜잭션 시도
+					88 text 2
+					89 text 가정한 신규 저장량
+					90 text 4 KiB
+					91 text 미산정 요청
+					92 text 0
+				53 text 명시적인 문서 접근 계획입니다. SQLite 실행 횟수를 변환하지 않습니다.
+			54 container
+				55 heading SQLite · 재현 검증, Value: 2
+					56 text SQLite · 재현 검증
+				93 container physical
+					94 text SQL 명령 실행
+					95 text 201
+					96 text 읽고 변경한 행
+					97 text 68
+					98 text Commit / 벽시계 합계
+					99 text 50 / 13.19 ms
+					100 text CAS 재시도 / busy 오류
+					101 text 0 / 0
+					102 text 재현 벽시계 합계
+					103 text 0 ms
+					104 text 제출 명령 / 로그 크기
+					105 text 0 / 0 B
+				57 text SQL은 provider 명령 실행 단위, 행은 실제 읽거나 변경한 수입니다. 내부 잠금 대기 재시도는 관측할 수 없습니다.
+			58 container
+				59 heading 현재 프로세스 · 보관, Value: 2
+					60 text 현재 프로세스 · 보관
+				106 container process
+					107 text 현재 / 최대 동시 요청
+					108 text 0 / 1
+					109 text 프로세스 누적 CPU
+					110 text 875 ms
+					111 text 프로세스 메모리 (Working set)
+					112 text 78.07 MiB
+					113 text 권한 DB + WAL + SHM
+					114 text 40 KiB
+					115 text 계측 파일
+					116 text 18.04 KiB
+					117 text 보관 / 최대 표본
+					118 text 7일 / 10,000건
+				61 text CPU는 서버 프로세스 시작 후 누적값입니다. 재현 검증만의 CPU나 클라우드 성능을 뜻하지 않습니다.
+		62 text LOCAL DEVELOPMENT ONLY 권한 DB · 계측 기록 · 가상 비용을 분리합니다.
+
+The focused UI element is 0 AXWebArea Dice Warrior · 개발 계측, URL: 127.0.0.1:55619/dev/dashboard

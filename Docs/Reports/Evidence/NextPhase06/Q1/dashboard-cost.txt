@@ -1,0 +1,281 @@
+Browser tab: 1, Title: "Dice Warrior · 개발 계측", URL: "http://127.0.0.1:62008/dev/dashboard".
+0 AXWebArea Dice Warrior · 개발 계측, URL: 127.0.0.1:62008/dev/dashboard
+	1 container
+		2 link Description: ⚄ DICE WARRIOR, Value: 127.0.0.1:62008/dev/dashboard
+		3 text DEVELOPMENT CONSOLE
+		4 container 대시보드 메뉴
+			5 button 01 사용량 개요
+				6 text 01
+				7 text 사용량 개요
+			8 button 02 API · 런 분석
+				9 text 02
+				10 text API · 런 분석
+			11 button 03 비용 시나리오
+				12 text 03
+				13 text 비용 시나리오
+			14 button 04 내보내기 · 범위
+				15 text 04
+				16 text 내보내기 · 범위
+		17 text  로컬 Mock 서버
+		18 container
+			19 text Firebase 운영 실측 없음
+			20 text 실제 Firebase 연결 없음
+		21 text M4 · OBSERVABILITY
+	22 container
+		23 text DICE WARRIOR / M4
+		24 heading 사용량과 비용을 한눈에, Value: 1
+			25 text 사용량과 비용을 한눈에
+		26 text 로컬에서 측정하고, 명시한 가정으로 예상합니다.
+		27 button 새로고침 ↻, ID: refresh
+		28 text 로컬 Mock 실측과 Firestore 가상 추정을 구분해 표시합니다. Firebase 운영 실측 없음.
+		29 text Mock 실제 측정 Firestore 가상 모델 UTC 조회 기간
+		30 date field (settable) Description: 시작 날짜, ID: from
+			31 container
+				32 stepper
+				33 stepper
+				34 stepper
+			35 pop up button 날짜 선택도구 표시 날짜 선택도구 표시
+		36 text –
+		37 date field (settable) Description: 종료 날짜, ID: to
+			38 container
+				39 stepper
+				40 stepper
+				41 stepper
+			42 pop up button 날짜 선택도구 표시 날짜 선택도구 표시
+		43 text 갱신 2026. 10. 23. 오전 11:40:02
+		117 container budget
+			118 heading 비용 시나리오, Value: 2
+				119 text 비용 시나리오
+			120 text 서울 · Firestore Standard · USD · Cloud Run 요청 기반
+			121 text 실제 청구액 아님
+			122 container
+				123 text 일간 활성 사용자 (DAU)
+				124 stepper (settable, integer) 일간 활성 사용자 (DAU), Value: 1000
+				125 text 사용자당 일일 런
+				126 stepper (settable, integer) 사용자당 일일 런, Value: 3
+				127 text 예측 기간 (일)
+				128 stepper (settable, integer) 예측 기간 (일), Value: 30
+				129 text 보관 기간 (일)
+				130 stepper (settable, integer) 보관 기간 (일), Value: 30
+				131 text 중복 비율 (0~1)
+				132 stepper (settable, float) 중복 비율 (0~1), Value: 0.05000000074505806, Details: 0.05
+				133 text 오류 비율 (0~1)
+				134 stepper (settable, float) 오류 비율 (0~1), Value: 0.019999999552965164, Details: 0.02
+				135 text 트랜잭션 재시도 비율
+				136 stepper (settable, float) 트랜잭션 재시도 비율, Value: 0.05000000074505806, Details: 0.05
+				137 text 런당 명령 로그 (bytes)
+				138 stepper (settable, integer) 런당 명령 로그 (bytes), Value: 8192
+				139 text 요청당 활성 시간 (초, 벽시계)
+				140 stepper (settable, float) 요청당 활성 시간 (초, 벽시계), Value: 0.10000000149011612, Details: 0.1
+				141 text 할당 메모리 (GiB)
+				142 stepper (settable, float) 할당 메모리 (GiB), Value: 0.5
+				143 button (collapsed) 고급 가정 · 조회 빈도, 문서 크기, 초기 저장량, Secondary Actions: Expand
+					144 text 고급 가정 · 조회 빈도, 문서 크기, 초기 저장량
+				145 checkbox (settable, integer) Description: 사용 가능한 무료 할당량을 전부 적용한다고 가정, Value: 0
+				146 button 시나리오 계산 →
+				147 text 기본값은 무료 할당량 미차감입니다. 무료 구간의 실제 계정 사용 여부는 확인하지 않습니다.
+			148 container cost-cards
+				149 text 최소 가정
+				150 text $2.1631
+				151 text 추정 범위 · 통계적 신뢰구간 아님
+				152 text 기준 가정
+				153 text $2.4685
+				154 text 30일 · 무료 할당량 미차감
+				155 text 최악 가정
+				156 text $4.1506
+				157 text 입력 오류·중복·재시도·크기를 확대
+			158 container
+				159 heading 기준 시나리오 · 항목별 비용, Value: 2
+					160 text 기준 시나리오 · 항목별 비용
+				161 table cost-table
+					162 row
+						163 cell
+							164 text 비용 항목
+						165 cell
+							166 text 모델 사용량
+						167 cell
+							168 text 청구 가정량
+						169 cell
+							170 text 단위
+						171 cell
+							172 text 비용 USD
+					173 row
+						174 cell
+							175 text Firestore 문서 읽기
+						176 cell
+							177 text 677,601.75
+						178 cell
+							179 text 677,601.75
+						180 cell
+							181 text per-100000-documents
+						182 cell
+							183 text $0.2575
+					184 row
+						185 cell
+							186 text Firestore 문서 쓰기
+						187 cell
+							188 text 638,955
+						189 cell
+							190 text 638,955
+						191 cell
+							192 text per-100000-documents
+						193 cell
+							194 text $0.7348
+					195 row
+						196 cell
+							197 text Firestore 문서 삭제
+						198 cell
+							199 text 0
+						200 cell
+							201 text 0
+						202 cell
+							203 text per-100000-documents
+						204 cell
+							205 text $0.00
+					206 row
+						207 cell
+							208 text Firestore 저장
+						209 cell
+							210 text 0.87
+						211 cell
+							212 text 0.87
+						213 cell
+							214 text per-GiB-month
+						215 cell
+							216 text $0.1674
+					217 row
+						218 cell
+							219 text Firestore 동일 리전 전송
+						220 cell
+							221 text 1.04
+						222 cell
+							223 text 1.04
+						224 cell
+							225 text per-GiB
+						226 cell
+							227 text $0.00
+					228 row
+						229 cell
+							230 text Cloud Run CPU
+						231 cell
+							232 text 28,310.78
+						233 cell
+							234 text 28,310.78
+						235 cell
+							236 text per-vCPU-second
+						237 cell
+							238 text $0.9512
+					239 row
+						240 cell
+							241 text Cloud Run 메모리
+						242 cell
+							243 text 14,155.39
+						244 cell
+							245 text 14,155.39
+						246 cell
+							247 text per-GiB-second
+						248 cell
+							249 text $0.0495
+					250 row
+						251 cell
+							252 text Cloud Run 요청
+						253 cell
+							254 text 273,810
+						255 cell
+							256 text 273,810
+						257 cell
+							258 text per-million-requests
+						259 cell
+							260 text $0.1095
+					261 row
+						262 cell
+							263 text Cloud Run → 한국 전송
+						264 cell
+							265 text 1.04
+						266 cell
+							267 text 1.04
+						268 cell
+							269 text per-GiB
+						270 cell
+							271 text $0.1985
+			272 container
+				273 heading 계산 가정, Value: 2
+					274 text 계산 가정
+				275 content list assumptions
+					276 container
+						277 AXListMarker • 
+						278 text Offline scenario, not actual Firebase billing or a cloud performance benchmark. DAU and traffic are constant across each requested day.
+					279 container
+						280 AXListMarker • 
+						281 text Minimum removes duplicate/error/retry traffic and halves payload/compute assumptions. Basis uses input. Worst doubles those assumptions (error/duplicate rates cap at 1). These are planning bands, not statistical confidence intervals.
+					282 container
+						283 AXListMarker • 
+						284 text Each completed run starts once and submits once. Direct reads, growth, duplicate requests and rejected requests are additive. Operation model assumes existing profiles and no authentication billable operations.
+					285 container
+						286 AXListMarker • 
+						287 text A same-ID duplicate reads one operation receipt. The duplicateSubmissionFraction of duplicate settle calls uses a new ID, reads three documents and writes one operation receipt. Errors split by preAuthorityErrorFraction; only authority errors read documents and write rejection receipts.
+					288 container
+						289 AXListMarker • 
+						290 text TransactionRetryRate is assumed additional attempts per transaction: reads and compute amplify; committed writes do not. It is not derived from SQLite CAS or SQL counts.
+					291 container
+						292 AXListMarker • 
+						293 text Command logs are embedded in run documents. Retention assumes explicit deletion of expired run/receipt/operation documents after retentionDays, not Firestore TTL. Profile count assumes fixed DAU cohort; newly retained bytes exclude overwritten profiles.
+					294 container
+						295 AXListMarker • 
+						296 text Storage sums daily retained bytes including index overhead and divides by the catalog planning month length. initialStoredGiB remains throughout the period; it is already billed-size data. Daily accumulation begins from an empty run/operation history.
+					297 container
+						298 AXListMarker • 
+						299 text Cloud Run request billing assumes one request per instance at a time, no minimum instances; cpuSecondsPerRequest is assumed active wall time, rounded up to 100 ms. Memory is allocated GiB multiplied by active seconds. Local process CPU is not substituted.
+					300 container
+						301 AXListMarker • 
+						302 text Egress is Cloud Run Premium Seoul to Korea, once per response. Firestore-to-server stays within the same region. HTTP headers/TLS and compression are excluded from the payload estimate.
+					303 container
+						304 AXListMarker • 
+						305 text Optional free Firestore read/write/delete quotas apply separately each day, storage daily. Cloud Run monthly discounts use Tier 1 USD spending credits. No other projects consume these assumed unused allowances; the scenario fits within one billing month. Firestore's 10 GiB allowance does not discount Cloud Run internet traffic.
+			306 container
+				307 heading 포함하지 않은 비용, Value: 2
+					308 text 포함하지 않은 비용
+				309 content list exclusions
+					310 container
+						311 AXListMarker • 
+						312 text Firebase Authentication and phone/SMS fees
+					313 container
+						314 AXListMarker • 
+						315 text Cloud Logging/Monitoring ingestion and retention
+					316 container
+						317 AXListMarker • 
+						318 text Cloud Build, Artifact Registry and deployment artifacts
+					319 container
+						320 AXListMarker • 
+						321 text Backups, PITR, restore, clones and TTL deletes
+					322 container
+						323 AXListMarker • 
+						324 text Cloud Storage object storage/operations
+					325 container
+						326 AXListMarker • 
+						327 text Security Rules reads, queries/listeners/index-entry scans
+					328 container
+						329 AXListMarker • 
+						330 text Cold starts, idle/minimum instances, network headers, load balancers and VPC connectors
+					331 container
+						332 AXListMarker • 
+						333 text Taxes, exchange rates, commitments and negotiated discounts
+				334 heading 요금 출처, Value: 3
+					335 text 요금 출처
+				336 text seoul-standard-usd-2026-10-22 · 확인 2026-10-22 · USD · 목적지 Korea
+				337 content list sources
+					338 container
+						339 AXListMarker • 
+						340 link cloud.google.com/firestore/pricing
+					341 container
+						342 AXListMarker • 
+						343 link firebase.google.com/docs/firestore/pricing
+					344 container
+						345 AXListMarker • 
+						346 link cloud.google.com/run/pricing
+					347 container
+						348 AXListMarker • 
+						349 link cloud.google.com/vpc/network-pricing
+		116 text LOCAL DEVELOPMENT ONLY 권한 DB · 계측 기록 · 가상 비용을 분리합니다.
+
+The focused UI element is 11 button 03 비용 시나리오

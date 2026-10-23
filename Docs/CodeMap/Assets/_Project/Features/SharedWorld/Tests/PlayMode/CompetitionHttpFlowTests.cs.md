@@ -1,0 +1,15 @@
+# CompetitionHttpFlowTests.cs
+
+- 역할: NEXT_PHASE_06 Q1의 실제 HTTP 권한 계정과 로컬 v4 경기가 연결되는 경계를 5개의 PlayMode 검사로 확인한다. 제품·기존 FlowTests·규칙·자산을 변경하지 않는다.
+- 실행 계약: 클래스는 Q1Http Category, Explicit다. 메인이 소유한 고유 루프백 서버/DB와 환경변수3개를 준비하고 각 exact test name을 하나씩 직렬 실행한다. Pipeline 실행에는 Q1 exact name을 선택한 경우에만 `--include_explicit true`를 반드시 추가한다. 일반 Q0 PlayMode 실행에는 자동 포함하지 않는다. 명시 선택 시 환경변수 누락이나 잘못된 격리 주소/root는 FAIL이다. 0개/skip을 PASS로 세지 않는다. Unity NUnit에 없는 NonParallelizable 속성은 Q1-02 컴파일 검증에서 제거했다.
+- Q1-01 직접 수정: 최초 새 meta의 GUID가33자리여서 Unity가 검사 소스를 무시했다(Editor.log2318~2319). 미연결 신규 검사 meta만 유효32자리 고유 GUID로 수정했다. 제품 C#/자산 GUID는 변경하지 않았으며 검사 발견·실행 재확인은 메인 담당이다.
+- `Q1_HttpJourneyPreservesFrozenMatchAndPaysNothing`: 실제 신규20재화 프로필→authored OpenHttp→주사위/무기 선택→기본 제공 모험가3종의 새 경기 적용을 포인터로 확인한다. 기존 경기에는 선택이 소급되지 않고 새 게임 취소는 원문을 유지하며 확정 후 restarted archive가 이전 원문을 포함해야 한다. 변경하지 않은 v4에서 사건/전투중 종료·App 재생성·동일 저장 재개/AI 라운드/자연 종료를 진행하고 서버 프로필 전체 동치, start/settle/grow 요청 증가0, 클라이언트 게임 요청이 GET profile뿐임을 확인한다. 관찰된 피해 타입은 증거로 기록하며 타입을 강제로 발생시키거나 모두 관찰했다고 가정하지 않는다.
+- `Q1_ProfileFaultsPreserveCheckpointAndRetry`: 실제 before-abort의 첫 프로필 실패로 새 게임을 차단한다. 명시 재조회로 회복한 뒤 기존 경기 교체 전 after-delay/1초 timeout을 발생시켜 기존 checkpoint/스냅샷 유지와 restarted archive 미생성을 검사한다. 저장 경기 재개와 재조회 회복을 포인터로 수행한다. 503은 기존 서버 HTTP 저장 장애 검사의 별도 증거이며 이 검사에 합산하지 않는다.
+- `Q1_LegacyActiveRunBlocksGrowthWithoutSubmitting`: 격리 계정에서 실제 v1 start 요청1개를 setup으로 보낸다. App의 성장 구매 보류 UI/직접 Grow 거절, 출전 선택과 v4 시작 후 기존 계정 원문·ticket·서버 프로필/run 보존을 확인한다. 합법적인 구형 로컬 abandon→settle pending을 만들고 재진입 시 pending/원문 보존 및 자동 profile/start/submit/grow 요청0을 확인한다. setup의 v1 start1개와 제품의 자동 시작을 구분한다.
+- `Q1_PrepareLostGrowthResponseForServerRestart`: 동일 restart 경로에 실제 신규 계정과 자연 전투 checkpoint/선호를 만든다. 성장 POST의 after-abort로 승인 응답을 잃어 서버는 성장1/재화0이고 로컬은 성장0/pending을 유지해야 한다. pending ID/본문 해시, 계정/경기/선호 파일 해시와 revision을 restart-evidence.json에 저장한다.
+- `Q1_ResumeLostGrowthResponseAfterServerRestart`: 메인이 같은 endpoint/DB 서버를 재시작한 뒤 실행한다. 재진입 전 네 파일의 해시와 endpoint/계정 해시를 확인하고 자동 전송 없이 pending·경기를 그대로 읽는다. 전투 재개와 계정의 같은 요청 재확인을 포인터로 수행한 뒤 POST ID/body 동일, 서버 revision 중복 증가 없음, 로컬 성장1/재화0, 기존 경기/선호/동결 시작 성장0을 확인한다. Prepare 없이 실행하면 실패한다.
+- 입출력: CompetitionHttpFixture와 실제 서버 프로필/요청 응답 → NUnit 결과, 사례 폴더 PNG/JSON, restart-evidence.json. Q1RestartEvidence DTO는 두 프로세스 수명 사이의 비교용 해시·revision이며 권한 응답이나 게임 규칙을 만들지 않는다.
+- 사용하는 대상: CompetitionHttpFixture, CompetitionApp/Session/Account, CompetitionCommandRules, LoopStore/LoopJson, 실제 HttpGameBackend, NUnit/UnityTest. 사용하는 쪽·관계 근거: SharedWorld.PlayMode.Tests assembly에서 메인이 exact test name으로 Unity Test Runner/Pipeline 실행한다.
+- 상태/수명: 사례는 직렬 실행하며 UnityTearDown이 helper의 UI/HTTP 자원을 해제한다. 일반 사례는 독립 GUID 파생 계정과 짧은 j/p/l 폴더, Prepare/Resume는 동일 계정과 r 폴더다. 서버 PID/포트/DB 재시작과 남긴 증거 최종 정리는 메인 소유다.
+- 검수 주의: 소스 존재를 PASS로 보고하지 않는다. 실제 최신 카운트·반복·미실행은 NEXT_PHASE_06 REPORT에 기록한다. M4 수치는 실제 로컬 HTTP/SQLite 계측이며 Firestore 추정과 비용 모형은 실제 사용량/청구가 아니다.
+- 최종 실제 결과: 경로 단축 후 컴파일과 Q1 5개 개별 실행 모두 PASS(R3). 자연 경기45명령 뒤 전원완료, 네 피해 타입 관찰, 일반 경기 서버 프로필 불변, profile fault2회/legacy 보존, 서버 재시작 후 동일 ID/body의 성장1회 적용을 확인했다. 최초 경로 FAIL은 이력으로 보존한다.

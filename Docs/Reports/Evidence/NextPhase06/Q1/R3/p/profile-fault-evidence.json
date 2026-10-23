@@ -1,0 +1,21 @@
+{
+  "realSocketFaults": [
+    "before-abort",
+    "after-delay"
+  ],
+  "checkpointUnchanged": true,
+  "recovered": true,
+  "http": [
+    {
+      "route": "GET /v1/profile",
+      "requests": 5,
+      "transportErrors": 2,
+      "faults": [
+        "before-abort",
+        "after-delay"
+      ],
+      "bodyHashes": []
+    }
+  ],
+  "http503": "Separate existing actual HTTP storage-failure test; not simulated here"
+}

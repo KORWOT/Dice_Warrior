@@ -1,0 +1,55 @@
+param([ValidateSet('start','restart','stop','status')][string]$Action='status')
+$ErrorActionPreference='Stop'
+$taskRoot=[IO.Path]::GetFullPath($PSScriptRoot)
+$workspace=[IO.Path]::GetFullPath((Join-Path $taskRoot '../..'))
+$statePath=Join-Path $taskRoot 'q1-server.json'
+$state=$null
+if(Test-Path -LiteralPath $statePath) {$state=Get-Content -LiteralPath $statePath -Raw | ConvertFrom-Json}
+function CheckOwned($record) {
+    if(!$record) {throw 'Missing owned server record'}
+    $root=[IO.Path]::GetFullPath($record.root)
+    if(!$root.StartsWith($taskRoot+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)) {throw 'Fixture escaped task root'}
+    if($record.port -eq 5087) {throw 'User server port forbidden'}
+    $process=Get-Process -Id $record.pid -ErrorAction SilentlyContinue
+    if($process -and $process.StartTime.ToUniversalTime().Ticks.ToString() -ne $record.startUtcTicks) {throw 'PID ownership changed'}
+    return $process
+}
+if($Action -eq 'status') {
+    if(!$state) {return 'No Q1 server has been launched.'}
+    $process=CheckOwned $state
+    [pscustomobject]@{pid=$state.pid;running=($null -ne $process);url=$state.url;root=$state.root}
+    exit
+}
+if($Action -in @('restart','stop')) {
+    $process=CheckOwned $state
+    if($process) {Stop-Process -Id $state.pid; $process.WaitForExit(10000) | Out-Null}
+    [pscustomobject]@{action='stop';pid=$state.pid;url=$state.url;utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Compress | Add-Content -LiteralPath (Join-Path $taskRoot 'q1-server-history.jsonl')
+    if($Action -eq 'stop') {return 'Owned Q1 server stopped.'}
+}
+if($Action -eq 'start') {
+    if($state -and (CheckOwned $state)) {throw 'Q1 server already running'}
+    $id=[Guid]::NewGuid().ToString('N')
+    $root=Join-Path $taskRoot ('q1-'+$id)
+    New-Item -ItemType Directory -Path $root -Force | Out-Null
+    $listener=[Net.Sockets.TcpListener]::new([Net.IPAddress]::Loopback,0)
+    $listener.Start(); $port=$listener.LocalEndpoint.Port; $listener.Stop()
+    if($port -eq 5087) {throw 'Unexpected user port selection'}
+    $state=[pscustomobject]@{pid=0;startUtcTicks='';port=$port;url=('http://127.0.0.1:'+$port);root=$root;database=(Join-Path $root 'authority.db');clientRoot=(Join-Path $root 'client');user=('q1-'+$id.Substring(0,12))}
+}
+$dll=Join-Path $workspace 'Server/DiceWarrior.MockServer/bin/Debug/net10.0/DiceWarrior.MockServer.dll'
+if(!(Test-Path -LiteralPath $dll)) {throw 'Build the server before starting'}
+$arguments=@($dll,'--environment','Development','--urls',$state.url,'--Mock:DatabasePath',$state.database,'--Mock:Seed','33','--Mock:EnableFaults','true')
+$suffix=[DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss')
+$server=Start-Process -FilePath 'C:/Program Files/dotnet/dotnet.exe' -ArgumentList $arguments -WorkingDirectory $workspace -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $state.root ('stdout-'+$suffix+'.log')) -RedirectStandardError (Join-Path $state.root ('stderr-'+$suffix+'.log'))
+$state.pid=$server.Id
+$state.startUtcTicks=$server.StartTime.ToUniversalTime().Ticks.ToString()
+$state | ConvertTo-Json | Set-Content -LiteralPath $statePath -Encoding utf8
+$healthy=$false
+for($i=0;$i -lt 50;$i++) {
+    if($server.HasExited) {throw 'Owned Q1 server exited before health check'}
+    try {$health=Invoke-RestMethod -Uri ($state.url+'/healthz') -TimeoutSec 1; $healthy=$true; break} catch {Start-Sleep -Milliseconds 100}
+}
+if(!$healthy) {Stop-Process -Id $server.Id; throw 'Owned Q1 server failed health check'}
+$health | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $state.root ('health-'+$suffix+'.json')) -Encoding utf8
+[pscustomobject]@{action='start';pid=$state.pid;url=$state.url;database=$state.database;arguments=$arguments;utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json -Compress | Add-Content -LiteralPath (Join-Path $taskRoot 'q1-server-history.jsonl')
+$state | Select-Object pid,url,root,clientRoot,user

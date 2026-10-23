@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0071bf88-3d92-4c69-994b-5e44f9cea113" name="coli4@WOT 2026-10-23 11:35:51" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T11:35:51.4747921+09:00" queuing="2026-10-23T11:35:51.4747923+09:00" start="2026-10-23T11:35:49.8538793+09:00" finish="2026-10-23T11:35:52.9472422+09:00" />
+  <TestSettings name="default" id="7db2ff22-fc9a-4207-9817-09c4890cb86f">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-23_11_35_51" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="438ecd82-8d97-42f2-80d3-614e787241b4" testId="23d9fbe0-a975-54c3-2a2f-b2c9eae2545b" testName="UnknownLiveStringsAreReplacedAndActivePeakCountsReturnToZero" computerName="WOT" duration="00:00:00.0297190" startTime="2026-10-23T11:35:52.4631611+09:00" endTime="2026-10-23T11:35:52.4928795+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="438ecd82-8d97-42f2-80d3-614e787241b4" />
+    <UnitTestResult executionId="a9f5d875-8296-4226-92dc-6f2d0e49fce7" testId="be05944c-3ed3-465d-d445-0907e3521da2" testName="UnsupportedRegionAndBoundedInputsFailBeforeCalculation" computerName="WOT" duration="00:00:00.0018850" startTime="2026-10-23T11:35:51.4670090+09:00" endTime="2026-10-23T11:35:51.4688936+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9f5d875-8296-4226-92dc-6f2d0e49fce7" />
+    <UnitTestResult executionId="ab489c37-03bc-4a29-8aa8-973ca6ac608a" testId="cd797b9b-e918-a7e9-6629-218bbab2a6bd" testName="FailureToCreateMetricsDirectoryNeverAffectsRequestOrLeaksIdentities" computerName="WOT" duration="00:00:00.6100710" startTime="2026-10-23T11:35:51.7360889+09:00" endTime="2026-10-23T11:35:52.3461596+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab489c37-03bc-4a29-8aa8-973ca6ac608a" />
+    <UnitTestResult executionId="1103b6b7-e6a1-4545-add9-9f508d85e3c0" testId="72c1f732-5d1e-31c2-87d3-055b07afb3ed" testName="LookupsAndNotFoundAreChargedLogicalReads(&quot;run&quot;,2)" computerName="WOT" duration="00:00:00.0000120" startTime="2026-10-23T11:35:51.4294904+09:00" endTime="2026-10-23T11:35:51.4295022+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1103b6b7-e6a1-4545-add9-9f508d85e3c0" />
+    <UnitTestResult executionId="30f10995-6f3d-4637-aab3-5b8632483d60" testId="94b5cd45-f2d4-5d3e-f790-98c16930a0c8" testName="ConcurrentColdStartsShareKeyAndDoNotLoseJournalRecords" computerName="WOT" duration="00:00:00.2423580" startTime="2026-10-23T11:35:51.4937073+09:00" endTime="2026-10-23T11:35:51.7360649+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30f10995-6f3d-4637-aab3-5b8632483d60" />
+    <UnitTestResult executionId="068226b1-0481-4e53-a325-4734d37e25a7" testId="900a06f8-7aea-57a1-59d4-c517fdbac776" testName="RateFileRejectsBadUnitsAndMissingRateIsUnestimated" computerName="WOT" duration="00:00:00.0201460" startTime="2026-10-23T11:35:51.4429906+09:00" endTime="2026-10-23T11:35:51.4631364+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="068226b1-0481-4e53-a325-4734d37e25a7" />
+    <UnitTestResult executionId="bcd34f3d-e335-4453-af1d-d00c6623011f" testId="d4d67601-9b07-144e-f28f-f0bdd512db79" testName="MonthlyStorageAndKoreaEgressUseDifferentFreeAllowances" computerName="WOT" duration="00:00:00.0010640" startTime="2026-10-23T11:35:51.4295311+09:00" endTime="2026-10-23T11:35:51.4305947+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bcd34f3d-e335-4453-af1d-d00c6623011f" />
+    <UnitTestResult executionId="99602f02-829a-4981-b778-f57d85ab8d5b" testId="e49018e9-6e29-cf29-7586-df2f02cd0c27" testName="ActualReadMeasuresThreeSelectsAndReturnedRowsIncludingEmptyTables" computerName="WOT" duration="00:00:00.2106920" startTime="2026-10-23T11:35:52.5150742+09:00" endTime="2026-10-23T11:35:52.7257660+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99602f02-829a-4981-b778-f57d85ab8d5b" />
+    <UnitTestResult executionId="4fb5a9e8-982d-44b5-86a1-fd27e7add59d" testId="4de0e2e0-efc9-4f58-4b4a-eb7cdd73d088" testName="InvalidCatalogCannotSilentlyBecomeFree(&quot;unsupported&quot;)" computerName="WOT" duration="00:00:00.0095940" startTime="2026-10-23T11:35:51.4097401+09:00" endTime="2026-10-23T11:35:51.4193338+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4fb5a9e8-982d-44b5-86a1-fd27e7add59d" />
+    <UnitTestResult executionId="0a335df9-709f-4f33-8dd5-ade06ba6eb52" testId="f0b35de6-f22b-af61-241e-45246f7a1571" testName="RetentionRemovesExpiredSamplesAndCountsThemAsOmitted" computerName="WOT" duration="00:00:00.0210270" startTime="2026-10-23T11:35:52.4421069+09:00" endTime="2026-10-23T11:35:52.4631331+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a335df9-709f-4f33-8dd5-ade06ba6eb52" />
+    <UnitTestResult executionId="86bc6f80-237a-412c-9024-49ace8246f6b" testId="132da8e3-2f60-ca59-297e-e530c0dd1506" testName="FailedWriteRecordsRollbackAndPreservesProfile" computerName="WOT" duration="00:00:00.0231040" startTime="2026-10-23T11:35:52.7811906+09:00" endTime="2026-10-23T11:35:52.8042939+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="86bc6f80-237a-412c-9024-49ace8246f6b" />
+    <UnitTestResult executionId="c54cc382-9abd-47c2-b62f-f3c083b6643e" testId="028a4656-e1be-cadb-8e90-a13e8cc95193" testName="ThrowingObserverStillPaysVerifiedVictoryExactlyOnce" computerName="WOT" duration="00:00:00.0806980" startTime="2026-10-23T11:35:52.8252024+09:00" endTime="2026-10-23T11:35:52.9059000+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c54cc382-9abd-47c2-b62f-f3c083b6643e" />
+    <UnitTestResult executionId="552c043b-4809-49cf-a710-09fb8e24a431" testId="0b44faa8-f624-85f7-5770-99a4b36697a2" testName="StorageIsDailyAverageRetentionAndNotTotalIngestedBytes" computerName="WOT" duration="00:00:00.0006260" startTime="2026-10-23T11:35:51.4663674+09:00" endTime="2026-10-23T11:35:51.4669936+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="552c043b-4809-49cf-a710-09fb8e24a431" />
+    <UnitTestResult executionId="26ddc0ef-7813-4f6e-9a2c-46a273c194f3" testId="82a3a4e1-154d-4cdf-f0c4-04e83f222ce0" testName="SimpleWorkloadMatchesHandCalculatedOperationsAndUnits" computerName="WOT" duration="00:00:00.0008570" startTime="2026-10-23T11:35:51.4654933+09:00" endTime="2026-10-23T11:35:51.4663505+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26ddc0ef-7813-4f6e-9a2c-46a273c194f3" />
+    <UnitTestResult executionId="0191a68f-eb7b-465b-970b-3e6b35654f0a" testId="a87b94ac-abf6-f420-209a-1e2306aa3457" testName="InvalidCatalogCannotSilentlyBecomeFree(&quot;nan&quot;)" computerName="WOT" duration="00:00:00.0083590" startTime="2026-10-23T11:35:51.4013585+09:00" endTime="2026-10-23T11:35:51.4097170+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0191a68f-eb7b-465b-970b-3e6b35654f0a" />
+    <UnitTestResult executionId="21ee4f35-72db-4994-81d2-9242ab34088b" testId="1b7c5177-2d1e-2b7f-7f59-0c30522a2f11" testName="ThrowingObserverDoesNotChangePurchaseOrDuplicateReceipt" computerName="WOT" duration="00:00:00.0208540" startTime="2026-10-23T11:35:52.8043255+09:00" endTime="2026-10-23T11:35:52.8251791+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="21ee4f35-72db-4994-81d2-9242ab34088b" />
+    <UnitTestResult executionId="c5414eca-9f12-4a26-b59a-af79232b66a2" testId="2da7add9-942c-11b7-4bbe-0ff5485b1937" testName="LookupsAndNotFoundAreChargedLogicalReads(&quot;profile&quot;,1)" computerName="WOT" duration="00:00:00.0001210" startTime="2026-10-23T11:35:51.4291665+09:00" endTime="2026-10-23T11:35:51.4292876+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5414eca-9f12-4a26-b59a-af79232b66a2" />
+    <UnitTestResult executionId="265c4014-8bef-48c8-b9ac-18743b7ffe7c" testId="7379c40c-43d9-c560-09bd-79234589268b" testName="LookupsAndNotFoundAreChargedLogicalReads(&quot;operation&quot;,1)" computerName="WOT" duration="00:00:00.0001850" startTime="2026-10-23T11:35:51.4292960+09:00" endTime="2026-10-23T11:35:51.4294806+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="265c4014-8bef-48c8-b9ac-18743b7ffe7c" />
+    <UnitTestResult executionId="77b0b751-c492-47a0-8bbc-c58e02e6138b" testId="559a98b5-4f68-632d-c8bb-00b20a34b2c3" testName="PublishedRatesAreConfigurationAndNotBakedIntoArithmetic" computerName="WOT" duration="00:00:00.0123680" startTime="2026-10-23T11:35:51.4306038+09:00" endTime="2026-10-23T11:35:51.4429718+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="77b0b751-c492-47a0-8bbc-c58e02e6138b" />
+    <UnitTestResult executionId="350c5734-ef7b-425c-a10f-3e881be2c4c3" testId="f172acb9-6d35-ab9a-fecb-e5ef85489749" testName="BeforeAuthorityErrorAndValidationRejectionDiffer" computerName="WOT" duration="00:00:00.0914080" startTime="2026-10-23T11:35:51.2621015+09:00" endTime="2026-10-23T11:35:51.3534601+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="350c5734-ef7b-425c-a10f-3e881be2c4c3" />
+    <UnitTestResult executionId="5c9ef8f8-ee9b-4d60-9c73-75d93ba16e1b" testId="a48b99ed-4d6a-9137-44cd-fd8b91f0be5c" testName="InvalidCatalogCannotSilentlyBecomeFree(&quot;missing&quot;)" computerName="WOT" duration="00:00:00.0082560" startTime="2026-10-23T11:35:51.4193613+09:00" endTime="2026-10-23T11:35:51.4276173+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c9ef8f8-ee9b-4d60-9c73-75d93ba16e1b" />
+    <UnitTestResult executionId="9dd3aba1-8db1-4b27-9e98-3ef7c8d34187" testId="34e260a8-020c-5905-53e9-7f41a053c5fa" testName="InvalidCatalogCannotSilentlyBecomeFree(&quot;negative&quot;)" computerName="WOT" duration="00:00:00.0100960" startTime="2026-10-23T11:35:51.3812491+09:00" endTime="2026-10-23T11:35:51.3913451+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9dd3aba1-8db1-4b27-9e98-3ef7c8d34187" />
+    <UnitTestResult executionId="ddfa8289-1043-48ac-9bbe-1c5321859301" testId="ab8a0587-5f77-b359-5aa2-f566b765376d" testName="LogicalOperationModelSeparatesSqlAndDuplicateOutcomes" computerName="WOT" duration="00:00:00.0004040" startTime="2026-10-23T11:35:51.4287289+09:00" endTime="2026-10-23T11:35:51.4291324+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ddfa8289-1043-48ac-9bbe-1c5321859301" />
+    <UnitTestResult executionId="81132562-61e6-4dce-a576-28f13b9436bd" testId="c7a761df-75ad-1cf0-c8cb-be99a935b0a8" testName="ReloadPreservesOpaqueKeysActualZeroBytesAndExactlyOneCompletion" computerName="WOT" duration="00:00:00.0200230" startTime="2026-10-23T11:35:52.4220593+09:00" endTime="2026-10-23T11:35:52.4420817+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="81132562-61e6-4dce-a576-28f13b9436bd" />
+    <UnitTestResult executionId="d7cc369b-da25-4f7c-a598-958711cf817a" testId="7c4b8d56-d81e-09bc-cfe8-59503ac9dd20" testName="FileAndSnapshotCapsReportOmissionWithoutTreatingZeroBytesAsMissing" computerName="WOT" duration="00:00:00.0758429" startTime="2026-10-23T11:35:52.3461901+09:00" endTime="2026-10-23T11:35:52.4220331+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7cc369b-da25-4f7c-a598-958711cf817a" />
+    <UnitTestResult executionId="b26417c1-94b8-41f5-a7d3-6f51d61a51d7" testId="134f2a79-14df-93a5-c1ff-e97090d58cca" testName="FreeQuotaIsDailyAndCloudRunCreditUsesTierOneMoney" computerName="WOT" duration="00:00:00.0264290" startTime="2026-10-23T11:35:51.3547757+09:00" endTime="2026-10-23T11:35:51.3812043+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b26417c1-94b8-41f5-a7d3-6f51d61a51d7" />
+    <UnitTestResult executionId="81461dba-c532-476b-ad0c-d31bc4eb8cb5" testId="dedb38ed-46f1-d8f6-a3af-f989cee0243e" testName="RetryAddsReadsButNotCommittedWritesAndBandsAreOrdered" computerName="WOT" duration="00:00:00.0023130" startTime="2026-10-23T11:35:51.4631625+09:00" endTime="2026-10-23T11:35:51.4654752+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="81461dba-c532-476b-ad0c-d31bc4eb8cb5" />
+    <UnitTestResult executionId="700261e6-fed8-4247-ab45-8a82b4ae52b7" testId="c1f5079b-25fe-2737-2912-0d6511e8573e" testName="UntrustedJournalStringsAndOversizeInputCannotReachSnapshot" computerName="WOT" duration="00:00:00.0220050" startTime="2026-10-23T11:35:52.4929023+09:00" endTime="2026-10-23T11:35:52.5149067+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="700261e6-fed8-4247-ab45-8a82b4ae52b7" />
+    <UnitTestResult executionId="e5ab37df-790b-43ef-a6e1-a4994da66e93" testId="bed014c3-2f5b-6952-4623-f7eeecc6993d" testName="ZeroUsersAndMaximumBoundsRemainFiniteAndInputIsNotMutated" computerName="WOT" duration="00:00:00.0136960" startTime="2026-10-23T11:35:51.4689070+09:00" endTime="2026-10-23T11:35:51.4826030+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e5ab37df-790b-43ef-a6e1-a4994da66e93" />
+    <UnitTestResult executionId="0bf31922-c913-4468-9ac5-9093013b9bf9" testId="5b024231-fe40-8455-27b0-bad39642b08f" testName="AggregatesUseNearestRankPercentilesUtcDaysAndDistinctOpaqueUsers" computerName="WOT" duration="00:00:00.0103810" startTime="2026-10-23T11:35:51.4833063+09:00" endTime="2026-10-23T11:35:51.4936866+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0bf31922-c913-4468-9ac5-9093013b9bf9" />
+    <UnitTestResult executionId="7fd24408-1d05-4610-b50e-e19ec180bf79" testId="957a7f58-017b-a6f3-a1f3-96b4d7a51193" testName="CasRetryReportsOneDiscardedTransactionAndPreservesConcurrentSpend" computerName="WOT" duration="00:00:00.0553760" startTime="2026-10-23T11:35:52.7257906+09:00" endTime="2026-10-23T11:35:52.7811660+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7fd24408-1d05-4610-b50e-e19ec180bf79" />
+    <UnitTestResult executionId="12af45a8-8e60-4d85-abe0-63695014f3b6" testId="db383e48-6ed8-e30d-b220-787f648f36dd" testName="InvalidCatalogCannotSilentlyBecomeFree(&quot;duplicate&quot;)" computerName="WOT" duration="00:00:00.0099690" startTime="2026-10-23T11:35:51.3913662+09:00" endTime="2026-10-23T11:35:51.4013346+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="12af45a8-8e60-4d85-abe0-63695014f3b6" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="StorageIsDailyAverageRetentionAndNotTotalIngestedBytes" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="0b44faa8-f624-85f7-5770-99a4b36697a2">
+      <Execution id="552c043b-4809-49cf-a710-09fb8e24a431" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="StorageIsDailyAverageRetentionAndNotTotalIngestedBytes" />
+    </UnitTest>
+    <UnitTest name="UnsupportedRegionAndBoundedInputsFailBeforeCalculation" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="be05944c-3ed3-465d-d445-0907e3521da2">
+      <Execution id="a9f5d875-8296-4226-92dc-6f2d0e49fce7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="UnsupportedRegionAndBoundedInputsFailBeforeCalculation" />
+    </UnitTest>
+    <UnitTest name="RateFileRejectsBadUnitsAndMissingRateIsUnestimated" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="900a06f8-7aea-57a1-59d4-c517fdbac776">
+      <Execution id="068226b1-0481-4e53-a325-4734d37e25a7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="RateFileRejectsBadUnitsAndMissingRateIsUnestimated" />
+    </UnitTest>
+    <UnitTest name="MonthlyStorageAndKoreaEgressUseDifferentFreeAllowances" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="d4d67601-9b07-144e-f28f-f0bdd512db79">
+      <Execution id="bcd34f3d-e335-4453-af1d-d00c6623011f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="MonthlyStorageAndKoreaEgressUseDifferentFreeAllowances" />
+    </UnitTest>
+    <UnitTest name="LookupsAndNotFoundAreChargedLogicalReads(&quot;operation&quot;,1)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="7379c40c-43d9-c560-09bd-79234589268b">
+      <Execution id="265c4014-8bef-48c8-b9ac-18743b7ffe7c" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="LookupsAndNotFoundAreChargedLogicalReads(&quot;operation&quot;,1)" />
+    </UnitTest>
+    <UnitTest name="LookupsAndNotFoundAreChargedLogicalReads(&quot;profile&quot;,1)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="2da7add9-942c-11b7-4bbe-0ff5485b1937">
+      <Execution id="c5414eca-9f12-4a26-b59a-af79232b66a2" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="LookupsAndNotFoundAreChargedLogicalReads(&quot;profile&quot;,1)" />
+    </UnitTest>
+    <UnitTest name="ZeroUsersAndMaximumBoundsRemainFiniteAndInputIsNotMutated" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="bed014c3-2f5b-6952-4623-f7eeecc6993d">
+      <Execution id="e5ab37df-790b-43ef-a6e1-a4994da66e93" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="ZeroUsersAndMaximumBoundsRemainFiniteAndInputIsNotMutated" />
+    </UnitTest>
+    <UnitTest name="ThrowingObserverDoesNotChangePurchaseOrDuplicateReceipt" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="1b7c5177-2d1e-2b7f-7f59-0c30522a2f11">
+      <Execution id="21ee4f35-72db-4994-81d2-9242ab34088b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.SqliteMetricsTests" name="ThrowingObserverDoesNotChangePurchaseOrDuplicateReceipt" />
+    </UnitTest>
+    <UnitTest name="ActualReadMeasuresThreeSelectsAndReturnedRowsIncludingEmptyTables" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="e49018e9-6e29-cf29-7586-df2f02cd0c27">
+      <Execution id="99602f02-829a-4981-b778-f57d85ab8d5b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.SqliteMetricsTests" name="ActualReadMeasuresThreeSelectsAndReturnedRowsIncludingEmptyTables" />
+    </UnitTest>
+    <UnitTest name="UnknownLiveStringsAreReplacedAndActivePeakCountsReturnToZero" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="23d9fbe0-a975-54c3-2a2f-b2c9eae2545b">
+      <Execution id="438ecd82-8d97-42f2-80d3-614e787241b4" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="UnknownLiveStringsAreReplacedAndActivePeakCountsReturnToZero" />
+    </UnitTest>
+    <UnitTest name="BeforeAuthorityErrorAndValidationRejectionDiffer" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="f172acb9-6d35-ab9a-fecb-e5ef85489749">
+      <Execution id="350c5734-ef7b-425c-a10f-3e881be2c4c3" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="BeforeAuthorityErrorAndValidationRejectionDiffer" />
+    </UnitTest>
+    <UnitTest name="FreeQuotaIsDailyAndCloudRunCreditUsesTierOneMoney" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="134f2a79-14df-93a5-c1ff-e97090d58cca">
+      <Execution id="b26417c1-94b8-41f5-a7d3-6f51d61a51d7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="FreeQuotaIsDailyAndCloudRunCreditUsesTierOneMoney" />
+    </UnitTest>
+    <UnitTest name="InvalidCatalogCannotSilentlyBecomeFree(&quot;negative&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="34e260a8-020c-5905-53e9-7f41a053c5fa">
+      <Execution id="9dd3aba1-8db1-4b27-9e98-3ef7c8d34187" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="InvalidCatalogCannotSilentlyBecomeFree(&quot;negative&quot;)" />
+    </UnitTest>
+    <UnitTest name="FileAndSnapshotCapsReportOmissionWithoutTreatingZeroBytesAsMissing" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="7c4b8d56-d81e-09bc-cfe8-59503ac9dd20">
+      <Execution id="d7cc369b-da25-4f7c-a598-958711cf817a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="FileAndSnapshotCapsReportOmissionWithoutTreatingZeroBytesAsMissing" />
+    </UnitTest>
+    <UnitTest name="FailureToCreateMetricsDirectoryNeverAffectsRequestOrLeaksIdentities" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="cd797b9b-e918-a7e9-6629-218bbab2a6bd">
+      <Execution id="ab489c37-03bc-4a29-8aa8-973ca6ac608a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="FailureToCreateMetricsDirectoryNeverAffectsRequestOrLeaksIdentities" />
+    </UnitTest>
+    <UnitTest name="InvalidCatalogCannotSilentlyBecomeFree(&quot;duplicate&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="db383e48-6ed8-e30d-b220-787f648f36dd">
+      <Execution id="12af45a8-8e60-4d85-abe0-63695014f3b6" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="InvalidCatalogCannotSilentlyBecomeFree(&quot;duplicate&quot;)" />
+    </UnitTest>
+    <UnitTest name="SimpleWorkloadMatchesHandCalculatedOperationsAndUnits" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="82a3a4e1-154d-4cdf-f0c4-04e83f222ce0">
+      <Execution id="26ddc0ef-7813-4f6e-9a2c-46a273c194f3" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="SimpleWorkloadMatchesHandCalculatedOperationsAndUnits" />
+    </UnitTest>
+    <UnitTest name="RetryAddsReadsButNotCommittedWritesAndBandsAreOrdered" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="dedb38ed-46f1-d8f6-a3af-f989cee0243e">
+      <Execution id="81461dba-c532-476b-ad0c-d31bc4eb8cb5" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="RetryAddsReadsButNotCommittedWritesAndBandsAreOrdered" />
+    </UnitTest>
+    <UnitTest name="PublishedRatesAreConfigurationAndNotBakedIntoArithmetic" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="559a98b5-4f68-632d-c8bb-00b20a34b2c3">
+      <Execution id="77b0b751-c492-47a0-8bbc-c58e02e6138b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="PublishedRatesAreConfigurationAndNotBakedIntoArithmetic" />
+    </UnitTest>
+    <UnitTest name="UntrustedJournalStringsAndOversizeInputCannotReachSnapshot" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="c1f5079b-25fe-2737-2912-0d6511e8573e">
+      <Execution id="700261e6-fed8-4247-ab45-8a82b4ae52b7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="UntrustedJournalStringsAndOversizeInputCannotReachSnapshot" />
+    </UnitTest>
+    <UnitTest name="ConcurrentColdStartsShareKeyAndDoNotLoseJournalRecords" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="94b5cd45-f2d4-5d3e-f790-98c16930a0c8">
+      <Execution id="30f10995-6f3d-4637-aab3-5b8632483d60" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="ConcurrentColdStartsShareKeyAndDoNotLoseJournalRecords" />
+    </UnitTest>
+    <UnitTest name="LookupsAndNotFoundAreChargedLogicalReads(&quot;run&quot;,2)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="72c1f732-5d1e-31c2-87d3-055b07afb3ed">
+      <Execution id="1103b6b7-e6a1-4545-add9-9f508d85e3c0" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="LookupsAndNotFoundAreChargedLogicalReads(&quot;run&quot;,2)" />
+    </UnitTest>
+    <UnitTest name="RetentionRemovesExpiredSamplesAndCountsThemAsOmitted" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="f0b35de6-f22b-af61-241e-45246f7a1571">
+      <Execution id="0a335df9-709f-4f33-8dd5-ade06ba6eb52" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="RetentionRemovesExpiredSamplesAndCountsThemAsOmitted" />
+    </UnitTest>
+    <UnitTest name="ThrowingObserverStillPaysVerifiedVictoryExactlyOnce" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="028a4656-e1be-cadb-8e90-a13e8cc95193">
+      <Execution id="c54cc382-9abd-47c2-b62f-f3c083b6643e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.SqliteMetricsTests" name="ThrowingObserverStillPaysVerifiedVictoryExactlyOnce" />
+    </UnitTest>
+    <UnitTest name="ReloadPreservesOpaqueKeysActualZeroBytesAndExactlyOneCompletion" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="c7a761df-75ad-1cf0-c8cb-be99a935b0a8">
+      <Execution id="81132562-61e6-4dce-a576-28f13b9436bd" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="ReloadPreservesOpaqueKeysActualZeroBytesAndExactlyOneCompletion" />
+    </UnitTest>
+    <UnitTest name="AggregatesUseNearestRankPercentilesUtcDaysAndDistinctOpaqueUsers" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="5b024231-fe40-8455-27b0-bad39642b08f">
+      <Execution id="0bf31922-c913-4468-9ac5-9093013b9bf9" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.MetricsCollectorTests" name="AggregatesUseNearestRankPercentilesUtcDaysAndDistinctOpaqueUsers" />
+    </UnitTest>
+    <UnitTest name="InvalidCatalogCannotSilentlyBecomeFree(&quot;unsupported&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="4de0e2e0-efc9-4f58-4b4a-eb7cdd73d088">
+      <Execution id="4fb5a9e8-982d-44b5-86a1-fd27e7add59d" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="InvalidCatalogCannotSilentlyBecomeFree(&quot;unsupported&quot;)" />
+    </UnitTest>
+    <UnitTest name="LogicalOperationModelSeparatesSqlAndDuplicateOutcomes" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="ab8a0587-5f77-b359-5aa2-f566b765376d">
+      <Execution id="ddfa8289-1043-48ac-9bbe-1c5321859301" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="LogicalOperationModelSeparatesSqlAndDuplicateOutcomes" />
+    </UnitTest>
+    <UnitTest name="FailedWriteRecordsRollbackAndPreservesProfile" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="132da8e3-2f60-ca59-297e-e530c0dd1506">
+      <Execution id="86bc6f80-237a-412c-9024-49ace8246f6b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.SqliteMetricsTests" name="FailedWriteRecordsRollbackAndPreservesProfile" />
+    </UnitTest>
+    <UnitTest name="CasRetryReportsOneDiscardedTransactionAndPreservesConcurrentSpend" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="957a7f58-017b-a6f3-a1f3-96b4d7a51193">
+      <Execution id="7fd24408-1d05-4610-b50e-e19ec180bf79" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.SqliteMetricsTests" name="CasRetryReportsOneDiscardedTransactionAndPreservesConcurrentSpend" />
+    </UnitTest>
+    <UnitTest name="InvalidCatalogCannotSilentlyBecomeFree(&quot;nan&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="a87b94ac-abf6-f420-209a-1e2306aa3457">
+      <Execution id="0191a68f-eb7b-465b-970b-3e6b35654f0a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="InvalidCatalogCannotSilentlyBecomeFree(&quot;nan&quot;)" />
+    </UnitTest>
+    <UnitTest name="InvalidCatalogCannotSilentlyBecomeFree(&quot;missing&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.metrics.tests\bin\debug\net10.0\dicewarrior.metrics.tests.dll" id="a48b99ed-4d6a-9137-44cd-fd8b91f0be5c">
+      <Execution id="5c9ef8f8-ee9b-4d60-9c73-75d93ba16e1b" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.Metrics.Tests.CostEstimatorTests" name="InvalidCatalogCannotSilentlyBecomeFree(&quot;missing&quot;)" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="23d9fbe0-a975-54c3-2a2f-b2c9eae2545b" executionId="438ecd82-8d97-42f2-80d3-614e787241b4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="be05944c-3ed3-465d-d445-0907e3521da2" executionId="a9f5d875-8296-4226-92dc-6f2d0e49fce7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd797b9b-e918-a7e9-6629-218bbab2a6bd" executionId="ab489c37-03bc-4a29-8aa8-973ca6ac608a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="72c1f732-5d1e-31c2-87d3-055b07afb3ed" executionId="1103b6b7-e6a1-4545-add9-9f508d85e3c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94b5cd45-f2d4-5d3e-f790-98c16930a0c8" executionId="30f10995-6f3d-4637-aab3-5b8632483d60" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="900a06f8-7aea-57a1-59d4-c517fdbac776" executionId="068226b1-0481-4e53-a325-4734d37e25a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d4d67601-9b07-144e-f28f-f0bdd512db79" executionId="bcd34f3d-e335-4453-af1d-d00c6623011f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e49018e9-6e29-cf29-7586-df2f02cd0c27" executionId="99602f02-829a-4981-b778-f57d85ab8d5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4de0e2e0-efc9-4f58-4b4a-eb7cdd73d088" executionId="4fb5a9e8-982d-44b5-86a1-fd27e7add59d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f0b35de6-f22b-af61-241e-45246f7a1571" executionId="0a335df9-709f-4f33-8dd5-ade06ba6eb52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="132da8e3-2f60-ca59-297e-e530c0dd1506" executionId="86bc6f80-237a-412c-9024-49ace8246f6b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="028a4656-e1be-cadb-8e90-a13e8cc95193" executionId="c54cc382-9abd-47c2-b62f-f3c083b6643e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0b44faa8-f624-85f7-5770-99a4b36697a2" executionId="552c043b-4809-49cf-a710-09fb8e24a431" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="82a3a4e1-154d-4cdf-f0c4-04e83f222ce0" executionId="26ddc0ef-7813-4f6e-9a2c-46a273c194f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a87b94ac-abf6-f420-209a-1e2306aa3457" executionId="0191a68f-eb7b-465b-970b-3e6b35654f0a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b7c5177-2d1e-2b7f-7f59-0c30522a2f11" executionId="21ee4f35-72db-4994-81d2-9242ab34088b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2da7add9-942c-11b7-4bbe-0ff5485b1937" executionId="c5414eca-9f12-4a26-b59a-af79232b66a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7379c40c-43d9-c560-09bd-79234589268b" executionId="265c4014-8bef-48c8-b9ac-18743b7ffe7c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="559a98b5-4f68-632d-c8bb-00b20a34b2c3" executionId="77b0b751-c492-47a0-8bbc-c58e02e6138b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f172acb9-6d35-ab9a-fecb-e5ef85489749" executionId="350c5734-ef7b-425c-a10f-3e881be2c4c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a48b99ed-4d6a-9137-44cd-fd8b91f0be5c" executionId="5c9ef8f8-ee9b-4d60-9c73-75d93ba16e1b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34e260a8-020c-5905-53e9-7f41a053c5fa" executionId="9dd3aba1-8db1-4b27-9e98-3ef7c8d34187" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ab8a0587-5f77-b359-5aa2-f566b765376d" executionId="ddfa8289-1043-48ac-9bbe-1c5321859301" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c7a761df-75ad-1cf0-c8cb-be99a935b0a8" executionId="81132562-61e6-4dce-a576-28f13b9436bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7c4b8d56-d81e-09bc-cfe8-59503ac9dd20" executionId="d7cc369b-da25-4f7c-a598-958711cf817a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="134f2a79-14df-93a5-c1ff-e97090d58cca" executionId="b26417c1-94b8-41f5-a7d3-6f51d61a51d7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dedb38ed-46f1-d8f6-a3af-f989cee0243e" executionId="81461dba-c532-476b-ad0c-d31bc4eb8cb5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c1f5079b-25fe-2737-2912-0d6511e8573e" executionId="700261e6-fed8-4247-ab45-8a82b4ae52b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bed014c3-2f5b-6952-4623-f7eeecc6993d" executionId="e5ab37df-790b-43ef-a6e1-a4994da66e93" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5b024231-fe40-8455-27b0-bad39642b08f" executionId="0bf31922-c913-4468-9ac5-9093013b9bf9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="957a7f58-017b-a6f3-a1f3-96b4d7a51193" executionId="7fd24408-1d05-4610-b50e-e19ec180bf79" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db383e48-6ed8-e30d-b220-787f648f36dd" executionId="12af45a8-8e60-4d85-abe0-63695014f3b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="32" executed="32" passed="32" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Metrics.Tests\bin\Debug\net10.0\DiceWarrior.Metrics.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 32 of 32 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

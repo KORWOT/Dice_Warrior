@@ -1,0 +1,446 @@
+{
+  "utc": "2026-10-23T03:39:07.5681964Z",
+  "head": "859ac227e809db7263f7670d34539f7ff1bab8c9",
+  "branch": "main",
+  "staged": [],
+  "userFiles": [
+    {
+      "path": "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset",
+      "before": "0688B5CE5A24B3CA38DC86A2CE04A7128CA44A2629F150D02ECA4642E2908337",
+      "after": "F90130ACB1AA3FC32DED8389189F0E6A96C79243F3ED3F14C4AB2B8EAABA1079",
+      "unchanged": false
+    },
+    {
+      "path": "Assets/Settings/Mobile_RPAsset.asset",
+      "before": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A",
+      "after": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset",
+      "before": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1",
+      "after": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_God_Adventurer_Growth_Direction_GDD_v0.2.md",
+      "before": "8D3783A9659B5A0918740CEA199FBF8EB728CC1A9ABE133FBCFC05203FB98C8F",
+      "after": "8D3783A9659B5A0918740CEA199FBF8EB728CC1A9ABE133FBCFC05203FB98C8F",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Next_Phase_06_Validation_Balance_God_Power_Plan_v0.1.md",
+      "before": "85880E70B6C2803FCC416A2C6CEEEA502B0847EEC5A95E6FE5A20ACB996A6A48",
+      "after": "85880E70B6C2803FCC416A2C6CEEEA502B0847EEC5A95E6FE5A20ACB996A6A48",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Shared_World_AI_Competition_Migration_Plan_v0.1.md",
+      "before": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC",
+      "after": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md",
+      "before": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C",
+      "after": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C",
+      "unchanged": true
+    },
+    {
+      "path": "Docs/Dice_Warrior_Tag_Stat_Element_Integration_Design_v0.1.md",
+      "before": "DA979770680EFC22FA58D3AC1BB52066BE53257F2CD432B7591A79AE424810A7",
+      "after": "DA979770680EFC22FA58D3AC1BB52066BE53257F2CD432B7591A79AE424810A7",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json",
+      "before": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698",
+      "after": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json",
+      "before": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44",
+      "after": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44",
+      "unchanged": true
+    },
+    {
+      "path": "ProjectSettings/ProjectSettings.asset",
+      "before": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667",
+      "after": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667",
+      "unchanged": true
+    }
+  ],
+  "protectedFiles": [
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json",
+      "before": "7DBBA3759E294E0EC4EE86E8404894B54A9096D320F789B819F4AEB60C775DE5",
+      "after": "7DBBA3759E294E0EC4EE86E8404894B54A9096D320F789B819F4AEB60C775DE5",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json.meta",
+      "before": "F8B285B24FE59BF3207905548557174D03B5FC9D70C9EB0C394B8159FBBCC4B1",
+      "after": "F8B285B24FE59BF3207905548557174D03B5FC9D70C9EB0C394B8159FBBCC4B1",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-3.json",
+      "before": "76EEF30243FC9F091BC9C189175B1C5AAAF462D3BA6614321F4A443A7CD0F6D5",
+      "after": "76EEF30243FC9F091BC9C189175B1C5AAAF462D3BA6614321F4A443A7CD0F6D5",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-3.json.meta",
+      "before": "C7E12F77A8FA3369590EB1C64E8FB7262B3BD25F63D39E4A050970308774B9DD",
+      "after": "C7E12F77A8FA3369590EB1C64E8FB7262B3BD25F63D39E4A050970308774B9DD",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json",
+      "before": "06DF1643383740F8D60551952CC36FAA1D5A0E130FDA7FB3A85D5632E11E26BA",
+      "after": "06DF1643383740F8D60551952CC36FAA1D5A0E130FDA7FB3A85D5632E11E26BA",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json.meta",
+      "before": "790CA8919971D3A6EC11E70E83E2A14196BAA11580341F17E57F281744369B08",
+      "after": "790CA8919971D3A6EC11E70E83E2A14196BAA11580341F17E57F281744369B08",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs",
+      "before": "A8A24C39D5BD3B613A4C4A02C446799E80F1B3F5FE08BE9597B41DFDF10C38DE",
+      "after": "A8A24C39D5BD3B613A4C4A02C446799E80F1B3F5FE08BE9597B41DFDF10C38DE",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs.meta",
+      "before": "0C0EFC1B8160B8FAF16F4C734F688BABD54CCFBCAB613B366CEFDB2D2346A391",
+      "after": "0C0EFC1B8160B8FAF16F4C734F688BABD54CCFBCAB613B366CEFDB2D2346A391",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAttributes.cs",
+      "before": "C0547F14A5212259E691524D69556F7963259A7276E96037827D5F7F02ECCA99",
+      "after": "C0547F14A5212259E691524D69556F7963259A7276E96037827D5F7F02ECCA99",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAttributes.cs.meta",
+      "before": "151298681AD6244B40F01932595C29A9A4BC72A9D6B37235D81E8597C031CA71",
+      "after": "151298681AD6244B40F01932595C29A9A4BC72A9D6B37235D81E8597C031CA71",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs",
+      "before": "77D0E6AC8B0C8F487ED9933C52A99B0B3C6CF44E4CBF5EBDC50B589171D7F6E9",
+      "after": "77D0E6AC8B0C8F487ED9933C52A99B0B3C6CF44E4CBF5EBDC50B589171D7F6E9",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCombat.cs.meta",
+      "before": "5A0C868425E3A3436C39FFF8DA2F3278BAE6D56CB9FD9EB6BC2791704DB65FB8",
+      "after": "5A0C868425E3A3436C39FFF8DA2F3278BAE6D56CB9FD9EB6BC2791704DB65FB8",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs",
+      "before": "3C0F4BD56F2D1287D908E341D5AB25E075027987CAF82B867C688992AE10B4D4",
+      "after": "3C0F4BD56F2D1287D908E341D5AB25E075027987CAF82B867C688992AE10B4D4",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs.meta",
+      "before": "F3962DF5738431482960D2C585EAC2B272E47B913D2B40CB3C0E9E94BB02855C",
+      "after": "F3962DF5738431482960D2C585EAC2B272E47B913D2B40CB3C0E9E94BB02855C",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs",
+      "before": "1231A37640691B9C929414B20DD1EF11DE689846EA6267262B2BC0BF3437FBBE",
+      "after": "1231A37640691B9C929414B20DD1EF11DE689846EA6267262B2BC0BF3437FBBE",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs.meta",
+      "before": "1F654C49685D262B51F76E3C3EB62747E74E11567D42E0B158912F27EC43AE39",
+      "after": "1F654C49685D262B51F76E3C3EB62747E74E11567D42E0B158912F27EC43AE39",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionData.cs",
+      "before": "F812A53ABF6C7E9B4BD49A2FED85E4887C7A8940A48D0361C12ACBD7325D87C0",
+      "after": "F812A53ABF6C7E9B4BD49A2FED85E4887C7A8940A48D0361C12ACBD7325D87C0",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionData.cs.meta",
+      "before": "3224417EDAEBB370B22A920E1983364C646DFC6C4D79E8F74A0AFD4FFCE4F4B0",
+      "after": "3224417EDAEBB370B22A920E1983364C646DFC6C4D79E8F74A0AFD4FFCE4F4B0",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionElements.cs",
+      "before": "99EE6D13A1678CFE722EA84D140737B558C2B466108FC286340A74AE381DE20A",
+      "after": "99EE6D13A1678CFE722EA84D140737B558C2B466108FC286340A74AE381DE20A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionElements.cs.meta",
+      "before": "880EF10F7AFD3E870F00EE9CB9A6313387379F288EEAE2D91C0E73AD6BC9639A",
+      "after": "880EF10F7AFD3E870F00EE9CB9A6313387379F288EEAE2D91C0E73AD6BC9639A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs",
+      "before": "1F9F9C4FF93F39BA96FBA44615DCFECC02A05C3EBAAEC4072DB9BC01E2559159",
+      "after": "1F9F9C4FF93F39BA96FBA44615DCFECC02A05C3EBAAEC4072DB9BC01E2559159",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs.meta",
+      "before": "710903975D55025233051BFCE0311EC7619A5B120DB385E4EE9AC54621EAEF40",
+      "after": "710903975D55025233051BFCE0311EC7619A5B120DB385E4EE9AC54621EAEF40",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionModifiers.cs",
+      "before": "1F0CFD0B28AC6F127B9C38CFBEE8833D26DEFAC852C74C35D107BFFA76ACF6E6",
+      "after": "1F0CFD0B28AC6F127B9C38CFBEE8833D26DEFAC852C74C35D107BFFA76ACF6E6",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionModifiers.cs.meta",
+      "before": "27E94C8151EED0DBB5A482710356B4FD8152D04CB8442C5AAF273CA13F9EE1F1",
+      "after": "27E94C8151EED0DBB5A482710356B4FD8152D04CB8442C5AAF273CA13F9EE1F1",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionRandom.cs",
+      "before": "33880C2F3B15B256AA705EE9F5B471F1F4E67DE5EEC61ADE29CD1F69D7A8E4E0",
+      "after": "33880C2F3B15B256AA705EE9F5B471F1F4E67DE5EEC61ADE29CD1F69D7A8E4E0",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionRandom.cs.meta",
+      "before": "C35E8C38C31DAD1DA5DF72CD78E2B1AF22CC0E6A1241A0D458967BEBBB7856F4",
+      "after": "C35E8C38C31DAD1DA5DF72CD78E2B1AF22CC0E6A1241A0D458967BEBBB7856F4",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs",
+      "before": "7A4255EA551BC0C6C1772E51AAF105A438C3F4CE8B852AF1C052A31F0D7CDE71",
+      "after": "7A4255EA551BC0C6C1772E51AAF105A438C3F4CE8B852AF1C052A31F0D7CDE71",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs.meta",
+      "before": "7F1D78F4134B302B2850BCBCD48DABF55D4A23E9C3A2EDAFCA49F38109C8FA24",
+      "after": "7F1D78F4134B302B2850BCBCD48DABF55D4A23E9C3A2EDAFCA49F38109C8FA24",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionStats.cs",
+      "before": "4FFCD07FD486DC24F1218E3268D30BDD28735958A4DFD15ED82DC1730AA4971E",
+      "after": "4FFCD07FD486DC24F1218E3268D30BDD28735958A4DFD15ED82DC1730AA4971E",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionStats.cs.meta",
+      "before": "8F58F41B9766A7AC5FB2C349FF99D0CF23E00FFA381EA19F3282A3510F138913",
+      "after": "8F58F41B9766A7AC5FB2C349FF99D0CF23E00FFA381EA19F3282A3510F138913",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionTags.cs",
+      "before": "1FF1709FE778FB7D09226014197142E7A3FD394E72B3A3B7C35C50A6A2757FF6",
+      "after": "1FF1709FE778FB7D09226014197142E7A3FD394E72B3A3B7C35C50A6A2757FF6",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionTags.cs.meta",
+      "before": "8A9119C0E044C2AFF906B179A11C54F08817EF8387DFB5270F57D850F4197F7E",
+      "after": "8A9119C0E044C2AFF906B179A11C54F08817EF8387DFB5270F57D850F4197F7E",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Content.cs",
+      "before": "F9F5585432A84C52BB4278EC9AB2D691F8193153EFAF75EB755BDEECC66D1121",
+      "after": "F9F5585432A84C52BB4278EC9AB2D691F8193153EFAF75EB755BDEECC66D1121",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Content.cs.meta",
+      "before": "EFDB8C8E5B290BFB604219FB3D4CF2F07330CD2000EF5A1965EE40879F77BDCC",
+      "after": "EFDB8C8E5B290BFB604219FB3D4CF2F07330CD2000EF5A1965EE40879F77BDCC",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Data.cs",
+      "before": "D11F9B5FC9245B748082A4A1E82768774FCD67B0407155921E6677A58C8343BD",
+      "after": "D11F9B5FC9245B748082A4A1E82768774FCD67B0407155921E6677A58C8343BD",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Data.cs.meta",
+      "before": "6CDB6AA72886F0A8AF623288D49E14E2D04989515F45DF755664C0717C248D9A",
+      "after": "6CDB6AA72886F0A8AF623288D49E14E2D04989515F45DF755664C0717C248D9A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/SharedWorld.Core.asmdef",
+      "before": "1B47060BB4E4C9E9C6195AADC32ED0254D4BB37EC53215D376F7A05A70B91F75",
+      "after": "1B47060BB4E4C9E9C6195AADC32ED0254D4BB37EC53215D376F7A05A70B91F75",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Domain/SharedWorld.Core.asmdef.meta",
+      "before": "5F181E61F221190360A4D13A5D9C970670D89892607155DF6A1F204E0B593A88",
+      "after": "5F181E61F221190360A4D13A5D9C970670D89892607155DF6A1F204E0B593A88",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+      "before": "A03E8F46F2240C9207FC33479E612491566C741513E52F5F7FB92312D3646232",
+      "after": "A03E8F46F2240C9207FC33479E612491566C741513E52F5F7FB92312D3646232",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/BackendContracts.cs",
+      "before": "8030B2B146F9528CFE761FE78B0F0100BCE44BA54211EEA0DB5A9F123B9C677A",
+      "after": "8030B2B146F9528CFE761FE78B0F0100BCE44BA54211EEA0DB5A9F123B9C677A",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/BackendContracts.cs.meta",
+      "before": "C6F9706631CDA969E9F5119CF275D46918E62D3CE9570004DF73570257447D89",
+      "after": "C6F9706631CDA969E9F5119CF275D46918E62D3CE9570004DF73570257447D89",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopData.cs",
+      "before": "A1B6C9C2B7EDF43CE13637D203FA12C4AD01E809822E361F829DDF14574FED2D",
+      "after": "A1B6C9C2B7EDF43CE13637D203FA12C4AD01E809822E361F829DDF14574FED2D",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopData.cs.meta",
+      "before": "8AFF902B9B7C1AC7BA116D0F101CFA14CB490E02053BBBB2D9112ECFCD76A4CA",
+      "after": "8AFF902B9B7C1AC7BA116D0F101CFA14CB490E02053BBBB2D9112ECFCD76A4CA",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopJson.cs",
+      "before": "60A4859856ED873F4C3D06D8A6B9AED7A06383F60DC1DF6E88B79BA4E8025C0D",
+      "after": "60A4859856ED873F4C3D06D8A6B9AED7A06383F60DC1DF6E88B79BA4E8025C0D",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopJson.cs.meta",
+      "before": "DE85E4186C4565BA1BADF5CF54B92C2856DFCD5F1E44FCB3ABD6EB03B4E48BCD",
+      "after": "DE85E4186C4565BA1BADF5CF54B92C2856DFCD5F1E44FCB3ABD6EB03B4E48BCD",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopRules.cs",
+      "before": "402FDB2778E99CFBAEFD37AF2137879EFDB7B95845F0805D00FE42146D5AD538",
+      "after": "402FDB2778E99CFBAEFD37AF2137879EFDB7B95845F0805D00FE42146D5AD538",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/LoopRules.cs.meta",
+      "before": "D448F60E743F41828DB6A127D4A72A580C60BBB6EC081A9B33BB13E490086728",
+      "after": "D448F60E743F41828DB6A127D4A72A580C60BBB6EC081A9B33BB13E490086728",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/RunCommandRules.cs",
+      "before": "DBDFB4CFB58E2639971592747B64AFCEF246EC2231EB063BBC7CAF42BFE9BD85",
+      "after": "DBDFB4CFB58E2639971592747B64AFCEF246EC2231EB063BBC7CAF42BFE9BD85",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/RunCommandRules.cs.meta",
+      "before": "89775C91319B1BD12012186450DCBC228B659121991146975CBB91A4FD71D00D",
+      "after": "89775C91319B1BD12012186450DCBC228B659121991146975CBB91A4FD71D00D",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs",
+      "before": "8F3B908036CBFB23CE995A89C0853FA2DDFB789600577712292B0D2E58466C2F",
+      "after": "8F3B908036CBFB23CE995A89C0853FA2DDFB789600577712292B0D2E58466C2F",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/SymbolCombat.cs.meta",
+      "before": "93C85700C6CD16844A694D8D6FEFA20B87124B1C4E1BA2C274B64B334E65BFDF",
+      "after": "93C85700C6CD16844A694D8D6FEFA20B87124B1C4E1BA2C274B64B334E65BFDF",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/SymbolLoop.Core.asmdef",
+      "before": "B59B40BBB0D24794C80FA67C98C0D7FC86289C57B52BE6947C089DE2CAC77A2F",
+      "after": "B59B40BBB0D24794C80FA67C98C0D7FC86289C57B52BE6947C089DE2CAC77A2F",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Features/SymbolLoop/Domain/SymbolLoop.Core.asmdef.meta",
+      "before": "8FA764FFC8B733D777E6557CCCFBE2EC95C2CDA5DF1EDFC5EE788192EA8453B3",
+      "after": "8FA764FFC8B733D777E6557CCCFBE2EC95C2CDA5DF1EDFC5EE788192EA8453B3",
+      "unchanged": true
+    },
+    {
+      "path": "Assets/_Project/Scenes/Title.unity",
+      "before": "BE0C4ADDA9EAC3F311F5ABD9AF4AB83E3C446336F6744F0D147419FDA43DEF87",
+      "after": "BE0C4ADDA9EAC3F311F5ABD9AF4AB83E3C446336F6744F0D147419FDA43DEF87",
+      "unchanged": true
+    },
+    {
+      "path": "Packages/manifest.json",
+      "before": "B40ED5EB37EF235F89855FA6012B8AEC04507A8AEC966DF0857FA83B70EE09F7",
+      "after": "B40ED5EB37EF235F89855FA6012B8AEC04507A8AEC966DF0857FA83B70EE09F7",
+      "unchanged": true
+    },
+    {
+      "path": "Packages/packages-lock.json",
+      "before": "AFF027C148EA1597437AF85287AEFFA56308B41B32A9893893DD8663FDD4615D",
+      "after": "AFF027C148EA1597437AF85287AEFFA56308B41B32A9893893DD8663FDD4615D",
+      "unchanged": true
+    },
+    {
+      "path": "Server/DiceWarrior.MockServer/Content/symbol-loop-mvp-1.json",
+      "before": "9D70A890E52126E5AB67C3DB6C32F7A79575D14373143C2FD544936F83D1E6B8",
+      "after": "9D70A890E52126E5AB67C3DB6C32F7A79575D14373143C2FD544936F83D1E6B8",
+      "unchanged": true
+    }
+  ],
+  "changedCode": [
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV4StoreTests.cs",
+      "sha256": "B3676648ADC2A5C293B5E0067F3C13F0C819FE8B4D949481722E3AB5FFF8E881",
+      "codeMap": true,
+      "meta": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs",
+      "sha256": "6156416801D0290F15CE5C987A761C40132DDE7C242022F348D8DFC6D00294B9",
+      "codeMap": true,
+      "meta": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFixture.cs",
+      "sha256": "B57F110498A6C82B8DBB205B68970543CF6B7E8D031763A6DB179D942F62E8CD",
+      "codeMap": true,
+      "meta": true
+    },
+    {
+      "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFlowTests.cs",
+      "sha256": "F089272C042D1E66BFB93189EEF2A16C52184D77D98FCCE1A91085888AF6F45E",
+      "codeMap": true,
+      "meta": true
+    }
+  ],
+  "unitySourceCount": 65,
+  "serverSourceCount": 28
+}

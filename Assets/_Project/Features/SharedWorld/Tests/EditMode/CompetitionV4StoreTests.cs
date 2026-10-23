@@ -72,6 +72,35 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(LoopJson.Encode(session.Snapshot), Is.EqualTo(committed)); Assert.That(session.Snapshot.commands.Count, Is.EqualTo(1));
         }
 
+        [Test] public void ChecksumMismatchAndDamagedBackupNeverReplacePublishedOrStoredProgress()
+        {
+            var store = new CompetitionStore(Checkpoint); var session = new CompetitionSession(store, CompetitionV4Tests.Definition());
+            session.Start(new Profile(), 123, "corruption-v4"); session.Execute(session.Prepare("travel"));
+            byte[] original = File.ReadAllBytes(Checkpoint), backup = File.ReadAllBytes(Checkpoint + ".backup");
+            string published = LoopJson.Encode(session.Snapshot);
+            var envelope = Newtonsoft.Json.Linq.JObject.Parse(File.ReadAllText(Checkpoint));
+            string checksum = (string)envelope["checksum"];
+            envelope["checksum"] = (checksum[0] == 'A' ? "B" : "A") + checksum.Substring(1);
+            File.WriteAllText(Checkpoint, envelope.ToString(Newtonsoft.Json.Formatting.None));
+            byte[] mismatched = File.ReadAllBytes(Checkpoint);
+            Assert.Throws<IOException>(() => session.Reload(), "Valid JSON with a wrong checksum must not be published.");
+            Assert.That(LoopJson.Encode(session.Snapshot), Is.EqualTo(published));
+            Assert.That(File.ReadAllBytes(Checkpoint), Is.EqualTo(mismatched));
+            Assert.That(File.ReadAllBytes(Checkpoint + ".backup"), Is.EqualTo(backup));
+
+            // Restore only this fixture's primary, then damage its backup before any recovery write.
+            File.WriteAllBytes(Checkpoint, original);
+            File.WriteAllText(Checkpoint + ".backup", "damaged-backup-fixture");
+            byte[] damagedBackup = File.ReadAllBytes(Checkpoint + ".backup");
+            Assert.Throws<IOException>(() => session.InspectBackup());
+            Assert.Throws<IOException>(() => session.RestoreBackup(), "An unreadable backup cannot advance the generation or replace the primary.");
+            Assert.That(LoopJson.Encode(session.Snapshot), Is.EqualTo(published));
+            Assert.That(File.ReadAllBytes(Checkpoint), Is.EqualTo(original));
+            Assert.That(File.ReadAllBytes(Checkpoint + ".backup"), Is.EqualTo(damagedBackup));
+            Assert.That(File.Exists(Checkpoint + ".generation"), Is.False);
+            Assert.That(Directory.GetFiles(directory, "*.damaged-*"), Is.Empty);
+        }
+
         [Test] public void CommandCapacityStopsBeforeAnyV4ActionOrWrite()
         {
             var store = new CompetitionStore(Checkpoint); var session = new CompetitionSession(store, CompetitionV4Tests.Definition());

@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "var settings=new DiceWarrior.SymbolLoop.HttpBackendSettings {endpoint=\"http://127.0.0.1:62008\",userId=\"q1-56135bf66cf1_b8bcc2180ea0\"}; using(var backend=new DiceWarrior.SymbolLoop.HttpGameBackend(settings,true)) { var reply=backend.GetProfileAsync(System.Threading.CancellationToken.None).GetAwaiter().GetResult(); var file=settings.CheckpointPath(\"D:/UnityProject/Dice_Warrior/artifacts/next-phase-06/q1-56135bf66cf14452aa784a3d5c16f9e1/client/journey-b8bcc2180ea04ce988397e3556d29fd5\"); var rules=DiceWarrior.SharedWorld.CompetitionContent.Load(UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.TextAsset>(\"Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json\").text); try {var session=new DiceWarrior.SymbolLoop.LoopSession(new DiceWarrior.SymbolLoop.LoopStore(file),rules.combat); session.RestoreActiveRun(reply.run,reply.profile);return new {result=\"restored\",length=file.Length};} catch(System.Exception e){return new {result=e.GetType().Name,message=e.Message,length=file.Length};} }"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": {
+        "result": "DirectoryNotFoundException",
+        "message": "Could not find a part of the path \"D:\\UnityProject\\Dice_Warrior\\artifacts\\next-phase-06\\q1-56135bf66cf14452aa784a3d5c16f9e1\\client\\journey-b8bcc2180ea04ce988397e3556d29fd5\\symbol-loop-backend-v1\\http-mock\\7011cbb10aa378825bb2f02c7368d44fb8a1681557c45d909dea29e266cbe949\\checkpoint.json.1aa2477c17aa4bdfaa1051577af6c33f.tmp\"",
+        "length": 250
+      }
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

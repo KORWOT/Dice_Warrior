@@ -1,0 +1,33 @@
+param([ValidateSet('compile','compile-status','start-tests','test-status','context','clear-context','state')][string]$Action='state',[string]$Mode='editor',[string]$Filter='DiceWarrior',[string]$Name='check')
+$ErrorActionPreference='Stop'
+$project=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
+$cli='C:/Users/coli4/AppData/Local/Unity/bin/unity.exe'
+$output=Join-Path $PSScriptRoot ($Name+'.json')
+switch($Action) {
+    'compile' {$arguments=@('command','recompile')}
+    'compile-status' {$arguments=@('command','recompile_status')}
+    'start-tests' {
+        $arguments=@('command','run_tests','--mode',$Mode,'--filter',$Filter,'--filter_type','testName','--async_tests','true')
+        if($Filter.StartsWith('DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests.Q1_')) {$arguments+=@('--include_explicit','true')}
+    }
+    'test-status' {$arguments=@('command','test_status')}
+    'state' {$arguments=@('command','eval','return new { scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().path, dirty = UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty, playing = UnityEditor.EditorApplication.isPlaying, compiling = UnityEditor.EditorApplication.isCompiling };')}
+    'context' {
+        $server=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'q1-server.json') -Raw | ConvertFrom-Json
+        $url=$server.url; $root=$server.clientRoot.Replace('\','/'); $user=$server.user
+        $code='System.Environment.SetEnvironmentVariable("DICE_WARRIOR_Q1_URL","'+$url+'"); System.Environment.SetEnvironmentVariable("DICE_WARRIOR_Q1_ROOT","'+$root+'"); System.Environment.SetEnvironmentVariable("DICE_WARRIOR_Q1_USER","'+$user+'"); return "Q1 isolated context set";'
+        $arguments=@('command','eval',$code)
+    }
+    'clear-context' {$arguments=@('command','eval','System.Environment.SetEnvironmentVariable("DICE_WARRIOR_Q1_URL",null); System.Environment.SetEnvironmentVariable("DICE_WARRIOR_Q1_ROOT",null); System.Environment.SetEnvironmentVariable("DICE_WARRIOR_Q1_USER",null); return "Q1 isolated context cleared";')}
+}
+$raw=& $cli @arguments --project-path $project --format json
+$exit=$LASTEXITCODE
+$raw | Set-Content -LiteralPath $output -Encoding utf8
+if($exit -ne 0) {$raw; exit $exit}
+$envelope=$raw | ConvertFrom-Json
+$result=$envelope.data.result
+if($result -is [string]) {try {$result=$result|ConvertFrom-Json} catch {$result=[pscustomobject]@{message=$result}}}
+if($Action -eq 'test-status') {
+    $result | Select-Object status,summary,duration | ConvertTo-Json -Depth 4
+    @($result.results | Where-Object Status -ne 'Passed') | Select-Object FullName,Status,Message,StackTrace | ConvertTo-Json -Depth 3
+} else {$result | ConvertTo-Json -Depth 6}

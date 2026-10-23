@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ccabb3ad-a7f8-4ec2-92ab-2e86d66cad88" name="coli4@WOT 2026-10-23 11:31:09" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T11:31:09.3831942+09:00" queuing="2026-10-23T11:31:09.3831944+09:00" start="2026-10-23T11:31:07.4372813+09:00" finish="2026-10-23T11:31:11.9572199+09:00" />
+  <TestSettings name="default" id="cb558d50-ce66-43c1-aba8-e00582857b04">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-23_11_31_09" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6bc3c0ad-3240-4b19-bf20-1fc2ed12bfc5" testId="3f8806fe-13ca-7816-fd4b-b8b0582768a7" testName="SharedRulesMatchEveryFrozenUnityState(&quot;victory&quot;)" computerName="WOT" duration="00:00:00.1119120" startTime="2026-10-23T11:31:08.8036988+09:00" endTime="2026-10-23T11:31:08.9156105+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6bc3c0ad-3240-4b19-bf20-1fc2ed12bfc5" />
+    <UnitTestResult executionId="e8846238-6042-4cce-9365-3bc45a15db82" testId="712191e5-9a15-8805-5158-9f331450735b" testName="ABlockedReplayDoesNotHoldWriterLockAndRetriesAfterAnotherConnectionCommits" computerName="WOT" duration="00:00:00.2392780" startTime="2026-10-23T11:31:08.9723238+09:00" endTime="2026-10-23T11:31:09.2116019+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8846238-6042-4cce-9365-3bc45a15db82" />
+    <UnitTestResult executionId="ffbe626e-7b45-420c-aa3b-86a10543e5c9" testId="66b524d7-d155-a138-d954-852056bd5b15" testName="SharedRulesMatchEveryFrozenUnityState(&quot;shop-equipment-resume&quot;)" computerName="WOT" duration="00:00:00.0193410" startTime="2026-10-23T11:31:08.9514193+09:00" endTime="2026-10-23T11:31:08.9707601+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffbe626e-7b45-420c-aa3b-86a10543e5c9" />
+    <UnitTestResult executionId="b8ac22cf-2660-40c0-b067-8c9e386e0d38" testId="0df140a4-59fb-6be6-e94f-5223caaa020c" testName="FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart" computerName="WOT" duration="00:00:00.0690740" startTime="2026-10-23T11:31:09.2346667+09:00" endTime="2026-10-23T11:31:09.3037402+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8ac22cf-2660-40c0-b067-8c9e386e0d38" />
+    <UnitTestResult executionId="e8093473-9a99-4029-bc26-a7cd103a53dc" testId="c6981a6a-4505-7fdd-d88c-498010ec346b" testName="MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun" computerName="WOT" duration="00:00:00.0419300" startTime="2026-10-23T11:31:09.3037624+09:00" endTime="2026-10-23T11:31:09.3456923+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8093473-9a99-4029-bc26-a7cd103a53dc" />
+    <UnitTestResult executionId="fab24243-a49f-4693-8072-c2cc44a3becd" testId="312c0fd2-48c7-f44b-5082-c58f1aeced2f" testName="OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen" computerName="WOT" duration="00:00:02.3230410" startTime="2026-10-23T11:31:09.3457138+09:00" endTime="2026-10-23T11:31:11.6687540+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fab24243-a49f-4693-8072-c2cc44a3becd" />
+    <UnitTestResult executionId="7cf45be2-2ccd-4e1c-a4de-2e6ad2755818" testId="d569255d-908e-0e0b-48d9-21d96a4d9c89" testName="CancellationBeforeCommitLeavesOriginalBalanceAndCorruptDatabaseIsNotReset" computerName="WOT" duration="00:00:00.0230250" startTime="2026-10-23T11:31:09.2116222+09:00" endTime="2026-10-23T11:31:09.2346465+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7cf45be2-2ccd-4e1c-a4de-2e6ad2755818" />
+    <UnitTestResult executionId="385f0824-8f2d-47ba-a4da-ef3467bf8bd1" testId="2457c52e-62d9-20e4-b41c-0cca29fe4acc" testName="SeparateUsersCanReuseRequestIdsWithoutSharingProfileRunsOrReceipts" computerName="WOT" duration="00:00:00.0445660" startTime="2026-10-23T11:31:11.6687779+09:00" endTime="2026-10-23T11:31:11.7133435+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="385f0824-8f2d-47ba-a4da-ef3467bf8bd1" />
+    <UnitTestResult executionId="1c2069ee-5854-4ca2-a476-a073e2038ddc" testId="34ebb14d-13bb-4161-7736-3326bb886532" testName="TenPurchasesAtOneRevisionOnlySpendOnceAcrossConnections" computerName="WOT" duration="00:00:00.1759409" startTime="2026-10-23T11:31:11.7133705+09:00" endTime="2026-10-23T11:31:11.8893113+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1c2069ee-5854-4ca2-a476-a073e2038ddc" />
+    <UnitTestResult executionId="bfff5526-4af9-431d-a593-49e511bdaac9" testId="1453eed1-96d8-17d6-3488-cecd2d3c2fd9" testName="RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures" computerName="WOT" duration="00:00:00.0511750" startTime="2026-10-23T11:31:08.7514213+09:00" endTime="2026-10-23T11:31:08.8025447+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bfff5526-4af9-431d-a593-49e511bdaac9" />
+    <UnitTestResult executionId="f1fd43ca-ba40-4e0b-96af-b35c7ef520b3" testId="bb8725c7-4b5b-edd3-4dc5-8c40752dbf78" testName="SharedRulesMatchEveryFrozenUnityState(&quot;defeat&quot;)" computerName="WOT" duration="00:00:00.0224580" startTime="2026-10-23T11:31:08.9156372+09:00" endTime="2026-10-23T11:31:08.9380945+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1fd43ca-ba40-4e0b-96af-b35c7ef520b3" />
+    <UnitTestResult executionId="039e095c-f133-48ac-a21d-d70c2ab2e6b2" testId="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4" testName="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" computerName="WOT" duration="00:00:00.0245680" startTime="2026-10-23T11:31:11.8893368+09:00" endTime="2026-10-23T11:31:11.9139040+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="039e095c-f133-48ac-a21d-d70c2ab2e6b2" />
+    <UnitTestResult executionId="a554bfd9-90e6-4a90-bac9-9dab7612123d" testId="5eb4d9d7-504a-819a-1db9-61da7fd63e2e" testName="SharedRulesMatchEveryFrozenUnityState(&quot;abandon-after-region&quot;)" computerName="WOT" duration="00:00:00.0132730" startTime="2026-10-23T11:31:08.9381203+09:00" endTime="2026-10-23T11:31:08.9513925+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a554bfd9-90e6-4a90-bac9-9dab7612123d" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TenPurchasesAtOneRevisionOnlySpendOnceAcrossConnections" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="34ebb14d-13bb-4161-7736-3326bb886532">
+      <Execution id="1c2069ee-5854-4ca2-a476-a073e2038ddc" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="TenPurchasesAtOneRevisionOnlySpendOnceAcrossConnections" />
+    </UnitTest>
+    <UnitTest name="MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="c6981a6a-4505-7fdd-d88c-498010ec346b">
+      <Execution id="e8093473-9a99-4029-bc26-a7cd103a53dc" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="MalformedCommandLogIsRecordedAsRejectedWithoutPayingOrClosingRun" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;abandon-after-region&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="5eb4d9d7-504a-819a-1db9-61da7fd63e2e">
+      <Execution id="a554bfd9-90e6-4a90-bac9-9dab7612123d" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;abandon-after-region&quot;)" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;defeat&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="bb8725c7-4b5b-edd3-4dc5-8c40752dbf78">
+      <Execution id="f1fd43ca-ba40-4e0b-96af-b35c7ef520b3" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;defeat&quot;)" />
+    </UnitTest>
+    <UnitTest name="SeparateUsersCanReuseRequestIdsWithoutSharingProfileRunsOrReceipts" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="2457c52e-62d9-20e4-b41c-0cca29fe4acc">
+      <Execution id="385f0824-8f2d-47ba-a4da-ef3467bf8bd1" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="SeparateUsersCanReuseRequestIdsWithoutSharingProfileRunsOrReceipts" />
+    </UnitTest>
+    <UnitTest name="RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="1453eed1-96d8-17d6-3488-cecd2d3c2fd9">
+      <Execution id="bfff5526-4af9-431d-a593-49e511bdaac9" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="RequestFingerprintUsesSameFieldOrderNullsAndNumbersInDifferentCultures" />
+    </UnitTest>
+    <UnitTest name="ABlockedReplayDoesNotHoldWriterLockAndRetriesAfterAnotherConnectionCommits" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="712191e5-9a15-8805-5158-9f331450735b">
+      <Execution id="e8846238-6042-4cce-9365-3bc45a15db82" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="ABlockedReplayDoesNotHoldWriterLockAndRetriesAfterAnotherConnectionCommits" />
+    </UnitTest>
+    <UnitTest name="CancellationBeforeCommitLeavesOriginalBalanceAndCorruptDatabaseIsNotReset" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="d569255d-908e-0e0b-48d9-21d96a4d9c89">
+      <Execution id="7cf45be2-2ccd-4e1c-a4de-2e6ad2755818" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="CancellationBeforeCommitLeavesOriginalBalanceAndCorruptDatabaseIsNotReset" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;shop-equipment-resume&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="66b524d7-d155-a138-d954-852056bd5b15">
+      <Execution id="ffbe626e-7b45-420c-aa3b-86a10543e5c9" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;shop-equipment-resume&quot;)" />
+    </UnitTest>
+    <UnitTest name="SharedRulesMatchEveryFrozenUnityState(&quot;victory&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="3f8806fe-13ca-7816-fd4b-b8b0582768a7">
+      <Execution id="6bc3c0ad-3240-4b19-bf20-1fc2ed12bfc5" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.GoldenReplayTests" name="SharedRulesMatchEveryFrozenUnityState(&quot;victory&quot;)" />
+    </UnitTest>
+    <UnitTest name="OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="312c0fd2-48c7-f44b-5082-c58f1aeced2f">
+      <Execution id="fab24243-a49f-4693-8072-c2cc44a3becd" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="OneHundredNewSubmissionIdsOnlyPayTheVictoryOnceAndReceiptSurvivesReopen" />
+    </UnitTest>
+    <UnitTest name="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4">
+      <Execution id="039e095c-f133-48ac-a21d-d70c2ab2e6b2" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="UpgradeSurvivesRepositoryReopenWithoutGrantingInitialCurrencyAgain" />
+    </UnitTest>
+    <UnitTest name="FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart" storage="d:\unityproject\dice_warrior\server\dicewarrior.tests\bin\debug\net10.0\dicewarrior.tests.dll" id="0df140a4-59fb-6be6-e94f-5223caaa020c">
+      <Execution id="b8ac22cf-2660-40c0-b067-8c9e386e0d38" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.SymbolLoop.Tests.SqliteAuthorityTests" name="FailedReceiptInsertRollsBackProfileAndCanRetryOriginalRequestAfterRestart" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3f8806fe-13ca-7816-fd4b-b8b0582768a7" executionId="6bc3c0ad-3240-4b19-bf20-1fc2ed12bfc5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="712191e5-9a15-8805-5158-9f331450735b" executionId="e8846238-6042-4cce-9365-3bc45a15db82" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="66b524d7-d155-a138-d954-852056bd5b15" executionId="ffbe626e-7b45-420c-aa3b-86a10543e5c9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0df140a4-59fb-6be6-e94f-5223caaa020c" executionId="b8ac22cf-2660-40c0-b067-8c9e386e0d38" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6981a6a-4505-7fdd-d88c-498010ec346b" executionId="e8093473-9a99-4029-bc26-a7cd103a53dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="312c0fd2-48c7-f44b-5082-c58f1aeced2f" executionId="fab24243-a49f-4693-8072-c2cc44a3becd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d569255d-908e-0e0b-48d9-21d96a4d9c89" executionId="7cf45be2-2ccd-4e1c-a4de-2e6ad2755818" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2457c52e-62d9-20e4-b41c-0cca29fe4acc" executionId="385f0824-8f2d-47ba-a4da-ef3467bf8bd1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="34ebb14d-13bb-4161-7736-3326bb886532" executionId="1c2069ee-5854-4ca2-a476-a073e2038ddc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1453eed1-96d8-17d6-3488-cecd2d3c2fd9" executionId="bfff5526-4af9-431d-a593-49e511bdaac9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb8725c7-4b5b-edd3-4dc5-8c40752dbf78" executionId="f1fd43ca-ba40-4e0b-96af-b35c7ef520b3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="efc0b2e5-f3ec-94ac-cdad-5e8312fa03d4" executionId="039e095c-f133-48ac-a21d-d70c2ab2e6b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5eb4d9d7-504a-819a-1db9-61da7fd63e2e" executionId="a554bfd9-90e6-4a90-bac9-9dab7612123d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="13" executed="13" passed="13" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.Tests\bin\Debug\net10.0\DiceWarrior.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 13 of 13 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

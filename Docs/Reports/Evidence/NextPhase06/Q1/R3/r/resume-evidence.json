@@ -1,0 +1,32 @@
+{
+  "sameEndpointAndClientRoot": true,
+  "samePendingIdAndBody": true,
+  "appliedGrowth": 1,
+  "currency": 0,
+  "competitionAndPreferencesUnchanged": true,
+  "http": [
+    {
+      "route": "GET /v1/operations/2a3cb7016d354eacbfc1d17aabf5973b",
+      "requests": 1,
+      "transportErrors": 0,
+      "faults": [],
+      "bodyHashes": []
+    },
+    {
+      "route": "POST /v1/profile/upgrades",
+      "requests": 1,
+      "transportErrors": 0,
+      "faults": [],
+      "bodyHashes": [
+        "CB0AED52E897DE3AE2BEEE45AF83BDD61D299DE35886032E2747000CC10300FD"
+      ]
+    },
+    {
+      "route": "GET /v1/profile",
+      "requests": 1,
+      "transportErrors": 0,
+      "faults": [],
+      "bodyHashes": []
+    }
+  ]
+}

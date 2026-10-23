@@ -1,0 +1,14 @@
+[
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFixture.cs.meta",
+    "length": 32,
+    "valid": true,
+    "occurrences": 1
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFlowTests.cs.meta",
+    "length": 32,
+    "valid": true,
+    "occurrences": 1
+  }
+]

@@ -1,0 +1,297 @@
+{
+  "success": true,
+  "command": "command list_tests",
+  "data": {
+    "command": "list_tests",
+    "parameters": {
+      "mode": "playmode"
+    },
+    "result": {
+      "Mode": "PlayMode",
+      "Count": 30,
+      "Tests": [
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredCompetitionScreenHasFourDistinctPawnSlots",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredElementDetailsProvideSixReadableStatRows",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementApplicationResumesEachLegacyVersionUntilExplicitRestart",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExistingSoloPendingIsRetainedWithoutImplicitSubmission",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExitPreservesAdventureAndNewGameRequiresConfirmation",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.InterruptedMovementReopensSavedStateWithoutRepeatingAi",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.NewGameProfileFailureKeepsSavedAdventureAvailableToResume",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PendingGrowthReopensAndRetriesOnlyItsOriginalRequest",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PointerRoundShowsDiceSkillsAndAllFourParticipants",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Uncategorized"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests.Q1_HttpJourneyPreservesFrozenMatchAndPaysNothing",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Q1Http"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests.Q1_LegacyActiveRunBlocksGrowthWithoutSubmitting",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Q1Http"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests.Q1_PrepareLostGrowthResponseForServerRestart",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Q1Http"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests.Q1_ProfileFaultsPreserveCheckpointAndRetry",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Q1Http"
+          ],
+          "Explicit": false
+        },
+        {
+          "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests.Q1_ResumeLostGrowthResponseAfterServerRestart",
+          "Mode": "PlayMode",
+          "Assembly": "SharedWorld.PlayMode.Tests",
+          "Categories": [
+            "Q1Http"
+          ],
+          "Explicit": false
+        }
+      ],
+      "success": true,
+      "result": null,
+      "message": "Found 30 test(s)."
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

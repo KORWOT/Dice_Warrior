@@ -1,0 +1,499 @@
+{
+  "schemaVersion": 1,
+  "generatedUtc": "2026-10-23T12:34:05.9307305+09:00",
+  "measurementScope": "retained local journals; process gauges are current host only",
+  "privacy": "local HMAC pseudonyms; no raw identity or request payload",
+  "byteScope": "HTTP entity bytes read/written; excludes headers, compression, TLS and confirmed delivery",
+  "storage": {
+    "persistenceAvailable": true,
+    "truncated": false,
+    "droppedRecords": 0,
+    "invalidRecords": 0,
+    "retentionDays": 7,
+    "maxRecords": 10000,
+    "maxJournalFiles": 16,
+    "maxJournalBytes": 4194304,
+    "authorityDatabaseBytes": 40960,
+    "metricsBytes": 5210
+  },
+  "process": {
+    "activeRequests": 0,
+    "peakRequests": 1,
+    "completedRequests": 7,
+    "processCpuMilliseconds": 1250.0,
+    "processMemoryBytes": 84082688,
+    "cpuScope": "process CPU since collector start; not isolated replay CPU"
+  },
+  "overview": {
+    "key": "overall",
+    "requests": 7,
+    "failures": 0,
+    "duplicates": 0,
+    "requestBytes": 0,
+    "responseBytes": 2184,
+    "commandCount": 0,
+    "logBytes": 0,
+    "activeUsers": 1,
+    "averageMs": 13.471185714285713,
+    "p50Ms": 5.1006,
+    "p95Ms": 63.6138,
+    "p99Ms": 63.6138,
+    "maxMs": 63.6138,
+    "diagnostics": {
+      "sql-rows": {
+        "count": 16,
+        "milliseconds": 0.0
+      },
+      "sql-other": {
+        "count": 29,
+        "milliseconds": 24.121799999999997
+      },
+      "transaction-begin": {
+        "count": 14,
+        "milliseconds": 3.3092999999999995
+      },
+      "sql-select": {
+        "count": 22,
+        "milliseconds": 0.8494
+      },
+      "sql-insert": {
+        "count": 7,
+        "milliseconds": 1.4895
+      },
+      "transaction-commit": {
+        "count": 14,
+        "milliseconds": 2.6903000000000006
+      }
+    }
+  },
+  "byDay": [
+    {
+      "key": "2026-10-23",
+      "requests": 7,
+      "failures": 0,
+      "duplicates": 0,
+      "requestBytes": 0,
+      "responseBytes": 2184,
+      "commandCount": 0,
+      "logBytes": 0,
+      "activeUsers": 1,
+      "averageMs": 13.471185714285713,
+      "p50Ms": 5.1006,
+      "p95Ms": 63.6138,
+      "p99Ms": 63.6138,
+      "maxMs": 63.6138,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 16,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 29,
+          "milliseconds": 24.121799999999997
+        },
+        "transaction-begin": {
+          "count": 14,
+          "milliseconds": 3.3092999999999995
+        },
+        "sql-select": {
+          "count": 22,
+          "milliseconds": 0.8494
+        },
+        "sql-insert": {
+          "count": 7,
+          "milliseconds": 1.4895
+        },
+        "transaction-commit": {
+          "count": 14,
+          "milliseconds": 2.6903000000000006
+        }
+      },
+      "estimatedFirestore": {
+        "reads": 7,
+        "writes": 0,
+        "deletes": 0,
+        "unsupported": 0,
+        "estimatedDocumentOperationsUsd": 2.66E-06,
+        "knownDocumentOperationsSubtotalUsd": 2.66E-06,
+        "costScope": "hypothetical document operations only; excludes storage, egress, Cloud Run, free quotas and tax"
+      }
+    }
+  ],
+  "byEndpoint": [
+    {
+      "key": "profile",
+      "requests": 7,
+      "failures": 0,
+      "duplicates": 0,
+      "requestBytes": 0,
+      "responseBytes": 2184,
+      "commandCount": 0,
+      "logBytes": 0,
+      "activeUsers": 1,
+      "averageMs": 13.471185714285713,
+      "p50Ms": 5.1006,
+      "p95Ms": 63.6138,
+      "p99Ms": 63.6138,
+      "maxMs": 63.6138,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 16,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 29,
+          "milliseconds": 24.121799999999997
+        },
+        "transaction-begin": {
+          "count": 14,
+          "milliseconds": 3.3092999999999995
+        },
+        "sql-select": {
+          "count": 22,
+          "milliseconds": 0.8494
+        },
+        "sql-insert": {
+          "count": 7,
+          "milliseconds": 1.4895
+        },
+        "transaction-commit": {
+          "count": 14,
+          "milliseconds": 2.6903000000000006
+        }
+      },
+      "estimatedFirestore": {
+        "reads": 7,
+        "writes": 0,
+        "deletes": 0,
+        "unsupported": 0,
+        "estimatedDocumentOperationsUsd": 2.66E-06,
+        "knownDocumentOperationsSubtotalUsd": 2.66E-06,
+        "costScope": "hypothetical document operations only; excludes storage, egress, Cloud Run, free quotas and tax"
+      }
+    }
+  ],
+  "byRun": [],
+  "estimatedFirestore": {
+    "isActualFirestoreUsage": false,
+    "modelVersion": "firestore-logical-plan-1",
+    "reads": 7,
+    "writes": 0,
+    "deletes": 0,
+    "indexEntryReads": 0,
+    "queryMinimumReads": 0,
+    "transactionAttempts": 0,
+    "storageBytes": 0,
+    "egressBytes": 2184,
+    "unsupported": 0,
+    "assumptions": [
+      "Hypothetical document plan, not Firebase usage. SQL statements and SQLite CAS retries do not become document reads.",
+      "Direct document keys; no queries, listeners, index-entry scans or Security Rules dependent reads. Profile already provisioned.",
+      "storageBytes estimates newly retained payload bytes, excluding indexes; egressBytes is observed HTTP body output, not billed network bytes.",
+      "Profile/operation: one document lookup. Run: run plus optional receipt lookup. Missing documents still cost reads."
+    ]
+  },
+  "sample": [
+    {
+      "id": "674b9786a4774e9aa1681152d6604f23",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:33:58.1108358+09:00",
+      "durationMs": 63.6138,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 4,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 5,
+          "milliseconds": 11.7671
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 3.0526999999999997
+        },
+        "sql-select": {
+          "count": 4,
+          "milliseconds": 0.2944
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 1.2375
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 2.5515000000000003
+        }
+      }
+    },
+    {
+      "id": "2bd9a1e92c41484dad774f84b05bd5cc",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:33:58.2244133+09:00",
+      "durationMs": 4.9096,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 2,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 4,
+          "milliseconds": 2.033
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 0.0416
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 0.0484
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 0.021
+        },
+        "sql-select": {
+          "count": 3,
+          "milliseconds": 0.072
+        }
+      }
+    },
+    {
+      "id": "4f659040adba456ca99a36196f02b687",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:33:58.3313235+09:00",
+      "durationMs": 4.7911,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 2,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 4,
+          "milliseconds": 1.9895
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 0.032299999999999995
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 0.0259
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 0.015
+        },
+        "sql-select": {
+          "count": 3,
+          "milliseconds": 0.093400000000000011
+        }
+      }
+    },
+    {
+      "id": "6816274cd6a34726948f6cf770e23e0c",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:33:58.4871913+09:00",
+      "durationMs": 5.0898,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 2,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 4,
+          "milliseconds": 2.0082000000000004
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 0.0368
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 0.0358
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 0.0182
+        },
+        "sql-select": {
+          "count": 3,
+          "milliseconds": 0.088500000000000009
+        }
+      }
+    },
+    {
+      "id": "4857687da78046329d693685c04aae34",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:33:58.6440537+09:00",
+      "durationMs": 5.1006,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 2,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 4,
+          "milliseconds": 2.1010999999999997
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 0.0427
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 0.0385
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 0.022699999999999998
+        },
+        "sql-select": {
+          "count": 3,
+          "milliseconds": 0.101
+        }
+      }
+    },
+    {
+      "id": "ab52ea6885794a988a70bb4533753e7b",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:34:00.2165844+09:00",
+      "durationMs": 5.3045,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 2,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 4,
+          "milliseconds": 1.9161
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 0.057
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 0.055
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 0.0235
+        },
+        "sql-select": {
+          "count": 3,
+          "milliseconds": 0.092500000000000013
+        }
+      }
+    },
+    {
+      "id": "4f5d3b93b5f8407093ebd6dede0d4800",
+      "endpoint": "profile",
+      "startedUtc": "2026-10-23T12:34:05.9192794+09:00",
+      "durationMs": 5.4889,
+      "requestBytes": 0,
+      "responseBytes": 312,
+      "logBytes": 0,
+      "statusCode": 200,
+      "commandCount": 0,
+      "outcome": "approved",
+      "authorityOutcome": "approved",
+      "domainCode": "PROFILE",
+      "responseComplete": true,
+      "userKey": "800e2375de339bbe730442d05752d82deab7be3a02282bb7e653f61fe7bdeb4d",
+      "runKey": null,
+      "diagnostics": {
+        "sql-rows": {
+          "count": 2,
+          "milliseconds": 0.0
+        },
+        "sql-other": {
+          "count": 4,
+          "milliseconds": 2.3068
+        },
+        "transaction-begin": {
+          "count": 2,
+          "milliseconds": 0.046200000000000005
+        },
+        "sql-insert": {
+          "count": 1,
+          "milliseconds": 0.0484
+        },
+        "transaction-commit": {
+          "count": 2,
+          "milliseconds": 0.038400000000000004
+        },
+        "sql-select": {
+          "count": 3,
+          "milliseconds": 0.10760000000000002
+        }
+      }
+    }
+  ],
+  "sampleLimited": false
+}

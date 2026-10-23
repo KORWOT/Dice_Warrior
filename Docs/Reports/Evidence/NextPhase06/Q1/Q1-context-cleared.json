@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "command": "command eval",
+  "data": {
+    "command": "eval",
+    "parameters": {
+      "code": "System.Environment.SetEnvironmentVariable(\"DICE_WARRIOR_Q1_URL\",null); System.Environment.SetEnvironmentVariable(\"DICE_WARRIOR_Q1_ROOT\",null); System.Environment.SetEnvironmentVariable(\"DICE_WARRIOR_Q1_USER\",null); return \"Q1 isolated context cleared\";"
+    },
+    "result": {
+      "output": null,
+      "diagnostics": [],
+      "success": true,
+      "result": "Q1 isolated context cleared"
+    },
+    "target": {
+      "host": "127.0.0.1",
+      "port": 7801,
+      "projectPath": "D:\\UnityProject\\Dice_Warrior"
+    },
+    "success": true
+  },
+  "errors": [],
+  "warnings": []
+}

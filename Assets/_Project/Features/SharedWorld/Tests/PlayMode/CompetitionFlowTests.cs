@@ -243,6 +243,37 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(app.Session.Snapshot.state.definition.rulesVersion,Is.EqualTo("shared-world-preview-4"));
             Assert.That(File.ReadAllText(Directory.GetFiles(directory,"checkpoint.json.restarted-*").Single()),Does.Contain("shared-world-preview-3"));
         }
+        [UnityTest] public IEnumerator ElementApplicationResumesEachLegacyVersionUntilExplicitRestart()
+        {
+            foreach(string version in new[]{"shared-world-preview-1","shared-world-preview-2"})
+            {
+                app.Close();path=Path.Combine(directory,version,"checkpoint.json");
+                var old=CompetitionContent.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-1.json").text);
+                old.rulesVersion=version;app.Open(path,old,new Profile {growth=2},()=>33);yield return null;
+                Click("새 게임");yield return WaitPlayback();Click("이동 주사위");yield return WaitPlayback();
+                string saved=LoopJson.Encode(app.Session.Snapshot),matchId=app.Session.Snapshot.state.matchId;
+                byte[] raw=File.ReadAllBytes(path);
+                app.Close();UseElements();yield return null;Click("경기 이어하기");yield return null;
+                Assert.That(app.Session.Snapshot.state.definition.rulesVersion,Is.EqualTo(version));
+                Click("능력치 상세");yield return null;
+                Assert.That(Screen.statRows.activeInHierarchy,Is.False);Assert.That(Screen.attributeRows.activeInHierarchy,Is.False);
+                Assert.That(VisibleText(),Does.Contain("기존 규칙 경기").And.Contain("HP 70/70").And.Contain("위력 5 · 수호 4"));
+                AssertGrowthLayout();Click("주사위·스킬");yield return null;
+                Assert.That(VisibleText(),Does.Contain("기존 위력/수호 규칙"));
+                Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(File.ReadAllBytes(path),Is.EqualTo(raw));
+                Click("돌아가기");yield return null;Click("모험 종료");yield return null;Click("새 게임");yield return null;
+                Assert.That(Screen.detail.text,Does.Contain("초기화"));Click("취소");yield return null;
+                Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(File.ReadAllBytes(path),Is.EqualTo(raw));
+                Assert.That(Directory.GetFiles(Path.GetDirectoryName(path),"checkpoint.json.restarted-*"),Is.Empty);
+                Click("새 게임");yield return null;Click("새 게임 시작 확정");yield return WaitPlayback();
+                var replacement=app.Session.Snapshot;
+                Assert.That(replacement.state.definition.rulesVersion,Is.EqualTo("shared-world-preview-4"));
+                Assert.That(replacement.state.matchId,Is.Not.EqualTo(matchId));Assert.That(replacement.commands,Is.Empty);
+                Assert.That(new[]{replacement.state.participants[0].maxHp,replacement.state.participants[0].power,replacement.state.participants[0].guard},Is.EqualTo(new[]{70,7,5}));
+                Assert.That(File.ReadAllBytes(Directory.GetFiles(Path.GetDirectoryName(path),"checkpoint.json.restarted-*").Single()),Is.EqualTo(raw));
+                Assert.That(File.ReadAllBytes(path+".backup"),Is.EqualTo(raw));
+            }
+        }
         [UnityTest] public IEnumerator ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch()
         {
             UseElements();yield return null;Click("새 게임");yield return WaitPlayback();
@@ -257,23 +288,35 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(Screen.attributeBody.text,Does.Contain("기본 30 + 체질 42").And.Contain("기존 계정 10 = 82"));
             Assert.That(Screen.attributeValues.Select(t=>(Color32)t.color),Is.EqualTo(new[]{new Color32(229,115,115,255),new Color32(215,166,75,255),new Color32(85,186,139,255),new Color32(112,159,233,255),new Color32(161,138,224,255),new Color32(216,135,187,255)}));
             AssertGrowthLayout();Capture("element-six-stats");
-            string skills="";
-            foreach(var tab in new[]{"주사위·스킬","속성·상성","태그 조회","효과 출처"})
+            foreach(int height in new[]{1280,1600})
             {
-                Click(tab);yield return null;int page=0;
-                while(true)
+                if(height==1600)
                 {
-                    AssertGrowthLayout();Assert.That(Screen.buttons.Count(b=>b.gameObject.activeSelf),Is.LessThanOrEqualTo(8));
-                    if(tab=="주사위·스킬") skills+=VisibleText();
-                    if(page==0) Capture(tab=="주사위·스킬"?"element-skills":tab=="속성·상성"?"element-affinity":tab=="태그 조회"?"element-tags":"element-sources");
-                    var next=Screen.buttons.FirstOrDefault(b=>b.gameObject.activeSelf && b.label.text=="다음 페이지");
-                    if(next==null || !next.button.interactable) break;
-                    Assert.That(++page,Is.LessThan(80),"The finite detail pages must end.");Click("다음 페이지");yield return null;
+                    Resize(720,height);yield return null;ui.Root.safeArea.anchorMin=new Vector2(.03f,.04f);ui.Root.safeArea.anchorMax=new Vector2(.97f,.96f);Canvas.ForceUpdateCanvases();
                 }
+                Click("능력치");yield return null;AssertGrowthLayout();
+                if(height==1600) Capture("element-safe-area");
+                string skills="";
+                foreach(var tab in new[]{"주사위·스킬","속성·상성","태그 조회","효과 출처"})
+                {
+                    Click(tab);yield return null;int page=0;
+                    while(true)
+                    {
+                        AssertGrowthLayout();Assert.That(Screen.buttons.Count(b=>b.gameObject.activeSelf),Is.LessThanOrEqualTo(8));
+                        if(tab=="주사위·스킬") skills+=VisibleText();
+                        if(page==0) Capture((tab=="주사위·스킬"?"element-skills":tab=="속성·상성"?"element-affinity":tab=="태그 조회"?"element-tags":"element-sources")+(height==1600?"-720x1600":""));
+                        var next=Screen.buttons.FirstOrDefault(b=>b.gameObject.activeSelf && b.label.text=="다음 페이지");
+                        if(next==null || !next.button.interactable) break;
+                        Assert.That(++page,Is.LessThan(80),"The finite detail pages must end.");Click("다음 페이지");yield return null;
+                    }
+                }
+                foreach(var name in new[]{"베기","마력탄","불꽃","방어","검기","화염탄","수호 베기","화염 검기","성채 베기"}) Assert.That(skills,Does.Contain(name),"Missing skill at 720x"+height);
+                Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(File.ReadAllText(path),Is.EqualTo(raw));
             }
-            foreach(var name in new[]{"베기","마력탄","불꽃","방어","검기","화염탄","수호 베기","화염 검기","성채 베기"}) Assert.That(skills,Does.Contain(name));
-            Resize(720,1600);yield return null;ui.Root.safeArea.anchorMin=new Vector2(.03f,.04f);ui.Root.safeArea.anchorMax=new Vector2(.97f,.96f);Canvas.ForceUpdateCanvases();
-            Click("능력치");yield return null;AssertGrowthLayout();Capture("element-safe-area");
+            Click("돌아가기");yield return null;Click("모험 종료");yield return null;Click("모험가 선택");yield return null;
+            Assert.That(Screen.cardTexts.Count(t=>t.gameObject.activeInHierarchy),Is.EqualTo(3));
+            foreach(var name in new[]{"방랑 검사","룬술사","성채의 수호자"}) Assert.That(VisibleText(),Does.Contain(name));
+            AssertGrowthLayout();Capture("element-adventurers-720x1600");
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(File.ReadAllText(path),Is.EqualTo(raw));
         }
         [UnityTest] public IEnumerator ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling()

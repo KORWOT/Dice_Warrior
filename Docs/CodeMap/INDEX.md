@@ -2,7 +2,7 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 63개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 65개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
 
 ## 공동 모험 메인 SharedWorld
 
@@ -44,6 +44,8 @@ Unity 프로젝트 소유 C# 63개, Server C# 28개와 일회성 정리 도구 1
 | 모험가 선호 검사 | [AdventurerSelectionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/AdventurerSelectionStoreTests.cs.md) | 별도 선택·재개·경합·손상/잠금/백업 원문 보존 |
 | 저장 검사 | [CompetitionStoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionStoreTests.cs.md) | 실패/응답유실·동시경합·AI원자성·복구 |
 | UI 검사 | [CompetitionFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionFlowTests.cs.md) | 포인터·연출·재진입·두비율·로비연결 |
+| 실제 HTTP 여정 검사 | [CompetitionHttpFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFlowTests.cs.md) | 독립 Mock 프로필·v4 여정·보상0·오류/재시작 복구 |
+| HTTP 검증 환경 | [CompetitionHttpFixture](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFixture.cs.md) | 격리 root/endpoint·실제 전송·포인터·증거·소유 UI 정리 |
 
 직접 흐름: Title → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI → 버전별 SymbolCombat 또는 CompetitionElements → CompetitionStore. 계정은 CompetitionAccount → GameBackendCoordinator → LoopSession/LoopStore/HttpGameBackend로 분리한다. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/계정 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain15개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
 

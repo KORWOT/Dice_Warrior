@@ -1,0 +1,399 @@
+{
+  "scenario": {
+    "region": "asia-northeast3",
+    "edition": "Standard",
+    "currency": "USD",
+    "applyFreeTier": false,
+    "dailyActiveUsers": 1000,
+    "days": 30,
+    "retentionDays": 30,
+    "runsPerUserPerDay": 3.0,
+    "profileReadsPerUserPerDay": 2.0,
+    "operationReadsPerRun": 0.1,
+    "runReadsPerRun": 0.1,
+    "growthPerUserPerDay": 0.1,
+    "duplicateRate": 0.05,
+    "errorRate": 0.02,
+    "transactionRetryRate": 0.05,
+    "preAuthorityErrorFraction": 0.5,
+    "duplicateSubmissionFraction": 0.25,
+    "profileBytes": 2048,
+    "runBytes": 2048,
+    "receiptBytes": 1024,
+    "operationBytes": 1024,
+    "logBytesPerRun": 8192,
+    "responseBytesPerRequest": 4096,
+    "indexOverheadFactor": 0.5,
+    "initialStoredGiB": 0.0,
+    "cpuSecondsPerRequest": 0.1,
+    "memoryGiB": 0.5,
+    "cpuCount": 1.0
+  },
+  "modelVersion": "firestore-logical-plan-1",
+  "catalogVersion": "seoul-standard-usd-2026-10-22",
+  "isActualBilling": false,
+  "minimum": {
+    "name": "minimum",
+    "usage": {
+      "reads": 633000.0,
+      "writes": 636000.0,
+      "deletes": 0.0,
+      "indexEntryReads": 0.0,
+      "queryMinimumReads": 0.0,
+      "transactionAttempts": 183000.0,
+      "requests": 261000.0,
+      "runs": 90000.0,
+      "ingestedStorageBytes": 600576000.0,
+      "averageStoredGiB": 0.3624260425567627,
+      "storageGiBMonths": 0.3624260425567627,
+      "egressGiB": 0.4978179931640625,
+      "cpuSeconds": 26100.0,
+      "memoryGiBSeconds": 13050.0
+    },
+    "lineItems": [
+      {
+        "key": "firestore-reads",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 633000.0,
+        "billableQuantity": 633000.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.24054
+      },
+      {
+        "key": "firestore-writes",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 636000.0,
+        "billableQuantity": 636000.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.7314
+      },
+      {
+        "key": "firestore-deletes",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 0.0,
+        "billableQuantity": 0.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.0
+      },
+      {
+        "key": "firestore-storage",
+        "unit": "per-GiB-month",
+        "status": "estimated",
+        "note": "",
+        "quantity": 0.3624260425567627,
+        "billableQuantity": 0.3624260425567627,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.069585800170898438
+      },
+      {
+        "key": "firestore-same-region-egress",
+        "unit": "per-GiB",
+        "status": "estimated",
+        "note": "Same-region server transfer assumption; response size is a planning proxy, not measured Firestore bytes.",
+        "quantity": 0.4978179931640625,
+        "billableQuantity": 0.4978179931640625,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.0
+      },
+      {
+        "key": "cloud-run-cpu",
+        "unit": "per-vCPU-second",
+        "status": "estimated",
+        "note": "",
+        "quantity": 26100.0,
+        "billableQuantity": 26100.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.87696
+      },
+      {
+        "key": "cloud-run-memory",
+        "unit": "per-GiB-second",
+        "status": "estimated",
+        "note": "",
+        "quantity": 13050.0,
+        "billableQuantity": 13050.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.045675
+      },
+      {
+        "key": "cloud-run-requests",
+        "unit": "per-million-requests",
+        "status": "estimated",
+        "note": "",
+        "quantity": 261000.0,
+        "billableQuantity": 261000.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.1044
+      },
+      {
+        "key": "cloud-run-egress",
+        "unit": "per-GiB",
+        "status": "estimated",
+        "note": "Seoul to Korea Premium internet transfer; no Firestore allowance applied.",
+        "quantity": 0.4978179931640625,
+        "billableQuantity": 0.4978179931640625,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.094585418701171875
+      }
+    ],
+    "knownSubtotalUsd": 2.1631462188720705,
+    "totalUsd": 2.1631462188720705,
+    "complete": true
+  },
+  "basis": {
+    "name": "basis",
+    "usage": {
+      "reads": 677601.75,
+      "writes": 638955.0,
+      "deletes": 0.0,
+      "indexEntryReads": 0.0,
+      "queryMinimumReads": 0.0,
+      "transactionAttempts": 195252.75,
+      "requests": 273810.0,
+      "runs": 90000.0,
+      "ingestedStorageBytes": 1204177920.0,
+      "averageStoredGiB": 0.87200653553009033,
+      "storageGiBMonths": 0.87200653553009033,
+      "egressGiB": 1.0445022583007813,
+      "cpuSeconds": 28310.775,
+      "memoryGiBSeconds": 14155.3875
+    },
+    "lineItems": [
+      {
+        "key": "firestore-reads",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 677601.75,
+        "billableQuantity": 677601.75,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.257488665
+      },
+      {
+        "key": "firestore-writes",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 638955.0,
+        "billableQuantity": 638955.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.73479825
+      },
+      {
+        "key": "firestore-deletes",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 0.0,
+        "billableQuantity": 0.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.0
+      },
+      {
+        "key": "firestore-storage",
+        "unit": "per-GiB-month",
+        "status": "estimated",
+        "note": "",
+        "quantity": 0.87200653553009033,
+        "billableQuantity": 0.87200653553009033,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.16742525482177734
+      },
+      {
+        "key": "firestore-same-region-egress",
+        "unit": "per-GiB",
+        "status": "estimated",
+        "note": "Same-region server transfer assumption; response size is a planning proxy, not measured Firestore bytes.",
+        "quantity": 1.0445022583007813,
+        "billableQuantity": 1.0445022583007813,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.0
+      },
+      {
+        "key": "cloud-run-cpu",
+        "unit": "per-vCPU-second",
+        "status": "estimated",
+        "note": "",
+        "quantity": 28310.775,
+        "billableQuantity": 28310.775,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.95124204
+      },
+      {
+        "key": "cloud-run-memory",
+        "unit": "per-GiB-second",
+        "status": "estimated",
+        "note": "",
+        "quantity": 14155.3875,
+        "billableQuantity": 14155.3875,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.04954385625
+      },
+      {
+        "key": "cloud-run-requests",
+        "unit": "per-million-requests",
+        "status": "estimated",
+        "note": "",
+        "quantity": 273810.0,
+        "billableQuantity": 273810.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.109524
+      },
+      {
+        "key": "cloud-run-egress",
+        "unit": "per-GiB",
+        "status": "estimated",
+        "note": "Seoul to Korea Premium internet transfer; no Firestore allowance applied.",
+        "quantity": 1.0445022583007813,
+        "billableQuantity": 1.0445022583007813,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.19845542907714844
+      }
+    ],
+    "knownSubtotalUsd": 2.4684774951489259,
+    "totalUsd": 2.4684774951489259,
+    "complete": true
+  },
+  "worst": {
+    "name": "worst",
+    "usage": {
+      "reads": 723087.0,
+      "writes": 641910.0,
+      "deletes": 0.0,
+      "indexEntryReads": 0.0,
+      "queryMinimumReads": 0.0,
+      "transactionAttempts": 207801.0,
+      "requests": 286620.0,
+      "runs": 90000.0,
+      "ingestedStorageBytes": 2414407680.0,
+      "averageStoredGiB": 2.3311748504638672,
+      "storageGiBMonths": 2.3311748504638672,
+      "egressGiB": 2.186737060546875,
+      "cpuSeconds": 61102.2,
+      "memoryGiBSeconds": 30551.1
+    },
+    "lineItems": [
+      {
+        "key": "firestore-reads",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 723087.0,
+        "billableQuantity": 723087.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.27477306
+      },
+      {
+        "key": "firestore-writes",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 641910.0,
+        "billableQuantity": 641910.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.7381965
+      },
+      {
+        "key": "firestore-deletes",
+        "unit": "per-100000-documents",
+        "status": "estimated",
+        "note": "",
+        "quantity": 0.0,
+        "billableQuantity": 0.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.0
+      },
+      {
+        "key": "firestore-storage",
+        "unit": "per-GiB-month",
+        "status": "estimated",
+        "note": "",
+        "quantity": 2.3311748504638672,
+        "billableQuantity": 2.3311748504638672,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.44758557128906251
+      },
+      {
+        "key": "firestore-same-region-egress",
+        "unit": "per-GiB",
+        "status": "estimated",
+        "note": "Same-region server transfer assumption; response size is a planning proxy, not measured Firestore bytes.",
+        "quantity": 2.186737060546875,
+        "billableQuantity": 2.186737060546875,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.0
+      },
+      {
+        "key": "cloud-run-cpu",
+        "unit": "per-vCPU-second",
+        "status": "estimated",
+        "note": "",
+        "quantity": 61102.2,
+        "billableQuantity": 61102.2,
+        "freeCreditUsd": 0.0,
+        "costUsd": 2.05303392
+      },
+      {
+        "key": "cloud-run-memory",
+        "unit": "per-GiB-second",
+        "status": "estimated",
+        "note": "",
+        "quantity": 30551.1,
+        "billableQuantity": 30551.1,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.10692885
+      },
+      {
+        "key": "cloud-run-requests",
+        "unit": "per-million-requests",
+        "status": "estimated",
+        "note": "",
+        "quantity": 286620.0,
+        "billableQuantity": 286620.0,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.114648
+      },
+      {
+        "key": "cloud-run-egress",
+        "unit": "per-GiB",
+        "status": "estimated",
+        "note": "Seoul to Korea Premium internet transfer; no Firestore allowance applied.",
+        "quantity": 2.186737060546875,
+        "billableQuantity": 2.186737060546875,
+        "freeCreditUsd": 0.0,
+        "costUsd": 0.41548004150390627
+      }
+    ],
+    "knownSubtotalUsd": 4.1506459427929689,
+    "totalUsd": 4.1506459427929689,
+    "complete": true
+  },
+  "assumptions": [
+    "Offline scenario, not actual Firebase billing or a cloud performance benchmark. DAU and traffic are constant across each requested day.",
+    "Minimum removes duplicate/error/retry traffic and halves payload/compute assumptions. Basis uses input. Worst doubles those assumptions (error/duplicate rates cap at 1). These are planning bands, not statistical confidence intervals.",
+    "Each completed run starts once and submits once. Direct reads, growth, duplicate requests and rejected requests are additive. Operation model assumes existing profiles and no authentication billable operations.",
+    "A same-ID duplicate reads one operation receipt. The duplicateSubmissionFraction of duplicate settle calls uses a new ID, reads three documents and writes one operation receipt. Errors split by preAuthorityErrorFraction; only authority errors read documents and write rejection receipts.",
+    "TransactionRetryRate is assumed additional attempts per transaction: reads and compute amplify; committed writes do not. It is not derived from SQLite CAS or SQL counts.",
+    "Command logs are embedded in run documents. Retention assumes explicit deletion of expired run/receipt/operation documents after retentionDays, not Firestore TTL. Profile count assumes fixed DAU cohort; newly retained bytes exclude overwritten profiles.",
+    "Storage sums daily retained bytes including index overhead and divides by the catalog planning month length. initialStoredGiB remains throughout the period; it is already billed-size data. Daily accumulation begins from an empty run/operation history.",
+    "Cloud Run request billing assumes one request per instance at a time, no minimum instances; cpuSecondsPerRequest is assumed active wall time, rounded up to 100 ms. Memory is allocated GiB multiplied by active seconds. Local process CPU is not substituted.",
+    "Egress is Cloud Run Premium Seoul to Korea, once per response. Firestore-to-server stays within the same region. HTTP headers/TLS and compression are excluded from the payload estimate.",
+    "Optional free Firestore read/write/delete quotas apply separately each day, storage daily. Cloud Run monthly discounts use Tier 1 USD spending credits. No other projects consume these assumed unused allowances; the scenario fits within one billing month. Firestore's 10 GiB allowance does not discount Cloud Run internet traffic."
+  ],
+  "excludedCosts": [
+    "Firebase Authentication and phone/SMS fees",
+    "Cloud Logging/Monitoring ingestion and retention",
+    "Cloud Build, Artifact Registry and deployment artifacts",
+    "Backups, PITR, restore, clones and TTL deletes",
+    "Cloud Storage object storage/operations",
+    "Security Rules reads, queries/listeners/index-entry scans",
+    "Cold starts, idle/minimum instances, network headers, load balancers and VPC connectors",
+    "Taxes, exchange rates, commitments and negotiated discounts"
+  ]
+}

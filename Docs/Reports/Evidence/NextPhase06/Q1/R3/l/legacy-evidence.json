@@ -1,0 +1,25 @@
+{
+  "activeTicketPreserved": true,
+  "growthBlocked": true,
+  "localV4Started": true,
+  "oldSettlementPendingPreserved": true,
+  "automaticRequestsWithPending": 0,
+  "http": [
+    {
+      "route": "GET /v1/profile",
+      "requests": 4,
+      "transportErrors": 0,
+      "faults": [],
+      "bodyHashes": []
+    },
+    {
+      "route": "POST /v1/runs",
+      "requests": 1,
+      "transportErrors": 0,
+      "faults": [],
+      "bodyHashes": [
+        "445C5236A031665B350C63772F068F09D7977357531BA1C6789F0001B608FBE5"
+      ]
+    }
+  ]
+}
