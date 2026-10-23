@@ -1,5 +1,7 @@
 # LoopJson.cs
 
+B0/C7 직접 사용처: BalanceScenario/MatchRunner/Program은 정의·중간 상태 복원·명령/최종 상태/RNG/원자료 해시를 이 API로 처리한다. 기존 직렬화 계약 변경은 없다.
+
 - SharedWorld 직접 관계: 신규 DTO의 복제/체크섬/로그 fingerprint와 Unity/.NET 고정 골든에도 동일 직렬화기를 사용한다. 기존 JSON 설정과 v1 fingerprint는 변경하지 않는다.
 
 - 역할: Unity/독립 서버 공통 Newtonsoft JSON 직렬화·깊은 복사·UTF-8 SHA256.

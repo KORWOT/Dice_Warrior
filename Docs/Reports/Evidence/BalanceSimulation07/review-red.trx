@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="a1348542-9832-43d8-8aab-933ea80f7bd8" name="coli4@WOT 2026-10-23 18:11:02" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T18:11:02.9317376+09:00" queuing="2026-10-23T18:11:02.9317378+09:00" start="2026-10-23T18:11:02.1731589+09:00" finish="2026-10-23T18:11:02.9358453+09:00" />
+  <TestSettings name="default" id="63bde015-b532-4017-b3a9-57884b564661">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-23_18_11_02" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="96bf5895-f542-4843-a564-ff6d2762c574" testId="80a86e30-d246-2a26-8f94-58cc6d9b6613" testName="BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts" computerName="WOT" duration="00:00:00.1735970" startTime="2026-10-23T18:11:02.6723347+09:00" endTime="2026-10-23T18:11:02.8458778+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="96bf5895-f542-4843-a564-ff6d2762c574">
+      <Output>
+        <ErrorInfo>
+          <Message>  Expected string length 7 but was 4. Strings differ at index 0.&#xD;
+  Expected: "BLOCKED"&#xD;
+  But was:  "PASS"&#xD;
+  -----------^&#xD;
+</Message>
+          <StackTrace>   at DiceWarrior.BalanceSim.Tests.StatisticsTests.BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\StatisticsTests.cs:line 190&#xD;
+
+1)    at DiceWarrior.BalanceSim.Tests.StatisticsTests.BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts() in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\StatisticsTests.cs:line 190&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="80a86e30-d246-2a26-8f94-58cc6d9b6613">
+      <Execution id="96bf5895-f542-4843-a564-ff6d2762c574" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="80a86e30-d246-2a26-8f94-58cc6d9b6613" executionId="96bf5895-f542-4843-a564-ff6d2762c574" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running selected tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 1 of 1 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

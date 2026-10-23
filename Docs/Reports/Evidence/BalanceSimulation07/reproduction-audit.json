@@ -1,0 +1,20 @@
+{
+  "stages": [
+    "s9",
+    "s90",
+    "p300",
+    "base3000"
+  ],
+  "primaryRows": 3399,
+  "uniqueBaselineRows": 3000,
+  "crossStagePairs": 507,
+  "mismatches": 0,
+  "excludedFields": [
+    "ElapsedMs"
+  ],
+  "firstPlaceSumChecked": 3399,
+  "replayRecords": 9,
+  "replayPassed": 9,
+  "namedInvarianceChecks": 36,
+  "rawInputsPreserved": true
+}

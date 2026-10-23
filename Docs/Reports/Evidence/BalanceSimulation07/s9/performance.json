@@ -1,0 +1,20 @@
+{
+  "Performance": {
+    "ElapsedSeconds": 0.5995859000000001,
+    "MatchesPerSecond": 15.010359649885027,
+    "MatchP50Ms": 38.6235,
+    "MatchP95Ms": 153.9794,
+    "PeakWorkingSetBytes": 107044864,
+    "MaxObservedManagedHeapBytes": 48652272,
+    "AllocatedBytes": 2426636688,
+    "GcCollections": [
+      48,
+      1,
+      0
+    ],
+    "RawOutputBytesBeforeReports": 38618,
+    "Sampling": "batch elapsed excludes verification; RSS/alloc/GC include verification; heap sampled after each primary match"
+  },
+  "OutputBytesBeforeThisFile": 197656,
+  "WallSeconds": 2.7789988
+}

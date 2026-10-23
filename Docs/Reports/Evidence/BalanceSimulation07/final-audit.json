@@ -1,0 +1,16 @@
+{
+  "head": "2420decbaea896973b8fd62110cc0cd54aa9a530",
+  "staged": 0,
+  "protectedFiles": 87,
+  "userFiles": 12,
+  "testedSourceFiles": 11,
+  "hashDrift": 0,
+  "rawFilesVerified": 62,
+  "missingLinks": [],
+  "newCs": 11,
+  "commit": false,
+  "push": false,
+  "coreChanged": false,
+  "unityRun": false,
+  "serverRun": false
+}

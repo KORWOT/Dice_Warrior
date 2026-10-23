@@ -1,0 +1,140 @@
+[
+  {
+    "stage": "s9",
+    "status": "PASS",
+    "requested": 9,
+    "executed": 9,
+    "successful": 9,
+    "failed": 0,
+    "notRun": 0,
+    "seconds": 0.5995859000000001,
+    "p50ms": 38.6235,
+    "p95ms": 153.9794,
+    "matchesPerSecond": 15.010359649885027,
+    "peakRss": 107044864,
+    "maxObservedManagedHeap": 48652272,
+    "allocatedBytes": 2426636688,
+    "gc": [
+      48,
+      1,
+      0
+    ],
+    "files": 11,
+    "finalOutputBytes": 199689.0
+  },
+  {
+    "stage": "s90",
+    "status": "PASS",
+    "requested": 90,
+    "executed": 90,
+    "successful": 90,
+    "failed": 0,
+    "notRun": 0,
+    "seconds": 3.3476813,
+    "p50ms": 24.6123,
+    "p95ms": 114.7566,
+    "matchesPerSecond": 26.884279575836565,
+    "peakRss": 110919680,
+    "maxObservedManagedHeap": 54725664,
+    "allocatedBytes": 5006229656,
+    "gc": [
+      99,
+      1,
+      0
+    ],
+    "files": 11,
+    "finalOutputBytes": 618892.0
+  },
+  {
+    "stage": "p300",
+    "status": "PASS",
+    "requested": 300,
+    "executed": 300,
+    "successful": 300,
+    "failed": 0,
+    "notRun": 0,
+    "seconds": 8.1355947,
+    "p50ms": 22.7896,
+    "p95ms": 42.2208,
+    "matchesPerSecond": 36.874993293360596,
+    "peakRss": 113291264,
+    "maxObservedManagedHeap": 57132592,
+    "allocatedBytes": 16471640184,
+    "gc": [
+      328,
+      2,
+      1
+    ],
+    "files": 11,
+    "finalOutputBytes": 1688258.0
+  },
+  {
+    "stage": "base3000",
+    "status": "PASS",
+    "requested": 3000,
+    "executed": 3000,
+    "successful": 3000,
+    "failed": 0,
+    "notRun": 0,
+    "seconds": 73.4486726,
+    "p50ms": 23.4335,
+    "p95ms": 32.6427,
+    "matchesPerSecond": 40.844849795147965,
+    "peakRss": 127275008,
+    "maxObservedManagedHeap": 76156096,
+    "allocatedBytes": 164692811400,
+    "gc": [
+      3284,
+      16,
+      4
+    ],
+    "files": 11,
+    "finalOutputBytes": 15447397.0
+  },
+  {
+    "stage": "fail-command",
+    "status": "BLOCKED",
+    "requested": 9,
+    "executed": 1,
+    "successful": 0,
+    "failed": 1,
+    "notRun": 8,
+    "seconds": 0.0481328,
+    "p50ms": 31.5193,
+    "p95ms": 31.5193,
+    "matchesPerSecond": 20.775853472060632,
+    "peakRss": 49229824,
+    "maxObservedManagedHeap": 9253152,
+    "allocatedBytes": 3758968,
+    "gc": [
+      0,
+      0,
+      0
+    ],
+    "files": 12,
+    "finalOutputBytes": 59425.0
+  },
+  {
+    "stage": "fail-timeout",
+    "status": "BLOCKED",
+    "requested": 9,
+    "executed": 1,
+    "successful": 0,
+    "failed": 1,
+    "notRun": 8,
+    "seconds": 0.042103,
+    "p50ms": 24.654,
+    "p95ms": 24.654,
+    "matchesPerSecond": 23.751276631118923,
+    "peakRss": 48734208,
+    "maxObservedManagedHeap": 8812960,
+    "allocatedBytes": 3357536,
+    "gc": [
+      0,
+      0,
+      0
+    ],
+    "files": 12,
+    "finalOutputBytes": 58866.0
+  }
+]

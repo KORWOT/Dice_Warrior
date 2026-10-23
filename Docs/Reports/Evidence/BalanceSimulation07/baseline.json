@@ -1,0 +1,24 @@
+{
+  "head": "2420decbaea896973b8fd62110cc0cd54aa9a530",
+  "branch": "main",
+  "staged": [],
+  "userFiles": [
+    "Docs/Dice_Warrior_B0_C7_Balance_Simulation_Review_and_Plan_v0.1.md",
+    "Docs/Dice_Warrior_God_Adventurer_Growth_Direction_GDD_v0.2.md",
+    "Docs/Dice_Warrior_Next_Phase_06_Validation_Balance_God_Power_Plan_v0.1.md",
+    "Docs/Dice_Warrior_Shared_World_AI_Competition_Migration_Plan_v0.1.md",
+    "Docs/Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md",
+    "Docs/Dice_Warrior_Tag_Stat_Element_Integration_Design_v0.1.md",
+    "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json",
+    "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json",
+    "Assets/Settings/Mobile_RPAsset.asset",
+    "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset",
+    "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset",
+    "ProjectSettings/ProjectSettings.asset"
+  ],
+  "dotnet": "10.0.302",
+  "contentHash": "06DF1643383740F8D60551952CC36FAA1D5A0E130FDA7FB3A85D5632E11E26BA",
+  "os": "Microsoft Windows NT 10.0.26200.0",
+  "processors": 32,
+  "protectedFiles": 87
+}

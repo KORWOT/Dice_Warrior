@@ -6,6 +6,22 @@ Unity와 별도 프로세스의 ASP.NET Core HTTP + SQLite 서버다. M0~M3 권�
 
 ## 실행
 
+### B0/C7 오프라인 밸런스 실험
+
+`DiceWarrior.BalanceSim`은 공유 Core만 참조하는 별도 .NET 콘솔이다. Unity·Mock HTTP·authority DB를 사용하지 않는다. 현재는 v4 정본 해시, growth0/balanced/blade, neutral-v1과 모험가3종만 허용한다. 정본/AI/기존 저장을 수정하지 않으며 결과로 보상을 지급하지 않는다.
+
+```powershell
+dotnet run -c Release --project Server/DiceWarrior.BalanceSim -- --count 3 --verify true --output artifacts/balance-sim/my-smoke
+dotnet run -c Release --project Server/DiceWarrior.BalanceSim -- --count 1000 --output artifacts/balance-sim/my-baseline
+dotnet test -c Release Server/DiceWarrior.BalanceSim.Tests
+```
+
+각 output은 존재하지 않는 새 경로여야 한다. `--count`는 시드 수이며 경기 수는3배다. 권장 순서는3→30→100→1000 시드이며 앞 단계 결과를 확인한 뒤 확대한다. 고정 master seed의 prefix를 공유한다. `--seeds <uint 배열 JSON>`은 명시 목록을 읽고 `--count`와 정확히 일치해야 한다. 명령2048/경기30초 제한, 첫 실패에서 중단하고 실패 원인·재현 명령을 남긴다. `--verify true`는 반복/명령재생/중간복원/관찰OFF 비교를 추가한다.
+
+manifest/seed, matches JSONL, 요약 JSON/MD, 경기/참가자 CSV, 실패 JSONL, 재현/성능/파일 해시를 저장한다. AI 전체 기술/사건 이력은 미계측이며 결과는 자동 정책의 성적이다. 인간·AI의 시련 성공, 순위1, 공동1위 분할점수는 서로 다른 지표다. [B0/C7 PLAN](../Docs/Plans/BALANCE_SIMULATION_07_PLAN.md)과 [실제 보고](../Docs/Reports/BALANCE_SIMULATION_07_REPORT.md)를 따른다.
+
+### Mock 서버
+
 설치된 .NET SDK10.0.302를 사용한다. 저장소 루트 PowerShell에서 실행하고 이 터미널을 유지한다.
 
 ```powershell

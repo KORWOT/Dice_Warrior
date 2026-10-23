@@ -1,0 +1,50 @@
+[
+  {
+    "path": "Docs/Dice_Warrior_B0_C7_Balance_Simulation_Review_and_Plan_v0.1.md",
+    "sha256": "74284F6B3525AB23645ECFC0E5D9C3334CB9D203AE68A944DB8A05B77F3D1E31"
+  },
+  {
+    "path": "Docs/Dice_Warrior_God_Adventurer_Growth_Direction_GDD_v0.2.md",
+    "sha256": "8D3783A9659B5A0918740CEA199FBF8EB728CC1A9ABE133FBCFC05203FB98C8F"
+  },
+  {
+    "path": "Docs/Dice_Warrior_Next_Phase_06_Validation_Balance_God_Power_Plan_v0.1.md",
+    "sha256": "85880E70B6C2803FCC416A2C6CEEEA502B0847EEC5A95E6FE5A20ACB996A6A48"
+  },
+  {
+    "path": "Docs/Dice_Warrior_Shared_World_AI_Competition_Migration_Plan_v0.1.md",
+    "sha256": "4BF72E636755D332648793173651003829B0D55581559A850CF179F84A1CBEDC"
+  },
+  {
+    "path": "Docs/Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md",
+    "sha256": "AC88BDABE79EC66B587F3E041A51D8D9D61388E8CFD080FBB1A7220501354A1C"
+  },
+  {
+    "path": "Docs/Dice_Warrior_Tag_Stat_Element_Integration_Design_v0.1.md",
+    "sha256": "DA979770680EFC22FA58D3AC1BB52066BE53257F2CD432B7591A79AE424810A7"
+  },
+  {
+    "path": "ProjectSettings/Packages/com.unity.ai.assistant/Settings.json",
+    "sha256": "54BA37AABE4A7D2663325E93F66F063C6DCFDCAD92316CBADDBAD55FCBCB5698"
+  },
+  {
+    "path": "ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json",
+    "sha256": "A40F81B0DCC795E422F5CA0881FE7DAD4E26CB8FDB33244A70F110835C1A8D44"
+  },
+  {
+    "path": "Assets/Settings/Mobile_RPAsset.asset",
+    "sha256": "2DAE640482CED16E55B3549EEDB816C6CCAA7F7939E9962F588AE7D0FE734D9A"
+  },
+  {
+    "path": "Assets/Settings/UniversalRenderPipelineGlobalSettings.asset",
+    "sha256": "DE16216797B7D4212762916335811C880FF5E7F6A2BD066882137B949BD13AF1"
+  },
+  {
+    "path": "Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Effects SDF.asset",
+    "sha256": "F90130ACB1AA3FC32DED8389189F0E6A96C79243F3ED3F14C4AB2B8EAABA1079"
+  },
+  {
+    "path": "ProjectSettings/ProjectSettings.asset",
+    "sha256": "B18A8AB466055965E52C278BFFB5C23BCA969115470F84745705F3631AECF667"
+  }
+]

@@ -2,9 +2,29 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 65개, Server C# 28개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 65개, Server C# 39개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
 
-## 공동 모험 메인 SharedWorld
+## 비권위 밸런스 실험 B0/C7
+
+[PLAN](../Plans/BALANCE_SIMULATION_07_PLAN.md) · [REPORT](../Reports/BALANCE_SIMULATION_07_REPORT.md). Unity/서버 권한 실행 없이 동일 Core로 경기만 재현한다.
+
+| 역할 | 요약 |
+|---|---|
+| CLI·배치·manifest·재현/성능 | [Program](Server/DiceWarrior.BalanceSim/Program.cs.md) |
+| 정본/시드/입력·출력 경계 | [BalanceScenario](Server/DiceWarrior.BalanceSim/BalanceScenario.cs.md) |
+| 공통 결과 DTO | [SimulationData](Server/DiceWarrior.BalanceSim/SimulationData.cs.md) |
+| 자동 인간 neutral-v1 | [HumanDecisionPolicies](Server/DiceWarrior.BalanceSim/HumanDecisionPolicies.cs.md) |
+| Target/Apply·replay·중간복원 | [MatchRunner](Server/DiceWarrior.BalanceSim/MatchRunner.cs.md) |
+| 인간 읽기 관찰·최종 참가자 | [OutcomeCollector](Server/DiceWarrior.BalanceSim/OutcomeCollector.cs.md) |
+| 분포·분모·Wilson·paired bootstrap | [Statistics](Server/DiceWarrior.BalanceSim/Statistics.cs.md) |
+| 요약 JSON/MD·CSV·실패 출력 | [ReportWriter](Server/DiceWarrior.BalanceSim/ReportWriter.cs.md) |
+| 시드·정본·경로 보호 검사 | [ScenarioTests](Server/DiceWarrior.BalanceSim.Tests/ScenarioTests.cs.md) |
+| 정책·재현·관찰·실패 검사 | [MatchRunnerTests](Server/DiceWarrior.BalanceSim.Tests/MatchRunnerTests.cs.md) |
+| 통계·결측·출력 검사 | [StatisticsTests](Server/DiceWarrior.BalanceSim.Tests/StatisticsTests.cs.md) |
+
+직접 흐름: Program → BalanceScenario/MatchRunner → 기존 CompetitionRules/CommandRules, 명령 전후 OutcomeCollector → 결과 DTO → Statistics/ReportWriter. 제품 코드/AI/콘텐츠/서버 정산으로 역참조하지 않는다.
+
+## 공동 모험 메인 SharedWorld 코드
 
 | 기능 | 스크립트 / 요약 | 현재 역할 |
 |---|---|---|

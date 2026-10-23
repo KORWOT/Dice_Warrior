@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7d422d9a-a34b-412c-bb02-ae04dc9975f6" name="coli4@WOT 2026-10-23 18:13:02" runUser="WOT\coli4" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-23T18:13:02.6234677+09:00" queuing="2026-10-23T18:13:02.6234679+09:00" start="2026-10-23T18:13:00.8107719+09:00" finish="2026-10-23T18:13:03.3454063+09:00" />
+  <TestSettings name="default" id="40e2ec92-9013-4a09-a88c-e8cefe9e6f37">
+    <Deployment runDeploymentRoot="coli4_WOT_2026-10-23_18_13_02" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="94f72da4-68de-4608-9114-a2e851bf494d" testId="9ca0c85a-31ad-b94e-2310-60c499d38dda" testName="CollectorSeparatesShieldAbsorptionFromOverkillAndSkippedSkills" computerName="WOT" duration="00:00:00.2051680" startTime="2026-10-23T18:13:01.2992385+09:00" endTime="2026-10-23T18:13:01.5043542+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="94f72da4-68de-4608-9114-a2e851bf494d" />
+    <UnitTestResult executionId="61bd87ea-2307-45c9-9cbf-a826f98d22de" testId="272f5300-26ec-2b80-87ea-b62f985c6598" testName="CommandLimitReportsBlockedWithPartialReplayInsteadOfSuccess" computerName="WOT" duration="00:00:00.0316390" startTime="2026-10-23T18:13:01.5054943+09:00" endTime="2026-10-23T18:13:01.5371331+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61bd87ea-2307-45c9-9cbf-a826f98d22de" />
+    <UnitTestResult executionId="853f4b55-a6af-454c-8380-aabc6b0ade61" testId="ddc2cc3d-afde-959c-4d5c-c1f0e9d05223" testName="ReplayRejectsChangedTargetsTruncationAndCommandsAfterFinish" computerName="WOT" duration="00:00:00.1945970" startTime="2026-10-23T18:13:01.5592840+09:00" endTime="2026-10-23T18:13:01.7538810+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="853f4b55-a6af-454c-8380-aabc6b0ade61" />
+    <UnitTestResult executionId="920925cc-55fc-4ed1-8c4d-bdd34ef0f333" testId="0bba3b66-274e-0584-cc59-da960b37989f" testName="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;scholar&quot;)" computerName="WOT" duration="00:00:00.4486210" startTime="2026-10-23T18:13:02.1141876+09:00" endTime="2026-10-23T18:13:02.5628077+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="920925cc-55fc-4ed1-8c4d-bdd34ef0f333" />
+    <UnitTestResult executionId="56a3e3f7-901d-439d-8ec6-cca0b1e0fe3f" testId="ba6d00d8-209b-7f61-9a01-0dd47afa7f6f" testName="PairedDifferencesUseOnlyCompleteSeedBlocksAndKeepDirection" computerName="WOT" duration="00:00:00.0005540" startTime="2026-10-23T18:13:03.2672046+09:00" endTime="2026-10-23T18:13:03.2677585+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="56a3e3f7-901d-439d-8ec6-cca0b1e0fe3f" />
+    <UnitTestResult executionId="6b1c7142-c9e1-4dc4-ab06-a15f7aa83ff2" testId="1a9d9b90-e0ef-fadd-943b-2839bd2cbee4" testName="ParticipantCollectorSplitsTiedFirstPlaceAndKeepsAiHistoryMissing" computerName="WOT" duration="00:00:00.0071590" startTime="2026-10-23T18:13:01.5521083+09:00" endTime="2026-10-23T18:13:01.5592668+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6b1c7142-c9e1-4dc4-ab06-a15f7aa83ff2" />
+    <UnitTestResult executionId="9118ca48-5bfc-495c-b929-5e68ed135456" testId="94885d4b-5ace-76b9-96db-0ecee3ffe4f8" testName="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;wanderer&quot;)" computerName="WOT" duration="00:00:00.3602340" startTime="2026-10-23T18:13:01.7539314+09:00" endTime="2026-10-23T18:13:02.1141645+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9118ca48-5bfc-495c-b929-5e68ed135456" />
+    <UnitTestResult executionId="df5c65a8-c38b-4550-bf25-dc841e6b2f9e" testId="b8be576f-eb5d-a52b-74f8-873fa7783e61" testName="CanonicalContentAndSupportedInputsAreRequired" computerName="WOT" duration="00:00:00.0176350" startTime="2026-10-23T18:13:03.1722758+09:00" endTime="2026-10-23T18:13:03.1899105+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="df5c65a8-c38b-4550-bf25-dc841e6b2f9e" />
+    <UnitTestResult executionId="344fb458-861d-453e-94a9-a177b0536cf6" testId="7d2d922a-f1d2-3043-ead0-24415f1aef25" testName="OutputRejectsReuseOutsideRootsAndTraversal" computerName="WOT" duration="00:00:00.0033750" startTime="2026-10-23T18:13:03.1925351+09:00" endTime="2026-10-23T18:13:03.1959101+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="344fb458-861d-453e-94a9-a177b0536cf6" />
+    <UnitTestResult executionId="e9a2ad01-a9c7-417f-be54-cbb8b9654f19" testId="46cef761-f811-f2d2-9ce4-3f6af9ec03a4" testName="WilsonIntervalsRespectSmallSampleBoundaries(5,10,0.2365930905d,0.7634069095d)" computerName="WOT" duration="00:00:00.0002370" startTime="2026-10-23T18:13:03.3048344+09:00" endTime="2026-10-23T18:13:03.3050709+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e9a2ad01-a9c7-417f-be54-cbb8b9654f19" />
+    <UnitTestResult executionId="15a7c429-d88a-4d55-9af3-bc7ee5a06612" testId="3e5b8b6a-5825-ce64-2395-4474ef35779f" testName="EmptySamplesAreMissingAndImpossibleBinomialCountsAreRejected" computerName="WOT" duration="00:00:00.0004710" startTime="2026-10-23T18:13:03.2538056+09:00" endTime="2026-10-23T18:13:03.2542761+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15a7c429-d88a-4d55-9af3-bc7ee5a06612" />
+    <UnitTestResult executionId="cd6a08ff-a9db-4dc6-b060-c1938905bc3f" testId="cfc6a6eb-8b20-c861-0da9-ad997e75e3b8" testName="NeutralPolicyKeepsFrozenOfferOrderForTiesAndConsumesNoState" computerName="WOT" duration="00:00:00.0072310" startTime="2026-10-23T18:13:01.5448574+09:00" endTime="2026-10-23T18:13:01.5520881+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cd6a08ff-a9db-4dc6-b060-c1938905bc3f" />
+    <UnitTestResult executionId="ec3d3543-9271-45f9-9ff2-70eb362735f4" testId="2a25f93c-e98b-723c-b7fd-2500add11e35" testName="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;vanguard&quot;)" computerName="WOT" duration="00:00:00.6076920" startTime="2026-10-23T18:13:02.5628397+09:00" endTime="2026-10-23T18:13:03.1705315+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec3d3543-9271-45f9-9ff2-70eb362735f4" />
+    <UnitTestResult executionId="839ac532-6228-4fca-9ca2-138263faf64d" testId="922bbd10-1b96-073e-d7c3-6595d1eaa5fc" testName="InvalidRawResultsCannotSilentlyDistortSummary" computerName="WOT" duration="00:00:00.0006470" startTime="2026-10-23T18:13:03.2665471+09:00" endTime="2026-10-23T18:13:03.2671935+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="839ac532-6228-4fca-9ca2-138263faf64d" />
+    <UnitTestResult executionId="84f1acba-8a75-4bff-a694-3edc5bfe61da" testId="5d315a28-5a99-bba0-fb44-433e7e8d6147" testName="HpTiebreakExposureAndFinalTrialFailureAreExplicitFrequencies" computerName="WOT" duration="00:00:00.0007110" startTime="2026-10-23T18:13:03.2551568+09:00" endTime="2026-10-23T18:13:03.2558681+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="84f1acba-8a75-4bff-a694-3edc5bfe61da" />
+    <UnitTestResult executionId="3d53d71a-0dad-45d8-8651-a6512e74cebd" testId="967febc3-bb92-d1f2-1633-d7d4938adee3" testName="FailureAndNotRunNeverBecomeParticipantLossesOrMissingZeros" computerName="WOT" duration="00:00:00.0008610" startTime="2026-10-23T18:13:03.2542885+09:00" endTime="2026-10-23T18:13:03.2551493+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d53d71a-0dad-45d8-8651-a6512e74cebd" />
+    <UnitTestResult executionId="268727ea-6556-4e45-a94e-9540337a2396" testId="cd7d4f61-3eef-0f7a-c9ab-89e672062df5" testName="ReportRoundTripPreservesMissingValuesCultureAndExistingEvidence" computerName="WOT" duration="00:00:00.0362590" startTime="2026-10-23T18:13:03.2677701+09:00" endTime="2026-10-23T18:13:03.3040283+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="268727ea-6556-4e45-a94e-9540337a2396" />
+    <UnitTestResult executionId="a95b1ea3-e4f0-4cbc-bee8-0dbeb92c5ddc" testId="05264760-28a9-90cd-c749-a5311139514c" testName="DistributionUsesNearestRankAndRejectsNonFiniteValues" computerName="WOT" duration="00:00:00.0009750" startTime="2026-10-23T18:13:03.2528180+09:00" endTime="2026-10-23T18:13:03.2537929+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a95b1ea3-e4f0-4cbc-bee8-0dbeb92c5ddc" />
+    <UnitTestResult executionId="3036e084-3346-415f-9d31-3c558eb50c96" testId="da2e9b26-be52-652c-3ae8-3b5a0fb740e4" testName="BootstrapIsDeterministicUnderInputOrderAndDoesNotMutateRawResults" computerName="WOT" duration="00:00:00.0296010" startTime="2026-10-23T18:13:03.2231910+09:00" endTime="2026-10-23T18:13:03.2527909+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3036e084-3346-415f-9d31-3c558eb50c96" />
+    <UnitTestResult executionId="3856cff5-0e10-4922-a147-94a11b1c551e" testId="4fd1c8a4-f6b8-642d-f7ba-b3198a2d2784" testName="HumanSkillContributionSeparatesActualDamageAbsorptionSkippedAndUnmeasuredMatches" computerName="WOT" duration="00:00:00.0106480" startTime="2026-10-23T18:13:03.2558792+09:00" endTime="2026-10-23T18:13:03.2665265+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3856cff5-0e10-4922-a147-94a11b1c551e" />
+    <UnitTestResult executionId="977ff34c-c639-4149-adf7-d9d91a19d518" testId="0462f09e-3612-0801-dc99-551e03bde3bc" testName="CliRejectsMissingAndUnknownArgumentsWithoutStartingMatches" computerName="WOT" duration="00:00:00.0025820" startTime="2026-10-23T18:13:03.1899396+09:00" endTime="2026-10-23T18:13:03.1925210+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="977ff34c-c639-4149-adf7-d9d91a19d518">
+      <Output>
+        <StdErr>BLOCKED: ArgumentException: Unknown or repeated argument.&#xD;
+&#xD;
+BLOCKED: ArgumentException: Arguments require name/value pairs.</StdErr>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="565dbc10-e392-4b2e-9ad7-7d4e3521200f" testId="ba42c61e-dda0-3911-3038-c1eda84ed936" testName="HealPriorityAppliesOnlyBelowHalfHpAndUnknownPoliciesAreRejected" computerName="WOT" duration="00:00:00.0076710" startTime="2026-10-23T18:13:01.5371639+09:00" endTime="2026-10-23T18:13:01.5448344+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="565dbc10-e392-4b2e-9ad7-7d4e3521200f" />
+    <UnitTestResult executionId="7633f38f-1186-4e9d-bde1-9816669cfa46" testId="735d0f0b-f098-a016-1fb9-1cda064d546c" testName="TiedFirstPlaceIsDistinctFromTrialSuccessAndFractionalShare" computerName="WOT" duration="00:00:00.0006470" startTime="2026-10-23T18:13:03.3040519+09:00" endTime="2026-10-23T18:13:03.3046988+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7633f38f-1186-4e9d-bde1-9816669cfa46" />
+    <UnitTestResult executionId="6837c373-0a3a-42c8-af90-c6e538821ffd" testId="20a82aff-c613-a364-c61c-315c77cae2ab" testName="WilsonIntervalsRespectSmallSampleBoundaries(0,10,0,0.2775327999d)" computerName="WOT" duration="00:00:00.0000980" startTime="2026-10-23T18:13:03.3047305+09:00" endTime="2026-10-23T18:13:03.3048286+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6837c373-0a3a-42c8-af90-c6e538821ffd" />
+    <UnitTestResult executionId="7ecbd04a-8d47-42d6-bae4-9e6ddf03b655" testId="0a3f5a38-8edb-9f42-a304-01512e53eee6" testName="SeedsAreUniqueNonzeroStableAndPrefixCompatible" computerName="WOT" duration="00:00:00.0039860" startTime="2026-10-23T18:13:03.1959290+09:00" endTime="2026-10-23T18:13:03.1999148+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ecbd04a-8d47-42d6-bae4-9e6ddf03b655" />
+    <UnitTestResult executionId="9884b65c-0737-48ae-92a5-9622e3bc1ac7" testId="47a6b08c-0fa5-ae50-090b-157599485132" testName="WilsonIntervalsRespectSmallSampleBoundaries(10,10,0.7224672001d,1)" computerName="WOT" duration="00:00:00.0000080" startTime="2026-10-23T18:13:03.3050828+09:00" endTime="2026-10-23T18:13:03.3050910+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9884b65c-0737-48ae-92a5-9622e3bc1ac7" />
+    <UnitTestResult executionId="cf61d1bf-b387-4305-8c89-21875747685a" testId="80a86e30-d246-2a26-8f94-58cc6d9b6613" testName="BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts" computerName="WOT" duration="00:00:00.0231490" startTime="2026-10-23T18:13:03.2000145+09:00" endTime="2026-10-23T18:13:03.2231624+09:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf61d1bf-b387-4305-8c89-21875747685a" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="SeedsAreUniqueNonzeroStableAndPrefixCompatible" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="0a3f5a38-8edb-9f42-a304-01512e53eee6">
+      <Execution id="7ecbd04a-8d47-42d6-bae4-9e6ddf03b655" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.ScenarioTests" name="SeedsAreUniqueNonzeroStableAndPrefixCompatible" />
+    </UnitTest>
+    <UnitTest name="FailureAndNotRunNeverBecomeParticipantLossesOrMissingZeros" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="967febc3-bb92-d1f2-1633-d7d4938adee3">
+      <Execution id="3d53d71a-0dad-45d8-8651-a6512e74cebd" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="FailureAndNotRunNeverBecomeParticipantLossesOrMissingZeros" />
+    </UnitTest>
+    <UnitTest name="BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="80a86e30-d246-2a26-8f94-58cc6d9b6613">
+      <Execution id="cf61d1bf-b387-4305-8c89-21875747685a" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="BatchVerificationFailureCannotBeOverwrittenByCompletedMatchCounts" />
+    </UnitTest>
+    <UnitTest name="DistributionUsesNearestRankAndRejectsNonFiniteValues" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="05264760-28a9-90cd-c749-a5311139514c">
+      <Execution id="a95b1ea3-e4f0-4cbc-bee8-0dbeb92c5ddc" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="DistributionUsesNearestRankAndRejectsNonFiniteValues" />
+    </UnitTest>
+    <UnitTest name="OutputRejectsReuseOutsideRootsAndTraversal" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="7d2d922a-f1d2-3043-ead0-24415f1aef25">
+      <Execution id="344fb458-861d-453e-94a9-a177b0536cf6" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.ScenarioTests" name="OutputRejectsReuseOutsideRootsAndTraversal" />
+    </UnitTest>
+    <UnitTest name="BootstrapIsDeterministicUnderInputOrderAndDoesNotMutateRawResults" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="da2e9b26-be52-652c-3ae8-3b5a0fb740e4">
+      <Execution id="3036e084-3346-415f-9d31-3c558eb50c96" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="BootstrapIsDeterministicUnderInputOrderAndDoesNotMutateRawResults" />
+    </UnitTest>
+    <UnitTest name="WilsonIntervalsRespectSmallSampleBoundaries(0,10,0,0.2775327999d)" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="20a82aff-c613-a364-c61c-315c77cae2ab">
+      <Execution id="6837c373-0a3a-42c8-af90-c6e538821ffd" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="WilsonIntervalsRespectSmallSampleBoundaries(0,10,0,0.2775327999d)" />
+    </UnitTest>
+    <UnitTest name="HpTiebreakExposureAndFinalTrialFailureAreExplicitFrequencies" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="5d315a28-5a99-bba0-fb44-433e7e8d6147">
+      <Execution id="84f1acba-8a75-4bff-a694-3edc5bfe61da" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="HpTiebreakExposureAndFinalTrialFailureAreExplicitFrequencies" />
+    </UnitTest>
+    <UnitTest name="ParticipantCollectorSplitsTiedFirstPlaceAndKeepsAiHistoryMissing" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="1a9d9b90-e0ef-fadd-943b-2839bd2cbee4">
+      <Execution id="6b1c7142-c9e1-4dc4-ab06-a15f7aa83ff2" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="ParticipantCollectorSplitsTiedFirstPlaceAndKeepsAiHistoryMissing" />
+    </UnitTest>
+    <UnitTest name="WilsonIntervalsRespectSmallSampleBoundaries(5,10,0.2365930905d,0.7634069095d)" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="46cef761-f811-f2d2-9ce4-3f6af9ec03a4">
+      <Execution id="e9a2ad01-a9c7-417f-be54-cbb8b9654f19" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="WilsonIntervalsRespectSmallSampleBoundaries(5,10,0.2365930905d,0.7634069095d)" />
+    </UnitTest>
+    <UnitTest name="ReportRoundTripPreservesMissingValuesCultureAndExistingEvidence" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="cd7d4f61-3eef-0f7a-c9ab-89e672062df5">
+      <Execution id="268727ea-6556-4e45-a94e-9540337a2396" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="ReportRoundTripPreservesMissingValuesCultureAndExistingEvidence" />
+    </UnitTest>
+    <UnitTest name="CliRejectsMissingAndUnknownArgumentsWithoutStartingMatches" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="0462f09e-3612-0801-dc99-551e03bde3bc">
+      <Execution id="977ff34c-c639-4149-adf7-d9d91a19d518" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.ScenarioTests" name="CliRejectsMissingAndUnknownArgumentsWithoutStartingMatches" />
+    </UnitTest>
+    <UnitTest name="CollectorSeparatesShieldAbsorptionFromOverkillAndSkippedSkills" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="9ca0c85a-31ad-b94e-2310-60c499d38dda">
+      <Execution id="94f72da4-68de-4608-9114-a2e851bf494d" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="CollectorSeparatesShieldAbsorptionFromOverkillAndSkippedSkills" />
+    </UnitTest>
+    <UnitTest name="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;scholar&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="0bba3b66-274e-0584-cc59-da960b37989f">
+      <Execution id="920925cc-55fc-4ed1-8c4d-bdd34ef0f333" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;scholar&quot;)" />
+    </UnitTest>
+    <UnitTest name="CommandLimitReportsBlockedWithPartialReplayInsteadOfSuccess" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="272f5300-26ec-2b80-87ea-b62f985c6598">
+      <Execution id="61bd87ea-2307-45c9-9cbf-a826f98d22de" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="CommandLimitReportsBlockedWithPartialReplayInsteadOfSuccess" />
+    </UnitTest>
+    <UnitTest name="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;wanderer&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="94885d4b-5ace-76b9-96db-0ecee3ffe4f8">
+      <Execution id="9118ca48-5bfc-495c-b929-5e68ed135456" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;wanderer&quot;)" />
+    </UnitTest>
+    <UnitTest name="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;vanguard&quot;)" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="2a25f93c-e98b-723c-b7fd-2500add11e35">
+      <Execution id="ec3d3543-9271-45f9-9ff2-70eb362735f4" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="SameInputReplayRestoreAndObservationModePreserveCompleteState(&quot;vanguard&quot;)" />
+    </UnitTest>
+    <UnitTest name="InvalidRawResultsCannotSilentlyDistortSummary" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="922bbd10-1b96-073e-d7c3-6595d1eaa5fc">
+      <Execution id="839ac532-6228-4fca-9ca2-138263faf64d" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="InvalidRawResultsCannotSilentlyDistortSummary" />
+    </UnitTest>
+    <UnitTest name="PairedDifferencesUseOnlyCompleteSeedBlocksAndKeepDirection" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="ba6d00d8-209b-7f61-9a01-0dd47afa7f6f">
+      <Execution id="56a3e3f7-901d-439d-8ec6-cca0b1e0fe3f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="PairedDifferencesUseOnlyCompleteSeedBlocksAndKeepDirection" />
+    </UnitTest>
+    <UnitTest name="WilsonIntervalsRespectSmallSampleBoundaries(10,10,0.7224672001d,1)" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="47a6b08c-0fa5-ae50-090b-157599485132">
+      <Execution id="9884b65c-0737-48ae-92a5-9622e3bc1ac7" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="WilsonIntervalsRespectSmallSampleBoundaries(10,10,0.7224672001d,1)" />
+    </UnitTest>
+    <UnitTest name="NeutralPolicyKeepsFrozenOfferOrderForTiesAndConsumesNoState" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="cfc6a6eb-8b20-c861-0da9-ad997e75e3b8">
+      <Execution id="cd6a08ff-a9db-4dc6-b060-c1938905bc3f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="NeutralPolicyKeepsFrozenOfferOrderForTiesAndConsumesNoState" />
+    </UnitTest>
+    <UnitTest name="HumanSkillContributionSeparatesActualDamageAbsorptionSkippedAndUnmeasuredMatches" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="4fd1c8a4-f6b8-642d-f7ba-b3198a2d2784">
+      <Execution id="3856cff5-0e10-4922-a147-94a11b1c551e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="HumanSkillContributionSeparatesActualDamageAbsorptionSkippedAndUnmeasuredMatches" />
+    </UnitTest>
+    <UnitTest name="EmptySamplesAreMissingAndImpossibleBinomialCountsAreRejected" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="3e5b8b6a-5825-ce64-2395-4474ef35779f">
+      <Execution id="15a7c429-d88a-4d55-9af3-bc7ee5a06612" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="EmptySamplesAreMissingAndImpossibleBinomialCountsAreRejected" />
+    </UnitTest>
+    <UnitTest name="TiedFirstPlaceIsDistinctFromTrialSuccessAndFractionalShare" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="735d0f0b-f098-a016-1fb9-1cda064d546c">
+      <Execution id="7633f38f-1186-4e9d-bde1-9816669cfa46" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.StatisticsTests" name="TiedFirstPlaceIsDistinctFromTrialSuccessAndFractionalShare" />
+    </UnitTest>
+    <UnitTest name="HealPriorityAppliesOnlyBelowHalfHpAndUnknownPoliciesAreRejected" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="ba42c61e-dda0-3911-3038-c1eda84ed936">
+      <Execution id="565dbc10-e392-4b2e-9ad7-7d4e3521200f" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="HealPriorityAppliesOnlyBelowHalfHpAndUnknownPoliciesAreRejected" />
+    </UnitTest>
+    <UnitTest name="ReplayRejectsChangedTargetsTruncationAndCommandsAfterFinish" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="ddc2cc3d-afde-959c-4d5c-c1f0e9d05223">
+      <Execution id="853f4b55-a6af-454c-8380-aabc6b0ade61" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.MatchRunnerTests" name="ReplayRejectsChangedTargetsTruncationAndCommandsAfterFinish" />
+    </UnitTest>
+    <UnitTest name="CanonicalContentAndSupportedInputsAreRequired" storage="d:\unityproject\dice_warrior\server\dicewarrior.balancesim.tests\bin\release\net10.0\dicewarrior.balancesim.tests.dll" id="b8be576f-eb5d-a52b-74f8-873fa7783e61">
+      <Execution id="df5c65a8-c38b-4550-bf25-dc841e6b2f9e" />
+      <TestMethod codeBase="D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll" adapterTypeName="executor://nunit3testexecutor/" className="DiceWarrior.BalanceSim.Tests.ScenarioTests" name="CanonicalContentAndSupportedInputsAreRequired" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="9ca0c85a-31ad-b94e-2310-60c499d38dda" executionId="94f72da4-68de-4608-9114-a2e851bf494d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="272f5300-26ec-2b80-87ea-b62f985c6598" executionId="61bd87ea-2307-45c9-9cbf-a826f98d22de" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ddc2cc3d-afde-959c-4d5c-c1f0e9d05223" executionId="853f4b55-a6af-454c-8380-aabc6b0ade61" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0bba3b66-274e-0584-cc59-da960b37989f" executionId="920925cc-55fc-4ed1-8c4d-bdd34ef0f333" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ba6d00d8-209b-7f61-9a01-0dd47afa7f6f" executionId="56a3e3f7-901d-439d-8ec6-cca0b1e0fe3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1a9d9b90-e0ef-fadd-943b-2839bd2cbee4" executionId="6b1c7142-c9e1-4dc4-ab06-a15f7aa83ff2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94885d4b-5ace-76b9-96db-0ecee3ffe4f8" executionId="9118ca48-5bfc-495c-b929-5e68ed135456" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b8be576f-eb5d-a52b-74f8-873fa7783e61" executionId="df5c65a8-c38b-4550-bf25-dc841e6b2f9e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7d2d922a-f1d2-3043-ead0-24415f1aef25" executionId="344fb458-861d-453e-94a9-a177b0536cf6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="46cef761-f811-f2d2-9ce4-3f6af9ec03a4" executionId="e9a2ad01-a9c7-417f-be54-cbb8b9654f19" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3e5b8b6a-5825-ce64-2395-4474ef35779f" executionId="15a7c429-d88a-4d55-9af3-bc7ee5a06612" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cfc6a6eb-8b20-c861-0da9-ad997e75e3b8" executionId="cd6a08ff-a9db-4dc6-b060-c1938905bc3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2a25f93c-e98b-723c-b7fd-2500add11e35" executionId="ec3d3543-9271-45f9-9ff2-70eb362735f4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="922bbd10-1b96-073e-d7c3-6595d1eaa5fc" executionId="839ac532-6228-4fca-9ca2-138263faf64d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d315a28-5a99-bba0-fb44-433e7e8d6147" executionId="84f1acba-8a75-4bff-a694-3edc5bfe61da" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="967febc3-bb92-d1f2-1633-d7d4938adee3" executionId="3d53d71a-0dad-45d8-8651-a6512e74cebd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cd7d4f61-3eef-0f7a-c9ab-89e672062df5" executionId="268727ea-6556-4e45-a94e-9540337a2396" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="05264760-28a9-90cd-c749-a5311139514c" executionId="a95b1ea3-e4f0-4cbc-bee8-0dbeb92c5ddc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da2e9b26-be52-652c-3ae8-3b5a0fb740e4" executionId="3036e084-3346-415f-9d31-3c558eb50c96" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4fd1c8a4-f6b8-642d-f7ba-b3198a2d2784" executionId="3856cff5-0e10-4922-a147-94a11b1c551e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0462f09e-3612-0801-dc99-551e03bde3bc" executionId="977ff34c-c639-4149-adf7-d9d91a19d518" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ba42c61e-dda0-3911-3038-c1eda84ed936" executionId="565dbc10-e392-4b2e-9ad7-7d4e3521200f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="735d0f0b-f098-a016-1fb9-1cda064d546c" executionId="7633f38f-1186-4e9d-bde1-9816669cfa46" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20a82aff-c613-a364-c61c-315c77cae2ab" executionId="6837c373-0a3a-42c8-af90-c6e538821ffd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0a3f5a38-8edb-9f42-a304-01512e53eee6" executionId="7ecbd04a-8d47-42d6-bae4-9e6ddf03b655" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="47a6b08c-0fa5-ae50-090b-157599485132" executionId="9884b65c-0737-48ae-92a5-9622e3bc1ac7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80a86e30-d246-2a26-8f94-58cc6d9b6613" executionId="cf61d1bf-b387-4305-8c89-21875747685a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="목록에 없는 결과" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="로드된 모든 결과" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="27" executed="27" passed="27" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 4.6.0.0: Test execution started&#xD;
+Running all tests in D:\UnityProject\Dice_Warrior\Server\DiceWarrior.BalanceSim.Tests\bin\Release\net10.0\DiceWarrior.BalanceSim.Tests.dll&#xD;
+   NUnit3TestExecutor discovered 27 of 27 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 4.6.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="WOT" outcome="Warning" timestamp="2026-10-23T18:13:03.1939989+09:00">
+        <Text>BLOCKED: ArgumentException: Unknown or repeated argument.</Text>
+      </RunInfo>
+      <RunInfo computerName="WOT" outcome="Warning" timestamp="2026-10-23T18:13:03.1942118+09:00">
+        <Text>BLOCKED: ArgumentException: Arguments require name/value pairs.</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

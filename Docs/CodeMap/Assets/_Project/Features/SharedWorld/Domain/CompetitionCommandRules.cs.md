@@ -12,3 +12,5 @@
 ## TAG_STAT_ELEMENT_05 직접 변경/관계
 
 v4 이동 시 enemyId/typed로그만 함께 비운다. 최종 장비 보상 후 파생스탯을 갱신하고 final 프로필을 연결한다. 세션 후보→검증→원자저장과 명시Restart 흐름은 그대로다.
+
+B0/C7 직접 사용처: 신규 MatchRunner는 Target/Apply를 유일한 경기 진행 경계로 사용하고 HumanDecisionPolicies/OutcomeCollector는 LegalChoices를 읽는다. 기존 명령/AI 코드 수정이나 서버 정산 연결은 없다.

@@ -1,0 +1,50 @@
+{
+  "newCs": 11,
+  "missingCodeMap": null,
+  "sourceHashes": [
+    {
+      "path": "Server/DiceWarrior.BalanceSim/BalanceScenario.cs",
+      "sha256": "166C1B4861AB77C5673CFD3BAB978AA8A7C630F6AB93D269E16E6B3EED566D89"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/HumanDecisionPolicies.cs",
+      "sha256": "A205D21DABFB730DBC69B2378D1DDFF435F7AFE1C217373F1C8A9C00F3C773C3"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/MatchRunner.cs",
+      "sha256": "7FCFDB708D6BEA9EE2F2D59CD66D66E9DD8C51BD4B106526DCCC99D56BDE6A05"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/OutcomeCollector.cs",
+      "sha256": "0C8E2FCF13FA7DF1B1602FEA4367D4A7C72AFDCA60FA69FD8555A7221E9E1176"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/Program.cs",
+      "sha256": "C5E89C488403AB978A15FDD2B6A0F866129FBB055F0901AA2BA7FF6FFAF48FF4"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/ReportWriter.cs",
+      "sha256": "BB849C72D46F1CC81AC857FE54D6CA5AA97D42072D2A1A2324A49C1C2B57F04A"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/SimulationData.cs",
+      "sha256": "C731A3595124E1AAF56946EA737FC3C4A294364D5F850DE8B0E5A4C19DFAE330"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim/Statistics.cs",
+      "sha256": "9D738DC340FF86224A17109057216A78300CA9983B31FDDC20838229B8A614B6"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim.Tests/MatchRunnerTests.cs",
+      "sha256": "8C789E42B0606FDC2A2B92D9DD3EBA3B2C5BF6F7BC388466AEB9F49C169A76A3"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim.Tests/ScenarioTests.cs",
+      "sha256": "CE166380F2BFC108E123940B6C19B80AFFE7AB39DB12A151D563F6E465A1C7F1"
+    },
+    {
+      "path": "Server/DiceWarrior.BalanceSim.Tests/StatisticsTests.cs",
+      "sha256": "90969959EE02A4EBFD868680FCF1C6767FA10895CC554BD6BF0C4A98494496FD"
+    }
+  ]
+}

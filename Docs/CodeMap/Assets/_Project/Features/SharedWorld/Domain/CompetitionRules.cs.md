@@ -12,3 +12,5 @@
 ## TAG_STAT_ELEMENT_05 직접 변경/관계
 
 v4 시작 시 인간 선택과 AI3종/동일 계정 보정을 동결한다. 검증은 CompetitionAttributes.ValidateParticipant, XP상승은 RefreshStats로 CON 파생 HP 증가분 한 번만 적용한다. 기존 v1~v3 분기/순서는 유지한다.
+
+B0/C7 직접 사용처: Server/DiceWarrior.BalanceSim의 MatchRunner가 Start/Human/Validate를, OutcomeCollector가 Rankings를 읽는다. 제품 코드를 바꾸지 않고 동일 소스 ProjectReference로 비권위 실험만 수행한다.

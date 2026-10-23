@@ -3,6 +3,7 @@
 현재 메인은 **고정12지명·인간1+AI3의 공동 모험**이다. 기존1인 모험판은 제거하고 전투·계정·과거 서버 기록에 필요한 공용 코드만 보존한다. 새 경기 순위는 시험 결과이며 영구 재화는 지급하지 않는다.
 
 - [현행 기획 v0.3](Dice_Warrior_GDD_v0.3.md): 게임 규칙과 시험 수치.
+- [B0/C7 시뮬레이션 PLAN](Plans/BALANCE_SIMULATION_07_PLAN.md) / [REPORT](Reports/BALANCE_SIMULATION_07_REPORT.md): v4 규칙을 변경하지 않는 순수 .NET 기준선 실험·결정적 재현·통계/미계측 보고.
 - [Q0/Q1 검증 PLAN](Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md) / [REPORT](Reports/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_REPORT.md): 최종 Unity 회귀와 격리 Mock HTTP·v4 재개/권한 경계 검증.
 - [태그·6스탯·속성 PLAN](Plans/TAG_STAT_ELEMENT_05_PLAN.md) / [REPORT](Reports/TAG_STAT_ELEMENT_05_REPORT.md): v4 출처 보존 태그·6스탯·4피해타입·상성·UI/AI 연결.
 - [모험가 성장 PLAN](Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md) / [REPORT](Reports/GOD_ADVENTURER_GROWTH_04_REPORT.md): v3 RGB 전투·기본 제공 모험가3종/패시브·런 성장·선택/능력치 상세.

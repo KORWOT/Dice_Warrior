@@ -1,0 +1,4407 @@
+{
+  "Status": "PASS",
+  "Manifest": {
+    "SchemaVersion": 1,
+    "GitSha": "2420decbaea896973b8fd62110cc0cd54aa9a530",
+    "RulesVersion": "shared-world-preview-4",
+    "ContentSha256": "06DF1643383740F8D60551952CC36FAA1D5A0E130FDA7FB3A85D5632E11E26BA",
+    "ScenarioId": "v4-baseline-neutral-v1",
+    "PolicyId": "neutral-v1",
+    "MasterSeed": 2965831681,
+    "Seeds": [
+      1210450978,
+      2632060435,
+      2032144611,
+      481682141,
+      3173795818,
+      2415050050,
+      3540565135,
+      1472128675,
+      3862077910,
+      4077855378,
+      4243607228,
+      1372664271,
+      2331356507,
+      3565456500,
+      3830444241,
+      1357800091,
+      185914469,
+      2728372617,
+      2725964190,
+      375624058,
+      3989866716,
+      1705353625,
+      3813393170,
+      4262469190,
+      1187821034,
+      3728877458,
+      3434443658,
+      977559528,
+      2258231732,
+      4014514307,
+      2421102799,
+      428797412,
+      1114894429,
+      3010560577,
+      3825571965,
+      3058199800,
+      3241218931,
+      2294241628,
+      285866582,
+      3861283735,
+      4242239261,
+      3056105377,
+      2740810287,
+      2919891139,
+      743501450,
+      28802826,
+      614419457,
+      1862163278,
+      393148709,
+      3238894848,
+      655961750,
+      1538658707,
+      2835584881,
+      2790689383,
+      2488298666,
+      2708040008,
+      71680616,
+      1025184236,
+      3153162655,
+      765047998,
+      2059492889,
+      1900578200,
+      1586305477,
+      1259152639,
+      499439094,
+      1748016939,
+      23960289,
+      4094532825,
+      3041230162,
+      1191785605,
+      1387081065,
+      386837449,
+      2357900466,
+      2576330300,
+      3846904600,
+      1126390156,
+      709590309,
+      4161799570,
+      3974431139,
+      3606691499,
+      3300485533,
+      3638367832,
+      953368883,
+      1314136169,
+      2171981285,
+      568803745,
+      4088638536,
+      1097270773,
+      2598852153,
+      1948879625,
+      3965303821,
+      2698399169,
+      1151694774,
+      2687209855,
+      2458327005,
+      2146268035,
+      3794932461,
+      2912139674,
+      2394033546,
+      795241323
+    ],
+    "SeedSetSha256": "1A2689906E03B89AB2F4E8A6666EDA2457CF7899EC4F7697C43DD66E40DE1D6A",
+    "Heroes": [
+      "wanderer",
+      "scholar",
+      "vanguard"
+    ],
+    "StartingDie": "balanced",
+    "StartingWeapon": "blade",
+    "Growth": 0,
+    "RunnerSourceSha256": "DD7E292F71ED7575B56E73A966526839370CD6C7C58855DFBBCF2923DE3B0EFD",
+    "Runtime": ".NET 10.0.10",
+    "Os": "Microsoft Windows 10.0.26200",
+    "ProcessorCount": 32,
+    "MaxCommands": 2048,
+    "MatchTimeoutSeconds": 30,
+    "CreatedUtc": "2026-10-23T09:14:03.4139153Z",
+    "SeedGenerator": "xorshift32-13-17-5-v1; prefix stages"
+  },
+  "RequestedMatches": 300,
+  "ExecutedMatches": 300,
+  "SuccessfulMatches": 300,
+  "FailedMatches": 0,
+  "NotRunMatches": 0,
+  "CompletionRate": {
+    "Count": 300,
+    "Denominator": 300,
+    "Estimate": 1,
+    "Ci95": {
+      "Lower": 0.9873570287754538,
+      "Upper": 0.9999999999999998
+    }
+  },
+  "BootstrapIterations": 2000,
+  "BootstrapSeed": 2965831681,
+  "BootstrapMethod": "complete seed blocks; mean(left-right); xorshift32-13-17-5 with rejection sampling; stable FNV-derived metric seeds; percentile nearest-rank 2.5%/97.5%",
+  "Humans": [
+    {
+      "ScenarioHero": "wanderer",
+      "Slot": "human",
+      "Hero": "wanderer",
+      "AiPolicy": null,
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 97,
+          "Denominator": 100,
+          "Estimate": 0.97,
+          "Ci95": {
+            "Lower": 0.9154806357094724,
+            "Upper": 0.9897454759759611
+          }
+        },
+        "eliminated": {
+          "Count": 3,
+          "Denominator": 100,
+          "Estimate": 0.03,
+          "Ci95": {
+            "Lower": 0.010254524024038925,
+            "Upper": 0.0845193642905276
+          }
+        },
+        "rank1": {
+          "Count": 19,
+          "Denominator": 100,
+          "Estimate": 0.19,
+          "Ci95": {
+            "Lower": 0.12514751509768735,
+            "Upper": 0.27778845379064376
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.185,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.7,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.91,
+          "Min": 0,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 67.16,
+          "Min": 0,
+          "P05": 40,
+          "P25": 59,
+          "P50": 71,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 77.34,
+          "Min": 60,
+          "P05": 72,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 84,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.8633714896214889,
+          "Min": 0,
+          "P05": 0.5555555555555556,
+          "P25": 0.7564102564102564,
+          "P50": 0.9583333333333334,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.89,
+          "Min": 1,
+          "P05": 3,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 5,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.26,
+          "Min": 0,
+          "P05": 1,
+          "P25": 6,
+          "P50": 12,
+          "P75": 19,
+          "P95": 29,
+          "Max": 31
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.41,
+          "Min": 1,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 19,
+          "Max": 20
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 133.76,
+          "Min": 12,
+          "P05": 70,
+          "P25": 110,
+          "P50": 137,
+          "P75": 156,
+          "P95": 188,
+          "Max": 214
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 6.61,
+          "Min": 3,
+          "P05": 4,
+          "P25": 5,
+          "P50": 6,
+          "P75": 8,
+          "P95": 13,
+          "Max": 16
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 19,
+          "2": 21,
+          "3": 31,
+          "4": 29
+        },
+        "laps": {
+          "0": 3,
+          "1": 0,
+          "2": 0,
+          "3": 97
+        },
+        "eliminationReason": {
+          "combat-hp-depleted": 3,
+          "not-eliminated": 97
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 3,
+          "succeeded": 97,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "scholar",
+      "Slot": "human",
+      "Hero": "scholar",
+      "AiPolicy": null,
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 97,
+          "Denominator": 100,
+          "Estimate": 0.97,
+          "Ci95": {
+            "Lower": 0.9154806357094724,
+            "Upper": 0.9897454759759611
+          }
+        },
+        "eliminated": {
+          "Count": 3,
+          "Denominator": 100,
+          "Estimate": 0.03,
+          "Ci95": {
+            "Lower": 0.010254524024038925,
+            "Upper": 0.0845193642905276
+          }
+        },
+        "rank1": {
+          "Count": 19,
+          "Denominator": 100,
+          "Estimate": 0.19,
+          "Ci95": {
+            "Lower": 0.12514751509768735,
+            "Upper": 0.27778845379064376
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.185,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.64,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.91,
+          "Min": 0,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 66.26,
+          "Min": 0,
+          "P05": 39,
+          "P25": 59,
+          "P50": 66,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 77.34,
+          "Min": 60,
+          "P05": 72,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 84,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.8514865689865687,
+          "Min": 0,
+          "P05": 0.4722222222222222,
+          "P25": 0.7564102564102564,
+          "P50": 0.8461538461538461,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.89,
+          "Min": 1,
+          "P05": 3,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 5,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.46,
+          "Min": 0,
+          "P05": 2,
+          "P25": 7,
+          "P50": 12,
+          "P75": 19,
+          "P95": 29,
+          "Max": 31
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.45,
+          "Min": 2,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 19,
+          "Max": 20
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 134.42,
+          "Min": 15,
+          "P05": 70,
+          "P25": 111,
+          "P50": 138,
+          "P75": 156,
+          "P95": 188,
+          "Max": 214
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 6.6,
+          "Min": 3,
+          "P05": 4,
+          "P25": 4,
+          "P50": 6,
+          "P75": 8,
+          "P95": 12,
+          "Max": 16
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 19,
+          "2": 24,
+          "3": 31,
+          "4": 26
+        },
+        "laps": {
+          "0": 3,
+          "1": 0,
+          "2": 0,
+          "3": 97
+        },
+        "eliminationReason": {
+          "combat-hp-depleted": 3,
+          "not-eliminated": 97
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 3,
+          "succeeded": 97,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "vanguard",
+      "Slot": "human",
+      "Hero": "vanguard",
+      "AiPolicy": null,
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 96,
+          "Denominator": 100,
+          "Estimate": 0.96,
+          "Ci95": {
+            "Lower": 0.9016292856411208,
+            "Upper": 0.9843366960084523
+          }
+        },
+        "eliminated": {
+          "Count": 4,
+          "Denominator": 100,
+          "Estimate": 0.04,
+          "Ci95": {
+            "Lower": 0.01566330399154762,
+            "Upper": 0.0983707143588792
+          }
+        },
+        "rank1": {
+          "Count": 20,
+          "Denominator": 100,
+          "Estimate": 0.2,
+          "Ci95": {
+            "Lower": 0.1333669333310325,
+            "Upper": 0.2888291655931589
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.2,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.6,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 3,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.88,
+          "Min": 0,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 77.25,
+          "Min": 0,
+          "P05": 34,
+          "P25": 71,
+          "P50": 82,
+          "P75": 90,
+          "P95": 90,
+          "Max": 96
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 89.22,
+          "Min": 72,
+          "P05": 84,
+          "P25": 90,
+          "P50": 90,
+          "P75": 90,
+          "P95": 96,
+          "Max": 96
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.8605843253968253,
+          "Min": 0,
+          "P05": 0.3541666666666667,
+          "P25": 0.7888888888888889,
+          "P50": 0.9111111111111111,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.87,
+          "Min": 1,
+          "P05": 3,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 5,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.38,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 12,
+          "P75": 19,
+          "P95": 29,
+          "Max": 31
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.33,
+          "Min": 2,
+          "P05": 10,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 19,
+          "Max": 20
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 133.11,
+          "Min": 15,
+          "P05": 69,
+          "P25": 110,
+          "P50": 137,
+          "P75": 156,
+          "P95": 188,
+          "Max": 214
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 7.57,
+          "Min": 4,
+          "P05": 4,
+          "P25": 5,
+          "P50": 7,
+          "P75": 9,
+          "P95": 14,
+          "Max": 21
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 20,
+          "2": 24,
+          "3": 32,
+          "4": 24
+        },
+        "laps": {
+          "0": 4,
+          "1": 0,
+          "2": 0,
+          "3": 96
+        },
+        "eliminationReason": {
+          "combat-hp-depleted": 4,
+          "not-eliminated": 96
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 4,
+          "succeeded": 96,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    }
+  ],
+  "AiGroups": [
+    {
+      "ScenarioHero": "wanderer",
+      "Slot": "ai-1",
+      "Hero": "wanderer",
+      "AiPolicy": "war",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 98,
+          "Denominator": 100,
+          "Estimate": 0.98,
+          "Ci95": {
+            "Lower": 0.929988209271456,
+            "Upper": 0.9944980324498376
+          }
+        },
+        "eliminated": {
+          "Count": 2,
+          "Denominator": 100,
+          "Estimate": 0.02,
+          "Ci95": {
+            "Lower": 0.00550196755016235,
+            "Upper": 0.07001179072854388
+          }
+        },
+        "rank1": {
+          "Count": 58,
+          "Denominator": 100,
+          "Estimate": 0.58,
+          "Ci95": {
+            "Lower": 0.4820648670304296,
+            "Upper": 0.6720161732564526
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.58,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 1,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 1.71,
+          "Min": 1,
+          "P05": 1,
+          "P25": 1,
+          "P50": 1,
+          "P75": 2,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.94,
+          "Min": 0,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 59.08,
+          "Min": 0,
+          "P05": 25,
+          "P25": 52,
+          "P50": 59,
+          "P75": 71,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 78.96,
+          "Min": 60,
+          "P05": 78,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 84,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.7456059218559216,
+          "Min": 0,
+          "P05": 0.30952380952380953,
+          "P25": 0.6410256410256411,
+          "P50": 0.7564102564102564,
+          "P75": 0.8846153846153846,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 4.16,
+          "Min": 1,
+          "P05": 4,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 5,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 16.68,
+          "Min": 0,
+          "P05": 1,
+          "P25": 9,
+          "P50": 17,
+          "P75": 23,
+          "P95": 31,
+          "Max": 31
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 16.8,
+          "Min": 1,
+          "P05": 12,
+          "P25": 15,
+          "P50": 17,
+          "P75": 19,
+          "P95": 22,
+          "Max": 24
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 161.5,
+          "Min": 4,
+          "P05": 97,
+          "P25": 138,
+          "P50": 157,
+          "P75": 182,
+          "P95": 227,
+          "Max": 271
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 58,
+          "2": 22,
+          "3": 11,
+          "4": 9
+        },
+        "laps": {
+          "0": 2,
+          "1": 0,
+          "2": 0,
+          "3": 98
+        },
+        "eliminationReason": {
+          "combat-hp-depleted": 2,
+          "not-eliminated": 98
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 2,
+          "succeeded": 98,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "wanderer",
+      "Slot": "ai-2",
+      "Hero": "scholar",
+      "AiPolicy": "wisdom",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 100,
+          "Denominator": 100,
+          "Estimate": 1,
+          "Ci95": {
+            "Lower": 0.9630065017930143,
+            "Upper": 1
+          }
+        },
+        "eliminated": {
+          "Count": 0,
+          "Denominator": 100,
+          "Estimate": 0,
+          "Ci95": {
+            "Lower": 3.469446951953614E-18,
+            "Upper": 0.03699349820698568
+          }
+        },
+        "rank1": {
+          "Count": 14,
+          "Denominator": 100,
+          "Estimate": 0.14,
+          "Ci95": {
+            "Lower": 0.08526343659939134,
+            "Upper": 0.22137188210963837
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.135,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.77,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3,
+          "Min": 3,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 69.15,
+          "Min": 51,
+          "P05": 56,
+          "P25": 59,
+          "P50": 65,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 77.94,
+          "Min": 72,
+          "P05": 78,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.8869337606837604,
+          "Min": 0.6538461538461539,
+          "P05": 0.7307692307692307,
+          "P25": 0.7564102564102564,
+          "P50": 0.8333333333333334,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.99,
+          "Min": 3,
+          "P05": 4,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 4,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.07,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 13,
+          "P75": 19,
+          "P95": 26,
+          "Max": 30
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.33,
+          "Min": 9,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 17,
+          "Max": 19
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 92.53,
+          "Min": 44,
+          "P05": 66,
+          "P25": 79,
+          "P50": 92,
+          "P75": 107,
+          "P95": 117,
+          "Max": 130
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 14,
+          "2": 25,
+          "3": 31,
+          "4": 30
+        },
+        "laps": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 100
+        },
+        "eliminationReason": {
+          "not-eliminated": 100
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 0,
+          "succeeded": 100,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "wanderer",
+      "Slot": "ai-3",
+      "Hero": "vanguard",
+      "AiPolicy": "luck",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 100,
+          "Denominator": 100,
+          "Estimate": 1,
+          "Ci95": {
+            "Lower": 0.9630065017930143,
+            "Upper": 1
+          }
+        },
+        "eliminated": {
+          "Count": 0,
+          "Denominator": 100,
+          "Estimate": 0,
+          "Ci95": {
+            "Lower": 3.469446951953614E-18,
+            "Upper": 0.03699349820698568
+          }
+        },
+        "rank1": {
+          "Count": 10,
+          "Denominator": 100,
+          "Estimate": 0.1,
+          "Ci95": {
+            "Lower": 0.0552291370606751,
+            "Upper": 0.17436566150491345
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.1,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.8,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3,
+          "Min": 3,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 64.92,
+          "Min": 23,
+          "P05": 35,
+          "P25": 53,
+          "P50": 65,
+          "P75": 78,
+          "P95": 90,
+          "Max": 92
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 89.04,
+          "Min": 84,
+          "P05": 84,
+          "P25": 90,
+          "P50": 90,
+          "P75": 90,
+          "P95": 90,
+          "Max": 96
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.728973214285714,
+          "Min": 0.27380952380952384,
+          "P05": 0.3888888888888889,
+          "P25": 0.5888888888888889,
+          "P50": 0.7333333333333333,
+          "P75": 0.8555555555555555,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.84,
+          "Min": 3,
+          "P05": 3,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 4,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.25,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 14,
+          "P75": 19,
+          "P95": 25,
+          "Max": 30
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.31,
+          "Min": 9,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 18,
+          "Max": 21
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 170.62,
+          "Min": 71,
+          "P05": 99,
+          "P25": 147,
+          "P50": 170,
+          "P75": 192,
+          "P95": 239,
+          "Max": 275
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 10,
+          "2": 31,
+          "3": 28,
+          "4": 31
+        },
+        "laps": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 100
+        },
+        "eliminationReason": {
+          "not-eliminated": 100
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 0,
+          "succeeded": 100,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "scholar",
+      "Slot": "ai-1",
+      "Hero": "wanderer",
+      "AiPolicy": "war",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 98,
+          "Denominator": 100,
+          "Estimate": 0.98,
+          "Ci95": {
+            "Lower": 0.929988209271456,
+            "Upper": 0.9944980324498376
+          }
+        },
+        "eliminated": {
+          "Count": 2,
+          "Denominator": 100,
+          "Estimate": 0.02,
+          "Ci95": {
+            "Lower": 0.00550196755016235,
+            "Upper": 0.07001179072854388
+          }
+        },
+        "rank1": {
+          "Count": 58,
+          "Denominator": 100,
+          "Estimate": 0.58,
+          "Ci95": {
+            "Lower": 0.4820648670304296,
+            "Upper": 0.6720161732564526
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.58,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 1,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 1.71,
+          "Min": 1,
+          "P05": 1,
+          "P25": 1,
+          "P50": 1,
+          "P75": 2,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.94,
+          "Min": 0,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 59.08,
+          "Min": 0,
+          "P05": 25,
+          "P25": 52,
+          "P50": 59,
+          "P75": 71,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 78.96,
+          "Min": 60,
+          "P05": 78,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 84,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.7456059218559216,
+          "Min": 0,
+          "P05": 0.30952380952380953,
+          "P25": 0.6410256410256411,
+          "P50": 0.7564102564102564,
+          "P75": 0.8846153846153846,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 4.16,
+          "Min": 1,
+          "P05": 4,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 5,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 16.68,
+          "Min": 0,
+          "P05": 1,
+          "P25": 9,
+          "P50": 17,
+          "P75": 23,
+          "P95": 31,
+          "Max": 31
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 16.8,
+          "Min": 1,
+          "P05": 12,
+          "P25": 15,
+          "P50": 17,
+          "P75": 19,
+          "P95": 22,
+          "Max": 24
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 161.5,
+          "Min": 4,
+          "P05": 97,
+          "P25": 138,
+          "P50": 157,
+          "P75": 182,
+          "P95": 227,
+          "Max": 271
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 58,
+          "2": 22,
+          "3": 11,
+          "4": 9
+        },
+        "laps": {
+          "0": 2,
+          "1": 0,
+          "2": 0,
+          "3": 98
+        },
+        "eliminationReason": {
+          "combat-hp-depleted": 2,
+          "not-eliminated": 98
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 2,
+          "succeeded": 98,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "scholar",
+      "Slot": "ai-2",
+      "Hero": "scholar",
+      "AiPolicy": "wisdom",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 100,
+          "Denominator": 100,
+          "Estimate": 1,
+          "Ci95": {
+            "Lower": 0.9630065017930143,
+            "Upper": 1
+          }
+        },
+        "eliminated": {
+          "Count": 0,
+          "Denominator": 100,
+          "Estimate": 0,
+          "Ci95": {
+            "Lower": 3.469446951953614E-18,
+            "Upper": 0.03699349820698568
+          }
+        },
+        "rank1": {
+          "Count": 14,
+          "Denominator": 100,
+          "Estimate": 0.14,
+          "Ci95": {
+            "Lower": 0.08526343659939134,
+            "Upper": 0.22137188210963837
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.135,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.78,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3,
+          "Min": 3,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 69.15,
+          "Min": 51,
+          "P05": 56,
+          "P25": 59,
+          "P50": 65,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 77.94,
+          "Min": 72,
+          "P05": 78,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.8869337606837604,
+          "Min": 0.6538461538461539,
+          "P05": 0.7307692307692307,
+          "P25": 0.7564102564102564,
+          "P50": 0.8333333333333334,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.99,
+          "Min": 3,
+          "P05": 4,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 4,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.07,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 13,
+          "P75": 19,
+          "P95": 26,
+          "Max": 30
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.33,
+          "Min": 9,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 17,
+          "Max": 19
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 92.53,
+          "Min": 44,
+          "P05": 66,
+          "P25": 79,
+          "P50": 92,
+          "P75": 107,
+          "P95": 117,
+          "Max": 130
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 14,
+          "2": 25,
+          "3": 30,
+          "4": 31
+        },
+        "laps": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 100
+        },
+        "eliminationReason": {
+          "not-eliminated": 100
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 0,
+          "succeeded": 100,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "scholar",
+      "Slot": "ai-3",
+      "Hero": "vanguard",
+      "AiPolicy": "luck",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 100,
+          "Denominator": 100,
+          "Estimate": 1,
+          "Ci95": {
+            "Lower": 0.9630065017930143,
+            "Upper": 1
+          }
+        },
+        "eliminated": {
+          "Count": 0,
+          "Denominator": 100,
+          "Estimate": 0,
+          "Ci95": {
+            "Lower": 3.469446951953614E-18,
+            "Upper": 0.03699349820698568
+          }
+        },
+        "rank1": {
+          "Count": 10,
+          "Denominator": 100,
+          "Estimate": 0.1,
+          "Ci95": {
+            "Lower": 0.0552291370606751,
+            "Upper": 0.17436566150491345
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.1,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.83,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3,
+          "Min": 3,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 64.92,
+          "Min": 23,
+          "P05": 35,
+          "P25": 53,
+          "P50": 65,
+          "P75": 78,
+          "P95": 90,
+          "Max": 92
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 89.04,
+          "Min": 84,
+          "P05": 84,
+          "P25": 90,
+          "P50": 90,
+          "P75": 90,
+          "P95": 90,
+          "Max": 96
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.728973214285714,
+          "Min": 0.27380952380952384,
+          "P05": 0.3888888888888889,
+          "P25": 0.5888888888888889,
+          "P50": 0.7333333333333333,
+          "P75": 0.8555555555555555,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.84,
+          "Min": 3,
+          "P05": 3,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 4,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.25,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 14,
+          "P75": 19,
+          "P95": 25,
+          "Max": 30
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.31,
+          "Min": 9,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 18,
+          "Max": 21
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 170.62,
+          "Min": 71,
+          "P05": 99,
+          "P25": 147,
+          "P50": 170,
+          "P75": 192,
+          "P95": 239,
+          "Max": 275
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 10,
+          "2": 29,
+          "3": 29,
+          "4": 32
+        },
+        "laps": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 100
+        },
+        "eliminationReason": {
+          "not-eliminated": 100
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 0,
+          "succeeded": 100,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "vanguard",
+      "Slot": "ai-1",
+      "Hero": "wanderer",
+      "AiPolicy": "war",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 98,
+          "Denominator": 100,
+          "Estimate": 0.98,
+          "Ci95": {
+            "Lower": 0.929988209271456,
+            "Upper": 0.9944980324498376
+          }
+        },
+        "eliminated": {
+          "Count": 2,
+          "Denominator": 100,
+          "Estimate": 0.02,
+          "Ci95": {
+            "Lower": 0.00550196755016235,
+            "Upper": 0.07001179072854388
+          }
+        },
+        "rank1": {
+          "Count": 58,
+          "Denominator": 100,
+          "Estimate": 0.58,
+          "Ci95": {
+            "Lower": 0.4820648670304296,
+            "Upper": 0.6720161732564526
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.58,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 1,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 1.71,
+          "Min": 1,
+          "P05": 1,
+          "P25": 1,
+          "P50": 1,
+          "P75": 2,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.94,
+          "Min": 0,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 59.08,
+          "Min": 0,
+          "P05": 25,
+          "P25": 52,
+          "P50": 59,
+          "P75": 71,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 78.96,
+          "Min": 60,
+          "P05": 78,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 84,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.7456059218559216,
+          "Min": 0,
+          "P05": 0.30952380952380953,
+          "P25": 0.6410256410256411,
+          "P50": 0.7564102564102564,
+          "P75": 0.8846153846153846,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 4.16,
+          "Min": 1,
+          "P05": 4,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 5,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 16.68,
+          "Min": 0,
+          "P05": 1,
+          "P25": 9,
+          "P50": 17,
+          "P75": 23,
+          "P95": 31,
+          "Max": 31
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 16.8,
+          "Min": 1,
+          "P05": 12,
+          "P25": 15,
+          "P50": 17,
+          "P75": 19,
+          "P95": 22,
+          "Max": 24
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 161.5,
+          "Min": 4,
+          "P05": 97,
+          "P25": 138,
+          "P50": 157,
+          "P75": 182,
+          "P95": 227,
+          "Max": 271
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 58,
+          "2": 22,
+          "3": 11,
+          "4": 9
+        },
+        "laps": {
+          "0": 2,
+          "1": 0,
+          "2": 0,
+          "3": 98
+        },
+        "eliminationReason": {
+          "combat-hp-depleted": 2,
+          "not-eliminated": 98
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 2,
+          "succeeded": 98,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "vanguard",
+      "Slot": "ai-2",
+      "Hero": "scholar",
+      "AiPolicy": "wisdom",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 100,
+          "Denominator": 100,
+          "Estimate": 1,
+          "Ci95": {
+            "Lower": 0.9630065017930143,
+            "Upper": 1
+          }
+        },
+        "eliminated": {
+          "Count": 0,
+          "Denominator": 100,
+          "Estimate": 0,
+          "Ci95": {
+            "Lower": 3.469446951953614E-18,
+            "Upper": 0.03699349820698568
+          }
+        },
+        "rank1": {
+          "Count": 12,
+          "Denominator": 100,
+          "Estimate": 0.12,
+          "Ci95": {
+            "Lower": 0.06999406437019488,
+            "Upper": 0.19812099426711421
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.12,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.82,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3,
+          "Min": 3,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 69.15,
+          "Min": 51,
+          "P05": 56,
+          "P25": 59,
+          "P50": 65,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 77.94,
+          "Min": 72,
+          "P05": 78,
+          "P25": 78,
+          "P50": 78,
+          "P75": 78,
+          "P95": 78,
+          "Max": 84
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.8869337606837604,
+          "Min": 0.6538461538461539,
+          "P05": 0.7307692307692307,
+          "P25": 0.7564102564102564,
+          "P50": 0.8333333333333334,
+          "P75": 1,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.99,
+          "Min": 3,
+          "P05": 4,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 4,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.07,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 13,
+          "P75": 19,
+          "P95": 26,
+          "Max": 30
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.33,
+          "Min": 9,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 17,
+          "Max": 19
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 92.53,
+          "Min": 44,
+          "P05": 66,
+          "P25": 79,
+          "P50": 92,
+          "P75": 107,
+          "P95": 117,
+          "Max": 130
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 12,
+          "2": 26,
+          "3": 30,
+          "4": 32
+        },
+        "laps": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 100
+        },
+        "eliminationReason": {
+          "not-eliminated": 100
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 0,
+          "succeeded": 100,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    },
+    {
+      "ScenarioHero": "vanguard",
+      "Slot": "ai-3",
+      "Hero": "vanguard",
+      "AiPolicy": "luck",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Rates": {
+        "trialSucceeded": {
+          "Count": 100,
+          "Denominator": 100,
+          "Estimate": 1,
+          "Ci95": {
+            "Lower": 0.9630065017930143,
+            "Upper": 1
+          }
+        },
+        "eliminated": {
+          "Count": 0,
+          "Denominator": 100,
+          "Estimate": 0,
+          "Ci95": {
+            "Lower": 3.469446951953614E-18,
+            "Upper": 0.03699349820698568
+          }
+        },
+        "rank1": {
+          "Count": 10,
+          "Denominator": 100,
+          "Estimate": 0.1,
+          "Ci95": {
+            "Lower": 0.0552291370606751,
+            "Upper": 0.17436566150491345
+          }
+        }
+      },
+      "Distributions": {
+        "fractional1st": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.1,
+          "Min": 0,
+          "P05": 0,
+          "P25": 0,
+          "P50": 0,
+          "P75": 0,
+          "P95": 1,
+          "Max": 1
+        },
+        "rank": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 2.87,
+          "Min": 1,
+          "P05": 1,
+          "P25": 2,
+          "P50": 3,
+          "P75": 4,
+          "P95": 4,
+          "Max": 4
+        },
+        "laps": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3,
+          "Min": 3,
+          "P05": 3,
+          "P25": 3,
+          "P50": 3,
+          "P75": 3,
+          "P95": 3,
+          "Max": 3
+        },
+        "hp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 64.92,
+          "Min": 23,
+          "P05": 35,
+          "P25": 53,
+          "P50": 65,
+          "P75": 78,
+          "P95": 90,
+          "Max": 92
+        },
+        "maxHp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 89.04,
+          "Min": 84,
+          "P05": 84,
+          "P25": 90,
+          "P50": 90,
+          "P75": 90,
+          "P95": 90,
+          "Max": 96
+        },
+        "hpRatio": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 0.728973214285714,
+          "Min": 0.27380952380952384,
+          "P05": 0.3888888888888889,
+          "P25": 0.5888888888888889,
+          "P50": 0.7333333333333333,
+          "P75": 0.8555555555555555,
+          "P95": 1,
+          "Max": 1
+        },
+        "level": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 3.84,
+          "Min": 3,
+          "P05": 3,
+          "P25": 4,
+          "P50": 4,
+          "P75": 4,
+          "P95": 4,
+          "Max": 5
+        },
+        "xp": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.25,
+          "Min": 0,
+          "P05": 1,
+          "P25": 7,
+          "P50": 14,
+          "P75": 19,
+          "P95": 25,
+          "Max": 30
+        },
+        "honor": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 14.31,
+          "Min": 9,
+          "P05": 11,
+          "P25": 13,
+          "P50": 14,
+          "P75": 16,
+          "P95": 18,
+          "Max": 21
+        },
+        "gold": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 170.62,
+          "Min": 71,
+          "P05": 99,
+          "P25": 147,
+          "P50": 170,
+          "P75": 192,
+          "P95": 239,
+          "Max": 275
+        },
+        "maxEncounterTurns": {
+          "SampleCount": 0,
+          "MissingCount": 100,
+          "Mean": null,
+          "Min": null,
+          "P05": null,
+          "P25": null,
+          "P50": null,
+          "P75": null,
+          "P95": null,
+          "Max": null
+        }
+      },
+      "Frequencies": {
+        "rank": {
+          "1": 10,
+          "2": 28,
+          "3": 27,
+          "4": 35
+        },
+        "laps": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 100
+        },
+        "eliminationReason": {
+          "not-eliminated": 100
+        },
+        "finalTrialStatus": {
+          "eliminated-at-final-trial": 0,
+          "not-reached": 0,
+          "succeeded": 100,
+          "unfinished-at-final-trial": 0
+        }
+      }
+    }
+  ],
+  "MatchGroups": [
+    {
+      "Hero": "wanderer",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Distributions": {
+        "worldRound": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.53,
+          "Min": 11,
+          "P05": 12,
+          "P25": 13,
+          "P50": 14,
+          "P75": 14,
+          "P95": 15,
+          "Max": 17
+        },
+        "humanCommands": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 44.59,
+          "Min": 29,
+          "P05": 33,
+          "P25": 39,
+          "P50": 44,
+          "P75": 50,
+          "P95": 58,
+          "Max": 61
+        },
+        "elapsedMs": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 27.86211100000001,
+          "Min": 16.5673,
+          "P05": 17.5817,
+          "P25": 20.5653,
+          "P50": 22.9243,
+          "P75": 25.8086,
+          "P95": 42.2208,
+          "Max": 153.2918
+        }
+      },
+      "Frequencies": {
+        "endReason": {
+          "all-complete": 100,
+          "round-limit": 0
+        },
+        "trialWinnerCount": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 5,
+          "4": 95
+        },
+        "rank1Count": {
+          "1": 99,
+          "2": 1,
+          "3": 0,
+          "4": 0
+        },
+        "rankPattern": {
+          "1/1/3/4": 1,
+          "1/2/3/3": 1,
+          "1/2/3/4": 98
+        },
+        "hasRankTie": {
+          "no": 98,
+          "yes": 2
+        },
+        "humanHpTiebreakExposure": {
+          "no": 75,
+          "yes": 25
+        }
+      }
+    },
+    {
+      "Hero": "scholar",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Distributions": {
+        "worldRound": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.53,
+          "Min": 11,
+          "P05": 12,
+          "P25": 13,
+          "P50": 14,
+          "P75": 14,
+          "P95": 15,
+          "Max": 17
+        },
+        "humanCommands": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 44.12,
+          "Min": 29,
+          "P05": 34,
+          "P25": 38,
+          "P50": 43,
+          "P75": 49,
+          "P95": 57,
+          "Max": 65
+        },
+        "elapsedMs": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 26.428584999999998,
+          "Min": 16.4581,
+          "P05": 17.6683,
+          "P25": 19.8723,
+          "P50": 22.4192,
+          "P75": 25.8151,
+          "P95": 41.2877,
+          "Max": 127.1931
+        }
+      },
+      "Frequencies": {
+        "endReason": {
+          "all-complete": 100,
+          "round-limit": 0
+        },
+        "trialWinnerCount": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 5,
+          "4": 95
+        },
+        "rank1Count": {
+          "1": 99,
+          "2": 1,
+          "3": 0,
+          "4": 0
+        },
+        "rankPattern": {
+          "1/1/3/4": 1,
+          "1/2/2/4": 1,
+          "1/2/3/3": 2,
+          "1/2/3/4": 96
+        },
+        "hasRankTie": {
+          "no": 96,
+          "yes": 4
+        },
+        "humanHpTiebreakExposure": {
+          "no": 77,
+          "yes": 23
+        }
+      }
+    },
+    {
+      "Hero": "vanguard",
+      "SampleCount": 100,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Distributions": {
+        "worldRound": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 13.53,
+          "Min": 11,
+          "P05": 12,
+          "P25": 13,
+          "P50": 14,
+          "P75": 14,
+          "P95": 15,
+          "Max": 17
+        },
+        "humanCommands": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 46.07,
+          "Min": 29,
+          "P05": 34,
+          "P25": 40,
+          "P50": 45,
+          "P75": 53,
+          "P95": 58,
+          "Max": 63
+        },
+        "elapsedMs": {
+          "SampleCount": 100,
+          "MissingCount": 0,
+          "Mean": 26.588394000000005,
+          "Min": 14.9005,
+          "P05": 17.9061,
+          "P25": 20.497,
+          "P50": 23.2591,
+          "P75": 26.3418,
+          "P95": 41.2955,
+          "Max": 118.5409
+        }
+      },
+      "Frequencies": {
+        "endReason": {
+          "all-complete": 100,
+          "round-limit": 0
+        },
+        "trialWinnerCount": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 6,
+          "4": 94
+        },
+        "rank1Count": {
+          "1": 100,
+          "2": 0,
+          "3": 0,
+          "4": 0
+        },
+        "rankPattern": {
+          "1/2/3/4": 100
+        },
+        "hasRankTie": {
+          "no": 100,
+          "yes": 0
+        },
+        "humanHpTiebreakExposure": {
+          "no": 74,
+          "yes": 26
+        }
+      }
+    }
+  ],
+  "HumanDetails": [
+    {
+      "Hero": "wanderer",
+      "Status": "MEASURED",
+      "MeasuredMatches": 100,
+      "MissingMatches": 0,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Totals": {
+        "combatEntries": 497,
+        "combatTurns": 1955,
+        "eventGoldCost": 668,
+        "eventHpCost": 0,
+        "eventGoldReward": 8515,
+        "eventXpReward": 4010,
+        "eventHonorReward": 956,
+        "eventHealOffered": 5772,
+        "combatHpDamageTaken": 4281,
+        "combatDamageBlocked": 6326
+      },
+      "Counts": {
+        "commandsByKind": {
+          "advance": 202,
+          "choose": 860,
+          "combat": 1955,
+          "lap": 291,
+          "travel": 1151
+        },
+        "offeredByKind": {
+          "Combat": 667,
+          "Die": 68,
+          "Gear": 237,
+          "Heal": 350,
+          "Risk": 398,
+          "Study": 783
+        },
+        "legalOfferedByKind": {
+          "Combat": 667,
+          "Die": 47,
+          "Gear": 183,
+          "Heal": 339,
+          "Risk": 397,
+          "Study": 783
+        },
+        "selectedByKind": {
+          "Combat": 400,
+          "Die": 3,
+          "Gear": 10,
+          "Heal": 339,
+          "Study": 108
+        },
+        "selectedById": {
+          "altar-pray": 83,
+          "citadel-elite": 109,
+          "forest-herb": 63,
+          "gate-duel": 25,
+          "gate-elite": 69,
+          "harbor-heal": 34,
+          "harbor-work": 11,
+          "hill-rest": 82,
+          "library-read": 27,
+          "library-trial": 54,
+          "market-charm": 6,
+          "market-die": 3,
+          "market-mail": 4,
+          "market-news": 70,
+          "pass-bandit": 67,
+          "rift-fight": 76,
+          "well-rest": 77
+        },
+        "lapRewardsById": {
+          "aegis": 97,
+          "balanced": 194
+        },
+        "equipmentGainedById": {
+          "aegis": 97,
+          "charm": 5,
+          "mail": 4
+        },
+        "diceGainedById": {
+          "arcane": 3,
+          "balanced": 194
+        }
+      },
+      "Skills": {
+        "arc-slash": {
+          "Counters": {
+            "applied": 192,
+            "skippedEnemyDefeated": 13,
+            "hpDamage": 3369,
+            "shieldAbsorbed": 449,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 192,
+            "MissingCount": 0,
+            "Mean": 17.546875,
+            "Min": 1,
+            "P05": 2,
+            "P25": 12,
+            "P50": 20,
+            "P75": 25,
+            "P95": 27,
+            "Max": 28
+          }
+        },
+        "bolt": {
+          "Counters": {
+            "applied": 325,
+            "skippedEnemyDefeated": 1,
+            "hpDamage": 1479,
+            "shieldAbsorbed": 474,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 325,
+            "MissingCount": 0,
+            "Mean": 4.550769230769231,
+            "Min": 0,
+            "P05": 0,
+            "P25": 1,
+            "P50": 5,
+            "P75": 7,
+            "P95": 8,
+            "Max": 11
+          }
+        },
+        "citadel": {
+          "Counters": {
+            "applied": 84,
+            "skippedEnemyDefeated": 0,
+            "hpDamage": 1046,
+            "shieldAbsorbed": 288,
+            "blockGenerated": 2040
+          },
+          "HpDamage": {
+            "SampleCount": 84,
+            "MissingCount": 0,
+            "Mean": 12.452380952380953,
+            "Min": 1,
+            "P05": 2,
+            "P25": 5,
+            "P50": 15,
+            "P75": 18,
+            "P95": 20,
+            "Max": 21
+          }
+        },
+        "fire-bolt": {
+          "Counters": {
+            "applied": 102,
+            "skippedEnemyDefeated": 2,
+            "hpDamage": 1365,
+            "shieldAbsorbed": 189,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 102,
+            "MissingCount": 0,
+            "Mean": 13.382352941176471,
+            "Min": 1,
+            "P05": 4,
+            "P25": 9,
+            "P50": 16,
+            "P75": 17,
+            "P95": 22,
+            "Max": 22
+          }
+        },
+        "flame": {
+          "Counters": {
+            "applied": 501,
+            "skippedEnemyDefeated": 20,
+            "hpDamage": 2741,
+            "shieldAbsorbed": 734,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 501,
+            "MissingCount": 0,
+            "Mean": 5.471057884231537,
+            "Min": 0,
+            "P05": 0,
+            "P25": 4,
+            "P50": 7,
+            "P75": 8,
+            "P95": 8,
+            "Max": 11
+          }
+        },
+        "flame-arc": {
+          "Counters": {
+            "applied": 52,
+            "skippedEnemyDefeated": 0,
+            "hpDamage": 956,
+            "shieldAbsorbed": 180,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 52,
+            "MissingCount": 0,
+            "Mean": 18.384615384615383,
+            "Min": 1,
+            "P05": 3,
+            "P25": 13,
+            "P50": 18,
+            "P75": 25,
+            "P95": 36,
+            "Max": 36
+          }
+        },
+        "guard": {
+          "Counters": {
+            "applied": 921,
+            "skippedEnemyDefeated": 12,
+            "hpDamage": 0,
+            "shieldAbsorbed": 0,
+            "blockGenerated": 10064
+          },
+          "HpDamage": {
+            "SampleCount": 921,
+            "MissingCount": 0,
+            "Mean": 0,
+            "Min": 0,
+            "P05": 0,
+            "P25": 0,
+            "P50": 0,
+            "P75": 0,
+            "P95": 0,
+            "Max": 0
+          }
+        },
+        "guard-slash": {
+          "Counters": {
+            "applied": 256,
+            "skippedEnemyDefeated": 24,
+            "hpDamage": 2824,
+            "shieldAbsorbed": 323,
+            "blockGenerated": 3605
+          },
+          "HpDamage": {
+            "SampleCount": 256,
+            "MissingCount": 0,
+            "Mean": 11.03125,
+            "Min": 1,
+            "P05": 2,
+            "P25": 8,
+            "P50": 13,
+            "P75": 15,
+            "P95": 15,
+            "Max": 18
+          }
+        },
+        "slash": {
+          "Counters": {
+            "applied": 609,
+            "skippedEnemyDefeated": 40,
+            "hpDamage": 5811,
+            "shieldAbsorbed": 1138,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 609,
+            "MissingCount": 0,
+            "Mean": 9.541871921182265,
+            "Min": 1,
+            "P05": 2,
+            "P25": 5,
+            "P50": 11,
+            "P75": 14,
+            "P95": 15,
+            "Max": 16
+          }
+        }
+      },
+      "DamageTypes": {
+        "Fire": {
+          "applied": 655,
+          "hpDamage": 5062,
+          "shieldAbsorbed": 1103
+        },
+        "Ice": {
+          "applied": 192,
+          "hpDamage": 3369,
+          "shieldAbsorbed": 449
+        },
+        "Lightning": {
+          "applied": 325,
+          "hpDamage": 1479,
+          "shieldAbsorbed": 474
+        },
+        "Physical": {
+          "applied": 1870,
+          "hpDamage": 9681,
+          "shieldAbsorbed": 1749
+        }
+      },
+      "Enemies": {
+        "citadel-elite": {
+          "entries": 109,
+          "turns": 508,
+          "defeated": 108,
+          "hpDamage": 3680,
+          "shieldAbsorbed": 877,
+          "retaliationHpDamage": 1529,
+          "retaliationBlocked": 1192
+        },
+        "final": {
+          "entries": 97,
+          "turns": 382,
+          "defeated": 97,
+          "hpDamage": 6596,
+          "shieldAbsorbed": 1260,
+          "retaliationHpDamage": 747,
+          "retaliationBlocked": 2287
+        },
+        "gate-duel": {
+          "entries": 25,
+          "turns": 122,
+          "defeated": 25,
+          "hpDamage": 400,
+          "shieldAbsorbed": 96,
+          "retaliationHpDamage": 227,
+          "retaliationBlocked": 244
+        },
+        "gate-elite": {
+          "entries": 69,
+          "turns": 247,
+          "defeated": 69,
+          "hpDamage": 2740,
+          "shieldAbsorbed": 471,
+          "retaliationHpDamage": 510,
+          "retaliationBlocked": 888
+        },
+        "library-trial": {
+          "entries": 54,
+          "turns": 148,
+          "defeated": 54,
+          "hpDamage": 1806,
+          "shieldAbsorbed": 289,
+          "retaliationHpDamage": 116,
+          "retaliationBlocked": 334
+        },
+        "pass-bandit": {
+          "entries": 67,
+          "turns": 203,
+          "defeated": 67,
+          "hpDamage": 1640,
+          "shieldAbsorbed": 250,
+          "retaliationHpDamage": 277,
+          "retaliationBlocked": 419
+        },
+        "rift-fight": {
+          "entries": 76,
+          "turns": 345,
+          "defeated": 74,
+          "hpDamage": 2729,
+          "shieldAbsorbed": 532,
+          "retaliationHpDamage": 875,
+          "retaliationBlocked": 962
+        }
+      }
+    },
+    {
+      "Hero": "scholar",
+      "Status": "MEASURED",
+      "MeasuredMatches": 100,
+      "MissingMatches": 0,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Totals": {
+        "combatEntries": 499,
+        "combatTurns": 1908,
+        "eventGoldCost": 656,
+        "eventHpCost": 0,
+        "eventGoldReward": 8569,
+        "eventXpReward": 4030,
+        "eventHonorReward": 960,
+        "eventHealOffered": 5713,
+        "combatHpDamageTaken": 4316,
+        "combatDamageBlocked": 6116
+      },
+      "Counts": {
+        "commandsByKind": {
+          "advance": 202,
+          "choose": 860,
+          "combat": 1908,
+          "lap": 291,
+          "travel": 1151
+        },
+        "offeredByKind": {
+          "Combat": 667,
+          "Die": 68,
+          "Gear": 236,
+          "Heal": 347,
+          "Risk": 400,
+          "Study": 784
+        },
+        "legalOfferedByKind": {
+          "Combat": 667,
+          "Die": 47,
+          "Gear": 182,
+          "Heal": 336,
+          "Risk": 399,
+          "Study": 784
+        },
+        "selectedByKind": {
+          "Combat": 402,
+          "Die": 3,
+          "Gear": 10,
+          "Heal": 336,
+          "Study": 109
+        },
+        "selectedById": {
+          "altar-pray": 83,
+          "citadel-elite": 111,
+          "forest-herb": 62,
+          "gate-duel": 25,
+          "gate-elite": 69,
+          "harbor-heal": 33,
+          "harbor-work": 11,
+          "hill-rest": 82,
+          "library-read": 28,
+          "library-trial": 53,
+          "market-charm": 6,
+          "market-die": 3,
+          "market-mail": 4,
+          "market-news": 70,
+          "pass-bandit": 67,
+          "rift-fight": 77,
+          "well-rest": 76
+        },
+        "lapRewardsById": {
+          "aegis": 97,
+          "balanced": 194
+        },
+        "equipmentGainedById": {
+          "aegis": 97,
+          "charm": 5,
+          "mail": 4
+        },
+        "diceGainedById": {
+          "arcane": 3,
+          "balanced": 194
+        }
+      },
+      "Skills": {
+        "arc-slash": {
+          "Counters": {
+            "applied": 185,
+            "skippedEnemyDefeated": 11,
+            "hpDamage": 3066,
+            "shieldAbsorbed": 333,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 185,
+            "MissingCount": 0,
+            "Mean": 16.572972972972973,
+            "Min": 1,
+            "P05": 3,
+            "P25": 10,
+            "P50": 20,
+            "P75": 23,
+            "P95": 25,
+            "Max": 25
+          }
+        },
+        "bolt": {
+          "Counters": {
+            "applied": 318,
+            "skippedEnemyDefeated": 10,
+            "hpDamage": 2317,
+            "shieldAbsorbed": 658,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 318,
+            "MissingCount": 0,
+            "Mean": 7.286163522012578,
+            "Min": 0,
+            "P05": 1,
+            "P25": 3,
+            "P50": 9,
+            "P75": 11,
+            "P95": 12,
+            "Max": 15
+          }
+        },
+        "citadel": {
+          "Counters": {
+            "applied": 82,
+            "skippedEnemyDefeated": 0,
+            "hpDamage": 1026,
+            "shieldAbsorbed": 224,
+            "blockGenerated": 2021
+          },
+          "HpDamage": {
+            "SampleCount": 82,
+            "MissingCount": 0,
+            "Mean": 12.512195121951219,
+            "Min": 1,
+            "P05": 3,
+            "P25": 6,
+            "P50": 16,
+            "P75": 17,
+            "P95": 19,
+            "Max": 20
+          }
+        },
+        "fire-bolt": {
+          "Counters": {
+            "applied": 98,
+            "skippedEnemyDefeated": 4,
+            "hpDamage": 1674,
+            "shieldAbsorbed": 101,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 98,
+            "MissingCount": 0,
+            "Mean": 17.081632653061224,
+            "Min": 1,
+            "P05": 4,
+            "P25": 14,
+            "P50": 19,
+            "P75": 20,
+            "P95": 26,
+            "Max": 27
+          }
+        },
+        "flame": {
+          "Counters": {
+            "applied": 509,
+            "skippedEnemyDefeated": 24,
+            "hpDamage": 4391,
+            "shieldAbsorbed": 1028,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 509,
+            "MissingCount": 0,
+            "Mean": 8.62671905697446,
+            "Min": 0,
+            "P05": 0,
+            "P25": 5,
+            "P50": 10,
+            "P75": 12,
+            "P95": 14,
+            "Max": 17
+          }
+        },
+        "flame-arc": {
+          "Counters": {
+            "applied": 37,
+            "skippedEnemyDefeated": 0,
+            "hpDamage": 763,
+            "shieldAbsorbed": 105,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 37,
+            "MissingCount": 0,
+            "Mean": 20.62162162162162,
+            "Min": 2,
+            "P05": 3,
+            "P25": 14,
+            "P50": 21,
+            "P75": 28,
+            "P95": 32,
+            "Max": 38
+          }
+        },
+        "guard": {
+          "Counters": {
+            "applied": 840,
+            "skippedEnemyDefeated": 36,
+            "hpDamage": 0,
+            "shieldAbsorbed": 0,
+            "blockGenerated": 9257
+          },
+          "HpDamage": {
+            "SampleCount": 840,
+            "MissingCount": 0,
+            "Mean": 0,
+            "Min": 0,
+            "P05": 0,
+            "P25": 0,
+            "P50": 0,
+            "P75": 0,
+            "P95": 0,
+            "Max": 0
+          }
+        },
+        "guard-slash": {
+          "Counters": {
+            "applied": 263,
+            "skippedEnemyDefeated": 23,
+            "hpDamage": 2677,
+            "shieldAbsorbed": 334,
+            "blockGenerated": 3688
+          },
+          "HpDamage": {
+            "SampleCount": 263,
+            "MissingCount": 0,
+            "Mean": 10.1787072243346,
+            "Min": 1,
+            "P05": 2,
+            "P25": 8,
+            "P50": 12,
+            "P75": 13,
+            "P95": 14,
+            "Max": 15
+          }
+        },
+        "slash": {
+          "Counters": {
+            "applied": 613,
+            "skippedEnemyDefeated": 38,
+            "hpDamage": 3763,
+            "shieldAbsorbed": 1009,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 613,
+            "MissingCount": 0,
+            "Mean": 6.138662316476346,
+            "Min": 0,
+            "P05": 0,
+            "P25": 3,
+            "P50": 7,
+            "P75": 9,
+            "P95": 10,
+            "Max": 12
+          }
+        }
+      },
+      "DamageTypes": {
+        "Fire": {
+          "applied": 644,
+          "hpDamage": 6828,
+          "shieldAbsorbed": 1234
+        },
+        "Ice": {
+          "applied": 185,
+          "hpDamage": 3066,
+          "shieldAbsorbed": 333
+        },
+        "Lightning": {
+          "applied": 318,
+          "hpDamage": 2317,
+          "shieldAbsorbed": 658
+        },
+        "Physical": {
+          "applied": 1798,
+          "hpDamage": 7466,
+          "shieldAbsorbed": 1567
+        }
+      },
+      "Enemies": {
+        "citadel-elite": {
+          "entries": 111,
+          "turns": 476,
+          "defeated": 111,
+          "hpDamage": 3758,
+          "shieldAbsorbed": 880,
+          "retaliationHpDamage": 1258,
+          "retaliationBlocked": 1187
+        },
+        "final": {
+          "entries": 97,
+          "turns": 393,
+          "defeated": 97,
+          "hpDamage": 6596,
+          "shieldAbsorbed": 1304,
+          "retaliationHpDamage": 791,
+          "retaliationBlocked": 2325
+        },
+        "gate-duel": {
+          "entries": 25,
+          "turns": 123,
+          "defeated": 25,
+          "hpDamage": 400,
+          "shieldAbsorbed": 126,
+          "retaliationHpDamage": 210,
+          "retaliationBlocked": 240
+        },
+        "gate-elite": {
+          "entries": 69,
+          "turns": 221,
+          "defeated": 69,
+          "hpDamage": 2740,
+          "shieldAbsorbed": 433,
+          "retaliationHpDamage": 417,
+          "retaliationBlocked": 791
+        },
+        "library-trial": {
+          "entries": 53,
+          "turns": 135,
+          "defeated": 53,
+          "hpDamage": 1777,
+          "shieldAbsorbed": 226,
+          "retaliationHpDamage": 188,
+          "retaliationBlocked": 256
+        },
+        "pass-bandit": {
+          "entries": 67,
+          "turns": 187,
+          "defeated": 67,
+          "hpDamage": 1640,
+          "shieldAbsorbed": 164,
+          "retaliationHpDamage": 328,
+          "retaliationBlocked": 357
+        },
+        "rift-fight": {
+          "entries": 77,
+          "turns": 373,
+          "defeated": 74,
+          "hpDamage": 2766,
+          "shieldAbsorbed": 659,
+          "retaliationHpDamage": 1124,
+          "retaliationBlocked": 960
+        }
+      }
+    },
+    {
+      "Hero": "vanguard",
+      "Status": "MEASURED",
+      "MeasuredMatches": 100,
+      "MissingMatches": 0,
+      "FailedMatches": 0,
+      "NotRunMatches": 0,
+      "Totals": {
+        "combatEntries": 496,
+        "combatTurns": 2110,
+        "eventGoldCost": 656,
+        "eventHpCost": 0,
+        "eventGoldReward": 8495,
+        "eventXpReward": 4002,
+        "eventHonorReward": 953,
+        "eventHealOffered": 5683,
+        "combatHpDamageTaken": 4650,
+        "combatDamageBlocked": 7112
+      },
+      "Counts": {
+        "commandsByKind": {
+          "advance": 209,
+          "choose": 856,
+          "combat": 2110,
+          "lap": 288,
+          "travel": 1144
+        },
+        "offeredByKind": {
+          "Combat": 664,
+          "Die": 68,
+          "Gear": 236,
+          "Heal": 345,
+          "Risk": 397,
+          "Study": 780
+        },
+        "legalOfferedByKind": {
+          "Combat": 664,
+          "Die": 47,
+          "Gear": 182,
+          "Heal": 334,
+          "Risk": 397,
+          "Study": 780
+        },
+        "selectedByKind": {
+          "Combat": 400,
+          "Die": 3,
+          "Gear": 10,
+          "Heal": 334,
+          "Study": 109
+        },
+        "selectedById": {
+          "altar-pray": 82,
+          "citadel-elite": 109,
+          "forest-herb": 62,
+          "gate-duel": 25,
+          "gate-elite": 69,
+          "harbor-heal": 33,
+          "harbor-work": 11,
+          "hill-rest": 81,
+          "library-read": 28,
+          "library-trial": 53,
+          "market-charm": 6,
+          "market-die": 3,
+          "market-mail": 4,
+          "market-news": 70,
+          "pass-bandit": 67,
+          "rift-fight": 77,
+          "well-rest": 76
+        },
+        "lapRewardsById": {
+          "aegis": 96,
+          "balanced": 192
+        },
+        "equipmentGainedById": {
+          "aegis": 96,
+          "charm": 5,
+          "mail": 4
+        },
+        "diceGainedById": {
+          "arcane": 3,
+          "balanced": 192
+        }
+      },
+      "Skills": {
+        "arc-slash": {
+          "Counters": {
+            "applied": 177,
+            "skippedEnemyDefeated": 17,
+            "hpDamage": 2733,
+            "shieldAbsorbed": 405,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 177,
+            "MissingCount": 0,
+            "Mean": 15.440677966101696,
+            "Min": 1,
+            "P05": 2,
+            "P25": 10,
+            "P50": 18,
+            "P75": 23,
+            "P95": 24,
+            "Max": 25
+          }
+        },
+        "bolt": {
+          "Counters": {
+            "applied": 361,
+            "skippedEnemyDefeated": 2,
+            "hpDamage": 1896,
+            "shieldAbsorbed": 540,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 361,
+            "MissingCount": 0,
+            "Mean": 5.252077562326869,
+            "Min": 0,
+            "P05": 0,
+            "P25": 3,
+            "P50": 6,
+            "P75": 8,
+            "P95": 9,
+            "Max": 12
+          }
+        },
+        "citadel": {
+          "Counters": {
+            "applied": 85,
+            "skippedEnemyDefeated": 0,
+            "hpDamage": 1179,
+            "shieldAbsorbed": 272,
+            "blockGenerated": 2332
+          },
+          "HpDamage": {
+            "SampleCount": 85,
+            "MissingCount": 0,
+            "Mean": 13.870588235294118,
+            "Min": 3,
+            "P05": 4,
+            "P25": 6,
+            "P50": 17,
+            "P75": 19,
+            "P95": 21,
+            "Max": 22
+          }
+        },
+        "fire-bolt": {
+          "Counters": {
+            "applied": 113,
+            "skippedEnemyDefeated": 1,
+            "hpDamage": 1494,
+            "shieldAbsorbed": 195,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 113,
+            "MissingCount": 0,
+            "Mean": 13.221238938053098,
+            "Min": 1,
+            "P05": 3,
+            "P25": 8,
+            "P50": 15,
+            "P75": 17,
+            "P95": 22,
+            "Max": 24
+          }
+        },
+        "flame": {
+          "Counters": {
+            "applied": 543,
+            "skippedEnemyDefeated": 23,
+            "hpDamage": 2792,
+            "shieldAbsorbed": 911,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 543,
+            "MissingCount": 0,
+            "Mean": 5.141804788213628,
+            "Min": 0,
+            "P05": 0,
+            "P25": 1,
+            "P50": 7,
+            "P75": 8,
+            "P95": 9,
+            "Max": 10
+          }
+        },
+        "flame-arc": {
+          "Counters": {
+            "applied": 37,
+            "skippedEnemyDefeated": 0,
+            "hpDamage": 750,
+            "shieldAbsorbed": 106,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 37,
+            "MissingCount": 0,
+            "Mean": 20.27027027027027,
+            "Min": 2,
+            "P05": 3,
+            "P25": 13,
+            "P50": 22,
+            "P75": 26,
+            "P95": 35,
+            "Max": 35
+          }
+        },
+        "guard": {
+          "Counters": {
+            "applied": 937,
+            "skippedEnemyDefeated": 16,
+            "hpDamage": 0,
+            "shieldAbsorbed": 0,
+            "blockGenerated": 12975
+          },
+          "HpDamage": {
+            "SampleCount": 937,
+            "MissingCount": 0,
+            "Mean": 0,
+            "Min": 0,
+            "P05": 0,
+            "P25": 0,
+            "P50": 0,
+            "P75": 0,
+            "P95": 0,
+            "Max": 0
+          }
+        },
+        "guard-slash": {
+          "Counters": {
+            "applied": 287,
+            "skippedEnemyDefeated": 15,
+            "hpDamage": 3307,
+            "shieldAbsorbed": 368,
+            "blockGenerated": 4885
+          },
+          "HpDamage": {
+            "SampleCount": 287,
+            "MissingCount": 0,
+            "Mean": 11.522648083623693,
+            "Min": 1,
+            "P05": 3,
+            "P25": 8,
+            "P50": 13,
+            "P75": 15,
+            "P95": 16,
+            "Max": 19
+          }
+        },
+        "slash": {
+          "Counters": {
+            "applied": 711,
+            "skippedEnemyDefeated": 29,
+            "hpDamage": 5372,
+            "shieldAbsorbed": 1336,
+            "blockGenerated": 0
+          },
+          "HpDamage": {
+            "SampleCount": 711,
+            "MissingCount": 0,
+            "Mean": 7.555555555555555,
+            "Min": 0,
+            "P05": 0,
+            "P25": 4,
+            "P50": 9,
+            "P75": 11,
+            "P95": 12,
+            "Max": 15
+          }
+        }
+      },
+      "DamageTypes": {
+        "Fire": {
+          "applied": 693,
+          "hpDamage": 5036,
+          "shieldAbsorbed": 1212
+        },
+        "Ice": {
+          "applied": 177,
+          "hpDamage": 2733,
+          "shieldAbsorbed": 405
+        },
+        "Lightning": {
+          "applied": 361,
+          "hpDamage": 1896,
+          "shieldAbsorbed": 540
+        },
+        "Physical": {
+          "applied": 2020,
+          "hpDamage": 9858,
+          "shieldAbsorbed": 1976
+        }
+      },
+      "Enemies": {
+        "citadel-elite": {
+          "entries": 109,
+          "turns": 566,
+          "defeated": 109,
+          "hpDamage": 3682,
+          "shieldAbsorbed": 1050,
+          "retaliationHpDamage": 1580,
+          "retaliationBlocked": 1474
+        },
+        "final": {
+          "entries": 96,
+          "turns": 396,
+          "defeated": 96,
+          "hpDamage": 6528,
+          "shieldAbsorbed": 1309,
+          "retaliationHpDamage": 793,
+          "retaliationBlocked": 2357
+        },
+        "gate-duel": {
+          "entries": 25,
+          "turns": 147,
+          "defeated": 25,
+          "hpDamage": 400,
+          "shieldAbsorbed": 126,
+          "retaliationHpDamage": 285,
+          "retaliationBlocked": 327
+        },
+        "gate-elite": {
+          "entries": 69,
+          "turns": 239,
+          "defeated": 69,
+          "hpDamage": 2740,
+          "shieldAbsorbed": 467,
+          "retaliationHpDamage": 431,
+          "retaliationBlocked": 919
+        },
+        "library-trial": {
+          "entries": 53,
+          "turns": 146,
+          "defeated": 53,
+          "hpDamage": 1777,
+          "shieldAbsorbed": 249,
+          "retaliationHpDamage": 112,
+          "retaliationBlocked": 403
+        },
+        "pass-bandit": {
+          "entries": 67,
+          "turns": 221,
+          "defeated": 67,
+          "hpDamage": 1640,
+          "shieldAbsorbed": 226,
+          "retaliationHpDamage": 336,
+          "retaliationBlocked": 535
+        },
+        "rift-fight": {
+          "entries": 77,
+          "turns": 395,
+          "defeated": 73,
+          "hpDamage": 2756,
+          "shieldAbsorbed": 706,
+          "retaliationHpDamage": 1113,
+          "retaliationBlocked": 1097
+        }
+      }
+    }
+  ],
+  "Paired": [
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "fractional1st",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.015,
+        "Upper": 0.015
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "rank",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.06,
+      "Ci95": {
+        "Lower": 0.01,
+        "Upper": 0.11
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "laps",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.09,
+        "Upper": 0.09
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "hp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.9,
+      "Ci95": {
+        "Lower": -2.09,
+        "Upper": 3.85
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "maxHp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.42,
+        "Upper": 0.48
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "hpRatio",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.011884920634920628,
+      "Ci95": {
+        "Lower": -0.02696581196581197,
+        "Upper": 0.05064255189255189
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "level",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.07,
+        "Upper": 0.08
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "xp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.2,
+      "Ci95": {
+        "Lower": -0.48,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "honor",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.04,
+      "Ci95": {
+        "Lower": -0.37,
+        "Upper": 0.3
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "gold",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.66,
+      "Ci95": {
+        "Lower": -4.17,
+        "Upper": 2.25
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "trialSucceeded",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0.03
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "eliminated",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0.03
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "rank1",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0.03
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "worldRound",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "scholar",
+      "Metric": "humanCommands",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.47,
+      "Ci95": {
+        "Lower": -0.27,
+        "Upper": 1.18
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "fractional1st",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.015,
+      "Ci95": {
+        "Lower": -0.04,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "rank",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.1,
+      "Ci95": {
+        "Lower": 0.04,
+        "Upper": 0.17
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "laps",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.03,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.09
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "hp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -10.09,
+      "Ci95": {
+        "Lower": -12.79,
+        "Upper": -7.3
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "maxHp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -11.88,
+      "Ci95": {
+        "Lower": -12.18,
+        "Upper": -11.46
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "hpRatio",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.0027871642246642347,
+      "Ci95": {
+        "Lower": -0.02642986874236873,
+        "Upper": 0.03511477411477415
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "level",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.02,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0.09
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "xp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.12,
+      "Ci95": {
+        "Lower": -0.32,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "honor",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.08,
+      "Ci95": {
+        "Lower": -0.09,
+        "Upper": 0.33
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "gold",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.65,
+      "Ci95": {
+        "Lower": -0.72,
+        "Upper": 2.84
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "trialSucceeded",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.01,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.03
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "eliminated",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.01,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "rank1",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.01,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "worldRound",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "wanderer",
+      "RightHero": "vanguard",
+      "Metric": "humanCommands",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -1.48,
+      "Ci95": {
+        "Lower": -2.02,
+        "Upper": -0.97
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "fractional1st",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.015,
+      "Ci95": {
+        "Lower": -0.04,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "rank",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.04,
+      "Ci95": {
+        "Lower": -0.02,
+        "Upper": 0.11
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "laps",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.03,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.09
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "hp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -10.99,
+      "Ci95": {
+        "Lower": -13.61,
+        "Upper": -8.11
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "maxHp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -11.88,
+      "Ci95": {
+        "Lower": -12,
+        "Upper": -11.64
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "hpRatio",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.009097756410256383,
+      "Ci95": {
+        "Lower": -0.03881891025641024,
+        "Upper": 0.02379151404151407
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "level",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.02,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.08
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "xp",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.08,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.24
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "honor",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.12,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.36
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "gold",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 1.31,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 3.93
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "trialSucceeded",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0.01,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0.03
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "eliminated",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.01,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "rank1",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -0.01,
+      "Ci95": {
+        "Lower": -0.03,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "worldRound",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": 0,
+      "Ci95": {
+        "Lower": 0,
+        "Upper": 0
+      }
+    },
+    {
+      "LeftHero": "scholar",
+      "RightHero": "vanguard",
+      "Metric": "humanCommands",
+      "BlockCount": 100,
+      "ExcludedBlocks": 0,
+      "MeanDifference": -1.95,
+      "Ci95": {
+        "Lower": -2.54,
+        "Upper": -1.34
+      }
+    }
+  ],
+  "Unmeasured": [
+    {
+      "Metric": "ai-full-skill-history",
+      "Status": "NOT_MEASURED",
+      "MissingCount": 900,
+      "Value": null,
+      "Reason": "Each valid match has three AI participants; public last-round/last-combat state does not reconstruct lifetime events."
+    },
+    {
+      "Metric": "ai-full-event-choice-history",
+      "Status": "NOT_MEASURED",
+      "MissingCount": 900,
+      "Value": null,
+      "Reason": "Each valid match has three AI participants; public last-round/last-combat state does not reconstruct lifetime events."
+    },
+    {
+      "Metric": "ai-lifetime-max-combat-turns",
+      "Status": "NOT_MEASURED",
+      "MissingCount": 900,
+      "Value": null,
+      "Reason": "Each valid match has three AI participants; public last-round/last-combat state does not reconstruct lifetime events."
+    }
+  ],
+  "Performance": {
+    "ElapsedSeconds": 8.1355947,
+    "MatchesPerSecond": 36.874993293360596,
+    "MatchP50Ms": 22.7896,
+    "MatchP95Ms": 42.2208,
+    "PeakWorkingSetBytes": 113291264,
+    "MaxObservedManagedHeapBytes": 57132592,
+    "AllocatedBytes": 16471640184,
+    "GcCollections": [
+      328,
+      2,
+      1
+    ],
+    "RawOutputBytesBeforeReports": 1284235,
+    "Sampling": "sequential batch; process peak RSS; managed heap sampled after each match; GC/alloc are batch deltas"
+  },
+  "InterpretationNotes": [
+    "Results describe the fixed neutral-v1 automated human policy, not human player skill or universal adventurer strength.",
+    "AI results are fixed slot/adventurer/policy combinations, stratified by the human adventurer. Adventurer and AI policy effects are confounded.",
+    "Participant outcome denominators include only valid completed matches. Failures and unattempted matches are disclosed separately, never converted to losses or zero measurements.",
+    "Wilson intervals apply to binomial trial/elimination/rank1 proportions. Fractional first-place scores are not Bernoulli outcomes and do not use Wilson intervals.",
+    "The four participants in a match and repeated human scenarios sharing a seed are dependent. Paired comparisons resample complete seed blocks, not participant rows.",
+    "Paired intervals are unadjusted exploratory 95% intervals across multiple metrics and three hero pairs; post-hoc selection and multiplicity prohibit automatic balance pass/fail conclusions.",
+    "Current absolute HP participates in ranking. HP/maxHP is reported separately. XP is remaining XP, not cumulative XP.",
+    "Descriptive percentiles use nearest rank. Missing measurements are null/NOT_MEASURED; game failures and NOT_RUN matches are separate categories.",
+    "Technical PASS means the requested experiment completed. It does not establish acceptable game balance; no tuning or sensitivity experiment was performed."
+  ]
+}

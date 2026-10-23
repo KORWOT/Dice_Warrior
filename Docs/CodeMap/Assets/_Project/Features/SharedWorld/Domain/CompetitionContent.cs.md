@@ -1,5 +1,7 @@
 # CompetitionContent.cs
 
+B0/C7 직접 사용처: 신규 BalanceScenario.LoadDefinition은 v4 원본 바이트 SHA256을 확인한 뒤 Load를 호출한다. 실험을 위해 정본/검증 규칙을 완화하지 않는다.
+
 - 역할: 공동 경기의 세계/사건/AI/모험가·RGB 정의와 버전 검사.
 - 핵심 동작: 기존 12개 지명/무료 합법 사건/장비·주사위 참조 검사에 v3 로스터·기본 스탯·패시브 태그·기술 계수를 추가한다. v1/v2는 기존 4종 이상, v3는 wanderer/scholar/vanguard 3종과 war/wisdom/luck 정책을 요구한다.
 - 입출력: Load(json) → CompetitionDefinition; Validate(definition)는 잘못된 정의를 ArgumentException으로 거절한다.

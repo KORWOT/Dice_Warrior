@@ -1,0 +1,20 @@
+{
+  "Performance": {
+    "ElapsedSeconds": 8.1355947,
+    "MatchesPerSecond": 36.874993293360596,
+    "MatchP50Ms": 22.7896,
+    "MatchP95Ms": 42.2208,
+    "PeakWorkingSetBytes": 113291264,
+    "MaxObservedManagedHeapBytes": 57132592,
+    "AllocatedBytes": 16471640184,
+    "GcCollections": [
+      328,
+      2,
+      1
+    ],
+    "RawOutputBytesBeforeReports": 1284235,
+    "Sampling": "sequential batch; process peak RSS; managed heap sampled after each match; GC/alloc are batch deltas"
+  },
+  "OutputBytesBeforeThisFile": 1686233,
+  "WallSeconds": 8.1355947
+}
