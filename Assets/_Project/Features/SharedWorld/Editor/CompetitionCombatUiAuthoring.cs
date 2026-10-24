@@ -26,16 +26,16 @@ namespace DiceWarrior.SharedWorld.Editor
             Rect(view.enemy.rectTransform,30,58,455,40);Style(view.enemy,21);Health(view.enemyFill,30,108,660);
             Rect(view.intent.rectTransform,30,127,660,28);Style(view.intent,18);
             Button(view.combatInfo,510,6,180,96,18);
-            view.battleStage=Panel(view.layout,"V5 battle stage",30,164,660,192,new Color(.08f,.13f,.21f));
-            view.heroGlyph=Glyph(view.battleStage,"Adventurer",LoopGlyph.Pawn,130,84,100,112,new Color(.32f,.84f,.8f));
-            view.enemyGlyph=Glyph(view.battleStage,"Enemy",LoopGlyph.Enemy,530,84,112,112,new Color(.94f,.48f,.38f));
-            view.effectGlyph=Glyph(view.battleStage,"Skill effect",LoopGlyph.Sword,330,84,72,72,new Color(.95f,.74f,.36f));view.effectGlyph.gameObject.SetActive(false);
-            view.stageHeroName=Text(view.battleStage,"Adventurer name",font,17,20,157,190,30);view.stageHeroName.alignment=TextAnchor.MiddleCenter;
-            view.stageEnemyName=Text(view.battleStage,"Enemy name",font,17,450,157,190,30);view.stageEnemyName.alignment=TextAnchor.MiddleCenter;
+            view.battleStage=Panel(view.layout,"V5 battle stage",30,164,660,144,new Color(.08f,.13f,.21f));
+            view.heroGlyph=Glyph(view.battleStage,"Adventurer",LoopGlyph.Pawn,130,84,76,76,new Color(.32f,.84f,.8f));
+            view.enemyGlyph=Glyph(view.battleStage,"Enemy",LoopGlyph.Enemy,530,84,76,76,new Color(.94f,.48f,.38f));
+            view.effectGlyph=Glyph(view.battleStage,"Skill effect",LoopGlyph.Sword,330,84,60,60,new Color(.95f,.74f,.36f));view.effectGlyph.gameObject.SetActive(false);
+            view.stageHeroName=Text(view.battleStage,"Adventurer name",font,16,20,122,190,22);view.stageHeroName.alignment=TextAnchor.MiddleCenter;
+            view.stageEnemyName=Text(view.battleStage,"Enemy name",font,16,450,122,190,22);view.stageEnemyName.alignment=TextAnchor.MiddleCenter;
             view.stageAction=Text(view.battleStage,"Current skill",font,18,188,8,284,32);view.stageAction.alignment=TextAnchor.MiddleCenter;
-            view.impact=Text(view.battleStage,"Actual impact",font,16,215,140,230,44);view.impact.alignment=TextAnchor.MiddleCenter;
-            Rect(view.player.rectTransform,30,370,660,36);Style(view.player,21);Health(view.playerFill,30,414,660);
-            Rect(view.rollZone,30,436,660,352);view.rollZone.GetComponent<Image>().color=new Color(.11f,.17f,.26f);
+            view.impact=Text(view.battleStage,"Actual impact",font,16,215,100,230,44);view.impact.alignment=TextAnchor.MiddleCenter;
+            Rect(view.player.rectTransform,30,322,660,32);Style(view.player,21);Health(view.playerFill,30,360,660);
+            Rect(view.rollZone,30,376,660,352);view.rollZone.GetComponent<Image>().color=new Color(.11f,.17f,.26f);
             view.holdHint.transform.SetParent(view.rollZone,false);view.holdZone.gameObject.SetActive(false);
             Rect(view.rollHint.rectTransform,18,12,624,34);Rect(view.holdHint.rectTransform,18,49,624,26);Style(view.rollHint,21);Style(view.holdHint,16);
             view.cubes=new V5DieGraphic[3];
@@ -49,9 +49,17 @@ namespace DiceWarrior.SharedWorld.Editor
                 Rect(button.label.rectTransform,5,176,190,68);Style(button.label,16);button.label.alignment=TextAnchor.MiddleCenter;
                 RecordButton(button);Record(view.faces[i]);Record(view.cubes[i]);
             }
-            Rect(view.preview.rectTransform,30,808,660,176);Style(view.preview,18);view.preview.color=new Color(.95f,.74f,.36f);
-            Button(view.diceInfo,30,994,200,96,18);
-            view.feedbackScroll=Scroll(view.layout,"Combat feedback scroll",view.notice,246,994,444,130);Style(view.notice,16);
+            view.previewHeading=Text(view.layout,"Skill preview heading",font,24,30,748,660,36);view.previewHeading.text="발동 예상";
+            view.previewRows=new Text[3];view.previewRowPanels=new Image[3];
+            for(int i=0;i<3;i++)
+            {
+                var panel=Panel(view.layout,"Skill preview row "+(i+1),30,792+i*80,660,72,new Color(.11f,.17f,.26f));
+                view.previewRowPanels[i]=panel.GetComponent<Image>();view.previewRows[i]=Text(panel,"Skill summary",font,22,16,8,628,56);
+                panel.gameObject.SetActive(false);Record(view.previewRows[i]);
+            }
+            Rect(view.preview.rectTransform,46,802,628,216);Style(view.preview,22);
+            Button(view.diceInfo,30,1040,200,96,18);
+            view.feedbackScroll=Scroll(view.layout,"Combat feedback scroll",view.notice,246,1040,444,96);Style(view.notice,16);
             view.roll.transform.SetParent(view.footer,false);Button(view.roll,30,0,660,96,24);
             Button(view.reroll,30,0,242,96,21);Button(view.execute,290,0,400,96,24);
             foreach(var value in new UnityEngine.Object[]{view.stageHeroName,view.stageEnemyName,view.stageAction,view.impact,view.rollZone.GetComponent<Image>(),view.GetComponent<Image>()})Record(value);
@@ -59,6 +67,7 @@ namespace DiceWarrior.SharedWorld.Editor
         }
         static void Net(V5DiceNetView view)
         {
+            view.layout.sizeDelta=new Vector2(720,1280);
             Rect(view.title.rectTransform,30,24,660,72);Style(view.title,26);
             for(int i=0;i<view.tabs.Length;i++)Button(view.tabs[i],30+i*224,112,212,96,18);
             Rect(view.net,40,224,640,474);
@@ -83,9 +92,21 @@ namespace DiceWarrior.SharedWorld.Editor
                 }
             }
             Button(view.motion,370,888,320,96,20);view.motion.gameObject.SetActive(false);
+            if(!view.menu)
+            {
+                var existing=view.layout.Find("Adventure menu");
+                if(existing)view.menu=existing.GetComponent<CommonButtonView>();
+                else
+                {
+                    var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Shared/UI/Prefabs/CommonButtonView.prefab");
+                    var go=(GameObject)PrefabUtility.InstantiatePrefab(prefab,view.layout);go.name="Adventure menu";view.menu=go.GetComponent<CommonButtonView>();view.menu.label.font=view.title.font;
+                }
+            }
+            Button(view.menu,370,888,320,96,20);view.menu.gameObject.SetActive(false);
             view.managementHeading=Text(view.layout,"Adventure menu heading",view.title.font,18,30,995,660,30);
             view.managementHeading.text="모험 메뉴 · 진행 유지 또는 내 참가자 포기";
             Button(view.leave,30,1032,320,96,20);Button(view.abandon,370,1032,320,96,20);
+            view.managementHeading.gameObject.SetActive(false);view.leave.gameObject.SetActive(false);view.abandon.gameObject.SetActive(false);
             Button(view.close,30,1160,660,96,23);
             view.blocker.color=new Color(.063f,.106f,.176f,1);view.blocker.raycastTarget=true;Record(view.blocker);Record(view);
         }

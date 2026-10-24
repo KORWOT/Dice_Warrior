@@ -14,7 +14,7 @@ namespace DiceWarrior.SharedWorld.Editor
         public static void Upgrade(CompetitionScreen screen)
         {
             if(!screen || !screen.content)throw new InvalidOperationException("Expected authored CompetitionScreen content");
-            if(screen.v5Shell)return;
+            if(screen.v5Shell){EnsureLayout(screen.v5Shell);return;}
             if(screen.content.Find("V5 Main Shell"))throw new InvalidOperationException("Unbound V5 Main Shell; inspect before authoring");
             var font=AssetDatabase.LoadAssetAtPath<Font>(FontPath);var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(ButtonPath);
             if(!font || !prefab)throw new InvalidOperationException("Missing shared UI authoring input");
@@ -45,7 +45,18 @@ namespace DiceWarrior.SharedWorld.Editor
             view.tabs=new CommonButtonView[5];for(int i=0;i<5;i++)view.tabs[i]=Button(root,"Information tab "+i,font,prefab,30+(i%3)*224,160+(i/3)*106,212,96);
             view.back=Button(root,"Return to previous screen",font,prefab,30,1164,660,96);
             var footer=screen.content.Find("Preview footer");view.legacyFooter=footer?footer.gameObject:null;
+            EnsureLayout(view);
             root.gameObject.SetActive(false);
+        }
+        static void EnsureLayout(V5ShellView view)
+        {
+            if(!view.scrollContent || !view.body)throw new InvalidOperationException("Expected authored Shell content and explanation text.");
+            if(view.contextBackground)return;
+            const string name="Context summary panel";
+            if(view.scrollContent.Find(name))throw new InvalidOperationException("Unbound "+name+"; inspect before authoring.");
+            var rect=Rect(view.scrollContent,name,4,8,652,120);rect.SetAsFirstSibling();rect.gameObject.AddComponent<CanvasRenderer>();
+            view.contextBackground=rect.gameObject.AddComponent<Image>();view.contextBackground.color=new Color(0x1C/255f,0x2B/255f,0x42/255f,.55f);view.contextBackground.raycastTarget=false;
+            rect.gameObject.SetActive(false);
         }
         static RectTransform Rect(Transform parent,string name,float x,float y,float width,float height)
         {var go=new GameObject(name,typeof(RectTransform));go.transform.SetParent(parent,false);var rect=(RectTransform)go.transform;SetRect(rect,x,y,width,height);return rect;}

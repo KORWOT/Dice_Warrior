@@ -6,10 +6,13 @@ v5 로비·출전·계정·사건·완주·결과·상세를 위한 authored 중
 
 ## 핵심 동작·입출력
 
-- `Bind(V5ShellData)`: mode/title/summary/body/notice/showBoard, choices/tools/tabs/back를 Text·ScrollRect·CommonButtonView에 연결한다.
+- `Bind(V5ShellData)`: mode/title/summary/body/notice/showBoard, choices/tools/tabs/back와 UI13의 optional primary/compactChoices를 Text·ScrollRect·CommonButtonView에 연결한다.
 - choices는 authored6개 카드와 설명 Text를 재사용한다.6개를 넘으면 로컬 페이지로 순회한다. 모든 후보의 콜백은 입력한 자료와 같은 원본 항목을 유지한다.
 - tools4개, tabs5개, back1개를 선택 카드와 별도 배치한다. 탭은3+2행, 도구는2열, 뒤로는 전체폭이다. 카드 최소104·나머지 버튼96 설계단위다. 실제 dp를 단정하지 않는다.
 - 본문/카드 높이는 현재 텍스트의 preferredHeight로 계산한다. 선택된 카드는 `[선택]`과 색을 함께 표시한다. 모드가 같으면 로컬 스크롤/페이지를 유지하고 바뀌면 처음으로 복귀한다.
+- V5_UI_LAYOUT_FLOW_13: optional `primary`가 있으면 기존 `boardPrimary`를 재사용해 y1160/h96에 주요 행동을 고정하고, 도구 최대2개를 헤더 우측으로 배치한다. primary와 showBoard는 동시에 사용하지 않으며 back은 null, 동일 primary ID는 choices에서 중복하지 않는다. 로비 시작/이어하기와 결과 로비 복귀가 스크롤 밖에서도 접근 가능하다. 버튼 콜백/ID/가용성은 App이 전달한 원본과 같고, notice가 없을 때 primary.detail을 행동 위 안내로 표시한다.
+- `compactChoices=true`는 로비 보조 카드만 319 너비의2열로 배치한다. authored6슬롯·페이지는 그대로이며 각 행의 두 카드 중 큰 preferredHeight를 공통 행 높이로 사용한다. 일반 화면으로 돌아갈 때652 너비·제목23/설명19, 로비는 제목22/설명18을 매 Bind에 명시하고, 현재 텍스트 폭을 적용한 뒤 높이를 계산한다. 이전 좁은 카드의 높이/폰트가 사건·보상에 남지 않는다.
+- 본문은 authored `contextBackground` 패널에20폰트·620너비로 표시한다. 본문 유무에 맞춰 패널 활성 상태를 바꾸고 매 Bind에 패널 색/너비·본문 위치·폰트를 재설정한다. 패널은 ScrollContent 맨 뒤의 raycast 없는 Image이며 본문/카드 선택을 가리지 않는다. 제목을 반복하는 별도 섹션 라벨은 추가하지 않는다.
 - V5_UI_REDESIGN_12의 showBoard는 `choices[0]`과 동일한 ID/콜백을 고정 `boardPrimary`에 바인딩한다. 보드에서는 선택 1개·헤더 도구 최대 2개·탭/뒤로 없음이 계약이며 일반 ScrollRect/카드는 숨긴다. BoardPrimary는 y1160/h96, notice는 y1100/h48, 제목/2줄 요약은 좌측, 도구 2개는 우측이다. App이 긴 AI 결과를 메뉴에 제공하고 Screen이 실제 보드/트레이를 표시한다.
 - `SetBoardPresentation(stage,detail,busy)`는 고정 CTA 문구·안내·입력 상태만 바꾸며 heading과 원래 명령 콜백/ID를 유지한다. Playback이 저장된 결과의 굴림→공개→경로→도착에 맞춰 호출한다. 이 메서드는 Bind나 명령 실행·난수 계산을 하지 않는다.
 - `ShowDiceGrowth(state,previousCount,progress,reducedMotion)`는 authored rewardGrowth/rewardGrowthLabel/rewardDice[3]를 사용해 실제 1→2/2→3 구성을 표시한다. 이전 개수+1만 허용하고 실제 마지막 주사위 종류를 표시한다. 모두 실제 6면을 연결하되 RevealResult=false/Pose1로 결과가 아닌 구성 전시임을 명시한다. 기존 큐브는 고정, 새 큐브만 CanvasGroup fade와 작은 배율 변화를 적용하며 reducedMotion이면 배율 변화가 없다. 메인 Playback이 진행 시간과 호출을 소유한다. 다음 Bind/Unbind에서 획득 표시를 닫는다.
@@ -22,6 +25,6 @@ v5 로비·출전·계정·사건·완주·결과·상세를 위한 authored 중
 
 ## 검수 주의
 
-빈 action ID는 공용 버튼 계약 위반이다. tools4/tabs5를 초과하면 명시 오류이며, 후보 수는 로컬 페이지로 제한 없이 조회한다. back는 Action만 받으므로 요청 중 동작 제한은 호출자가 콜백을 감싸거나 null로 제공한다. 상세 모달이 열린 동안 실제 raycast 차폐는 v5Net이 담당한다. 선택/탭/스크롤은 게임 상태를 변경하지 않으며 invoke의 권한·중복 방어는 기존 App 경계에 남긴다.
+빈 action ID는 공용 버튼 계약 위반이다. tools4/tabs5를 초과하면 명시 오류이며, 후보 수는 로컬 페이지로 제한 없이 조회한다. primary 화면의 tools는2개까지이고 primary와 뒤로/동일ID 선택을 함께 전달하면 오류다. compactChoices는 로비에만 사용한다. UI13 contextBackground는 V5ShellAuthoring 업그레이드로 연결해야 한다. back는 Action만 받으므로 요청 중 동작 제한은 호출자가 콜백을 감싸거나 null로 제공한다. 상세 모달이 열린 동안 실제 raycast 차폐는 v5Net이 담당한다. 선택/탭/스크롤은 게임 상태를 변경하지 않으며 invoke의 권한·중복 방어는 기존 App 경계에 남긴다.
 
 - UI12 R01: ShowDiceGrowth는 확정 지급 이후임을 헤더/요약에도 표시한다. 이전 보상 선택의 미지급 문구를 남기지 않는다.

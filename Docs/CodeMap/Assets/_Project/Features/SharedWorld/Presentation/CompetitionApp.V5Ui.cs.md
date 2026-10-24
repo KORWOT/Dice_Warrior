@@ -1,5 +1,8 @@
 # CompetitionApp.V5Ui.cs
 
+- UI13: 로비 primary는 진행 중이면 이어하기, 없거나 완료면 새 모험이다. 새 모험 교체의 기존 확인을 유지하고 보조 선택은 compactChoices로2열, 조회/설정은헤더로 전달한다. 설정·저장 복구에 백업 확인/동작 줄이기를 모으며 Back은로비다. 결과 로비 복귀도 primary로 고정한다. 사건/보상의 실제 지급·선택 즉시확정 계약은 변경하지 않는다.
+- UI13 조회 수명: 정보→모험 관리 진입의 원래 V5DiceNetData를 managementV5Net에 보관한다. 관리에서능력치/포기취소를 거친Back은원래정보/스크롤로복귀하고, Close·새경기·포기확정·로컬Open은참조를해제한다. 이 필드는UI로컬이며저장DTO/Session/RNG를 변경하지 않는다. 일반 보드→모험 메뉴는 기존처럼Back으로보드에복귀한다.
+
 - 역할: v5 전용 로비·출전·사건·보상·계정·상세·결과 Shell DTO를 구성하는 App의 partial 표시 계층.
 - 핵심 동작: 후보 choices와 공통 tools/tabs/back을 분리한다. 선택 즉시 확정인 보상과 출전의 적용 시점을 설명하고 profile/participant/definition의 현재 값을 읽는다. v5 전투는 기존 Area/Net에 위임한다. 구형 경기에는 App의 legacy Render를 유지한다.
 - 입출력: Session Snapshot/Account Profile/화면 로컬 menu → CompetitionScreenData/V5ShellData. 변경 명령은 기존 Dispatch/StartMatch/AccountAction/Select 경계를 호출한다.

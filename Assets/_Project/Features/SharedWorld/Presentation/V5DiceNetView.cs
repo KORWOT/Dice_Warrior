@@ -14,7 +14,7 @@ namespace DiceWarrior.SharedWorld
         public string adventurerId,title,information;
         public DieSlot[] dice=Array.Empty<DieSlot>();
         public V5FaceResult[] results=Array.Empty<V5FaceResult>();
-        public Action close,leave,abandon,stats,motion;
+        public Action close,leave,abandon,stats,motion,menu;
         public bool reducedMotion;
         // Only view-local state. Retaining this data while opening another detail view restores the query.
         public int selectedSlot,selectedFace=-1,detailPage;
@@ -28,7 +28,7 @@ namespace DiceWarrior.SharedWorld
         public ScrollRect detailsScroll;
         public CommonButtonView[] tabs,cells;
         public V5FaceGraphic[] faces;
-        public CommonButtonView close,previous,next,leave,abandon,stats,motion;
+        public CommonButtonView close,previous,next,leave,abandon,stats,motion,menu;
         public int SelectedSlot { get; private set; }
         public int SelectedFace { get; private set; }
         public static Vector2Int Cell(int index)
@@ -37,10 +37,10 @@ namespace DiceWarrior.SharedWorld
         int page;
         UnityAction<Vector2> scrollChanged;
         void OnRectTransformDimensionsChange()
-        {if(layout){var size=((RectTransform)transform).rect.size;layout.localScale=Vector3.one*Mathf.Max(.01f,Mathf.Min(size.x/720,size.y/1280));}}
+        {if(layout){var size=((RectTransform)transform).rect.size;layout.localScale=Vector3.one*Mathf.Max(.01f,Mathf.Min(size.x/720,size.y/Mathf.Max(1,layout.rect.height)));}}
         public void Bind(V5DiceNetData value)
         {
-            if(!layout || !net || !blocker || tabs==null || tabs.Length!=3 || cells==null || cells.Length!=6 || faces==null || faces.Length!=6)
+            if(!layout || !net || !blocker || !menu || tabs==null || tabs.Length!=3 || cells==null || cells.Length!=6 || faces==null || faces.Length!=6)
                 throw new InvalidOperationException("V5 주사위 상세의 authored 연결이 없습니다.");
             data=value;OnRectTransformDimensionsChange();
             SelectedSlot=Math.Max(0,Math.Min(value.selectedSlot,Math.Max(0,value.dice.Length-1)));page=Math.Max(0,value.detailPage);
@@ -48,9 +48,12 @@ namespace DiceWarrior.SharedWorld
             SelectedFace=Math.Max(0,Math.Min(value.selectedFace<0?initialResult?.faceIndex ?? 0:value.selectedFace,5));
             title.text=value.title;blocker.raycastTarget=true;
             close.Bind("close","닫기",null,"",V5DiceAreaView.Appearance,true,false,_=>data.close?.Invoke());
-            BindOptional(leave,"leave","로비로 · 진행 유지",value.leave);BindOptional(abandon,"abandon","내 모험 포기",value.abandon);BindOptional(stats,"stats","현재 경기 능력치",value.stats);
-            BindOptional(motion,"motion","동작 줄이기: "+(value.reducedMotion?"켜짐":"꺼짐"),value.dice.Length==0?value.motion:null);
-            if(managementHeading)managementHeading.gameObject.SetActive(value.leave!=null || value.abandon!=null);
+            // Keep serialized legacy controls, but management now belongs to the existing adventure menu.
+            BindOptional(leave,"leave","",null);BindOptional(abandon,"abandon","",null);BindOptional(motion,"motion","",null);
+            bool information=value.dice.Length==0;
+            BindOptional(stats,"stats","현재 경기 능력치",information?value.stats:null);
+            BindOptional(menu,"menu","모험 메뉴",information?value.menu:null);
+            if(managementHeading)managementHeading.gameObject.SetActive(false);
             for(int i=0;i<tabs.Length;i++)
             {
                 int slot=i;tabs[i].gameObject.SetActive(i<value.dice.Length);
@@ -87,9 +90,25 @@ namespace DiceWarrior.SharedWorld
         {
             if(!detailsScroll)throw new InvalidOperationException("V5 상세 스크롤의 authored 연결이 없습니다.");
             if(scrollChanged!=null)detailsScroll.onValueChanged.RemoveListener(scrollChanged);
-            var viewport=detailsScroll.viewport;viewport.anchoredPosition=new Vector2(30,information?-130:-714);viewport.sizeDelta=new Vector2(660,information?740:308);
-            var rect=description.rectTransform;rect.anchoredPosition=Vector2.zero;rect.sizeDelta=new Vector2(660,viewport.sizeDelta.y);
-            rect.sizeDelta=new Vector2(660,Mathf.Max(viewport.sizeDelta.y,description.preferredHeight));
+            description.fontSize=information?22:18;
+            var rect=description.rectTransform;rect.anchoredPosition=Vector2.zero;rect.sizeDelta=new Vector2(660,308);
+            float height=information?Mathf.Clamp(description.preferredHeight+16,200,720):308;
+            var viewport=detailsScroll.viewport;viewport.anchoredPosition=new Vector2(30,information?-130:-714);viewport.sizeDelta=new Vector2(660,height);
+            rect.sizeDelta=new Vector2(660,Mathf.Max(height,description.preferredHeight));
+            if(information)
+            {
+                float actionsY=130+height+20;bool hasStats=stats.gameObject.activeSelf,hasMenu=menu.gameObject.activeSelf;
+                PositionButton(stats,30,actionsY,hasMenu?320:660);
+                PositionButton(menu,hasStats?370:30,actionsY,hasStats?320:660);
+                float closeY=actionsY+(hasStats || hasMenu?112:0);PositionButton(close,30,closeY,660);
+                layout.sizeDelta=new Vector2(720,closeY+120);
+            }
+            else
+            {
+                // A content-sized information panel must not leak its geometry into the six-face view.
+                layout.sizeDelta=new Vector2(720,1280);PositionButton(close,30,1160,660);
+            }
+            OnRectTransformDimensionsChange();
             detailsScroll.StopMovement();Canvas.ForceUpdateCanvases();detailsScroll.verticalNormalizedPosition=data.scrollPosition;
             scrollChanged=position=>{if(data!=null)data.scrollPosition=position.y;};detailsScroll.onValueChanged.AddListener(scrollChanged);
         }
@@ -102,10 +121,12 @@ namespace DiceWarrior.SharedWorld
         }
         static void BindOptional(CommonButtonView button,string id,string label,Action action)
         {button.gameObject.SetActive(action!=null);if(action!=null)button.Bind(id,label,null,"",V5DiceAreaView.Appearance,true,false,_=>action());else button.Unbind();}
+        static void PositionButton(CommonButtonView button,float x,float y,float width)
+        {var rect=(RectTransform)button.transform;rect.anchoredPosition=new Vector2(x,-y);rect.sizeDelta=new Vector2(width,96);}
         public void Unbind()
         {
             if(detailsScroll && scrollChanged!=null)detailsScroll.onValueChanged.RemoveListener(scrollChanged);scrollChanged=null;
-            foreach(var button in tabs.Concat(cells).Concat(new[]{close,previous,next,leave,abandon,stats,motion}))if(button)button.Unbind();data=null;
+            foreach(var button in tabs.Concat(cells).Concat(new[]{close,previous,next,leave,abandon,stats,motion,menu}))if(button)button.Unbind();data=null;
         }
     }
 }

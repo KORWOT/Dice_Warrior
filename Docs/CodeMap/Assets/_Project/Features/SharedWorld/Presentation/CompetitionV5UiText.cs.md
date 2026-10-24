@@ -1,5 +1,7 @@
 # CompetitionV5UiText.cs
 
+- UI13: 사건 설명이 선택 제목으로 시작하면 그 접두어와 구분자만 제거하고 비용/조건/추가 효과는 그대로 표시한다. 결과 참가자 사이 빈 줄로 순위 묶음을 구분한다. App의 완주 후보는 Lap 설명만 사용하여 그 안에 포함된 Die/Gear의6면·장비비교를 중복하지 않는다. 지급 투영과 수치는 변경하지 않는다.
+
 - 역할: v5 카드/상세/결과 화면의 순수 한국어 설명 생성. Unity API나 외부 저장/서버를 사용하지 않는다.
 - 핵심 동작: Die는 실제 6면의 물리 순서를, Gear는 같은 슬롯의 현재 장비와 후보 및 등록 보정을 표시한다. Encounter는 실제 HP/골드 소모·최소 HP·필요 장비·기본/행운 골드·XP/명예/회복/장비/주사위 효과와 전투 적의 공격·상성을 설명한다. Lap은 공유 지급 투영으로 정확한 레벨/HP/골드/주사위 전후와 다음 AI 또는 시련 단계를 설명한다. Results는 기존 Rankings 순서/저장 rank·개인 상태/종료 이유와 공동 순위 기준을 표시한다.
 - 입출력: public static string Die(d,hero,dieId), Gear(d,p,gearId), Encounter(d,p,choice), Lap(state,choiceId), Results(state), Friendly(d,text). v5의 유효한 동결 정의/상태와 ID를 입력받는다. Gear는 출전 조회에서 p=null을 허용한다. 이 경우 ‘다음 모험 시작 무기’와 후보 효과만 표시하고 현재 장착·교체 정보는 만들지 않는다. p가 있으면 기존의 실제 슬롯 비교를 유지한다.

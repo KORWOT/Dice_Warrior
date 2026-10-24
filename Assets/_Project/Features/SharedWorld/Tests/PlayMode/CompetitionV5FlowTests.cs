@@ -95,7 +95,7 @@ namespace DiceWarrior.SharedWorld.Tests
         }
         [UnityTest] public IEnumerator SixFaceModalIsReadOnlyAndBlocksTheBattleBehindIt()
         {
-            yield return Click("출전 주사위 6면");yield return null;Assert.That(Screen.v5Net.gameObject.activeInHierarchy,Is.True);yield return Tap(Screen.v5Net.close);
+            yield return Tap(Screen.v5Shell.tools.Single(b=>b.gameObject.activeInHierarchy&&b.BoundId=="net"));yield return null;Assert.That(Screen.v5Net.gameObject.activeInHierarchy,Is.True);yield return Tap(Screen.v5Net.close);
             yield return Click("새 게임");yield return Wait();yield return Combat(3);yield return Tap(Screen.v5Area.roll);yield return Wait();
             string saved=LoopJson.Encode(app.Session.Snapshot),raw=File.ReadAllText(path);yield return Tap(Screen.v5Area.diceInfo);yield return null;
             var net=Screen.v5Net;Assert.That(net.cells.Count(c=>c.gameObject.activeInHierarchy),Is.EqualTo(6));

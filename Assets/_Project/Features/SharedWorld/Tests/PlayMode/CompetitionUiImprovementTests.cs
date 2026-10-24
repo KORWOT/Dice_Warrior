@@ -214,6 +214,121 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(toolClicks,Is.EqualTo(3));Assert.That(backClicks,Is.EqualTo(3));Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(checkpoint));
         }
 
+        [UnityTest,Category("V5UiLayout13")] public IEnumerator LobbyPrimaryAndSettingsStayReachableWithoutReplacingTheSavedAdventure()
+        {
+            string before=LoopJson.Encode(app.Session.Snapshot),disk=ReadCheckpoint();
+            var sizes=new[]{new Vector2Int(720,1280),new Vector2Int(390,844),new Vector2Int(360,640)};
+            foreach(var size in sizes)
+            {
+                yield return LayoutLobby(size,"new");
+                yield return SettingsRoundTrip();
+                AssertCheckpoint(before,disk);
+            }
+            yield return Tap(Shell.boardPrimary);yield return Wait();
+            Assert.That(app.InLobby,Is.False);Assert.That(app.Session.Snapshot.state,Is.Not.Null);
+            app.Close();yield return null;before=LoopJson.Encode(app.Session.Snapshot);disk=ReadCheckpoint();
+            foreach(var size in sizes)
+            {
+                yield return LayoutLobby(size,"resume");
+                yield return SettingsRoundTrip();
+                yield return Click("new");Assert.That(Shell.Data.mode,Is.EqualTo("confirm"));
+                yield return Tap(Shell.back);yield return null;Assert.That(Shell.Data.mode,Is.EqualTo("lobby"));
+                AssertCheckpoint(before,disk);Assert.That(Directory.GetFiles(directory,"match.json.restarted-*"),Is.Empty);
+                yield return Tap(Shell.boardPrimary);yield return null;Assert.That(app.InLobby,Is.False);AssertCheckpoint(before,disk);
+                app.Close();yield return null;AssertCheckpoint(before,disk);
+            }
+        }
+
+        [UnityTest,Category("V5UiLayout13")] public IEnumerator CombatInformationReturnsThroughStatsAndManagementWithoutChangingHeldResults()
+        {
+            yield return Click("new");yield return Wait();
+            bool forcedReroll=false;int commands=0;
+            while(Human.phase!=CompetitionPhase.Combat)
+            {
+                Assert.That(++commands,Is.LessThan(100),"The real command journey must reach a combat.");
+                Assert.That(Human.eliminated || app.Session.Snapshot.state.finished,Is.False);
+                FastStep(ref forcedReroll);yield return null;
+            }
+            app.Render();yield return null;yield return Tap(Screen.v5Area.roll);yield return Wait();
+            yield return Tap(Screen.v5Area.dice[0]);yield return Wait();Assert.That(Human.v5.selection.results[0].held,Is.True);
+            string before=LoopJson.Encode(app.Session.Snapshot),disk=ReadCheckpoint();
+            yield return Tap(Screen.v5Area.combatInfo);yield return null;
+            var net=Screen.v5Net;Assert.That(net.gameObject.activeInHierarchy,Is.True);
+            Assert.That(net.stats.gameObject.activeInHierarchy && net.menu.gameObject.activeInHierarchy,Is.True);
+            Assert.That(net.leave.gameObject.activeInHierarchy || net.abandon.gameObject.activeInHierarchy || net.motion.gameObject.activeInHierarchy,Is.False);
+            string information=net.description.text;
+            bool overflowing=net.description.rectTransform.rect.height>net.detailsScroll.viewport.rect.height+1;
+            net.detailsScroll.StopMovement();if(overflowing)net.detailsScroll.verticalNormalizedPosition=.35f;
+            yield return null;float position=net.detailsScroll.verticalNormalizedPosition;
+            if(overflowing)Assert.That(position,Is.EqualTo(.35f).Within(.01f));
+            yield return Tap(net.stats);Assert.That(Shell.Data.mode,Is.EqualTo("details"));
+            foreach(string tab in new[]{"stats","skills","elements","tags","effects"})yield return Click(tab);
+            yield return Tap(Shell.back);yield return null;
+            AssertInformationRestored(net,information,position);AssertCheckpoint(before,disk);
+            yield return Tap(net.menu);yield return null;Assert.That(Shell.Data.mode,Is.EqualTo("menu"));
+            Assert.That(net.gameObject.activeInHierarchy,Is.False);
+            yield return Click("abandon");Assert.That(Shell.Data.mode,Is.EqualTo("confirm"));
+            yield return Tap(Shell.back);yield return null;Assert.That(Shell.Data.mode,Is.EqualTo("menu"));
+            yield return Tap(Shell.back);yield return null;AssertInformationRestored(net,information,position);
+            AssertCheckpoint(before,disk);yield return Tap(net.close);yield return null;
+            Assert.That(net.gameObject.activeInHierarchy,Is.False);Assert.That(Screen.v5Area.gameObject.activeInHierarchy,Is.True);
+            Assert.That(Human.v5.selection.results[0].held,Is.True);Assert.That(Screen.v5Area.cubes[0].Held,Is.True);
+            AssertCheckpoint(before,disk);
+
+            // UI13-S01: successful recovery must discard the suspended information from the old generation.
+            var backup=app.Session.InspectBackup();int generation=app.Session.Snapshot.generation;
+            Assert.That(backup.state.participants[0].v5.selection.results[0].held,Is.False,"The backup before hold must differ from the suspended information.");
+            yield return Tap(Screen.v5Area.combatInfo);yield return Tap(net.menu);yield return Click("backup");
+            Assert.That(Shell.Data.mode,Is.EqualTo("confirm"));yield return Click("restore-match");yield return null;
+            Assert.That(app.InLobby,Is.True);Assert.That(Shell.Data.mode,Is.EqualTo("lobby"));
+            Assert.That(net.gameObject.activeInHierarchy,Is.False);Assert.That(app.HandleBack(),Is.False);
+            Assert.That(app.Session.Snapshot.generation,Is.GreaterThan(generation));
+            Assert.That(LoopJson.Encode(app.Session.Snapshot.state),Is.EqualTo(LoopJson.Encode(backup.state)));
+            Assert.That(LoopJson.Encode(app.Session.Snapshot.commands),Is.EqualTo(LoopJson.Encode(backup.commands)));
+            string restored=LoopJson.Encode(app.Session.Snapshot),restoredDisk=ReadCheckpoint();
+            yield return Click("resume");yield return null;
+            Assert.That(net.gameObject.activeInHierarchy,Is.False);Assert.That(Screen.v5Area.gameObject.activeInHierarchy,Is.True);
+            foreach(var result in Human.v5.selection.results)
+            {
+                Assert.That(Screen.v5Area.cubes[result.slotIndex].Held,Is.EqualTo(result.held));
+                Assert.That(Screen.v5Area.cubes[result.slotIndex].ResultFaceIndex,Is.EqualTo(result.faceIndex));
+            }
+            AssertCheckpoint(restored,restoredDisk);
+        }
+
+        IEnumerator LayoutLobby(Vector2Int size,string primaryId)
+        {
+            Resize(size.x,size.y);yield return null;
+            ui.Root.safeArea.anchorMin=new Vector2(.03f,.04f);ui.Root.safeArea.anchorMax=new Vector2(.97f,.96f);
+            Canvas.ForceUpdateCanvases();app.Render();yield return null;Canvas.ForceUpdateCanvases();
+            Assert.That(Shell.Data.mode,Is.EqualTo("lobby"));Assert.That(Shell.Data.compactChoices,Is.True);
+            Assert.That(Shell.Data.primary.id,Is.EqualTo(primaryId));Assert.That(Shell.boardPrimary.BoundId,Is.EqualTo(primaryId));
+            Assert.That(Shell.Data.choices.Any(x=>x.id==primaryId),Is.False,"The primary action must have one active route.");
+            Assert.That(Shell.Data.tools.Select(x=>x.id),Is.EquivalentTo(new[]{"net","settings"}));
+            Assert.That(Shell.boardPrimary.transform.IsChildOf(Shell.scrollContent),Is.False);
+            AssertInside(Bounds((RectTransform)Shell.boardPrimary.transform),Bounds(ui.Root.safeArea),"Fixed lobby primary");
+            Assert.That(Bounds((RectTransform)Shell.boardPrimary.transform).Overlaps(Bounds(Shell.viewport)),Is.False,"Scrolling content must end before the fixed action.");
+            Assert.That(Shell.boardPrimary.label.preferredHeight,Is.LessThanOrEqualTo(Shell.boardPrimary.label.rectTransform.rect.height+1));
+            AssertPointer(Shell.boardPrimary);
+        }
+        IEnumerator SettingsRoundTrip()
+        {
+            yield return Click("settings");Assert.That(Shell.Data.mode,Is.EqualTo("settings"));
+            bool reduced=app.ReducedMotion;yield return Click("motion");Assert.That(app.ReducedMotion,Is.EqualTo(!reduced));
+            yield return Reveal(Find("backup"));AssertPointer(Find("backup"));
+            yield return Tap(Shell.back);yield return null;Assert.That(Shell.Data.mode,Is.EqualTo("lobby"));
+            AssertPointer(Shell.boardPrimary);
+        }
+        void AssertInformationRestored(V5DiceNetView net,string information,float position)
+        {
+            Assert.That(net.gameObject.activeInHierarchy,Is.True);Assert.That(net.description.text,Is.EqualTo(information));
+            Assert.That(net.detailsScroll.verticalNormalizedPosition,Is.EqualTo(position).Within(.01f));
+            AssertPointer(net.stats);AssertPointer(net.menu);
+        }
+        string ReadCheckpoint()=>File.Exists(path)?File.ReadAllText(path):null;
+        void AssertCheckpoint(string before,string disk)
+        {Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(before));Assert.That(ReadCheckpoint(),Is.EqualTo(disk));}
+
         void FastStep(ref bool forcedReroll)
         {
             var state=app.Session.Snapshot.state;var p=state.participants[0];string kind,arg="";

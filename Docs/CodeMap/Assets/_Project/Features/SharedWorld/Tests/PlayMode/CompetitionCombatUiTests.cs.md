@@ -10,3 +10,6 @@
 - 사용하는 대상: CompetitionRules/CommandRules, V5Skills.PlanSteps/Preview, V5Area/Net, Unity UI/EventSystem/InputSystem, AssetDatabase. 사용하는 쪽: 메인의 지정 PlayMode 실행.
 - 상태/수명: Editor에서만 컴파일하며 생성한UI/카메라/EventSystem/RenderTexture만 teardown에서 제거한다. 직접 UIRoot의 input group/캐시/안전영역을 격리 설정하고 App은 열지 않는다. 원본 프리팹은 읽기만한다. Frame 콜백 reflection은 production Animate의 같은함수를샘플링하는 검사전용이며 제품 동작을 대체하지 않는다.
 - 검수 주의: 테스트코드작성과실제Unity결과는별개다. 외부수치/게임판정을단언하지않으며 실기dp/전체플레이통과를주장하지않는다. 실제패스수와증거는 V5_UI_IMPROVEMENT_11_REPORT에기록한다.
+
+- UI13: 기존 4개와 물리 큐브/모든 보관마스크/21시점 검사를 유지하며 390×844/360×640 비율을 추가한다. 별도 예상 기술 행의 실제 PlanSteps 순서·이름·참여 슬롯 번호와 1/2/3기술·모두꽝을 대조한다. 굴림 중에는 행/패널이 비활성이고 텍스트가 비어야 하며 기존 preview.text 전체 요약 계약도 유지한다.
+- UI13 배치 검수: `previewHeading`, `previewRows[3]`, `previewRowPanels[3]`의 텍스트 높이·패널 내부·safe area·주사위 트레이/제목/행동 안내/고정 버튼과 비충돌·기술 행 순서를 현재 실제 rect로 검사한다. 실행 중 확정 HP/보호 수치 검증은 기존 V5Flow 검사의 책임이다. 테스트 소스 작성은 실행 PASS가 아니며 메인의 UI13 통합 실행 결과를 따른다.

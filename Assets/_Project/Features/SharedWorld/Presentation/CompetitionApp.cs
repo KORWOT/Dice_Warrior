@@ -101,7 +101,7 @@ namespace DiceWarrior.SharedWorld
         public void Open(string path,CompetitionDefinition rules,Profile startingProfile,Func<uint> seeds=null)
         {
             if(Account!=null) throw new InvalidOperationException("연결된 계정을 로컬 프로필로 대체할 수 없습니다.");
-            active=opened=true;lobby=true;menu="";diceDetails=null;definition=LoopJson.Copy(rules);profile=LoopJson.Copy(startingProfile);seedSource=seeds;
+            active=opened=true;lobby=true;menu="";diceDetails=null;suspendedV5Net=null;managementV5Net=null;definition=LoopJson.Copy(rules);profile=LoopJson.Copy(startingProfile);seedSource=seeds;
             store=new CompetitionStore(path);OpenAdventurers(path);LoadCompetition();Render();
         }
         void OpenAdventurers(string path)
@@ -168,7 +168,7 @@ namespace DiceWarrior.SharedWorld
                 string adventurer=adventurerSelection?.adventurerId ?? "wanderer";
                 if(replaceActive) Session.Restart(LoopJson.Copy(profile),seed,id,adventurer);
                 else Session.Start(LoopJson.Copy(profile),seed,id,adventurer);
-                lobby=false;menu="";notice="";v5LastChange="";suspendedV5Net=null;
+                lobby=false;menu="";notice="";v5LastChange="";suspendedV5Net=null;managementV5Net=null;
             }
             catch(Exception error) { if(this) notice=error.Message; }
             finally { busy=false;if(this) Render(); }
@@ -193,7 +193,7 @@ namespace DiceWarrior.SharedWorld
         void Dispatch(string kind,string arg="")
         {
             if(busy || Session==null) return;busy=true;var before=Session.Snapshot.state;
-            try { Session.Execute(Session.Prepare(kind,arg));notice="";confirmAbandon=false;if(kind=="abandon" && UseV5Ui)menu=""; }
+            try { Session.Execute(Session.Prepare(kind,arg));notice="";confirmAbandon=false;if(kind=="abandon" && UseV5Ui){menu="";managementV5Net=null;} }
             catch(Exception error) { notice=error.Message;busy=false;Render();return; }
             var after=Session.Snapshot.state;
             if(UseV5Ui)v5LastChange=V5ChangeSummary(before,after,kind);
@@ -223,7 +223,7 @@ namespace DiceWarrior.SharedWorld
         public void Close()
         {
             if(busy && presentation==null) return;
-            CancelPresentation();lobby=true;menu="";diceDetails=null;suspendedV5Net=null;v5DetailsReturn="";confirmAbandon=false;confirmNewGame=false;Render();
+            CancelPresentation();lobby=true;menu="";diceDetails=null;suspendedV5Net=null;managementV5Net=null;v5DetailsReturn="";confirmAbandon=false;confirmNewGame=false;Render();
         }
         void ShowDiceDetails(bool candidates=false,bool information=false)
         {
@@ -239,7 +239,8 @@ namespace DiceWarrior.SharedWorld
                 diceDetails.information="[적과 상성]\n"+CompetitionElementView.CombatSummary(d,p)+"\n\n"+V5DiceAreaView.PreviewText(CompetitionV5Skills.Preview(d,p))+
                     "\n\n[행동 제한]\n보관 변경 "+(p.v5.selection?.holdChanges ?? 0)+"/12 · 다시 굴리기 남은 "+(p.v5.selection?.rerollsLeft ?? 0)+"회\n전투 행동턴 "+(p.encounterTurns+1)+"/20 · 기술 실행과 적 행동으로 한 턴\n20번째 행동도 적 처치가 우선이며, 적이 남으면 탈락합니다.\n보호는 이번 실행 뒤 적 행동에만 사용하고 다음 행동으로 이월하지 않습니다."+
                     (p.lastTurn==null?"":"\n\n마지막 실행\n"+string.Join("\n",p.lastTurn.skills.Select(s=>s.name+" · "+(s.status=="enemy-defeated"?"처치 후 생략":$"HP 피해 {s.enemyHpBefore-s.enemyHpAfter} / 흡수 {s.enemyShieldBefore-s.enemyShieldAfter} / 보호 {s.block}")))+$"\n적 행동: {(p.lastTurn.retaliation?"있음":"없음")} · 받은 HP 피해 {p.lastTurn.retaliationDamage}");
-                diceDetails.leave=Close;diceDetails.abandon=()=>{diceDetails=null;confirmAbandon=true;Render();};
+                var informationView=diceDetails;
+                diceDetails.menu=()=>OpenV5Management(informationView);
                 diceDetails.stats=()=>OpenV5Details("stats",diceDetails);
             }
             Render();
@@ -257,7 +258,7 @@ namespace DiceWarrior.SharedWorld
         }
         void Restore()
         {
-            try { if(Session==null) { store.RestoreBackup();Session=new CompetitionSession(store,definition); } else Session.RestoreBackup();notice="경기 백업을 복원했습니다.";confirmRestore=false;lobby=true; }
+            try { if(Session==null) { store.RestoreBackup();Session=new CompetitionSession(store,definition); } else Session.RestoreBackup();notice="경기 백업을 복원했습니다.";confirmRestore=false;lobby=true;menu="";diceDetails=null;suspendedV5Net=null;managementV5Net=null;v5DetailsReturn=""; }
             catch(Exception error) { notice=error.Message; }
             Render();
         }

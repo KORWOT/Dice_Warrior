@@ -1,5 +1,7 @@
 # CompetitionV5FlowTests.cs
 
+- UI13: 로비 6면 도구는 화면 줄바꿈 문구 대신 활성 Shell 버튼의 고정 BoundId `net`으로 찾는다. 실제 첫 raycast·포인터 클릭과 모달의 저장 불변/뒤 입력 차단 단언은 그대로 유지한다.
+
 - v5 정보창의 authored 배경 alpha=1을 검증하고 두비율 캡처로 뒤 HUD 글자 차폐 여부를 확인한다.
 
 - Unity 6000.6의 `CanvasRenderer.GetMesh()` 반환 메시를 읽어 정점 수를 확인한다. 반환값은 Renderer 소유이므로 검사에서 생성하거나 삭제하지 않는다.

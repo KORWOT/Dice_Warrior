@@ -12,6 +12,9 @@ namespace DiceWarrior.SharedWorld
     {
         public RectTransform layout,footer,rollZone,holdZone;
         public Text heading,enemy,player,intent,rollHint,holdHint,preview,notice;
+        public Text previewHeading;
+        public Text[] previewRows;
+        public Image[] previewRowPanels;
         public ScrollRect feedbackScroll;
         public Image enemyFill,playerFill;
         public CommonButtonView[] dice;
@@ -42,7 +45,7 @@ namespace DiceWarrior.SharedWorld
         {
             IsAnimating=DiceRolling=EnemyActing=false;VisibleSkill=null;OnRectTransformDimensionsChange();if(preview)preview.transform.localScale=Vector3.one;
             if(state==null || !CompetitionV5Content.IsEnabled(state.definition))return;
-            if(!layout || !footer || !rollZone || !holdZone || dice==null || dice.Length!=3 || cubes==null || cubes.Length!=3 || !battleStage || !heroGlyph || !enemyGlyph || !effectGlyph)
+            if(!layout || !footer || !rollZone || !holdZone || dice==null || dice.Length!=3 || cubes==null || cubes.Length!=3 || !battleStage || !heroGlyph || !enemyGlyph || !effectGlyph || !previewHeading || previewRows==null || previewRows.Length!=3 || previewRowPanels==null || previewRowPanels.Length!=3)
                 throw new InvalidOperationException("V5 주사위 영역의 authored 연결이 없습니다.");
             var p=state.participants[0];var selection=p.v5?.selection;
             bool selecting=selection?.phase==V5SelectionPhase.Selection && p.phase==CompetitionPhase.Combat && !state.finished;
@@ -74,8 +77,9 @@ namespace DiceWarrior.SharedWorld
             execute.Bind("execute","기술 실행",null,"",Primary,selecting,false,_=>command?.Invoke("combat_execute",""));execute.label.color=new Color(.1f,.14f,.2f);
             reroll.gameObject.SetActive(!awaitRoll);execute.gameObject.SetActive(!awaitRoll);
             diceInfo.Bind("dice-info","주사위 6면",null,"",Appearance,true,false,_=>openDice?.Invoke());
-            combatInfo.Bind("combat-info","전투 정보\n모험 메뉴",null,"",Appearance,true,false,_=>openCombat?.Invoke());
-            preview.text=selecting?PreviewText(CompetitionV5Skills.Preview(state.definition,p)):"먼저 주사위를 굴려 이번 결과를 확인하세요.";
+            combatInfo.Bind("combat-info","전투 정보",null,"",Appearance,true,false,_=>openCombat?.Invoke());
+            if(selecting)ShowPreview(CompetitionV5Skills.Preview(state.definition,p));
+            else ShowPreviewMessage("먼저 주사위를 굴려 이번 결과를 확인하세요.","발동 예상 · 첫 굴림 대기");
             string limit=CompetitionV5Dice.HoldUnavailableReason(state,p);
             string detail=selecting?"보관/해제는 턴을 쓰지 않습니다. 기술 실행 후 살아 있는 적이 행동합니다.":"최초 굴림 대기 · 주사위/전투 상세는 조회할 수 있습니다.";
             if(selecting && results.All(r=>r.held))detail+="\n모두 보관 중 · 다시 굴릴 주사위가 없습니다.";
@@ -110,6 +114,35 @@ namespace DiceWarrior.SharedWorld
             if(block>0)effect+=(effect.Length>0?" · ":"")+"보호 +"+block;
             return effect.Length>0?effect:"HP 피해 0 · 보호 생성 없음";
         }
+        void ShowPreview(V5CombatPreview value)
+        {
+            preview.text=PreviewText(value);
+            if(value.noOp || value.status=="await-roll")
+            {ShowPreviewMessage(preview.text,value.noOp?"실행할 기술 없음":"발동 예상 · 첫 굴림 대기");return;}
+            preview.gameObject.SetActive(false);previewHeading.text="발동 예상 "+value.skills.Length+"개 · 실행 순서";
+            for(int i=0;i<3;i++)
+            {
+                bool visible=i<value.skills.Length;previewRowPanels[i].gameObject.SetActive(visible);previewRows[i].gameObject.SetActive(visible);
+                previewRowPanels[i].color=PreviewRowColor(false);previewRows[i].text="";
+                if(visible){var skill=value.skills[i];previewRows[i].text=$"기술 {i+1} · {skill.name} · {skill.dieSlotIndices.Length}눈 ["+string.Join("+",skill.dieSlotIndices.Select(Marker))+"]\n"+
+                    (skill.status=="enemy-defeated"?"처치 후 생략":RowEffectText(skill.damageType,skill.damageApplied,skill.shieldAbsorbed,skill.block));}
+            }
+        }
+        void ShowPreviewMessage(string message,string title)
+        {
+            preview.text=message;preview.gameObject.SetActive(true);previewHeading.text=title;
+            for(int i=0;i<3;i++){previewRowPanels[i].gameObject.SetActive(false);previewRows[i].gameObject.SetActive(false);previewRows[i].text="";}
+        }
+        static Color PreviewRowColor(bool current)=>current?new Color(.23f,.31f,.34f):new Color(.11f,.17f,.26f);
+        static string RowEffectText(DamageType type,int damage,int absorbed,int block)
+        {string effect=EffectText(type,damage,absorbed,block),name=CompetitionElements.TypeName(type);return effect.StartsWith(name+" ",StringComparison.Ordinal)?effect:name+" · "+effect;}
+        void ShowExecutingSkill(int index,string summary)
+        {
+            // The compatibility text stays readable to callers; only the authored rows are rendered here.
+            preview.text=summary;preview.gameObject.SetActive(false);previewHeading.text="기술 실행 · "+(index+1)+"번째";
+            previewRows[index].text=summary;
+            for(int i=0;i<3;i++)previewRowPanels[i].color=PreviewRowColor(i==index);
+        }
         public IEnumerator Play(string kind,CompetitionState before,CompetitionState after)
         {
             var previous=before.participants[0].v5.selection;Snap(kind=="combat_execute"?before:after);IsAnimating=true;
@@ -125,7 +158,7 @@ namespace DiceWarrior.SharedWorld
                     // Held labels retain their old face, but no old/new combination group is presented before reveal.
                     foreach(var result in previous.results.Where(r=>r.held))
                         dice[result.slotIndex].label.text=DieLabel(before.definition,before.participants[0].dice[result.slotIndex],result.slotIndex)+"\n결과: "+CompetitionV5Content.Face(before.definition,result.faceId).name+"\n보관 중 · 리롤 제외";
-                    preview.text="주사위가 멈추면 표시됩니다.\n새 결과와 기술 구성을 확인하는 중";rollHint.text=kind=="combat_roll"?"첫 굴림 · 전투 주사위 "+moved.Length+"개":"보관 유지 · "+string.Join("·",moved.Select(Marker))+"만 리롤";
+                    ShowPreviewMessage("주사위가 멈추면 표시됩니다.\n새 결과와 기술 구성을 확인하는 중","발동 예상 · 결과 대기");rollHint.text=kind=="combat_roll"?"첫 굴림 · 전투 주사위 "+moved.Length+"개":"보관 유지 · "+string.Join("·",moved.Select(Marker))+"만 리롤";
                     SetNotice("보관한 주사위는 고정됩니다. 결과 공개 후 조작할 수 있습니다.");
                     yield return Animate(kind=="combat_roll"?.75f:.55f,t=>{foreach(int i in moved)cubes[i].Pose(t,i);});
                 }
@@ -149,16 +182,16 @@ namespace DiceWarrior.SharedWorld
                     cubes[result.slotIndex].Configure(CompetitionV5Content.Faces(before.definition,initial.adventurerId,initial.dice[result.slotIndex].definitionId),result.faceIndex);cubes[result.slotIndex].Held=result.held;
                     card.label.text=DieLabel(before.definition,initial.dice[result.slotIndex],result.slotIndex)+"\n"+CompetitionV5Content.Face(after.definition,result.faceId).name+"\n실행한 눈";
                 }
-                preview.text="확정한 눈으로 기술을 실행합니다.";execute.label.text="기술 실행 중…";stageAction.text="기술 실행";SetNotice("내 기술 실행 · 현재 보호는 0부터 누적됩니다.");
+                preview.text="확정한 눈으로 기술을 실행합니다.";previewHeading.text="기술 실행 · 확정 결과";execute.label.text="기술 실행 중…";stageAction.text="기술 실행";SetNotice("내 기술 실행 · 현재 보호는 0부터 누적됩니다.");
                 SetHealth(log.playerHpBefore,initial.maxHp,0,log.enemyHpBefore,initial.enemy.maxHp,initial.enemy.shield,initial.enemy.name,true);
                 yield return Animate(.12f,_=>{});
-                if(p.v5.lastTurn?.noOp==true) {preview.text="발동 기술 없음 · 모든 눈이 꽝";yield return Animate(.25f,_=>{});}
+                if(p.v5.lastTurn?.noOp==true) {ShowPreviewMessage("발동 기술 없음 · 모든 눈이 꽝\n다음으로 적이 행동합니다.","실행할 기술 없음");yield return Animate(.25f,_=>{});}
                 var plan=CompetitionV5Skills.PlanSteps(before.definition,initial,p.v5.lastTurn.results);
                 for(int index=0;index<log.skills.Count;index++)
                 {
                     var skill=log.skills[index];var step=plan[index];
-                    preview.text=$"기술 {index+1} · {skill.name} · {step.dieSlotIndices.Length}눈 ["+string.Join("+",step.dieSlotIndices.Select(Marker))+"]\n"+
-                        (skill.status=="enemy-defeated"?"처치 후 생략":EffectText(p.v4.lastTurn.skills[index].damageType,skill.enemyHpBefore-skill.enemyHpAfter,skill.enemyShieldBefore-skill.enemyShieldAfter,skill.block));
+                    ShowExecutingSkill(index,$"기술 {index+1} · {skill.name} · {step.dieSlotIndices.Length}눈 ["+string.Join("+",step.dieSlotIndices.Select(Marker))+"]\n"+
+                        (skill.status=="enemy-defeated"?"처치 후 생략":RowEffectText(p.v4.lastTurn.skills[index].damageType,skill.enemyHpBefore-skill.enemyHpAfter,skill.enemyShieldBefore-skill.enemyShieldAfter,skill.block)));
                     foreach(int slot in step.dieSlotIndices)dice[slot].label.text=DieLabel(before.definition,initial.dice[slot],slot)+"\n"+CompetitionV5Content.Face(before.definition,p.v5.lastTurn.results.Single(r=>r.slotIndex==slot).faceId).name+"\n기술 "+(index+1)+(skill.status=="enemy-defeated"?" 생략":" 실행");
                     VisibleSkill=skill.skillId;stageAction.text="기술 "+(index+1)+" · "+skill.name;
                     foreach(var cube in cubes)cube.Pulse=0;foreach(int slot in step.dieSlotIndices)cubes[slot].Pulse=1;
@@ -173,6 +206,8 @@ namespace DiceWarrior.SharedWorld
                 }
                 int enemyShield=log.retaliation && log.intent==Intent.Defend?initial.enemy.attack:0;
                 foreach(var cube in cubes)cube.Pulse=0;VisibleSkill=null;
+                for(int i=0;i<3;i++)previewRowPanels[i].color=PreviewRowColor(false);
+                previewHeading.text=log.retaliation?"기술 처리 완료 · 적 행동":"기술 처리 완료 · 적 처치";
                 if(log.retaliation)
                 {
                     EnemyActing=true;stageAction.text=log.intent==Intent.Defend?"적의 방어":"적의 반격";impact.text="";

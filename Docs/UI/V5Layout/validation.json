@@ -1,0 +1,857 @@
+{
+  "task": "V5_UI_LAYOUT_FLOW_13",
+  "date": "2026-10-24",
+  "baseline_commit": "d4cd6a9b42582e7921bec7484ed47538f45f4dff",
+  "status": "complete",
+  "scope": "UI composition, navigation and layout only; art and audio deferred",
+  "validation": {
+    "ui_playmode": 27,
+    "legacy_playmode": 25,
+    "ui_projection_editmode": 23,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0,
+    "correction_rounds_used": 1,
+    "correction_rounds_limit": 2,
+    "legacy_route": "Pipeline fixture filter after a clean Editor script reload; result names matched the previously discovered exact 25 tests. Earlier zero-test attempts are not passes.",
+    "legacy_exact_names_match": true
+  },
+  "not_run": [
+    "Physical mobile device safe area, touch size, GPU performance and system text scaling",
+    "Real user saves, live server or Firebase"
+  ],
+  "records": [
+    {
+      "path": "artifacts/v5-ui-layout-13/compile-round1.json",
+      "sha256": "39aa46d53aaa4b03d6e0431d95131d5749ed0c5914659356809460cff9d62235",
+      "result": {
+        "status": "completed",
+        "failed": false,
+        "errors": []
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/authoring-initial.json",
+      "sha256": "79716012848e41fa4a389c54c9ca4bd706dc2168c3a3eee0104077c11b5a376d",
+      "result": {
+        "diagnostics": [],
+        "compileMs": 2080,
+        "executeMs": 258,
+        "assemblyName": "PipelineRunScript_V5UiRedesignCapture_2e5d5969c1ec491d89f3404fb12e9d3c",
+        "success": true,
+        "result": {
+          "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+          "guid": "ae62a590a196a5944815a56b969507cf",
+          "cubes": 3
+        }
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/tests-round1.json",
+      "sha256": "ad25c012758cabbabafef9842eba9d9a8afc6613a084c6a17a4fcaf2c9e3e443",
+      "result": {
+        "status": "completed",
+        "duration": 62.36,
+        "summary": {
+          "total": 27,
+          "passed": 27,
+          "failed": 0,
+          "skipped": 0,
+          "inconclusive": 0
+        },
+        "results": [
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.AllDiceCountsAndHoldMasksKeepFixedSlotsAndProjectedMeshesInsideTheTray",
+            "Status": "Passed",
+            "Duration": 14.3253907,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.CardsUseStableIdentityAndPreviewGroupsComeFromTheActualPlanner",
+            "Status": "Passed",
+            "Duration": 0.1034357,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.DiceDetailsDistinguishRolledAndInspectedFacesAndRetainTheirLocalState",
+            "Status": "Passed",
+            "Duration": 0.4559957,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.EveryPhysicalFaceUsesItsActualLayoutAndSettlesFacingThePlayer",
+            "Status": "Passed",
+            "Duration": 0.4091881,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.ClosingDuringRollAndRerollResumesSavedResultWithoutRepeatingInput",
+            "Status": "Passed",
+            "Duration": 0.5796216,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.FailedRerollWriteKeepsCommittedFacesAndRetriesOnlyAfterStorageRecovers",
+            "Status": "Passed",
+            "Duration": 1.8600138,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.GrantedSecondAndThirdDiceAppearInNextCombatButFinalGearAddsNoDie",
+            "Status": "Passed",
+            "Duration": 4.1964749,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.ReducedMotionUsesIdenticalCommandsRandomStreamsAndCombatOutcome",
+            "Status": "Passed",
+            "Duration": 4.529551,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.RollAndPartialRerollRevealTogetherWhileHeldPhysicalSlotStaysStill",
+            "Status": "Passed",
+            "Duration": 1.9501877,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.TravelAcrossStartShowsSixButMovesOnlyTwoCellsAndStopsForReward",
+            "Status": "Passed",
+            "Duration": 1.4650462,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.AccountPurchaseShowsPendingThenApprovedAndExplainsInsufficientOrFailedRequests",
+            "Status": "Passed",
+            "Duration": 0.1993849,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.CombatInformationReturnsThroughStatsAndManagementWithoutChangingHeldResults",
+            "Status": "Passed",
+            "Duration": 1.571936,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.ConsecutiveNextLoadoutSelectionsAndBackNeverReplaceOrAbandonTheSavedMatch",
+            "Status": "Passed",
+            "Duration": 0.3693986,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.EncounterCompletionShowsAiProgressThenCommittedResultsAndAllowsSafeAbandon",
+            "Status": "Passed",
+            "Duration": 2.8528192,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.LegacySoloRecordHoldsGrowthWithReasonAndNeverDispatchesPurchase",
+            "Status": "Passed",
+            "Duration": 0.1447912,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.LobbyPrimaryAndSettingsStayReachableWithoutReplacingTheSavedAdventure",
+            "Status": "Passed",
+            "Duration": 0.4067529,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.LongKoreanCardsScrollAndReceiveRealPointerAtThreeSizesAndSyntheticSafeArea",
+            "Status": "Passed",
+            "Duration": 0.2053902,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.ThreeRealLapsExposeEveryGearAndClaimExactlyOnceAfterReadOnlyNavigation",
+            "Status": "Passed",
+            "Duration": 3.0505627,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.AuthoredV5HasFixedCubeTrayAndSixFaceNet",
+            "Status": "Passed",
+            "Duration": 0.0369095,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BlankExecuteAndCancellationRestoreCommittedStateWithoutAnotherCommand",
+            "Status": "Passed",
+            "Duration": 0.5433952,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BottomControlsAndAllTextFitBothSafeAreaRatios",
+            "Status": "Passed",
+            "Duration": 1.3609124,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.ExecuteHealthBarsNumbersAndProtectionFollowEachSavedStep",
+            "Status": "Passed",
+            "Duration": 2.7111033,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.HoldBudgetAndWriteFailureHaveVisibleFeedbackAndKeepExecutionAvailable",
+            "Status": "Passed",
+            "Duration": 1.1686978,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.PointerSelectionSupportsOneTwoAndThreeDiceAndKeepsHeldDieStill",
+            "Status": "Passed",
+            "Duration": 11.2352253,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.RewardCandidateEntryAndLegacyResumeUseTheirOwnDefinitions",
+            "Status": "Passed",
+            "Duration": 0.2533042,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.SixFaceModalIsReadOnlyAndBlocksTheBattleBehindIt",
+            "Status": "Passed",
+            "Duration": 1.337816,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.V5DetailsExposeClassCalculationEquipmentEffectsAndEnemyTagsWithoutMutatingState",
+            "Status": "Passed",
+            "Duration": 4.9744629,
+            "Message": null,
+            "StackTrace": null
+          }
+        ]
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/legacy-final-after-reload.json",
+      "sha256": "5e4a8b288e863a7172d9618521d8ebdd74b7f1d95f9a19b2bd49a4ad9262ab1e",
+      "result": {
+        "status": "completed",
+        "duration": 24.21,
+        "summary": {
+          "total": 25,
+          "passed": 25,
+          "failed": 0,
+          "skipped": 0,
+          "inconclusive": 0
+        },
+        "results": [
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen",
+            "Status": "Passed",
+            "Duration": 0.6095963,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredCompetitionScreenHasFourDistinctPawnSlots",
+            "Status": "Passed",
+            "Duration": 0.0330066,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredElementDetailsProvideSixReadableStatRows",
+            "Status": "Passed",
+            "Duration": 0.0271963,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery",
+            "Status": "Passed",
+            "Duration": 0.096477,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable",
+            "Status": "Passed",
+            "Duration": 0.0768701,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth",
+            "Status": "Passed",
+            "Duration": 0.2574578,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementApplicationResumesEachLegacyVersionUntilExplicitRestart",
+            "Status": "Passed",
+            "Duration": 3.2380051,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling",
+            "Status": "Passed",
+            "Duration": 4.3324391,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch",
+            "Status": "Passed",
+            "Duration": 1.561493,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition",
+            "Status": "Passed",
+            "Duration": 0.243604,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExistingSoloPendingIsRetainedWithoutImplicitSubmission",
+            "Status": "Passed",
+            "Duration": 0.0594891,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExitPreservesAdventureAndNewGameRequiresConfirmation",
+            "Status": "Passed",
+            "Duration": 0.16126,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch",
+            "Status": "Passed",
+            "Duration": 0.1602143,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.InterruptedMovementReopensSavedStateWithoutRepeatingAi",
+            "Status": "Passed",
+            "Duration": 0.0826753,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart",
+            "Status": "Passed",
+            "Duration": 0.1352428,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable",
+            "Status": "Passed",
+            "Duration": 0.0877505,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition",
+            "Status": "Passed",
+            "Duration": 0.0742655,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.NewGameProfileFailureKeepsSavedAdventureAvailableToResume",
+            "Status": "Passed",
+            "Duration": 0.1181298,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable",
+            "Status": "Passed",
+            "Duration": 0.1463557,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PendingGrowthReopensAndRetriesOnlyItsOriginalRequest",
+            "Status": "Passed",
+            "Duration": 0.1117381,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PointerRoundShowsDiceSkillsAndAllFourParticipants",
+            "Status": "Passed",
+            "Duration": 8.0625534,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible",
+            "Status": "Passed",
+            "Duration": 0.1212257,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart",
+            "Status": "Passed",
+            "Duration": 0.1977181,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels",
+            "Status": "Passed",
+            "Duration": 4.0996317,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry",
+            "Status": "Passed",
+            "Duration": 0.0779615,
+            "Message": null,
+            "StackTrace": null
+          }
+        ]
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/projection-final.json",
+      "sha256": "44aca51aa752cb225486bb5050e3ece1b3a3fe117124f6f6e9972dc967af2663",
+      "result": {
+        "Summary": {
+          "Total": 23,
+          "Passed": 23,
+          "Failed": 0,
+          "Skipped": 0,
+          "Inconclusive": 0
+        },
+        "Results": [
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.AllPhysicalResultsMapEachNonblankDieOnceAndMatchExecutedOrder(\"wanderer\")",
+            "Status": "Passed",
+            "Duration": 1.9280832,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.AllPhysicalResultsMapEachNonblankDieOnceAndMatchExecutedOrder(\"scholar\")",
+            "Status": "Passed",
+            "Duration": 2.024286,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.AllPhysicalResultsMapEachNonblankDieOnceAndMatchExecutedOrder(\"vanguard\")",
+            "Status": "Passed",
+            "Duration": 1.8970238,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.BlankPhysicalSlotIsNotRenumberedOrAssignedToASkill",
+            "Status": "Passed",
+            "Duration": 0.0108333,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(0,\"balanced\")",
+            "Status": "Passed",
+            "Duration": 0.0283659,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(1,\"arcane\")",
+            "Status": "Passed",
+            "Duration": 0.0336517,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(2,\"blade\")",
+            "Status": "Passed",
+            "Duration": 0.0156527,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(2,\"wand\")",
+            "Status": "Passed",
+            "Duration": 0.0157847,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(2,\"mail\")",
+            "Status": "Passed",
+            "Duration": 0.0427935,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(2,\"charm\")",
+            "Status": "Passed",
+            "Duration": 0.0248737,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.LapPreviewMatchesGrantIncludingLevelAndHpCapWithoutRngOrAi(2,\"aegis\")",
+            "Status": "Passed",
+            "Duration": 0.0252353,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.PartialPairIdentifiesPhysicalSlotsWhenFacesRepeat",
+            "Status": "Passed",
+            "Duration": 0.0176468,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TextExplainsHpCostBoundaryTreasureLuckAndScoutingRewards",
+            "Status": "Passed",
+            "Duration": 0.0206251,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TextGearComparesSameSlotAndResultsKeepSharedRanksAndReasons",
+            "Status": "Passed",
+            "Duration": 0.0273156,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TextGearWithoutParticipantDescribesStartingWeaponWithoutInventingCurrentEquipment(\"blade\")",
+            "Status": "Passed",
+            "Duration": 0.0055072,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TextGearWithoutParticipantDescribesStartingWeaponWithoutInventingCurrentEquipment(\"wand\")",
+            "Status": "Passed",
+            "Duration": 0.0053884,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TextLapReportsProjectedLevelAndExactHpRatherThanUncappedHeal",
+            "Status": "Passed",
+            "Duration": 0.0182953,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TextShowsActualSixFacesAndRegisteredNamesWithoutMutatingDefinition",
+            "Status": "Passed",
+            "Duration": 0.0052537,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TreasureGoldProjectionMatchesActualRewardBeforeLevelUp(\"forest-risk\")",
+            "Status": "Passed",
+            "Duration": 0.0375831,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TreasureGoldProjectionMatchesActualRewardBeforeLevelUp(\"pass-risk\")",
+            "Status": "Passed",
+            "Duration": 0.0285044,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TreasureGoldProjectionMatchesActualRewardBeforeLevelUp(\"citadel-curse\")",
+            "Status": "Passed",
+            "Duration": 0.0202545,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TreasureGoldProjectionMatchesActualRewardBeforeLevelUp(\"rift-risk\")",
+            "Status": "Passed",
+            "Duration": 0.0386065,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5UiProjectionTests.TreasureGoldProjectionMatchesActualRewardBeforeLevelUp(\"hill-supply\")",
+            "Status": "Passed",
+            "Duration": 0.0212995,
+            "Message": null,
+            "StackTrace": null
+          }
+        ],
+        "Duration": 9.4,
+        "StatusPath": null,
+        "Mode": "EditMode",
+        "FilterApplied": "testname: CompetitionV5UiProjectionTests",
+        "success": true,
+        "result": null
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/capture-initial.json",
+      "sha256": "81c986b3eb6a4f2f61778b6b44a7d8c5c463adb3327842acd3793554e8bd22e3",
+      "result": {
+        "diagnostics": [],
+        "compileMs": 152,
+        "executeMs": 4031,
+        "assemblyName": "PipelineRunScript_V5UiRedesignCapture_b57b951d22da4334b39a9a4eed6661dd",
+        "success": true,
+        "result": {
+          "count": 12,
+          "path": "Docs/UI/V5Layout/manifest.json"
+        }
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/ratio-initial.json",
+      "sha256": "b4ee43b1812d405313144d7fad68b36522d6b38ea6e6ab4fc60be9e7eeca3192",
+      "result": {
+        "diagnostics": [],
+        "compileMs": 123,
+        "executeMs": 1452,
+        "assemblyName": "PipelineRunScript_V5UiRedesignCapture_a5e58dc23cc446a4951c20a057f2e996",
+        "success": true,
+        "result": {
+          "checks": [
+            "390x844 lobby primary, combat skill rows/actions, information close/menu",
+            "360x640 lobby primary, combat skill rows/actions, information close/menu"
+          ]
+        }
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/integrity.json",
+      "sha256": "95ed300478019acf250f73d971671b8cf13e8a01c75f2541374de2150e5ac204",
+      "result": {
+        "baseline_head": "d4cd6a9b42582e7921bec7484ed47538f45f4dff",
+        "current_head": "d4cd6a9b42582e7921bec7484ed47538f45f4dff",
+        "baseline_files": 1328,
+        "unchanged": 1300,
+        "allowed_changed": [
+          "Docs/Plans/V5_UI_LAYOUT_FLOW_13_PLAN.md",
+          "Assets/_Project/Features/SharedWorld/Editor/CompetitionCombatUiAuthoring.cs",
+          "Assets/_Project/Features/SharedWorld/Editor/V5ShellAuthoring.cs",
+          "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+          "Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.V5Ui.cs",
+          "Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs",
+          "Assets/_Project/Features/SharedWorld/Presentation/CompetitionV5UiText.cs",
+          "Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs",
+          "Assets/_Project/Features/SharedWorld/Presentation/V5DiceNetView.cs",
+          "Assets/_Project/Features/SharedWorld/Presentation/V5ShellView.cs",
+          "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionCombatUiTests.cs",
+          "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionUiImprovementTests.cs",
+          "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionV5FlowTests.cs",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Editor/CompetitionCombatUiAuthoring.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Editor/V5ShellAuthoring.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.V5Ui.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Presentation/CompetitionV5UiText.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Presentation/V5DiceNetView.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Presentation/V5ShellView.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionCombatUiTests.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionUiImprovementTests.cs.md",
+          "Docs/CodeMap/Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionV5FlowTests.cs.md",
+          "Docs/CodeMap/INDEX.md",
+          "Docs/CodeMap/Server/Tools/V5UiRedesignCapture.cs.md",
+          "Docs/README.md",
+          "Server/Tools/V5UiRedesignCapture.cs"
+        ],
+        "unexpected_changed": [],
+        "missing": [],
+        "new_files": [
+          "Docs/Reports/V5_UI_LAYOUT_FLOW_13_REPORT.md",
+          "Docs/UI/V5Layout/01-lobby.png",
+          "Docs/UI/V5Layout/02-resume.png",
+          "Docs/UI/V5Layout/03-adventurers.png",
+          "Docs/UI/V5Layout/04-loadout.png",
+          "Docs/UI/V5Layout/05-board.png",
+          "Docs/UI/V5Layout/06-encounter.png",
+          "Docs/UI/V5Layout/07-combat-ready.png",
+          "Docs/UI/V5Layout/08-combat-selection.png",
+          "Docs/UI/V5Layout/09-combat-info.png",
+          "Docs/UI/V5Layout/10-management.png",
+          "Docs/UI/V5Layout/11-reward.png",
+          "Docs/UI/V5Layout/12-results.png",
+          "Docs/UI/V5Layout/README.md",
+          "Docs/UI/V5Layout/index.html",
+          "Docs/UI/V5Layout/manifest.json",
+          "Docs/UI/V5Layout/validation.json"
+        ],
+        "unexpected_new": [],
+        "staged": [],
+        "codemaps_checked": 12,
+        "missing_codemaps": [],
+        "gallery_local_links": 27,
+        "broken_links": [],
+        "text_diff_check_exit": 0,
+        "text_diff_check_output": "",
+        "prefab_guid": "ae62a590a196a5944815a56b969507cf",
+        "prefab_meta_unchanged": true
+      }
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/editor-final.json",
+      "sha256": "5bcc238280a37cee6b7eaebdb8eb2aaaa6715bf99e23086e0951cb8385481121",
+      "result": {
+        "output": null,
+        "diagnostics": [],
+        "success": true,
+        "result": {
+          "playing": false,
+          "compiling": false,
+          "scene": "Assets/_Project/Scenes/Title.unity",
+          "dirty": false
+        }
+      }
+    }
+  ],
+  "main_images": [
+    {
+      "file": "01-lobby.png",
+      "sha256": "609ee1b1d8f80cb7efcbc85f4699e15389c171236541aaa7619f998397aed5ab"
+    },
+    {
+      "file": "02-resume.png",
+      "sha256": "5d836a35931e508fdf7483f3d29d30a8e9d88a06998780a824d1ddd8cf253ddd"
+    },
+    {
+      "file": "03-adventurers.png",
+      "sha256": "695cece47ebd3dbc2295d2907092a531fd493c11e23178742c89df07fbe9c5db"
+    },
+    {
+      "file": "04-loadout.png",
+      "sha256": "05dfe8cfb2dcbff0a32cfa1bf1e7d9cff96e60d5221798eac3b9ec1b49f48060"
+    },
+    {
+      "file": "05-board.png",
+      "sha256": "84bfcced57456dd0b8aa0f4e714709582fb25dfab2506c24133567b50d39d3c1"
+    },
+    {
+      "file": "06-encounter.png",
+      "sha256": "f62a09fe85958a39419b9660391836fca9a256e554b575ad288cc869aa5d3499"
+    },
+    {
+      "file": "07-combat-ready.png",
+      "sha256": "8987a269fc7a33801e0369f04f5125cbaa173ecfd46789bcb3dbda91b00bf5ed"
+    },
+    {
+      "file": "08-combat-selection.png",
+      "sha256": "188e1496ca63ed7cdce99aacae3b0fc7ea67b595743fa0c1a0053cdbc0876a52"
+    },
+    {
+      "file": "09-combat-info.png",
+      "sha256": "4b771b1d816f37ed9b5441288e4c6c462d9da9bd24c1462445815e123beee9e7"
+    },
+    {
+      "file": "10-management.png",
+      "sha256": "d9b0596dacf9dde1467f03a6bd54ad447064200e1196a89638639fc42a7561fc"
+    },
+    {
+      "file": "11-reward.png",
+      "sha256": "fcc422a525b798d3d323d005b566bf5fb7e76c6f79ce047c58f399233e65e0b9"
+    },
+    {
+      "file": "12-results.png",
+      "sha256": "22832b3b37f4c6d37114f54d90cb3375bb95db84df48a8c53987988e5c4e3dbb"
+    }
+  ],
+  "ratio_images": [
+    {
+      "path": "artifacts/v5-ui-layout-13/run-01/combat-360x640.png",
+      "sha256": "2df046ccb6eed1d3dfde57392d00425ad1aeeb9b9a973ca65db180f976678f2d",
+      "committed_file": "Validation/combat-360x640.png"
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/run-01/combat-390x844.png",
+      "sha256": "0eaf21dbed29f6023b2403d686db28c6fde6ddd4e69628e955664e39e1af77c7",
+      "committed_file": "Validation/combat-390x844.png"
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/run-01/info-360x640.png",
+      "sha256": "4c47204a465bc9d52434532d40641074651e729ff64d127731c59b50e3ec2ff4",
+      "committed_file": "Validation/info-360x640.png"
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/run-01/info-390x844.png",
+      "sha256": "175a360a8893bfe1d252d842fbd37de141677da90afe1b0aa4152a44e5257532",
+      "committed_file": "Validation/info-390x844.png"
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/run-01/lobby-360x640.png",
+      "sha256": "e1ea94ef6c81b85639d318cbdb8f12d4c11ba2e5af4a7bf15c4d275083e22287",
+      "committed_file": "Validation/lobby-360x640.png"
+    },
+    {
+      "path": "artifacts/v5-ui-layout-13/run-01/lobby-390x844.png",
+      "sha256": "830626aa0fc881f8dbb6c1f1bd6ef273a5b2e186b528023de8dd685e93c876c9",
+      "committed_file": "Validation/lobby-390x844.png"
+    }
+  ],
+  "legacy_expected_names": [
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredCompetitionScreenHasFourDistinctPawnSlots",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredElementDetailsProvideSixReadableStatRows",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementApplicationResumesEachLegacyVersionUntilExplicitRestart",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExistingSoloPendingIsRetainedWithoutImplicitSubmission",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExitPreservesAdventureAndNewGameRequiresConfirmation",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.InterruptedMovementReopensSavedStateWithoutRepeatingAi",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.NewGameProfileFailureKeepsSavedAdventureAvailableToResume",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PendingGrowthReopensAndRetriesOnlyItsOriginalRequest",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PointerRoundShowsDiceSkillsAndAllFourParticipants",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels",
+    "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry"
+  ]
+}

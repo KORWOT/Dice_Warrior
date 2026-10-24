@@ -6,7 +6,11 @@
 
 ## 핵심 동작
 
-기존 프리팹을 파괴하지 않고 `content/V5 Main Shell` 아래 header/summary/notice, ScrollRect/RectMask2D/본문, 선택 카드6개와 설명, 로컬 페이지 버튼, tools4/tabs5/back를 작성한다. 연결된 v5Shell이 이미 있으면 다시 만들지 않는다. 같은 이름의 미연결 subtree는 오류로 중단한다. 공용 폰트와 CommonButtonView 프리팹은 읽기·인스턴스 참조만 사용한다.
+기존 프리팹을 파괴하지 않고 `content/V5 Main Shell` 아래 header/summary/notice, ScrollRect/RectMask2D/본문, 선택 카드6개와 설명, 로컬 페이지 버튼, tools4/tabs5/back를 작성한다. 연결된 v5Shell이 이미 있으면 다시 만들지 않고 UI13 `EnsureLayout` 단계만 적용한다. 같은 이름의 미연결 subtree는 오류로 중단한다. 공용 폰트와 CommonButtonView 프리팹은 읽기·인스턴스 참조만 사용한다.
+
+V5_UI_LAYOUT_FLOW_13의 `EnsureLayout`은 기존/신규 Shell 모두에 `scrollContent/Context summary panel` Image와 contextBackground 참조를 멱등 연결한다. CanvasRenderer를 명시하고 raycastTarget=false, first sibling으로 설정해 본문·카드 포인터를 가리지 않는다. 이미 연결되어 있으면 유지하며 같은 이름의 미연결 노드는 오류다. 실제 배경 크기/활성/본문 패딩은 V5ShellView.Bind가 결정한다.
+
+고정 진행 행동은 UI12의 기존 boardPrimary를 재사용하므로 새로운 버튼이나 새 명령을 만들지 않는다. 이 authoring은 기존 보드/주사위 연출, 공유 Button/폰트, legacy8버튼, Screen/Growth의 직렬화 참조를 교체하지 않는다.
 
 선택 카드의 설명은 해당 버튼 안에 있고 raycastTarget=false다. 카드/탭/도구의 실제 배치는 V5ShellView가 내용에 맞춰 조정하며 authored 기준은720×1280이다. 새 Text에는 CanvasRenderer를 함께 작성한다. 기존 Preview footer 참조는 v5 표시 때만 숨기고 구형 복귀 시 복구하는 용도로 연결한다.
 

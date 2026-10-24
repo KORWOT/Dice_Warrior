@@ -38,7 +38,10 @@ namespace DiceWarrior.SharedWorld
         {
             var definition = d.encounters.Single(value => value.id == choice.id);
             var lines = new List<string>();
-            if (!string.IsNullOrEmpty(choice.description)) lines.Add(choice.description);
+            string description=choice.description??"";
+            if (!string.IsNullOrEmpty(choice.label) && description.StartsWith(choice.label,StringComparison.Ordinal))
+                description=description.Substring(choice.label.Length).TrimStart(' ','·',':','\n','\r');
+            if (!string.IsNullOrEmpty(description)) lines.Add(description);
             var costs = new List<string>();
             if (choice.hpCost > 0) costs.Add("HP " + choice.hpCost + " 소모");
             if (choice.goldCost > 0) costs.Add("골드 " + choice.goldCost + " 소모");
@@ -90,6 +93,7 @@ namespace DiceWarrior.SharedWorld
             foreach (var p in ranked)
             {
                 bool tied = ranked.Count(other => other.rank == p.rank) > 1;
+                lines.Add("");
                 lines.Add((tied ? "공동 " : "") + p.rank + "위 · " + p.name + (p.isHuman ? " (나)" : ""));
                 lines.Add((p.trialSucceeded ? "시련 성공" : "시련 미성공") + $" · 완주 {p.completedLaps} · 명예 {p.honor} · HP {p.hp}/{p.maxHp}");
                 lines.Add(p.eliminated ? "탈락 · " + p.message : p.finished ? "모험 완료 · " + p.message : state.finished ? "경기 종료 · 라운드 제한" : "진행 중 · " + p.message);

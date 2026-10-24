@@ -1,9 +1,11 @@
 # CompetitionApp.cs
 
+- UI13: 정보→모험 메뉴는 같은 V5DiceNetData를 보관·복원하는 OpenV5Management 콜백을 사용한다. 로컬 Open/새 경기/Close/포기 확정/경기 백업 복원 성공에서 UI 조회 참조를 해제한다. 복원 실패·확인 취소는 원조회 복귀를 보존한다. 경기 복원 후 이전 전투 정보가 로비 위에 다시 열리지 않도록 메뉴도 함께 닫는다.
+
 - V5_UI_IMPROVEMENT_11: partial App.V5Ui에서 전용 Shell을 구성하고 기존 Render는 보존 경기 경로로 남긴다. HandleBack은 InputSystem Escape(모바일 뒤로 포함)를 받아 조회 닫기/확인 취소/모험 메뉴 열기만 수행한다. 출전·모험가 선택은 즉시 저장하고 같은 선택 화면에 남으며, 성장 구매 성공은 실제 전후 프로필 차이를 표시한다. v5 포기 확정 후 개인 종료/AI 진행 화면으로 돌아간다. 검증/자산 상태는 V5_UI_IMPROVEMENT_11_REPORT를 따른다.
 
 - V5_DICE_COMBAT_09: 새 v5 정의의 JSON combat을 SO로 덮지 않는다. v5도 모험가 선택/6스탯 공용 표시를 사용하되 기존 경기의 전투/상세는 항상 state.definition으로 분기한다. v4 저장을 v5 로비에서 이어도 기존 UI/단일 combat 명령이 유지된다.
-- V5 입력/정보: combat_roll/hold/release/reroll/execute를 같은 Dispatch의 원자 저장 후 재생 경계에 연결한다. v5 전투에는 전용 HUD 콜백을 넘기며 종료/포기/능력치 상세는 전투 정보 모달로 이동한다. 로비 출전 주사위, 경기 보유 슬롯, 완주 보상 후보에서 V5DiceNetData를 만든다. 정보 조회는 Session 명령을 실행하지 않는다.
+- V5 입력/정보: combat_roll/hold/release/reroll/execute를 같은 Dispatch의 원자 저장 후 재생 경계에 연결한다. v5 전투에는 전용 HUD 콜백을 넘기며 정보 모달에서 능력치 조회와 모험 관리로 이동한다. 종료/포기 확정은 별도 모험 관리에 둔다. 로비 출전 주사위, 경기 보유 슬롯, 완주 보상 후보에서 V5DiceNetData를 만든다. 정보 조회는 Session 명령을 실행하지 않는다.
 - V5 상세: CompetitionElementView.Details가 버전에 따라 6스탯/주사위·스킬/속성·상성/태그/효과 출처 5탭을 표시한다. v5 전용 기술은 별도 v5 Plan/SkillPreview(effect)/Tags(effect) 경로를 사용하며 v4 Symbol/SkillId 조회를 거치지 않는다. 실제 6면 모달은 로비·보상·전투 진입에서 계속 사용한다. v1~v4는 탭5+앞뒤2+복귀1로 최대8 버튼을 지킨다. v5는 별도 Shell을 사용한다.
 - 취소: disable/pause/Close/화면 해제는 코루틴을 중단하고 입력 잠금을 해제한 뒤 Session의 확정 사본으로 Playback.Snap한다. 재추첨/재명령은 없다. 저장 실패 notice는 전용 HUD에 전달한다.
 

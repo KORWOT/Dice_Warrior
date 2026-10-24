@@ -21,6 +21,8 @@ public static class V5UiRedesignCapture
 {
     const string Output="Docs/UI/V5Redesign";
     const string Evidence="artifacts/v5-ui-redesign-12/run-01";
+    const string LayoutOutput="Docs/UI/V5Layout";
+    const string LayoutEvidence="artifacts/v5-ui-layout-13/run-01";
     public static object Upgrade()
     {
         if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stopped Editor required");
@@ -29,6 +31,7 @@ public static class V5UiRedesignCapture
         try
         {
             var screen=root.GetComponent<CompetitionScreen>();
+            DiceWarrior.SharedWorld.Editor.V5ShellAuthoring.Upgrade(screen);
             DiceWarrior.SharedWorld.Editor.CompetitionCombatUiAuthoring.Upgrade(screen);
             DiceWarrior.SharedWorld.Editor.V5RedesignAuthoring.Upgrade(screen);
             PrefabUtility.SaveAsPrefabAsset(root,path);
@@ -101,6 +104,55 @@ public static class V5UiRedesignCapture
         }
         File.WriteAllText(Path.Combine(Evidence,"ratio-audit.json"),JsonConvert.SerializeObject(checks,Formatting.Indented));return new {checks};
     }
+    public static async Task<object> LayoutCapture()
+    {
+        var rows=new List<object>();
+        using(var c=new Context(evidence:LayoutEvidence))
+        {
+            c.OpenLocal();rows.Add(await c.Capture("01-lobby","새 모험 준비 · 고정 시작 버튼","isolated profile; actual authored layout",true,LayoutOutput));
+            c.Click("모험가 선택");rows.Add(await c.Capture("03-adventurers","다음 모험가 선택","read-only opening; selection is still saved immediately",true,LayoutOutput));c.app.HandleBack();
+            c.Click("출전 선택");rows.Add(await c.Capture("04-loadout","주사위·무기 출전 구성","read-only opening; current saved match is separate",true,LayoutOutput));c.app.HandleBack();
+            c.Click("새 모험 시작");rows.Add(await c.Capture("05-board","현재 위치와 고정 이동 행동","actual new match",true,LayoutOutput));
+            c.app.Close();rows.Add(await c.Capture("02-resume","진행 보존 · 이어하기 우선","same saved match; Close preserves progress",true,LayoutOutput));c.Click("경기 이어하기");
+            c.Cmd("travel");rows.Add(await c.Capture("06-encounter","사건 · 비용과 보상 비교","actual saved travel result",true,LayoutOutput));
+            c.SetCombat(3);rows.Add(await c.Capture("07-combat-ready","전투 · 첫 굴림 준비","legal three dice combat fixture",true,LayoutOutput));
+            c.Cmd("combat_roll");c.SetFaces("arcane","arcane","sword");c.Cmd("combat_hold",c.app.Session.Snapshot.state.participants[0].dice[0].instanceId);
+            rows.Add(await c.Capture("08-combat-selection","보관 · 기술별 예상 결과","physical face fixture then actual hold and shared planner",true,LayoutOutput));
+            c.Tap(c.Screen.v5Area.combatInfo);rows.Add(await c.Capture("09-combat-info","전투 정보 · 조회와 관리 분리","actual read-only information callback",true,LayoutOutput));
+            c.Tap(c.Screen.v5Net.menu);rows.Add(await c.Capture("10-management","모험 관리 · 진행 보존과 포기 구분","actual management route from combat information",true,LayoutOutput));
+            c.app.HandleBack();c.Tap(c.Screen.v5Net.close);
+            c.SetLap(2);rows.Add(await c.Capture("11-reward","완주 보상 · 실제 교체와 지급 비교","legal third-lap fixture; reward not yet claimed",true,LayoutOutput));
+            c.Cmd("lap",c.definition.combat.gear[0].id);c.Cmd("abandon");int guard=0;
+            while(!c.app.Session.Snapshot.state.finished && guard++<32)c.Cmd("advance");
+            if(!c.app.Session.Snapshot.state.finished)throw new InvalidOperationException("Result capture did not complete within the legal round limit");
+            rows.Add(await c.Capture("12-results","결과 · 순위와 고정 로비 복귀","actual abandon then AI advance commands; fixture journey",true,LayoutOutput));
+        }
+        File.WriteAllText(Path.Combine(LayoutOutput,"manifest.json"),JsonConvert.SerializeObject(rows,Formatting.Indented));
+        return new {count=rows.Count,path=LayoutOutput+"/manifest.json"};
+    }
+    public static async Task<object> LayoutRatioAudit()
+    {
+        var checks=new List<string>();
+        foreach(var size in new[]{new Vector2Int(390,844),new Vector2Int(360,640)})
+        using(var c=new Context(5,size.x,size.y,true,LayoutEvidence))
+        {
+            c.OpenLocal();await c.Capture("lobby-"+size.x+"x"+size.y,"로비 비율 검수","synthetic safe area",true,LayoutEvidence);
+            CheckBounds(c.Screen.v5Shell.boardPrimary.transform,c.ui.Root.safeArea,"lobby primary");
+            CheckText(c.Screen.v5Shell.heading);CheckText(c.Screen.v5Shell.summary);
+            c.Click("새 모험 시작");c.SetCombat(3);c.Cmd("combat_roll");c.SetFaces("arcane","arcane","sword");
+            await c.Capture("combat-"+size.x+"x"+size.y,"전투 비율 검수","synthetic safe area; legal physical face fixture",true,LayoutEvidence);
+            CheckBounds(c.Screen.v5Area.footer,c.ui.Root.safeArea,"combat actions");
+            foreach(var row in c.Screen.v5Area.previewRows)if(row.gameObject.activeInHierarchy){CheckText(row);CheckBounds(row.transform,c.ui.Root.safeArea,"skill preview");}
+            c.Tap(c.Screen.v5Area.combatInfo);await c.Capture("info-"+size.x+"x"+size.y,"정보 비율 검수","synthetic safe area; actual information view",true,LayoutEvidence);
+            CheckBounds(c.Screen.v5Net.close.transform,c.ui.Root.safeArea,"information close");CheckBounds(c.Screen.v5Net.menu.transform,c.ui.Root.safeArea,"information menu");
+            checks.Add(size.x+"x"+size.y+" lobby primary, combat skill rows/actions, information close/menu");
+        }
+        File.WriteAllText(Path.Combine(LayoutEvidence,"ratio-audit.json"),JsonConvert.SerializeObject(checks,Formatting.Indented));return new {checks};
+    }
+    static void CheckBounds(Transform target,RectTransform parent,string label)
+    {if(!Contains(parent.rect,Bounds((RectTransform)target,parent)))throw new InvalidOperationException("Safe area overflow: "+label);}
+    static void CheckText(Text text)
+    {if(text.preferredHeight>text.rectTransform.rect.height+1)throw new InvalidOperationException("Text overflow: "+text.name);}
     static bool Contains(Rect outer,Rect inner)=>inner.xMin>=outer.xMin-.5f&&inner.yMin>=outer.yMin-.5f&&inner.xMax<=outer.xMax+.5f&&inner.yMax<=outer.yMax+.5f;
     static Rect Bounds(RectTransform child,RectTransform parent)
     {var corners=new Vector3[4];child.GetWorldCorners(corners);var p=corners.Select(v=>(Vector2)parent.InverseTransformPoint(v)).ToArray();return Rect.MinMaxRect(p.Min(v=>v.x),p.Min(v=>v.y),p.Max(v=>v.x),p.Max(v=>v.y));}
@@ -131,11 +183,11 @@ public static class V5UiRedesignCapture
         public readonly CompetitionDefinition definition;
         public readonly string directory,path,accountPath;
         public CompetitionScreen Screen=>(CompetitionScreen)ui.ActiveScreen;
-        public Context(int version=5,int width=720,int height=1280,bool inset=false)
+        public Context(int version=5,int width=720,int height=1280,bool inset=false,string evidence=null)
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Capture requires stopped Editor; do not interrupt user Play.");
             Directory.CreateDirectory(Output);this.inset=inset;
-            directory=Path.GetFullPath(Path.Combine(Evidence,"fixtures",Guid.NewGuid().ToString("N")));Directory.CreateDirectory(directory);path=Path.Combine(directory,"checkpoint.json");accountPath=Path.Combine(directory,"account.json");
+            directory=Path.GetFullPath(Path.Combine(evidence??Evidence,"fixtures",Guid.NewGuid().ToString("N").Substring(0,8)));Directory.CreateDirectory(directory);path=Path.Combine(directory,"checkpoint.json");accountPath=Path.Combine(directory,"account.json");
             definition=CompetitionContent.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-"+(version==2?1:version)+".json").text);
             if(version<=2)definition.rulesVersion="shared-world-preview-"+version;
             preview=EditorSceneManager.NewPreviewScene();

@@ -1,5 +1,6 @@
 # Dice Warrior 문서
 
+- [현재 v5 주요12화면](UI/V5Layout/index.html) / [구성·흐름·배치 REPORT](Reports/V5_UI_LAYOUT_FLOW_13_REPORT.md) / [PLAN](Plans/V5_UI_LAYOUT_FLOW_13_PLAN.md): 아트·음향을 제외한 로비 고정 시작/이어하기, 기술별 예상, 조회·관리 복귀와 작은 화면 배치 개선.
 - [v5 주사위 리디자인](UI/V5Redesign/index.html): 고정 큐브 트레이·부분 리롤·이동·획득의 실제12상태. [PLAN](Plans/V5_UI_REDESIGN_12_PLAN.md) / [REPORT](Reports/V5_UI_REDESIGN_12_REPORT.md).
 현재 메인은 **고정12지명·인간1+AI3의 공동 모험**이다. 기존1인 모험판은 제거하고 전투·계정·과거 서버 기록에 필요한 공용 코드만 보존한다. 새 경기 순위는 시험 결과이며 영구 재화는 지급하지 않는다.
 

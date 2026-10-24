@@ -47,7 +47,7 @@ namespace DiceWarrior.SharedWorld.Tests
 
         [UnityTest] public IEnumerator AllDiceCountsAndHoldMasksKeepFixedSlotsAndProjectedMeshesInsideTheTray()
         {
-            foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1600),new Vector2Int(540,960)})
+            foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1600),new Vector2Int(540,960),new Vector2Int(390,844),new Vector2Int(360,640)})
             {
                 Resize(size.x,size.y);yield return null;
                 for(int count=1;count<=3;count++)
@@ -99,6 +99,7 @@ namespace DiceWarrior.SharedWorld.Tests
             var planned=CompetitionV5Skills.PlanSteps(state.definition,state.participants[0],state.participants[0].v5.selection.results);
             var preview=CompetitionV5Skills.Preview(state.definition,state.participants[0]);
             Assert.That(preview.skills.Length,Is.EqualTo(planned.Length));Assert.That(screen.v5Area.preview.text,Does.Contain("발동 예상 "+planned.Length+"개"));
+            AssertPreviewRows(state);
             for(int i=0;i<planned.Length;i++)
             {
                 Assert.That(preview.skills[i].dieSlotIndices,Is.EqualTo(planned[i].dieSlotIndices));
@@ -108,10 +109,14 @@ namespace DiceWarrior.SharedWorld.Tests
             foreach(var card in screen.v5Area.dice)Assert.That(card.label.text,Does.Contain("주사위"));
             yield return Tap(screen.v5Area.dice[1]);Assert.That(clicked,Is.EqualTo("combat_hold:"+state.participants[0].dice[1].instanceId));
             Assert.That(LoopJson.Encode(state),Is.EqualTo(saved));
-            SetFaces(state,"검격","검격","검격");screen.v5Area.Snap(state);
+            SetFaces(state,"검격","검격","검격");screen.v5Area.Snap(state);yield return null;
             Assert.That(CompetitionV5Skills.PlanSteps(state.definition,state.participants[0],state.participants[0].v5.selection.results),Has.Length.EqualTo(3));
             Assert.That(screen.v5Area.preview.text,Does.Contain("발동 예상 3개").And.Contain("기술 3"));
-            SetFaces(state,"꽝","꽝","꽝");screen.v5Area.Snap(state);Assert.That(screen.v5Area.preview.text,Does.Contain("발동 기술 없음"));Assert.That(screen.v5Area.execute.button.interactable,Is.True);
+            AssertPreviewRows(state);
+            SetFaces(state,"꽝","꽝","꽝");screen.v5Area.Snap(state);yield return null;
+            Assert.That(screen.v5Area.preview.text,Does.Contain("발동 기술 없음"));Assert.That(screen.v5Area.execute.button.interactable,Is.True);AssertPreviewRows(state);
+            var single=Combat(1);CompetitionCommandRules.Apply(single,"combat_roll","");SetFaces(single,"검격");screen.v5Area.Snap(single);yield return null;
+            AssertPreviewRows(single);Assert.That(screen.v5Area.previewRows.Count(x=>x.gameObject.activeInHierarchy),Is.EqualTo(1));
         }
 
         [UnityTest] public IEnumerator DiceDetailsDistinguishRolledAndInspectedFacesAndRetainTheirLocalState()
@@ -161,7 +166,12 @@ namespace DiceWarrior.SharedWorld.Tests
                         {Assert.That(area.cubes[slot].RollProgress,Is.EqualTo(1));Assert.That(area.cubes[slot].ResultFaceIndex,Is.EqualTo(result.faceIndex));Assert.That(area.cubes[slot].RevealResult,Is.True);}
                     }
                     if(area.DiceRolling && area.cubes.Any(c=>c.gameObject.activeInHierarchy && !c.RevealResult))
-                    {Assert.That(area.preview.text,Does.Contain("멈추면"));Assert.That(area.execute.button.interactable,Is.False);}
+                    {
+                        Assert.That(area.preview.text,Does.Contain("멈추면"));Assert.That(area.execute.button.interactable,Is.False);
+                        Assert.That(area.preview.gameObject.activeInHierarchy,Is.True);
+                        Assert.That(area.previewRows.All(x=>!x.gameObject.activeInHierarchy && string.IsNullOrEmpty(x.text)),Is.True,"Unrevealed skill rows must not retain the new result.");
+                        Assert.That(area.previewRowPanels.All(x=>!x.gameObject.activeInHierarchy),Is.True);
+                    }
                     yield return null;
                 }
             }
@@ -190,6 +200,48 @@ namespace DiceWarrior.SharedWorld.Tests
             }
             for(int i=0;i<visible.Length;i++)for(int j=i+1;j<visible.Length;j++)
                 Assert.That(Bounds((RectTransform)visible[i].transform,area.layout).Overlaps(Bounds((RectTransform)visible[j].transform,area.layout)),Is.False,"Dice cards must not overlap");
+            AssertPreviewGeometry();
+        }
+        void AssertPreviewRows(CompetitionState state)
+        {
+            var area=screen.v5Area;var p=state.participants[0];var steps=CompetitionV5Skills.PlanSteps(state.definition,p,p.v5.selection.results);
+            Assert.That(area.previewRows,Has.Length.EqualTo(3));Assert.That(area.previewRowPanels,Has.Length.EqualTo(3));
+            Assert.That(area.previewRows.Count(x=>x.gameObject.activeInHierarchy),Is.EqualTo(steps.Length));
+            Assert.That(area.previewRowPanels.Count(x=>x.gameObject.activeInHierarchy),Is.EqualTo(steps.Length));
+            Assert.That(area.preview.gameObject.activeInHierarchy,Is.EqualTo(steps.Length==0));
+            for(int i=0;i<3;i++)
+            {
+                if(i>=steps.Length){Assert.That(area.previewRows[i].text,Is.Empty);continue;}
+                Assert.That(area.previewRows[i].text,Does.Contain("기술 "+(i+1)).And.Contain(steps[i].skill.name));
+                string slots="["+string.Join("+",steps[i].dieSlotIndices.Select(slot=>"①②③"[slot].ToString()))+"]";
+                Assert.That(area.previewRows[i].text,Does.Contain(slots));
+            }
+            AssertPreviewGeometry();
+        }
+        void AssertPreviewGeometry()
+        {
+            var area=screen.v5Area;var safe=Bounds(ui.safeArea,area.layout);var heading=Bounds(area.previewHeading.rectTransform,area.layout);
+            Assert.That(area.previewHeading.preferredHeight,Is.LessThanOrEqualTo(area.previewHeading.rectTransform.rect.height+1),"Preview heading must fit.");
+            Assert.That(heading.Overlaps(Bounds(area.rollZone,area.layout)),Is.False,"Preview heading must follow the dice tray.");
+            Rect? previous=null;
+            for(int i=0;i<area.previewRows.Length;i++)
+            {
+                if(!area.previewRows[i].gameObject.activeInHierarchy)continue;
+                var panel=area.previewRowPanels[i].rectTransform;var bounds=Bounds(panel,area.layout);var text=area.previewRows[i];
+                AssertContained(bounds,safe,"Preview skill panel");AssertContained(Bounds(text.rectTransform,area.layout),bounds,"Preview skill text");
+                Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),"A skill's two-line result must fit.");
+                Assert.That(bounds.Overlaps(heading) || bounds.Overlaps(Bounds(area.rollZone,area.layout)),Is.False,"Skill rows must not overlap the title or dice tray.");
+                foreach(var control in new[]{area.roll,area.reroll,area.execute,area.diceInfo,area.combatInfo})
+                    if(control.gameObject.activeInHierarchy)Assert.That(bounds.Overlaps(Bounds((RectTransform)control.transform,area.layout)),Is.False,"Skill rows must not cover "+control.BoundId);
+                Assert.That(bounds.Overlaps(Bounds(area.notice.rectTransform,area.layout)),Is.False,"Skill rows must not cover action guidance.");
+                if(previous.HasValue)Assert.That(bounds.yMax,Is.LessThanOrEqualTo(previous.Value.yMin),"Skill rows must remain in execution order without overlap.");
+                previous=bounds;
+            }
+        }
+        static void AssertContained(Rect inner,Rect outer,string context)
+        {
+            Assert.That(inner.xMin,Is.GreaterThanOrEqualTo(outer.xMin-1),context);Assert.That(inner.xMax,Is.LessThanOrEqualTo(outer.xMax+1),context);
+            Assert.That(inner.yMin,Is.GreaterThanOrEqualTo(outer.yMin-1),context);Assert.That(inner.yMax,Is.LessThanOrEqualTo(outer.yMax+1),context);
         }
         static Rect Bounds(RectTransform child,RectTransform reference)
         {var corners=new Vector3[4];child.GetWorldCorners(corners);var p=corners.Select(c=>(Vector2)reference.InverseTransformPoint(c)).ToArray();return Rect.MinMaxRect(p.Min(x=>x.x),p.Min(x=>x.y),p.Max(x=>x.x),p.Max(x=>x.y));}
