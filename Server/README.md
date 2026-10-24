@@ -24,13 +24,17 @@ manifest/seed, matches JSONL, 요약 JSON/MD, 경기/참가자 CSV, 실패 JSONL
 
 ### Mock 서버
 
-설치된 .NET SDK10.0.302를 사용한다. 저장소 루트 PowerShell에서 실행하고 이 터미널을 유지한다.
+프로젝트 최상위의 [Start-MockServer.cmd](../Start-MockServer.cmd)를 더블클릭하면 서버를 실행한다. 게임 중에는 실행 창을 유지하고 종료할 때 `Ctrl+C`를 누른다. 시작 오류가 나면 메시지를 읽을 수 있도록 창에서 키 입력을 기다린다. 기본 대시보드는 `http://127.0.0.1:5087/dev/dashboard`다.
+
+이 파일은 기존 PowerShell 스크립트를 호출하는 Windows 실행 도우미다. .NET SDK10.0.302(또는 호환10.0.3xx 패치)가 설치된 현재 개발 환경을 사용하며, SDK를 포함한 독립 배포 EXE는 아니다. 최초 빌드에서 NuGet 패키지 복원이 필요할 수 있다. 저장소 루트 PowerShell에서 기존 방식으로 실행해도 된다.
 
 ```powershell
 ./Server/Start-MockServer.ps1
 ```
 
 기본 주소 `http://127.0.0.1:5087`, DB `Server/data/authority.db`. `Ctrl+C`로 종료한다. Unity Editor를 실행하지 않아도 동작한다. `GET /healthz`는 준비 상태와 콘텐츠 버전을 제공한다. 다른 포트/개발 DB는 `-Port 5090 -DatabasePath <절대경로>`로 지정한다. Production 환경이나 외부 인터페이스 바인딩은 시작 단계에서 거절한다.
+
+CMD에도 같은 인수를 전달할 수 있다. 예: `./Start-MockServer.cmd -Port 5090 -DatabasePath "D:/Temp/Dice Warrior/authority.db"`(저장소 루트에서 실행). 인수를 생략하면 기존 기본 DB를 계속 사용하며 초기화하지 않는다. 이미 같은 포트의 서버가 실행 중이면 새 창의 오류를 확인하고 기존 서버를 사용한다. 실행 검증 범위는 [실행 도우미 REPORT](../Docs/Reports/LOCAL_SERVER_LAUNCHER_08_REPORT.md)에 기록한다.
 
 대시보드는 서버 실행 후 [http://127.0.0.1:5087/dev/dashboard](http://127.0.0.1:5087/dev/dashboard)에서 연다. 사용자 게임 DB가 필요 없는 시험은 별도 `-DatabasePath`를 지정한다.
 

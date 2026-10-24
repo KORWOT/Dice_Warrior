@@ -29,6 +29,7 @@
 - [M4 계측 PLAN](Plans/STANDALONE_MOCK_METRICS_04_PLAN.md): 로컬 실측·오프라인 비용·대시보드 계약.
 - [M4 계측 REPORT](Reports/STANDALONE_MOCK_METRICS_04_REPORT.md): 실제 검증·가격 근거·화면·내보내기 증거.
 - [서버 실행 안내](../Server/README.md): 실행 명령, Unity 접속 설정, API와 저장 경계.
+- [로컬 서버 실행 도우미 PLAN](Plans/LOCAL_SERVER_LAUNCHER_08_PLAN.md) / [REPORT](Reports/LOCAL_SERVER_LAUNCHER_08_REPORT.md): 프로젝트 최상위 CMD 더블클릭 실행과 격리 검증.
 - 서버 이전 원안: 사용자가 제공한 `Dice_Warrior_Standalone_Mock_Server_Firebase_Migration_Plan_v0.1.md`를 참고했다. M0~M3와 추가 승인된 M4는 각각의 PLAN에 기록하고 M5 규모 부하 시험은 후속으로 둔다. 원본 파일은 사용자 변경 제외 요청에 따라 로컬에 보존한다.
 - [현행 CodeMap](CodeMap/INDEX.md): 현재 소스의 역할과 직접 관계.
 - [v1 이력](Archive/v1/README.md): 폐기된 규칙과 과거 검증. 현행 요구사항이 아니다.
@@ -36,7 +37,7 @@
 
 2026-10-20 사용자 지시로 Archive/v1의 이전 구조와 호환성 P0는 중단했다. 이는 현재 보존하는 SymbolLoop 규칙/정산 v1과 별개다. 과거 테스트 통과는 새 게임의 검증 근거로 사용하지 않는다.
 
-실행: 저장소 루트 PowerShell에서 `./Server/Start-MockServer.ps1`로 서버를 켠 뒤 `Assets/_Project/Scenes/Title.unity`를 열고 Play. 공동 모험 로비에서 출전을 고른 뒤 경기를 시작하거나 이어간다. 이전1인 모험 시작/복귀 화면은 제공하지 않는다.
+실행: 프로젝트 최상위 `Start-MockServer.cmd`를 더블클릭해 서버를 켜고 실행 창을 유지한 뒤 `Assets/_Project/Scenes/Title.unity`를 열고 Play. 기존 PowerShell 명령 `./Server/Start-MockServer.ps1`도 사용할 수 있다. 공동 모험 로비에서 출전을 고른 뒤 경기를 시작하거나 이어간다. 이전1인 모험 시작/복귀 화면은 제공하지 않는다.
 `모험 종료`는 진행을 보존하고 로비로 돌아간다. `경기 이어하기`로 같은 위치·사건을 재개한다. 별도의 `새 게임`은 기존 경기가 있으면 초기화 경고를 표시하며, 확인 후 새 저장에 성공해야 교체한다. 영구 재화·성장은 유지하고 이전 진행 원문은 복구 사본에 남긴다.
 v4와 새 v5는 힘·민첩·체질·지능·정신·행운과 물리·화염·냉기·번개를 사용한다. 모험가3종과 기존 계정 HP 보정을 유지하고 HP는 `30+체질×6+계정보정`으로 계산한다. `능력치 상세`에서 스탯·장비·태그 출처를 확인한다. 영구 성장 구매/프로필 확인은 `계정 관리`에 있다.
 v5 전투는 최초 굴림 후 주사위를 탭해 보관/해제하고 남은 주사위만1회 리롤한 뒤 실행한다. 전용면과 꽝을 포함한 정확한6면을 상세창에서 확인하며, 꽝만 나와도 실행할 수 있다. 3눈 우선, 없으면2눈 하나와 남은단일로 조합한다. v1~v4는 당시 판정·화면을 보존하므로 v5 적용은 경고 후 `새 게임`으로 한다. 출전 모험가 선택은 별도 파일에 저장하며 진행 중 경기에는 소급 적용하지 않는다.
