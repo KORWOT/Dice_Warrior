@@ -7,18 +7,22 @@ namespace DiceWarrior.SharedWorld
     public static class CompetitionV5Skills
     {
         public static V5SkillDefinition[] Plan(CompetitionDefinition d, ParticipantState p, V5FaceResult[] results)
+            => PlanSteps(d, p, results).Select(step => step.skill).ToArray();
+
+        public static V5PlannedSkill[] PlanSteps(CompetitionDefinition d, ParticipantState p, V5FaceResult[] results)
         {
             if (!CompetitionV5Content.IsEnabled(d) || p == null) throw new ArgumentException("Expected v5 planner state");
             CompetitionV5Content.ValidateResults(d, p, results);
-            var faces = results.Where(r => r.faceId != CompetitionV5Content.BlankFaceId).Select(r => r.faceId).ToArray();
-            if (faces.Length == 0) return Array.Empty<V5SkillDefinition>();
+            var dice = results.Where(r => r.faceId != CompetitionV5Content.BlankFaceId).ToArray();
+            var faces = dice.Select(r => r.faceId).ToArray();
+            if (faces.Length == 0) return Array.Empty<V5PlannedSkill>();
             var skills = d.v5.skills.Where(s => s.ownerAdventurerId == null || s.ownerAdventurerId == p.adventurerId)
                 .OrderByDescending(s => s.priority).ThenBy(s => s.id, StringComparer.Ordinal).ToArray();
             if (faces.Length == 3)
             {
                 string signature = CompetitionV5Content.Signature(faces);
                 var triple = skills.FirstOrDefault(s => s.faceIds.Length == 3 && CompetitionV5Content.Signature(s.faceIds) == signature);
-                if (triple != null) return new[] { triple };
+                if (triple != null) return new[] { Step(triple, dice) };
             }
             foreach (var pair in skills.Where(s => s.faceIds.Length == 2))
             {
@@ -31,11 +35,15 @@ namespace DiceWarrior.SharedWorld
                     if (index < 0) { matches = false; break; }
                     used[index] = true;
                 }
-                if (matches) return new[] { pair }.Concat(faces.Where((f, index) => !used[index])
-                    .Select(face => skills.Single(s => s.faceIds.Length == 1 && s.faceIds[0] == face))).ToArray();
+                if (matches) return new[] { Step(pair, dice.Where((die, index) => used[index]).ToArray()) }
+                    .Concat(dice.Where((die, index) => !used[index]).Select(die => Step(
+                        skills.Single(s => s.faceIds.Length == 1 && s.faceIds[0] == die.faceId), die))).ToArray();
             }
-            return faces.Select(face => skills.Single(s => s.faceIds.Length == 1 && s.faceIds[0] == face)).ToArray();
+            return dice.Select(die => Step(skills.Single(s => s.faceIds.Length == 1 && s.faceIds[0] == die.faceId), die)).ToArray();
         }
+
+        static V5PlannedSkill Step(V5SkillDefinition skill, params V5FaceResult[] dice) => new V5PlannedSkill
+        { skill = skill, dieSlotIndices = dice.Select(die => die.slotIndex).OrderBy(index => index).ToArray() };
 
         public static V5CombatPreview Preview(CompetitionDefinition d, ParticipantState p)
         {
@@ -43,12 +51,14 @@ namespace DiceWarrior.SharedWorld
             if (p.v5.selection == null || p.v5.selection.phase == V5SelectionPhase.AwaitRoll)
                 return new V5CombatPreview { status = "await-roll" };
             if (p.v5.selection.phase != V5SelectionPhase.Selection) throw new ArgumentException("Invalid v5 preview phase");
-            var plan = Plan(d, p, p.v5.selection.results);
+            var steps = PlanSteps(d, p, p.v5.selection.results);
+            var plan = steps.Select(step => step.skill).ToArray();
             // The same deterministic resolver evaluates a private copy. No RNG, rewards or command dispatch occurs.
             var copy = LoopJson.Copy(p);
             var log = CompetitionElements.ResolvePlanned(d, copy, plan);
             return new V5CombatPreview { noOp = plan.Length == 0, status = plan.Length == 0 ? "no-op" : "ready",
                 skills = plan.Select((skill, i) => new V5PreviewSkill { skillId = skill.id, name = skill.name,
+                    dieSlotIndices = steps[i].dieSlotIndices,
                     damageType = copy.v4.lastTurn.skills[i].damageType, damageApplied = copy.v4.lastTurn.skills[i].damageApplied,
                     shieldAbsorbed = log.skills[i].enemyShieldBefore - log.skills[i].enemyShieldAfter,
                     block = log.skills[i].block, status = log.skills[i].status }).ToArray() };

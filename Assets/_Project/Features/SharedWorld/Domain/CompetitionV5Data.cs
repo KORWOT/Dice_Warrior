@@ -63,9 +63,15 @@ namespace DiceWarrior.SharedWorld
         public bool noOp;
         public string status;
     }
+    public sealed class V5PlannedSkill
+    {
+        public V5SkillDefinition skill;
+        public int[] dieSlotIndices = Array.Empty<int>();
+    }
     public sealed class V5PreviewSkill
     {
         public string skillId, name, status;
+        public int[] dieSlotIndices = Array.Empty<int>();
         public DamageType damageType;
         public int damageApplied, shieldAbsorbed, block;
     }

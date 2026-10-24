@@ -13,3 +13,5 @@
 - 사용하는 대상: CompetitionApp.Open 격리 주입, Session/Store, UIManager/CommonButtonView, 새 Area/Net, Unity InputSystemUIInputModule/ExecuteEvents. Tap은 첫 raycast가 실제 Button인지 검사한 뒤 포인터 이벤트를 보낸다.
 - 상태/수명: 각 검사 고유 artifact 경로만 사용하고 실제 사용자 저장/HTTP/백엔드를 호출하지 않는다. 테스트 fixture는 유효한 복사본을 별도 Store에 Commit/Reload해 생성한다. 생성 오브젝트/RenderTexture는 teardown에서 제거하고 증거 파일은 남긴다.
 - 검수 주의: 소스 작성 완료와 실제 Unity PASS를 구분한다. 첫 authored RED는 메인 실행 채널 미연결로 NOT_RUN이며 원본의 참조 부재만 확인했다. 실제 실행/자산 업그레이드/최종 판정은 메인이 담당한다.
+
+- V5_UI_IMPROVEMENT_11: v5 Shell의 실제 활성 버튼을 찾고 후보를 viewport에 스크롤한 뒤 첫 raycast를 검사한다. 새 라벨·친숙한 태그·기술 그룹 표시로 기대 문구를 변경하되 상태/RNG/저장/HP단계 단언은 유지한다. 상세 본문은 실제 Shell text에서 읽고 구형 경기는 기존 패널을 검사한다.

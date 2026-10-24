@@ -13,6 +13,7 @@
     <Compile Include="../../Assets/_Project/Features/SharedWorld/Runtime/CompetitionSession.cs" Link="Runtime/CompetitionSession.cs" />
     <Compile Include="../../Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs" Link="Runtime/CompetitionStore.cs" />
     <Compile Include="../../Assets/_Project/Features/SharedWorld/Runtime/AdventurerSelectionStore.cs" Link="Runtime/AdventurerSelectionStore.cs" />
+    <Compile Include="../../Assets/_Project/Features/SharedWorld/Presentation/CompetitionV5UiText.cs" Link="Presentation/CompetitionV5UiText.cs" />
     <None Include="../../Assets/_Project/Features/SharedWorld/Content/shared-world-preview-3.json" Link="shared-world-preview-3.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('../../Assets/_Project/Features/SharedWorld/Content/shared-world-preview-3.json')" />
     <None Include="../../Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json" Link="shared-world-preview-4.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="../../Assets/_Project/Features/SharedWorld/Content/shared-world-preview-5.json" Link="shared-world-preview-5.json" CopyToOutputDirectory="PreserveNewest" />

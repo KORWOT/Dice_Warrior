@@ -17,6 +17,7 @@ using Object=UnityEngine.Object;
 
 namespace DiceWarrior.SharedWorld.Tests
 {
+    [Category("V5UiImprovement11")]
     public sealed class CompetitionV5FlowTests
     {
         const string PrefabPath="Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab";
@@ -120,7 +121,7 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(Screen.v5Area.dice[0].transform.parent,Is.EqualTo(Screen.v5Area.holdZone));
             yield return Tap(Screen.v5Area.reroll);saved=LoopJson.Encode(app.Session.Snapshot);appObject.SetActive(false);yield return null;appObject.SetActive(true);yield return null;
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(Screen.v5Area.DiceRolling,Is.False);
-            SetFaces(V5FaceKind.Blank);Assert.That(Screen.v5Area.preview.text,Does.Contain("NO_OP").And.Contain("적이 행동"));
+            SetFaces(V5FaceKind.Blank);Assert.That(Screen.v5Area.preview.text,Does.Contain("발동 기술 없음").And.Contain("적이 행동"));
             int turn=Human.encounterTurns;yield return Tap(Screen.v5Area.execute);saved=LoopJson.Encode(app.Session.Snapshot);
             appObject.SendMessage("OnApplicationPause",true);yield return null;appObject.SendMessage("OnApplicationPause",false);yield return null;
             Assert.That(app.IsPresenting,Is.False);Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(Human.v5.lastTurn.noOp,Is.True);
@@ -172,7 +173,7 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(skills,Does.Contain("현재 능력치").And.Contain("보호막 전"));
             string elements=null;yield return ReadDetailPages("속성·상성",value=>elements=value);var enemy=CompetitionElements.Enemy(definition,p);
             Assert.That(elements,Does.Contain($"HP {p.enemy.hp}/{p.enemy.maxHp}").And.Contain($"보호 {p.enemy.shield}").And.Contain($"기준 공격 {p.enemy.attack}").And.Contain("약점").And.Contain("저항"));
-            foreach(string tag in enemy.identityTags)Assert.That(elements,Does.Contain(tag));
+            foreach(string tag in enemy.identityTags)Assert.That(elements,Does.Contain(CompetitionV5UiText.Friendly(definition,tag)));
             yield return ReadDetailPages("태그 조회",value=>detailText=value);Assert.That(detailText,Does.Contain("대상").And.Contain("출처:"));
             yield return ReadDetailPages("효과 출처",value=>detailText=value);Assert.That(detailText,Does.Contain("규칙:"));
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(File.ReadAllText(path),Is.EqualTo(raw));yield return Capture("v5-restored-details");
@@ -194,7 +195,7 @@ namespace DiceWarrior.SharedWorld.Tests
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline));
                 if(area.notice.text.StartsWith("적 행동 종료",StringComparison.Ordinal))
                 {enemyAction=true;AssertHealth(log.playerHpAfter,before.maxHp,0,log.enemyHpAfter,before.enemy.maxHp,0);}
-                else for(int i=0;i<log.skills.Count;i++)if(area.preview.text.StartsWith(log.skills[i].name+"\n",StringComparison.Ordinal))
+                else for(int i=0;i<log.skills.Count;i++)if(area.preview.text.StartsWith($"기술 {i+1} · {log.skills[i].name} ·",StringComparison.Ordinal))
                 {observed.Add(i);AssertHealth(log.playerHpBefore,before.maxHp,log.skills.Take(i+1).Sum(s=>s.block),log.skills[i].enemyHpAfter,before.enemy.maxHp,log.skills[i].enemyShieldAfter);}
                 yield return null;
             }
@@ -206,8 +207,9 @@ namespace DiceWarrior.SharedWorld.Tests
             yield return Click(tab);var pages=new List<string>();int count=0;
             while(true)
             {
-                yield return null;Canvas.ForceUpdateCanvases();Assert.That(++count,Is.LessThanOrEqualTo(100));pages.Add(Screen.skillDetails.text);AssertTextFits(Screen.growthPanel.transform);
-                var next=Screen.buttons.FirstOrDefault(b=>b.gameObject.activeInHierarchy && b.label.text=="다음 페이지");if(next==null || !next.button.interactable)break;yield return Tap(next);
+                yield return null;Canvas.ForceUpdateCanvases();Assert.That(++count,Is.LessThanOrEqualTo(100));
+                bool shell=Screen.v5Shell.gameObject.activeInHierarchy;pages.Add(shell?Screen.v5Shell.body.text:Screen.skillDetails.text);AssertTextFits(shell?Screen.v5Shell.transform:Screen.growthPanel.transform);
+                var next=Screen.GetComponentsInChildren<CommonButtonView>().FirstOrDefault(b=>b.gameObject.activeInHierarchy && b.label.text=="다음 페이지");if(next==null || !next.button.interactable)break;yield return Tap(next);
             }
             complete(string.Join("\n",pages));
         }
@@ -241,7 +243,16 @@ namespace DiceWarrior.SharedWorld.Tests
         IEnumerator Click(string prefix)
         {
             yield return null;Canvas.ForceUpdateCanvases();
-            TapNow(Screen.buttons.First(b=>b.gameObject.activeInHierarchy && b.label.text.StartsWith(prefix,StringComparison.Ordinal)));
+            if(Screen.v5Shell.gameObject.activeInHierarchy){if(prefix=="새 게임")prefix="새 모험 시작";if(prefix=="주사위 상세 보기")prefix="주사위 상세";}
+            var button=Screen.GetComponentsInChildren<CommonButtonView>().First(b=>b.gameObject.activeInHierarchy && b.label.text.StartsWith(prefix,StringComparison.Ordinal));
+            var shell=Screen.v5Shell;
+            if(shell.gameObject.activeInHierarchy && button.transform.IsChildOf(shell.scrollContent))
+            {
+                var rect=(RectTransform)button.transform;float targetY=-rect.anchoredPosition.y;
+                float max=Math.Max(0,shell.scrollContent.rect.height-shell.viewport.rect.height);
+                shell.scrollContent.anchoredPosition=new Vector2(0,Mathf.Clamp(targetY-12,0,max));Canvas.ForceUpdateCanvases();yield return null;
+            }
+            TapNow(button);
         }
         List<RaycastResult> Hits(CommonButtonView button)
         {

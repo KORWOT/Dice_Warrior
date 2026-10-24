@@ -18,3 +18,7 @@ B0/C7 직접 사용처: 신규 MatchRunner는 Target/Apply를 유일한 경기 �
 ## V5_DICE_COMBAT_09 직접 변경/관계
 
 v5만 combat_roll/hold/release/reroll/execute를 V5Dice.Apply로 전달하고 구형 combat을 거절한다. Target은 기존 접두사를 유지하며 v5 선택 단계/턴/굴림/보관횟수만 추가한다. Apply는 v5 actionNumber2048에서 변이 전에 거절한다. 이동은 v5 선택/확정 로그와 공통 typed 상태를 비우며 최종 적은 같은 v4 프로필을 사용한다. 홀드별 진행 공간은 V5Dice가 예약하고 Session/Store의 실제 명령 수와 함께 검증된다.
+
+## V5_UI_IMPROVEMENT_11
+
+PreviewLapReward(state,choiceId)는 전체 상태의 깊은 사본에서 인간에게 GrantLapReward만 적용해 ParticipantState를 반환한다. GrantLapReward는 ClaimLap에서 보상 검증/claim/완주 수/골드/XP/회복/주사위 또는 장비·스탯 갱신을 최소 추출한 공통 경로다. 실제 ClaimLap은 같은 지급 뒤 원래 Map 전환 또는 최종 적 BeginCombat을 실행한다. 미리보기는 BeginCombat/AI/CompleteRound/명령 번호/순위를 실행하지 않으며 반환 phase는 LapReward 그대로다. 원본 및 사본의 모든 RNG가 불변이다. CompetitionV5UiText.Lap이 정확한 레벨·현재/최대 HP 전후를 표시하고 신규 투영 검사가 실제 Apply(lap) 결과와 대조한다. 첫/둘째 바퀴와 최종 5장비의 기존 골든 결과를 유지한다.

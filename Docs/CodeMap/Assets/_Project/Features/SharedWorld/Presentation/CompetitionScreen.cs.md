@@ -1,5 +1,9 @@
 # CompetitionScreen.cs
 
+- V5_UI_IMPROVEMENT_11: CompetitionScreenData.shell와 authored v5Shell을 추가했다. shell이 있으면 기존 title/status/detail/history·8버튼·성장 패널을 숨기고 새 카드/도구/탭 바인더를 사용한다. 기존 content,8buttons,보드/말/성장 참조는 보존하며 shell이 없는 v1~v4 경로는 기존대로 동작한다.
+- 새 v5 비전투 중앙영역: showBoard이면 기존 참가자·보드·주사위·cue를 유지하고 나/AI·참가자 번호·순위·완주목표를 구분한다. 참가자 텍스트는14px로 표시하고 구형에서는16px로 복구한다. 현재 위치는 보드 강조와 App 요약에 나타난다. 비보드에서는 Playback.Snap 이후 combatStage/tray/cue/board를 숨겨 로비·선택·사건·보상의 빈 보드 반복을 없앤다.
+- Shell은 기존 content 아래, v5Area/Net은 기존 형제 구조다. 전투는 content를 숨기며 Net의 불투명 배경/차폐는 그대로다. OnUnbind는 shell 콜백도 해제한다. 실제 프리팹 참조는 V5ShellAuthoring을 통한 main의 허용 자산 작업으로 작성한다.
+
 - V5_DICE_COMBAT_09: CompetitionScreenData의 v5Combat/v5Command/v5DiceInfo/v5CombatInfo/v5Notice 및 v5NetData를 추가했다. authored v5Area/v5Net 필드가 필요한 상태에서 없으면 명시 오류다.
 - V5 표시 수명: v5 전투에만 기존 content 전체를 숨기고 독립 Area를 바인딩한다. 상세/로비/구형 경기는 기존 content를 다시 표시한다. Net은 형제 중 마지막 authored 모달이며 배경 raycast로 뒤 입력을 차단한다. 원래 보드/버튼 8개/성장 필드는 보존한다.
 - 바인딩 순서: 기존 Playback.Snap 후 Area.Bind로 실패 notice와 콜백을 최종 적용한다. Unbind는 기존 버튼과 새 두 뷰의 콜백을 해제한다. 런타임 UI 생성은 없다.
@@ -14,3 +18,5 @@
 - 사용하는 쪽·관계 근거: CompetitionApp의 UIManager.Show, CompetitionAuthoring의 프리팹 필드, CompetitionFlowTests의 실제 포인터/화면 검증.
 - 상태/수명: UIManager의 타입별 캐시 수명을 사용한다. OnUnbind는 재생 소유자에 중단을 알리고 버튼을 해제한다. 표시 중 규칙 실행·난수 소비·저장 쓰기는 없다.
 - 검수 주의: places/cells/tileFrames는12개, pawns/roster는4개, 버튼은8개다. 참가자 위치/HP/완주/명예/순위는 같은 저장 사본에서 표시한다. 사건 가용성에 따라 버튼을 비활성화한다.
+
+- V5_UI_IMPROVEMENT_11: v5 보드의 숫자 주사위 라벨은 이동 주사위·1~6칸으로 표시한다. 공유 SymbolLoop/구형 정의의 표시는 변경하지 않는다.

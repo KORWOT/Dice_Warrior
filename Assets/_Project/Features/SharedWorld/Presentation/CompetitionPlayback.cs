@@ -68,6 +68,8 @@ namespace DiceWarrior.SharedWorld
             if(before.worldRound!=after.worldRound || after.finished)
             {
                 human.cue.text="AI 모험가들의 행동 결과";
+                if(CompetitionV5Content.IsEnabled(before.definition) && screen.v5Shell && screen.v5Shell.gameObject.activeInHierarchy)
+                {var view=screen.v5Shell;view.Data.notice="AI 행동 결과를 표시하고 있습니다. 잠시 기다려 주세요.";view.Bind(view.Data);}
                 for(int i=1;i<screen.pawns.Length;i++)
                 {
                     int index=i;Vector2 start=screen.pawns[i].anchoredPosition,end=screen.PawnPosition(i,after.participants[i].position);

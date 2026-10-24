@@ -2,7 +2,25 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 75개, Server C# 40개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 83개, Server C# 41개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
+
+## v5 UI 개선 · 현행 화면
+
+[PLAN](../Plans/V5_UI_IMPROVEMENT_11_PLAN.md) · [REPORT](../Reports/V5_UI_IMPROVEMENT_11_REPORT.md) · [실제 주요12화면](../UI/V5Improved/index.html).
+
+| 역할 | 요약 |
+|---|---|
+| v5 메뉴·조회 복귀·현재/다음 경기 | [CompetitionApp.V5Ui](Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.V5Ui.cs.md) |
+| 후보·공통 도구·탭·스크롤 | [V5ShellView](Assets/_Project/Features/SharedWorld/Presentation/V5ShellView.cs.md) |
+| 실제 규칙 기반 표시·보상 비교 | [CompetitionV5UiText](Assets/_Project/Features/SharedWorld/Presentation/CompetitionV5UiText.cs.md) |
+| Shell authored 연결 | [V5ShellAuthoring](Assets/_Project/Features/SharedWorld/Editor/V5ShellAuthoring.cs.md) |
+| 전투 카드·6면 영역 authored 배치 | [CompetitionCombatUiAuthoring](Assets/_Project/Features/SharedWorld/Editor/CompetitionCombatUiAuthoring.cs.md) |
+| 슬롯 투영·보상 순수성·문구 | [CompetitionV5UiProjectionTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5UiProjectionTests.cs.md) |
+| 모든 보관 마스크·연출·조회 | [CompetitionCombatUiTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionCombatUiTests.cs.md) |
+| 실제3바퀴·계정·복귀·포인터 | [CompetitionUiImprovementTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionUiImprovementTests.cs.md) |
+| 프리팹 Upgrade·12화면·경계 검사 | [V5UiImprovementCapture](Server/Tools/V5UiImprovementCapture.cs.md) |
+
+App → Screen → Shell/Area/Net. 표시 계산은 PlanSteps/PreviewLapReward/RewardGold의 기존 판정·지급 경로를 읽고 새로운 게임 규칙이나 저장 DTO를 만들지 않는다. 기존 8버튼/성장 패널은 v1~v4에서 보존한다.
 
 ## 비권위 밸런스 실험 B0/C7
 

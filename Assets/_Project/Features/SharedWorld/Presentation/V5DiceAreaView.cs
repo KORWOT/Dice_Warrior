@@ -12,6 +12,7 @@ namespace DiceWarrior.SharedWorld
     {
         public RectTransform layout,footer,rollZone,holdZone;
         public Text heading,enemy,player,intent,rollHint,holdHint,preview,notice;
+        public ScrollRect feedbackScroll;
         public Image enemyFill,playerFill;
         public CommonButtonView[] dice;
         public V5FaceGraphic[] faces;
@@ -22,7 +23,7 @@ namespace DiceWarrior.SharedWorld
         Action openDice,openCombat;
         public static ButtonAppearance Appearance=>new ButtonAppearance {normal=new Color(.12f,.25f,.32f),selected=new Color(.23f,.46f,.5f),pressed=new Color(.13f,.6f,.53f),disabled=new Color(.12f,.15f,.19f)};
         public void Bind(CompetitionState state,Action<string,string> dispatch,Action showDice,Action showCombat,string message)
-        { command=dispatch;openDice=showDice;openCombat=showCombat;Snap(state);if(!string.IsNullOrEmpty(message)) notice.text=message; }
+        { command=dispatch;openDice=showDice;openCombat=showCombat;Snap(state);if(!string.IsNullOrEmpty(message)) SetNotice(message); }
         void OnRectTransformDimensionsChange()
         {
             if(!layout || !footer)return;var size=((RectTransform)transform).rect.size;
@@ -36,57 +37,81 @@ namespace DiceWarrior.SharedWorld
                 throw new InvalidOperationException("V5 주사위 영역의 authored 연결이 없습니다.");
             var p=state.participants[0];var selection=p.v5?.selection;
             bool selecting=selection?.phase==V5SelectionPhase.Selection && p.phase==CompetitionPhase.Combat && !state.finished;
-            heading.text=$"{p.name} · 전투 {selection?.combatTurnSequence ?? 0}/20 · 라운드 {state.worldRound}";
+            heading.text=$"세계 라운드 {state.worldRound} · 전투 행동턴 {selection?.combatTurnSequence ?? 0}/{state.definition.maxCombatTurns}";
             SetHealth(p.hp,p.maxHp,0,p.enemy?.hp ?? 0,p.enemy?.maxHp ?? 1,p.enemy?.shield ?? 0,p.enemy?.name ?? "전투 결과",true);
             intent.text=p.enemy==null?p.message:"적 의도: "+(p.enemy.intent==Intent.Defend?"방어":p.enemy.intent==Intent.Heavy?"강공격":"공격")+$" · 기준 공격 {p.enemy.attack}";
             var results=selection?.results ?? Array.Empty<V5FaceResult>();
+            var plan=selecting?CompetitionV5Skills.PlanSteps(state.definition,p,results):Array.Empty<V5PlannedSkill>();
             for(int i=0;i<3;i++)
             {
                 var button=dice[i];button.gameObject.SetActive(i<p.dice.Count && selecting);
                 if(i>=p.dice.Count){button.Unbind();continue;}
                 var result=results.FirstOrDefault(r=>r.slotIndex==i);bool held=result?.held==true;
                 var rect=(RectTransform)button.transform;rect.SetParent(held?holdZone:rollZone,false);
-                rect.anchoredPosition=new Vector2(20+i*210,-58);rect.localRotation=Quaternion.identity;rect.localScale=Vector3.one;
+                rect.anchoredPosition=CardPosition(i);rect.localRotation=Quaternion.identity;rect.localScale=Vector3.one;
                 string id=p.dice[i].instanceId;var face=result==null?null:CompetitionV5Content.Face(state.definition,result.faceId);
                 faces[i].gameObject.SetActive(face!=null);if(face!=null)faces[i].Configure(face);
-                string label=face==null?$"주사위 {i+1}\n굴림 대기":$"{i+1} · {face.name}\n{KindLabel(face.kind)} · {(held?"탭하여 해제":"탭하여 보관")}";
+                int group=Array.FindIndex(plan,s=>s.dieSlotIndices.Contains(i));
+                string label=DieLabel(state.definition,p.dice[i],i)+"\n"+(face==null?"굴림 대기":face.name+" · "+(held?"보관 중":"굴림 영역"))+"\n"+
+                    (group>=0?"기술 "+(group+1)+" · ":"꽝 · ")+(held?"탭하여 해제":"탭하여 보관");
                 button.Bind(id,label,null,"",Appearance,selecting && CompetitionV5Dice.CanHold(state,p),held,_=>command?.Invoke(held?"combat_release":"combat_hold",id));
                 button.gameObject.SetActive(selecting);
             }
-            rollHint.text=selecting && results.All(r=>r.held)?"모두 보관 중 · 해제하면 여기로 돌아옵니다":"굴림 영역 · 탭하여 보관";
-            holdHint.text=results.Any(r=>r.held)?"보관 영역 · 리롤에서 제외 · 탭하여 해제":"보관 영역 · 유지할 눈을 위에서 탭하세요";
+            rollHint.text=selecting && results.All(r=>r.held)?"굴림 영역 · 모두 보관 중":"굴림 영역 · 탭하면 보관";
+            holdHint.text=$"보관 영역 · 변경 {selection?.holdChanges ?? 0}/{state.definition.v5.maxHoldChangesPerTurn} · 다시 굴리기에서 제외";
             bool awaitRoll=selection?.phase==V5SelectionPhase.AwaitRoll && p.phase==CompetitionPhase.Combat;
-            roll.Bind("roll","굴리기",null,"",Appearance,awaitRoll,false,_=>command?.Invoke("combat_roll",""));roll.gameObject.SetActive(awaitRoll);
-            reroll.Bind("reroll",$"리롤  {selection?.rerollsLeft ?? 0}/1",null,"",Appearance,selecting && selection.rerollsLeft>0 && results.Any(r=>!r.held),false,_=>command?.Invoke("combat_reroll",""));
-            execute.Bind("execute","실행",null,"",Appearance,selecting,false,_=>command?.Invoke("combat_execute",""));
-            diceInfo.Bind("dice-info","주사위 정보",null,"",Appearance,true,false,_=>openDice?.Invoke());
-            combatInfo.Bind("combat-info","전투 정보",null,"",Appearance,true,false,_=>openCombat?.Invoke());
-            preview.text=selecting?PreviewText(CompetitionV5Skills.Preview(state.definition,p),2):"먼저 굴리기를 눌러 눈을 확인하세요.";
-            notice.text=selecting?(CompetitionV5Dice.HoldUnavailableReason(state,p) ?? "보관/해제는 턴을 쓰지 않습니다. 실행하면 적이 행동합니다."):"이번 행동 턴 · 최초 굴림 대기";
+            roll.Bind("roll","주사위 굴리기",null,"",Appearance,awaitRoll,false,_=>command?.Invoke("combat_roll",""));roll.gameObject.SetActive(awaitRoll);
+            reroll.Bind("reroll",$"다시 굴리기\n남은 {selection?.rerollsLeft ?? 0}회",null,"",Appearance,selecting && selection.rerollsLeft>0 && results.Any(r=>!r.held),false,_=>command?.Invoke("combat_reroll",""));
+            execute.Bind("execute","기술 실행",null,"",Appearance,selecting,false,_=>command?.Invoke("combat_execute",""));
+            diceInfo.Bind("dice-info","주사위 6면",null,"",Appearance,true,false,_=>openDice?.Invoke());
+            combatInfo.Bind("combat-info","전투 상세 · 모험 메뉴",null,"",Appearance,true,false,_=>openCombat?.Invoke());
+            preview.text=selecting?PreviewText(CompetitionV5Skills.Preview(state.definition,p)):"먼저 주사위를 굴려 이번 결과를 확인하세요.";
+            string limit=CompetitionV5Dice.HoldUnavailableReason(state,p);
+            string detail=selecting?"보관/해제는 턴을 쓰지 않습니다. 기술 실행 후 살아 있는 적이 행동합니다.":"최초 굴림 대기 · 주사위/전투 상세는 조회할 수 있습니다.";
+            if(selecting && results.All(r=>r.held))detail+="\n모두 보관 중 · 다시 굴릴 주사위가 없습니다.";
+            else if(selecting && selection.rerollsLeft==0)detail+="\n다시 굴리기 소진 · 보관 변경 또는 기술 실행 가능";
+            if(selecting && limit!=null)detail="보관 변경 제한 · "+limit+"\n"+
+                (selection.rerollsLeft>0 && results.Any(r=>!r.held)?"남은 다시 굴리기 또는 기술 실행이 가능합니다.":"기술 실행이 가능합니다.");
+            if(selection?.combatTurnSequence>=state.definition.maxCombatTurns)detail+="\n마지막 행동턴 · 이 실행 후 적을 처치하지 못하면 탈락합니다.";
+            SetNotice(detail);
         }
+        public static Vector2 CardPosition(int slot)=>new Vector2(115+slot*215,-140);
+        public static string Marker(int slot)=>slot>=0 && slot<3?"①②③"[slot].ToString():(slot+1).ToString();
+        public static string DieLabel(CompetitionDefinition definition,DieSlot die,int slot)
+        {string name=definition.combat.dice.Single(d=>d.id==die.definitionId).name;return Marker(slot)+" "+name+(name.EndsWith("주사위",StringComparison.Ordinal)?"":" 주사위");}
         public static string KindLabel(V5FaceKind kind)=>kind==V5FaceKind.Class?"전용":kind==V5FaceKind.Blank?"꽝":"공용";
         public static string PreviewText(V5CombatPreview value,int limit=int.MaxValue)
         {
-            if(value.noOp)return "NO_OP · 발동 기술 없음\n이번 실행 시 적이 행동합니다.";
-            string text=string.Join("\n",value.skills.Take(limit).Select(s=>s.name+" · "+(s.status=="enemy-defeated"?"처치 후 생략":$"{CompetitionElements.TypeName(s.damageType)} HP 피해 {s.damageApplied} / 흡수 {s.shieldAbsorbed} / 보호 {s.block}")));
-            return text+(value.skills.Length>limit?$"\n외 {value.skills.Length-limit}개 · 전투 정보에서 전체 보기":"");
+            if(value.noOp)return "발동 기술 없음 · 모든 눈이 꽝\n기술 실행은 가능하며 적이 행동합니다.";
+            if(value.status=="await-roll")return "최초 굴림 대기 · 아직 발동 예상이 없습니다.";
+            string text="발동 예상 "+value.skills.Length+"개\n"+string.Join("\n",value.skills.Take(limit).Select((s,i)=>
+                $"기술 {i+1} · {s.name} · {s.dieSlotIndices.Length}눈 ["+string.Join("+",s.dieSlotIndices.Select(Marker))+"]\n"+
+                (s.status=="enemy-defeated"?"처치 후 생략":EffectText(s.damageType,s.damageApplied,s.shieldAbsorbed,s.block))));
+            return text+(value.skills.Length>limit?$"\n추가 {value.skills.Length-limit}개 · 전투 상세에서 전체 보기":"");
+        }
+        static string EffectText(DamageType type,int damage,int absorbed,int block)
+        {
+            string effect=damage>0?CompetitionElements.TypeName(type)+" HP 피해 "+damage:"";
+            if(absorbed>0)effect+=(effect.Length>0?" · ":"")+"보호막 흡수 "+absorbed;
+            if(block>0)effect+=(effect.Length>0?" · ":"")+"보호 +"+block;
+            return effect.Length>0?effect:"HP 피해 0 · 보호 생성 없음";
         }
         public IEnumerator Play(string kind,CompetitionState before,CompetitionState after)
         {
-            var previous=before.participants[0].v5.selection;var starts=dice.Select(d=>d.transform.position).ToArray();Snap(kind=="combat_execute"?before:after);IsAnimating=true;
+            var previous=before.participants[0].v5.selection;Snap(kind=="combat_execute"?before:after);IsAnimating=true;
             foreach(var button in dice.Concat(new[]{roll,reroll,execute,diceInfo,combatInfo}))button.button.interactable=false;
             if(kind=="combat_roll" || kind=="combat_reroll")
             {
                 DiceRolling=true;var moved=after.participants[0].v5.selection.results.Where(r=>kind=="combat_roll" || previous.results.Single(x=>x.dieInstanceId==r.dieInstanceId).held==false).Select(r=>r.slotIndex).ToArray();
                 foreach(int i in moved)faces[i].gameObject.SetActive(false);
-                yield return Animate(.65f,t=>{foreach(int i in moved){dice[i].transform.localRotation=Quaternion.Euler(0,0,Mathf.Sin(t*Mathf.PI*6)*(1-t)*25);dice[i].transform.localScale=Vector3.one*(1+Mathf.Sin(t*Mathf.PI)*.1f);}});
+                yield return Animate(.65f,t=>{foreach(int i in moved){dice[i].transform.localRotation=Quaternion.Euler(0,0,Mathf.Sin(t*Mathf.PI*6)*(1-t)*6);dice[i].transform.localScale=Vector3.one*(1+Mathf.Sin(t*Mathf.PI)*.03f);}});
                 DiceRolling=false;
             }
             else if(kind=="combat_hold" || kind=="combat_release")
             {
-                var destinations=dice.Select(d=>((RectTransform)d.transform).anchoredPosition).ToArray();
-                var localStarts=dice.Select((d,i)=>(Vector2)d.transform.parent.InverseTransformPoint(starts[i])).ToArray();
-                yield return Animate(.18f,t=>{for(int i=0;i<dice.Length;i++){var rect=(RectTransform)dice[i].transform;rect.localPosition=Vector2.Lerp(localStarts[i],new Vector2(destinations[i].x, destinations[i].y),Mathf.SmoothStep(0,1,t));}});
+                // Reparent first, then reveal in its own lane. A vertical sweep would cross the other lane's guidance.
+                var moved=after.participants[0].v5.selection.results.Where(r=>previous.results.Single(x=>x.dieInstanceId==r.dieInstanceId).held!=r.held).Select(r=>r.slotIndex).ToArray();
+                yield return Animate(.18f,t=>{foreach(int i in moved){dice[i].group.alpha=.55f+.45f*t;dice[i].transform.localScale=Vector3.one*(.96f+.04f*t);}});
             }
             else if(kind=="combat_execute")
             {
@@ -95,24 +120,28 @@ namespace DiceWarrior.SharedWorld
                 foreach(var result in p.v5.lastTurn.results)
                 {
                     var card=dice[result.slotIndex];card.gameObject.SetActive(true);card.transform.SetParent(result.held?holdZone:rollZone,false);
-                    ((RectTransform)card.transform).anchoredPosition=new Vector2(20+result.slotIndex*210,-58);
+                    ((RectTransform)card.transform).anchoredPosition=CardPosition(result.slotIndex);
                     faces[result.slotIndex].gameObject.SetActive(true);faces[result.slotIndex].Configure(CompetitionV5Content.Face(after.definition,result.faceId));
-                    card.label.text=$"{result.slotIndex+1} · "+CompetitionV5Content.Face(after.definition,result.faceId).name+"\n실행한 눈";
+                    card.label.text=DieLabel(before.definition,initial.dice[result.slotIndex],result.slotIndex)+"\n"+CompetitionV5Content.Face(after.definition,result.faceId).name+"\n실행한 눈";
                 }
-                preview.text="저장된 실행 결과를 표시합니다.";notice.text="내 기술 실행 · 현재 보호는 0부터 누적됩니다.";
+                preview.text="저장된 실행 결과를 표시합니다.";SetNotice("내 기술 실행 · 현재 보호는 0부터 누적됩니다.");
                 SetHealth(log.playerHpBefore,initial.maxHp,0,log.enemyHpBefore,initial.enemy.maxHp,initial.enemy.shield,initial.enemy.name,true);
                 yield return Animate(.12f,_=>{});
-                if(p.v5.lastTurn?.noOp==true) {preview.text="NO_OP · 발동 기술 없음";yield return Animate(.25f,_=>{});}
-                foreach(var skill in log.skills)
+                if(p.v5.lastTurn?.noOp==true) {preview.text="발동 기술 없음 · 모든 눈이 꽝";yield return Animate(.25f,_=>{});}
+                var plan=CompetitionV5Skills.PlanSteps(before.definition,initial,p.v5.lastTurn.results);
+                for(int index=0;index<log.skills.Count;index++)
                 {
-                    preview.text=skill.name+"\n"+(skill.status=="enemy-defeated"?"처치 후 생략":$"HP 피해 {skill.enemyHpBefore-skill.enemyHpAfter} · 흡수 {skill.enemyShieldBefore-skill.enemyShieldAfter} · 보호 {skill.block}");
+                    var skill=log.skills[index];var step=plan[index];
+                    preview.text=$"기술 {index+1} · {skill.name} · {step.dieSlotIndices.Length}눈 ["+string.Join("+",step.dieSlotIndices.Select(Marker))+"]\n"+
+                        (skill.status=="enemy-defeated"?"처치 후 생략":EffectText(p.v4.lastTurn.skills[index].damageType,skill.enemyHpBefore-skill.enemyHpAfter,skill.enemyShieldBefore-skill.enemyShieldAfter,skill.block));
+                    foreach(int slot in step.dieSlotIndices)dice[slot].label.text=DieLabel(before.definition,initial.dice[slot],slot)+"\n"+CompetitionV5Content.Face(before.definition,p.v5.lastTurn.results.Single(r=>r.slotIndex==slot).faceId).name+"\n기술 "+(index+1)+" 실행";
                     block+=skill.block;
                     SetHealth(log.playerHpBefore,initial.maxHp,block,skill.enemyHpAfter,initial.enemy.maxHp,skill.enemyShieldAfter,initial.enemy.name,false);
-                    yield return Animate(.24f,t=>preview.transform.localScale=Vector3.one*(1+Mathf.Sin(t*Mathf.PI)*.06f));
+                    yield return Animate(.24f,_=>{});
                 }
                 int enemyShield=log.retaliation && log.intent==Intent.Defend?initial.enemy.attack:0;
                 SetHealth(log.playerHpAfter,initial.maxHp,0,log.enemyHpAfter,initial.enemy.maxHp,enemyShield,initial.enemy.name,true);
-                notice.text=log.retaliation?$"적 행동 종료 · 받은 HP 피해 {log.retaliationDamage}\n이번 실행 보호 {log.playerBlock} · 현재 보호 0 (턴 초기화)":"적 처치 · 반격 없음\n현재 보호 0 (턴 초기화)";
+                SetNotice(log.retaliation?$"적 행동 종료 · 받은 HP 피해 {log.retaliationDamage}\n이번 실행 보호 {log.playerBlock} · 현재 보호 0 (턴 초기화)":"적 처치 · 반격 없음\n현재 보호 0 (턴 초기화)");
                 yield return Animate(.3f,_=>{});
             }
             preview.transform.localScale=Vector3.one;Snap(after);
@@ -122,6 +151,15 @@ namespace DiceWarrior.SharedWorld
             player.text=$"내 HP {hp}/{maxHp} · 현재 보호 {block}"+(reset?" (턴 초기화)":"");
             enemy.text=$"{enemyName}  HP {enemyHp}/{enemyMaxHp} · 보호 {enemyShield}";
             playerFill.fillAmount=(float)hp/maxHp;enemyFill.fillAmount=(float)enemyHp/enemyMaxHp;
+        }
+        void SetNotice(string message)
+        {
+            notice.text=message;
+            if(feedbackScroll)
+            {
+                var rect=notice.rectTransform;rect.sizeDelta=new Vector2(feedbackScroll.viewport.rect.width,Mathf.Max(feedbackScroll.viewport.rect.height,notice.preferredHeight));
+                feedbackScroll.verticalNormalizedPosition=1;
+            }
         }
         static IEnumerator Animate(float duration,Action<float> frame)
         {for(float elapsed=0;elapsed<duration;elapsed+=Time.unscaledDeltaTime){frame(Mathf.Clamp01(elapsed/duration));yield return null;}frame(1);}

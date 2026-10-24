@@ -16,3 +16,7 @@ v4 BeginCombat 뒤 선택사건ID를 전용 enemyId로 동결하고 typed 로그
 ## V5_DICE_COMBAT_09 직접 변경/관계
 
 BeginCombat은 v5 참가자의 확정 로그를 비우고 V5Dice.Begin으로 AwaitRoll을 만든다. 기존 Combat의 후반부만 FinishCombat으로 추출하여 v5 실행과 사망/처치/보상/제한턴/다음 적 intent 순서를 공유한다. v1~v4 최대64턴과 원래 굴림 소비는 유지하고 v5는 정의의20턴을 사용한다. 적 프로필·보물 행운 보상은 UsesAttributes를 통해 v5에도 동일하게 적용된다.
+
+## V5_UI_IMPROVEMENT_11
+
+RewardGold(definition,participant,choice)는 동결 choice.gold와 보물의 현재 행운 보너스 합계를 순수 반환한다. Reward는 같은 함수에서 보너스를 얻어 기존 checked 행운 지급 → 기본 골드 → XP → 명예 순서를 보존한다. CompetitionV5UiText.Encounter는 이 값을 사용해 기본/행운/합계를 표시하며 UI에 행운 지급 산식을 복제하지 않는다. 신규 투영 검사가 5보물 모두에서 레벨업 전 행운을 사용한 실제 지급 및 원본/RNG 불변을 대조한다.

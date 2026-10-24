@@ -75,6 +75,31 @@ namespace DiceWarrior.SharedWorld
 
         static bool ClaimLap(CompetitionState state, ParticipantState p, string arg)
         {
+            int lap = GrantLapReward(state, p, arg);
+            if (lap < state.definition.lapsToFinish)
+            {
+                p.phase = CompetitionPhase.Map; p.message = lap + "바퀴 완주 · 전투 주사위 " + p.dice.Count + "개";
+                return true;
+            }
+            var rules = state.definition.combat;
+            CompetitionEncounterRules.BeginCombat(p, "순환의 수호자", rules.bossHp, rules.bossAttack, true);
+            if (CompetitionV4Content.UsesAttributes(state.definition)) { p.v4.enemyId = "final"; p.v4.lastTurn = null; }
+            return false;
+        }
+
+        public static ParticipantState PreviewLapReward(CompetitionState state, string choiceId)
+        {
+            if (state == null || state.finished) throw new InvalidOperationException("이미 끝났거나 존재하지 않는 경기입니다.");
+            var copy = LoopJson.Copy(state);
+            var p = CompetitionRules.Human(copy);
+            if (!CompetitionRules.Active(p)) throw new InvalidOperationException("완료·탈락한 모험가입니다.");
+            // Only the shared grant runs: no intent draw, command, AI turn or round transition.
+            GrantLapReward(copy, p, choiceId ?? "");
+            return p;
+        }
+
+        static int GrantLapReward(CompetitionState state, ParticipantState p, string arg)
+        {
             if (p.phase != CompetitionPhase.LapReward || p.completedLaps >= state.definition.lapsToFinish) throw new InvalidOperationException("No lap reward");
             var rules = state.definition.combat;
             var gear = rules.gear.SingleOrDefault(g => g.id == arg);
@@ -88,14 +113,11 @@ namespace DiceWarrior.SharedWorld
             if (lap < state.definition.lapsToFinish)
             {
                 p.dice.Add(new DieSlot { instanceId = id + ":die", definitionId = arg.Length == 0 ? rules.dice[lap].id : arg });
-                p.phase = CompetitionPhase.Map; p.message = lap + "바퀴 완주 · 전투 주사위 " + p.dice.Count + "개";
-                return true;
+                return lap;
             }
             p.equipment[gear.slot] = gear.id;
             CompetitionAttributes.RefreshStats(state.definition, p);
-            CompetitionEncounterRules.BeginCombat(p, "순환의 수호자", rules.bossHp, rules.bossAttack, true);
-            if (CompetitionV4Content.UsesAttributes(state.definition)) { p.v4.enemyId = "final"; p.v4.lastTurn = null; }
-            return false;
+            return lap;
         }
 
         static void CompleteRound(CompetitionState state)

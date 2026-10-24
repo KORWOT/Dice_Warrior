@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace DiceWarrior.SharedWorld
 {
-    public sealed class CompetitionApp : MonoBehaviour
+    public sealed partial class CompetitionApp : MonoBehaviour
     {
         public UIManager ui;
         public TextAsset content;
@@ -57,6 +57,7 @@ namespace DiceWarrior.SharedWorld
         void Update()
         {
             if(!active || !ui) return;
+            if(UnityEngine.InputSystem.Keyboard.current?.escapeKey.wasPressedThisFrame==true) HandleBack();
             if(width==UnityEngine.Screen.width && height==UnityEngine.Screen.height && safeArea==UnityEngine.Screen.safeArea) return;
             width=UnityEngine.Screen.width;height=UnityEngine.Screen.height;safeArea=UnityEngine.Screen.safeArea;ui.Root.ApplySafeArea();
         }
@@ -108,7 +109,7 @@ namespace DiceWarrior.SharedWorld
         }
         void SelectAdventurer(string id)
         {
-            try { adventurerSelection=adventurerStore.Select(id,adventurerSelection.revision);adventurerError=notice="";menu=""; }
+            try { adventurerSelection=adventurerStore.Select(id,adventurerSelection.revision);adventurerError="";notice=UseV5Ui?"선택을 저장했습니다 · 다음 새 모험에 적용됩니다.":"";menu=UseV5Ui?"adventurers":""; }
             catch(Exception error) { adventurerError=notice="모험가 선택 저장 오류 · "+error.Message; }
             Render();
         }
@@ -129,10 +130,13 @@ namespace DiceWarrior.SharedWorld
             if(Account.HasLegacyRun) return "이전 1인 모험 기록 보존 중 · 이 계정의 영구 성장 구매는 보류합니다.";
             return Account.LastReply?.message ?? "";
         }
-        async void AccountAction(Func<CancellationToken,Task> action)
+        async void AccountAction(Func<CancellationToken,Task> action,bool growthPurchase=false)
         {
-            if(busy || Account==null) return;busy=true;Render();
-            try { await action(lifetime.Token);if(this) { profile=Account.Profile;notice=AccountMessage(); } }
+            if(busy || Account==null) return;var previous=profile==null?null:LoopJson.Copy(profile);busy=true;Render();
+            try { await action(lifetime.Token);if(this) { profile=Account.Profile;notice=AccountMessage();
+                if(growthPurchase && previous!=null && profile.growth>previous.growth)
+                    notice=$"성장 구매 완료 · 재화 {previous.currency} → {profile.currency}\n성장 {previous.growth} → {profile.growth}단계 · 영구 HP +{(profile.growth-previous.growth)*5}";
+            } }
             catch(Exception error) { if(this) { profile=Account.Profile;notice=error.Message; } }
             finally { busy=false;if(this) Render(); }
         }
@@ -156,7 +160,7 @@ namespace DiceWarrior.SharedWorld
                 string adventurer=adventurerSelection?.adventurerId ?? "wanderer";
                 if(replaceActive) Session.Restart(LoopJson.Copy(profile),seed,id,adventurer);
                 else Session.Start(LoopJson.Copy(profile),seed,id,adventurer);
-                lobby=false;menu="";notice="";
+                lobby=false;menu="";notice="";v5LastChange="";suspendedV5Net=null;
             }
             catch(Exception error) { if(this) notice=error.Message; }
             finally { busy=false;if(this) Render(); }
@@ -167,7 +171,7 @@ namespace DiceWarrior.SharedWorld
             {
                 if(Account!=null) { Account.SelectLoadout(kind,id);profile=Account.Profile; }
                 else if(kind=="die") profile.startingDie=id;else profile.startingWeapon=id;
-                menu="";notice="";
+                menu=UseV5Ui?"loadout":"";notice=UseV5Ui?"선택을 저장했습니다 · 다음 새 모험에 적용됩니다.":"";
             }
             catch(Exception error) { notice=error.Message; }
             Render();
@@ -181,9 +185,10 @@ namespace DiceWarrior.SharedWorld
         void Dispatch(string kind,string arg="")
         {
             if(busy || Session==null) return;busy=true;var before=Session.Snapshot.state;
-            try { Session.Execute(Session.Prepare(kind,arg));notice="";confirmAbandon=false; }
+            try { Session.Execute(Session.Prepare(kind,arg));notice="";confirmAbandon=false;if(kind=="abandon" && UseV5Ui)menu=""; }
             catch(Exception error) { notice=error.Message;busy=false;Render();return; }
             var after=Session.Snapshot.state;
+            if(UseV5Ui)v5LastChange=V5ChangeSummary(before,after,kind);
             if(!isActiveAndEnabled || !active || paused) { busy=false;return; }
             if(before!=null && after!=null && ui.ActiveScreen is CompetitionScreen screen)
             { ui.SetInputLocked(true);presentation=StartCoroutine(Present(screen.playback.Play(kind,before,after)));return; }
@@ -210,23 +215,23 @@ namespace DiceWarrior.SharedWorld
         public void Close()
         {
             if(busy && presentation==null) return;
-            CancelPresentation();lobby=true;menu="";diceDetails=null;confirmAbandon=false;confirmNewGame=false;Render();
+            CancelPresentation();lobby=true;menu="";diceDetails=null;suspendedV5Net=null;v5DetailsReturn="";confirmAbandon=false;confirmNewGame=false;Render();
         }
         void ShowDiceDetails(bool candidates=false,bool information=false)
         {
             if(busy)return;var state=lobby?null:Session?.Snapshot.state;var d=state?.definition ?? definition;
             if(!CompetitionV5Content.IsEnabled(d))return;
             var p=state?.participants[0];string hero=p?.adventurerId ?? adventurerSelection?.adventurerId ?? "wanderer";
-            diceDetails=new V5DiceNetData {definition=d,adventurerId=hero,title=information?"전투 정보 · 확정 상태 조회":candidates?"보상 후보 · 주사위 6면":"주사위 · 실제 6면",
+            diceDetails=new V5DiceNetData {definition=d,adventurerId=hero,title=information?"전투 상세 · 현재 경기":candidates?"보상 후보 · 실제 6면":"주사위 · 실제 6면",
                 dice=information?Array.Empty<DieSlot>():candidates?d.combat.dice.Select((die,i)=>new DieSlot {instanceId="candidate-"+i,definitionId=die.id}).ToArray():p?.dice.ToArray() ?? new[]{new DieSlot {instanceId="lobby-die",definitionId=profile.startingDie}},
                 results=p?.v5?.selection?.results ?? Array.Empty<V5FaceResult>(),close=()=>{diceDetails=null;Render();}};
             if(information && p!=null)
             {
-                diceDetails.information=CompetitionElementView.CombatSummary(d,p)+"\n\n발동 예상\n"+V5DiceAreaView.PreviewText(CompetitionV5Skills.Preview(d,p))+
-                    "\n\n이번 선택: 보관/해제 "+(p.v5.selection?.holdChanges ?? 0)+"/12 · 전투 행동 최대 20턴\n보관·해제 제한 이후에도 리롤·실행은 가능합니다."+
+                diceDetails.information="[적과 상성]\n"+CompetitionElementView.CombatSummary(d,p)+"\n\n"+V5DiceAreaView.PreviewText(CompetitionV5Skills.Preview(d,p))+
+                    "\n\n[행동 제한]\n보관 변경 "+(p.v5.selection?.holdChanges ?? 0)+"/12 · 다시 굴리기 남은 "+(p.v5.selection?.rerollsLeft ?? 0)+"회\n전투 행동턴 "+(p.encounterTurns+1)+"/20 · 기술 실행과 적 행동으로 한 턴\n20번째 행동도 적 처치가 우선이며, 적이 남으면 탈락합니다.\n보호는 이번 실행 뒤 적 행동에만 사용하고 다음 행동으로 이월하지 않습니다."+
                     (p.lastTurn==null?"":"\n\n마지막 실행\n"+string.Join("\n",p.lastTurn.skills.Select(s=>s.name+" · "+(s.status=="enemy-defeated"?"처치 후 생략":$"HP 피해 {s.enemyHpBefore-s.enemyHpAfter} / 흡수 {s.enemyShieldBefore-s.enemyShieldAfter} / 보호 {s.block}")))+$"\n적 행동: {(p.lastTurn.retaliation?"있음":"없음")} · 받은 HP 피해 {p.lastTurn.retaliationDamage}");
                 diceDetails.leave=Close;diceDetails.abandon=()=>{diceDetails=null;confirmAbandon=true;Render();};
-                diceDetails.stats=()=>{diceDetails=null;menu="stats";detailPage=0;Render();};
+                diceDetails.stats=()=>OpenV5Details("stats",diceDetails);
             }
             Render();
         }
@@ -261,6 +266,7 @@ namespace DiceWarrior.SharedWorld
         {
             if(!active || !ui || !isActiveAndEnabled || paused) return;
             var state=Session?.Snapshot.state;
+            if(UseV5Ui) { RenderV5(state);return; }
             var data=new CompetitionScreenData {title="DICE WARRIOR · 공동 모험",subtitle="인간 1 + AI 3 · 경기 성장 보상은 검증 전까지 0",state=lobby?null:state,
                 status="같은 세계 · 각자의 모험",detail="",history="",onClose=CancelPresentation};
             var labels=new List<string>();var actions=new List<Action>();var enabled=new List<bool>();

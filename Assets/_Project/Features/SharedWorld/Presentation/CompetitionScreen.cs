@@ -21,6 +21,7 @@ namespace DiceWarrior.SharedWorld
         public Action<string,string> v5Command;
         public Action v5DiceInfo,v5CombatInfo;
         public V5DiceNetData v5NetData;
+        public V5ShellData shell;
     }
     public sealed class CompetitionScreen : BaseUI<CompetitionScreenData>
     {
@@ -40,6 +41,7 @@ namespace DiceWarrior.SharedWorld
         public Text[] attributeValues,attributeSources;
         public V5DiceAreaView v5Area;
         public V5DiceNetView v5Net;
+        public V5ShellView v5Shell;
         public static Color ParticipantColor(int index)=>new[]{new Color(1,.84f,.43f),new Color(1,.47f,.47f),new Color(.47f,.76f,1),new Color(.72f,.59f,1)}[index];
         void OnRectTransformDimensionsChange()
         {
@@ -56,13 +58,18 @@ namespace DiceWarrior.SharedWorld
         {
             OnRectTransformDimensionsChange();
             if((data.v5Combat && !v5Area) || (data.v5NetData!=null && !v5Net))throw new InvalidOperationException("V5 화면의 authored 참조를 연결해야 합니다.");
+            bool shell=data.shell!=null;
+            if(shell && !v5Shell)throw new InvalidOperationException("V5 주요 화면의 authored 참조를 연결해야 합니다.");
             content.gameObject.SetActive(!data.v5Combat);
+            if(v5Shell){v5Shell.gameObject.SetActive(shell);if(!shell)v5Shell.Unbind();if(v5Shell.legacyFooter)v5Shell.legacyFooter.SetActive(!shell);}
             if(v5Area) v5Area.gameObject.SetActive(data.v5Combat);
             if(v5Net) {v5Net.gameObject.SetActive(data.v5NetData!=null);if(data.v5NetData!=null)v5Net.Bind(data.v5NetData);else v5Net.Unbind();}
             title.text=data.title;subtitle.text=data.subtitle;status.text=data.status;detail.text=data.detail;history.text=data.history;
+            foreach(var text in new[]{title,subtitle,status,detail,history})text.gameObject.SetActive(!shell);
             var state=data.state;
             bool combat=state!=null && state.participants[0].phase==CompetitionPhase.Combat && !state.finished;
-            board.SetActive(!combat);
+            board.SetActive(shell?data.shell.showBoard:!combat);
+            if(roster.Length>0)roster[0].transform.parent.gameObject.SetActive(!shell || data.shell.showBoard);
             center.text=state==null?"한 세계 · 네 모험가\n고정 지명 / 개인 사건":"세계 라운드 "+Mathf.Min(state.worldRound,state.definition.maxRounds)+" / "+state.definition.maxRounds+"\n"+state.definition.world.name;
             for(int i=0;i<places.Length;i++)
             {
@@ -72,13 +79,15 @@ namespace DiceWarrior.SharedWorld
             for(int i=0;i<roster.Length;i++)
             {
                 roster[i].color=ParticipantColor(i);
+                roster[i].fontSize=shell?14:16;
                 if(state==null) { roster[i].text=(i==0?"1 당신":" "+(i+1)+" AI 모험가")+" · 같은 계정 성장 보정";continue; }
                 var p=state.participants[i];
                 string condition=p.eliminated?"탈락":p.finished?"완료":state.definition.world.places[p.position].name;
-                roster[i].text=$"{i+1} {p.name} · {p.rank}위  HP {p.hp}/{p.maxHp}  완주 {p.completedLaps}  명예 {p.honor}  {condition}";
+                roster[i].text=shell?$"{i+1}번 {(i==0?"나":"AI")} {p.name} · {p.rank}위  HP {p.hp}/{p.maxHp}  {p.completedLaps}/{state.definition.lapsToFinish}바퀴 · 명예 {p.honor}"+(p.eliminated?" · 탈락":p.finished?" · 완료":""):
+                    $"{i+1} {p.name} · {p.rank}위  HP {p.hp}/{p.maxHp}  완주 {p.completedLaps}  명예 {p.honor}  {condition}";
             }
             playback.Snap(state);
-            bool growth=!string.IsNullOrEmpty(data.growthMode);
+            bool growth=!shell && !string.IsNullOrEmpty(data.growthMode);
             if(growthPanel) growthPanel.SetActive(growth);
             if(growth)
             {
@@ -100,14 +109,26 @@ namespace DiceWarrior.SharedWorld
             if(data.v5Combat)v5Area.Bind(data.state,data.v5Command,data.v5DiceInfo,data.v5CombatInfo,data.v5Notice);
             for(int i=0;i<buttons.Length;i++)
             {
-                bool used=i<data.labels.Length;buttons[i].gameObject.SetActive(used);
+                bool used=!shell && i<data.labels.Length;buttons[i].gameObject.SetActive(used);
                 if(!used) { buttons[i].Unbind();continue; }
                 int index=i;bool allowed=i>=data.enabled.Length || data.enabled[i];
                 buttons[i].Bind(i.ToString(),data.labels[i],null,"",new ButtonAppearance {
                     normal=new Color(.14f,.29f,.36f),selected=new Color(.22f,.48f,.52f),pressed=new Color(.12f,.62f,.56f),disabled=new Color(.13f,.16f,.19f)
                 },allowed,false,_=>data.actions[index]());
             }
+            if(shell)
+            {
+                v5Shell.Bind(data.shell);
+                bool showBoard=data.shell.showBoard;board.SetActive(showBoard);playback.human.cue.gameObject.SetActive(showBoard);
+                if(!showBoard){playback.human.combatStage.SetActive(false);playback.human.tray.SetActive(false);}
+                else if(state!=null)
+                {
+                    var p=state.participants[0];
+                    playback.human.rollLabel.text="이동 주사위 · 1~6칸";
+                    center.text=$"내 완주 {p.completedLaps}/{state.definition.lapsToFinish}\n"+(p.finished || p.eliminated?"남은 AI 경기 진행":$"다음: {Math.Min(p.completedLaps+1,state.definition.lapsToFinish)}바퀴 완주")+"\n00 출발 · 시계 방향";
+                }
+            }
         }
-        protected override void OnUnbind() { Data?.onClose?.Invoke();foreach(var button in buttons) button.Unbind();if(v5Area)v5Area.Unbind();if(v5Net)v5Net.Unbind(); }
+        protected override void OnUnbind() { Data?.onClose?.Invoke();foreach(var button in buttons) button.Unbind();if(v5Area)v5Area.Unbind();if(v5Net)v5Net.Unbind();if(v5Shell)v5Shell.Unbind(); }
     }
 }

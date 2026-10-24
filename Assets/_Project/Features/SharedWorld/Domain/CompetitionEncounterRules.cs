@@ -132,9 +132,13 @@ namespace DiceWarrior.SharedWorld
         static void Reward(CompetitionState state, ParticipantState p, EncounterChoice choice)
         {
             if (CompetitionV4Content.UsesAttributes(state.definition) && state.definition.v4.treasureEncounterIds.Contains(choice.id))
-                p.gold = checked(p.gold + CompetitionAttributes.Describe(state.definition, p).attributes.luck / 5);
+                p.gold = checked(p.gold + (RewardGold(state.definition, p, choice) - choice.gold));
             p.gold += choice.gold; CompetitionRules.AddXp(state.definition, p, choice.xp);
             CompetitionRules.Honor(p, p.offer.id + ":honor", choice.label, choice.honor);
         }
+
+        public static int RewardGold(CompetitionDefinition definition, ParticipantState p, EncounterChoice choice)
+            => choice.gold + (CompetitionV4Content.UsesAttributes(definition) && definition.v4.treasureEncounterIds.Contains(choice.id)
+                ? CompetitionAttributes.Describe(definition, p).attributes.luck / 5 : 0);
     }
 }
