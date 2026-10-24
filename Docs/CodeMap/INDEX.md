@@ -2,9 +2,25 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 83개, Server C# 41개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 86개, Server C# 42개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
 
-## v5 UI 개선 · 현행 화면
+## v5 주사위 중심 리디자인 · 현행 화면
+
+[PLAN](../Plans/V5_UI_REDESIGN_12_PLAN.md) · [REPORT](../Reports/V5_UI_REDESIGN_12_REPORT.md) · [실제 주요12상태](../UI/V5Redesign/index.html).
+
+| 역할 | 요약 |
+|---|---|
+| 물리6면·중복을 보존하는 입체 UI 큐브 | [V5DieGraphic](Assets/_Project/Features/SharedWorld/Presentation/V5DieGraphic.cs.md) |
+| 고정 보관·부분 리롤·기술/적 행동 | [V5DiceAreaView](Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs.md) |
+| 12칸·4명·고정 CTA·모드별 원본 복원 | [CompetitionScreen](Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs.md) |
+| 고정 보드 CTA와 획득 구성 표시 | [V5ShellView](Assets/_Project/Features/SharedWorld/Presentation/V5ShellView.cs.md) |
+| v5 추가 참조 authoring | [V5RedesignAuthoring](Assets/_Project/Features/SharedWorld/Editor/V5RedesignAuthoring.cs.md) |
+| 저장실패·중단재개·동작줄이기·이동/보상 | [CompetitionDiceRedesignTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionDiceRedesignTests.cs.md) |
+| 실제 프리팹·연출 프레임·비율 촬영 | [V5UiRedesignCapture](Server/Tools/V5UiRedesignCapture.cs.md) |
+
+App의 같은 저장 경계 → Playback → Area/Cube 또는 Shell의 D6/말/획득 표시. Cube는6면 index를 읽는 Canvas 메시이며 RNG/물리 판정/별도카메라를 만들지 않는다. 고급아트 DICE-11은 후속이다.
+
+## v5 UI 개선 · UI11 이력
 
 [PLAN](../Plans/V5_UI_IMPROVEMENT_11_PLAN.md) · [REPORT](../Reports/V5_UI_IMPROVEMENT_11_REPORT.md) · [실제 주요12화면](../UI/V5Improved/index.html).
 
@@ -52,7 +68,7 @@ App → Screen → Shell/Area/Net. 표시 계산은 PlanSteps/PreviewLapReward/R
 | face/owner/6면/recipe 검증 | [CompetitionV5Content](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Content.cs.md) |
 | 굴림·보관·리롤/20턴·명령 예약 | [CompetitionV5Dice](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Dice.cs.md) |
 | 3→2→1 계획·순수 프리뷰·효과 | [CompetitionV5Skills](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Skills.cs.md) |
-| 굴림/보관 두 영역·확정 연출 | [V5DiceAreaView](Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs.md) |
+| 고정 큐브 트레이·확정 연출 | [V5DiceAreaView](Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs.md) |
 | 6면 전개도·물리면/상세 | [V5DiceNetView](Assets/_Project/Features/SharedWorld/Presentation/V5DiceNetView.cs.md) |
 | 공용/전용/꽝 도형 표시 | [V5FaceGraphic](Assets/_Project/Features/SharedWorld/Presentation/V5FaceGraphic.cs.md) |
 | 규칙·RNG·계획·AI·예약 검사 | [CompetitionV5Tests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5Tests.cs.md) |

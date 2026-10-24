@@ -17,7 +17,15 @@ namespace DiceWarrior.SharedWorld
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();var rect=GetPixelAdjustedRect();float scale=Mathf.Min(rect.width,rect.height)*.47f;
-            Vector2 Map(Vector2 p)=>rect.center+p*scale;
+            DrawFace(vh,p=>rect.center+p*scale,kind,iconId,current,false);
+        }
+        public static void Draw(VertexHelper vh,Func<Vector2,Vector2> map,V5FaceDefinition face,bool highlighted=false,bool onLightSurface=false)
+        {
+            if(face==null)throw new ArgumentNullException(nameof(face));
+            DrawFace(vh,map,face.kind,face.iconId,highlighted,onLightSurface);
+        }
+        static void DrawFace(VertexHelper vh,Func<Vector2,Vector2> Map,V5FaceKind kind,string iconId,bool current,bool onLightSurface)
+        {
             void Line(Vector2 a,Vector2 b,float width,Color tint)
             {
                 var n=new Vector2(-(b-a).y,(b-a).x).normalized*width*.5f;int start=vh.currentVertCount;
@@ -25,6 +33,7 @@ namespace DiceWarrior.SharedWorld
                 vh.AddTriangle(start,start+1,start+2);vh.AddTriangle(start,start+2,start+3);
             }
             Color tint=kind==V5FaceKind.Blank?new Color(.62f,.66f,.7f):kind==V5FaceKind.Class?new Color(1,.78f,.38f):new Color(.55f,.86f,1);
+            if(onLightSurface)tint=kind==V5FaceKind.Blank?new Color(.3f,.34f,.4f):kind==V5FaceKind.Class?new Color(.53f,.29f,.08f):new Color(.1f,.25f,.34f);
             Color frame=current?Color.white:tint;
             var points=kind==V5FaceKind.Class?new[]{new Vector2(-.5f,1),new Vector2(.5f,1),new Vector2(1,0),new Vector2(.5f,-1),new Vector2(-.5f,-1),new Vector2(-1,0)}:
                 kind==V5FaceKind.Blank?Circle():new[]{new Vector2(-.8f,1),new Vector2(.8f,1),new Vector2(1,.8f),new Vector2(1,-.8f),new Vector2(.8f,-1),new Vector2(-.8f,-1),new Vector2(-1,-.8f),new Vector2(-1,.8f)};

@@ -7,3 +7,5 @@
 - 사용하는 쪽·관계 근거: CompetitionApp가 읽기 전용 데이터를 만들고 다른 상세 진입 중 이를 보관/복원하며 CompetitionScreen이 Bind/Unbind한다. CompetitionAuthoring.BuildV5Net과 CompetitionCombatUiAuthoring.Upgrade가6셀/3탭/배경/버튼/scroll을 연결한다. CompetitionV5FlowTests/CompetitionCombatUiTests가 실제 포인터와 상태 불변을 확인한다.
 - 상태/수명: 모달 배경 Image.raycastTarget이 뒤 입력을 가로막는다. 선택/페이지/scroll은 data 안의 UI로컬 상태이며 Session/RNG/리롤을 바꾸지 않는다. 같은 data를 재바인딩하면 조회를 복원한다. ScrollRect의 소유 listener만 매Bind/Unbind에서 해제한다. 닫기는 전달받은 callback에 맡긴다.
 - 검수 주의: 6면을 유니크 집합으로 줄이지 않는다. 신규 V5 SkillId를 v4 심볼 기술 목록에서 조회하지 않는다. 런타임 객체 생성 없이 authored 참조가 없으면 오류다.
+
+- UI12: authored motion 버튼은 information(주사위 목록 없음)일 때만 표시한다. DTO motion callback/reducedMotion은 화면 로컬 보기 설정을 전달한다. stats/motion 두 버튼을 같은 관리 행에 배치하고 기존6면 조회에는 추가 버튼을 숨긴다. Unbind가 motion 콜백도 해제한다.

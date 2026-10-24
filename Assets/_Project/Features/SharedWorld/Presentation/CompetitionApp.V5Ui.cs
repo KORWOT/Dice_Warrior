@@ -34,8 +34,10 @@ namespace DiceWarrior.SharedWorld
         static string V5EndReason(CompetitionState state)=>state.endReason=="all-complete"?"모든 모험가가 완료 또는 탈락했습니다.":state.endReason=="round-limit"?$"{state.definition.maxRounds}라운드 도달로 경기가 종료되었습니다.":"경기가 종료되었습니다.";
         static string V5ChangeSummary(CompetitionState before,CompetitionState after,string kind)
         {
-            if(before==null || after==null || kind.StartsWith("combat_",StringComparison.Ordinal) || kind=="travel")return "";
+            if(before==null || after==null || kind.StartsWith("combat_",StringComparison.Ordinal))return "";
             var a=before.participants[0];var b=after.participants[0];var changes=new List<string>();
+            if(kind=="travel")return $"이동 주사위 {b.lastTravel} · 실제 {Math.Min(b.lastTravel,before.definition.world.places.Length-a.position)}칸 → {after.definition.world.places[b.position].name}"+(b.phase==CompetitionPhase.LapReward?" · 출발점에서 완주 보상":"");
+            if(kind=="lap" && b.dice.Count>a.dice.Count)changes.Add($"전투 주사위 {a.dice.Count} → {b.dice.Count}개 · "+after.definition.combat.dice.Single(x=>x.id==b.dice.Last().definitionId).name+" 합류");
             if(a.hp!=b.hp)changes.Add($"HP {a.hp} → {b.hp}");if(a.gold!=b.gold)changes.Add($"골드 {a.gold} → {b.gold}");
             if(a.xp!=b.xp || a.level!=b.level)changes.Add($"레벨 {a.level} → {b.level} · XP {a.xp} → {b.xp}");
             return (kind=="lap"?"완주 보상 수령":kind=="choose"?"사건 해결":kind=="abandon"?"내 모험 포기":"AI 라운드 완료")+(changes.Count>0?" · "+string.Join(" / ",changes):"");
@@ -52,7 +54,7 @@ namespace DiceWarrior.SharedWorld
         void RenderV5(CompetitionState state)
         {
             var shell=new V5ShellData {mode="lobby",title="DICE WARRIOR",summary="공동 모험 · 인간 1명 + AI 3명",body="",notice=V5Notice()};
-            var data=new CompetitionScreenData {title=shell.title,subtitle="",status="",detail="",history="",state=lobby?null:state,onClose=CancelPresentation,shell=shell,v5NetData=diceDetails};
+            var data=new CompetitionScreenData {title=shell.title,subtitle="",status="",detail="",history="",state=lobby?null:state,onClose=CancelPresentation,shell=shell,v5NetData=diceDetails,reducedMotion=ReducedMotion};
             var choices=new List<V5ShellAction>();var tools=new List<V5ShellAction>();var tabs=new List<V5ShellAction>();
             V5ShellAction Item(string id,string label,string detail,Action action,bool available=true,bool selected=false)=>new V5ShellAction {id=id,label=label,detail=detail,enabled=available&&!busy,selected=selected,invoke=()=>{if(!busy)action();}};
             void Add(string id,string label,string detail,Action action,bool available=true,bool selected=false)=>choices.Add(Item(id,label,detail,action,available,selected));
@@ -148,6 +150,7 @@ namespace DiceWarrior.SharedWorld
                 Add("stats","출전 능력치","다음 모험 기준의 능력치·기술",()=>OpenV5Details(),adventurerError==""&&(Account==null||Account.HasProfile));
                 if(Account!=null)Add("account","계정 관리","영구 성장·재화·저장 복구",()=>V5Menu("account"));
                 Tool("net","출전 주사위 6면",()=>ShowDiceDetails());Tool("backup","경기 백업 확인",InspectBackup);
+                Tool("motion","동작 줄이기: "+(ReducedMotion?"켜짐":"꺼짐"),()=>SetReducedMotion(!ReducedMotion));
                 if(string.IsNullOrEmpty(shell.notice))shell.notice=AccountMessage();
             }
             else
@@ -162,9 +165,11 @@ namespace DiceWarrior.SharedWorld
                 else if(menu=="adventure")
                 {
                     shell.mode="menu";shell.title="모험 메뉴 · 진행 관리";shell.body=p.name+" · "+V5Phase(p.phase)+"\n조회나 닫기는 현재 모험을 바꾸지 않습니다.";
+                    if(state.lastRound.Count>0)shell.body+="\n\n[직전 AI 행동 결과]\n"+string.Join("\n",state.lastRound.Select(x=>x.name+": "+x.message));
                     Add("leave","로비로 · 진행 유지","현재 위치·사건·전투를 보존합니다.",Close);
                     if(!state.finished&&!p.finished&&!p.eliminated)Add("abandon","내 모험 포기","확인 후 내 참가자만 탈락합니다.",()=>{confirmAbandon=true;Render();});
                     Add("details","능력치 상세","현재 경기의 확정 능력치",()=>OpenV5Details());Tool("backup","경기 백업 확인",InspectBackup);Back();
+                    Tool("motion","동작 줄이기: "+(ReducedMotion?"켜짐":"꺼짐"),()=>SetReducedMotion(!ReducedMotion));
                 }
                 else if(state.finished)
                 {
@@ -178,7 +183,7 @@ namespace DiceWarrior.SharedWorld
                 else if(p.phase==CompetitionPhase.Encounter)
                 {
                     shell.mode="encounter";shell.title=d.world.places[p.position].name+" · 사건 선택";
-                    shell.body=$"이동 결과 {p.lastTravel}칸 · HP {p.hp}/{p.maxHp} · 골드 {p.gold}\n개인 사건입니다. 선택하면 비용과 효과가 확정됩니다.";
+                    shell.body=$"주사위 눈 {p.lastTravel} → {d.world.places[p.position].name} · HP {p.hp}/{p.maxHp} · 골드 {p.gold}\n개인 사건입니다. 선택하면 비용과 효과가 확정됩니다.";
                     foreach(var choice in p.offer.choices)Command(choice.label,CompetitionV5UiText.Encounter(d,p,choice),"choose",choice.id,choice.available);
                     Tool("details","능력치 상세",()=>OpenV5Details());Tool("menu","모험 메뉴",()=>V5Menu("adventure"));
                 }
@@ -195,10 +200,10 @@ namespace DiceWarrior.SharedWorld
                 {
                     shell.mode=p.phase==CompetitionPhase.Complete?"spectator":"board";shell.showBoard=true;
                     shell.title=p.phase==CompetitionPhase.Complete?"내 모험 종료 · 남은 경기 진행":"공동 모험 · 내 차례";
+                    shell.summary+=$"\nHP {p.hp}/{p.maxHp} · 골드 {p.gold} · LV {p.level} · XP {p.xp}";
                     if(p.phase==CompetitionPhase.Complete)
                         Command("다음 AI 라운드",$"내 결과: {(p.eliminated?"탈락":"완료")} · "+p.message+$"\n남은 모험가 {state.participants.Count(x=>!x.finished&&!x.eliminated)}명","advance");
                     else Command("이동 주사위 굴리기","현재 "+d.world.places[p.position].name+$" · 다음 목표 {p.completedLaps+1}바퀴 완주","travel");
-                    if(state.lastRound.Count>0)shell.body="[직전 AI 행동 결과]\n"+string.Join("\n",state.lastRound.Select(x=>x.name+": "+x.message));
                     Tool("details","능력치 상세",()=>OpenV5Details());Tool("menu","모험 메뉴",()=>V5Menu("adventure"));
                     if(string.IsNullOrEmpty(shell.notice))shell.notice=v5LastChange;
                 }

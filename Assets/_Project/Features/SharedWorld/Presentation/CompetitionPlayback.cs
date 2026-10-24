@@ -11,6 +11,7 @@ namespace DiceWarrior.SharedWorld
         public CompetitionScreen screen;
         public SymbolLoopPlayback human;
         public bool MovementRolling { get; private set; }
+        public bool ReducedMotion { get; set; }
         public bool DiceRolling=>MovementRolling || human.DiceRolling || (screen.v5Area && screen.v5Area.DiceRolling);
         public int VisiblePosition { get; private set; }
         static Run View(CompetitionState state,ParticipantState participant)
@@ -48,15 +49,45 @@ namespace DiceWarrior.SharedWorld
             }
             else if(kind=="travel")
             {
-                human.numericDie.Configure(next.lastTravel);MovementRolling=true;human.cue.text="숫자 주사위를 굴리는 중…";
-                yield return Animate(.85f,t=>human.numericDie.Pose(t,0));MovementRolling=false;
+                bool v5=CompetitionV5Content.IsEnabled(before.definition);
+                MovementRolling=true;human.cue.text="숫자 주사위를 굴리는 중…";
+                if(v5)
+                {
+                    screen.v5Shell.SetBoardPresentation("굴리는 중…","이동 주사위 · 멈추면 눈을 공개합니다.",true);
+                    human.rollLabel.text="이동 주사위 · 굴리는 중";
+                    // The tumble is independent of the saved result. Reveal only on landing.
+                    human.numericDie.Configure(1);
+                    if(!ReducedMotion)yield return Animate(.75f,t=>human.numericDie.Pose(t*.8f,0));
+                    human.numericDie.Configure(next.lastTravel);
+                    if(!ReducedMotion)yield return Animate(.15f,t=>human.numericDie.Pose(.8f+.2f*t,0));
+                    human.rollLabel.text=$"이동 주사위 · {next.lastTravel}눈";
+                }
+                else
+                {
+                    human.numericDie.Configure(next.lastTravel);
+                    yield return Animate(.85f,t=>human.numericDie.Pose(t,0));
+                }
+                MovementRolling=false;
                 int steps=Math.Min(next.lastTravel,screen.cells.Length-p.position);
                 for(int step=1;step<=steps;step++)
                 {
                     int position=(p.position+step)%screen.cells.Length;Vector2 start=screen.pawns[0].anchoredPosition,end=screen.PawnPosition(0,position);
                     human.cue.text=after.definition.world.places[position].name;
-                    yield return Animate(.18f,t=>screen.pawns[0].anchoredPosition=Vector2.Lerp(start,end,Mathf.SmoothStep(0,1,t))+Vector2.up*(Mathf.Sin(t*Mathf.PI)*18));
+                    if(v5)
+                    {
+                        screen.tileFrames[position].color=new Color(.10f,.34f,.36f);
+                        screen.v5Shell.SetBoardPresentation("이동 중…",$"{next.lastTravel}눈 · {step}/{steps}칸 · {human.cue.text}",true);
+                    }
+                    yield return Animate(v5?(ReducedMotion ? .025f : .12f):.18f,t=>screen.pawns[0].anchoredPosition=Vector2.Lerp(start,end,Mathf.SmoothStep(0,1,t))+Vector2.up*(v5&&ReducedMotion?0:Mathf.Sin(t*Mathf.PI)*12));
                     VisiblePosition=position;
+                }
+                if(v5)
+                {
+                    string arrival=$"{next.lastTravel}눈 · 실제 {steps}칸 → {after.definition.world.places[next.position].name}";
+                    if(steps<next.lastTravel)arrival+="\n완주 지점 도착 · 초과 이동 종료";
+                    human.cue.text=arrival;
+                    screen.v5Shell.SetBoardPresentation(next.phase==CompetitionPhase.LapReward?"완주 보상으로 이동 중…":"사건으로 이동 중…",arrival,true);
+                    yield return Animate(ReducedMotion ? .05f : .18f,_=>{});
                 }
             }
             else if(kind=="combat")
@@ -65,15 +96,22 @@ namespace DiceWarrior.SharedWorld
                 if(last.enemy==null && first.enemy!=null) { last.enemy=LoopJson.Copy(first.enemy);last.enemy.hp=last.lastTurn.enemyHpAfter;last.enemy.shield=0; }
                 yield return human.Play("combat",first,last);
             }
+            if(kind=="lap" && CompetitionV5Content.IsEnabled(before.definition) && next.dice.Count>p.dice.Count && screen.v5Shell)
+                yield return Animate(ReducedMotion ? .1f : .35f,t=>screen.v5Shell.ShowDiceGrowth(after,p.dice.Count,t,ReducedMotion));
             if(before.worldRound!=after.worldRound || after.finished)
             {
                 human.cue.text="AI 모험가들의 행동 결과";
                 if(CompetitionV5Content.IsEnabled(before.definition) && screen.v5Shell && screen.v5Shell.gameObject.activeInHierarchy)
-                {var view=screen.v5Shell;view.Data.notice="AI 행동 결과를 표시하고 있습니다. 잠시 기다려 주세요.";view.Bind(view.Data);}
+                {
+                    var view=screen.v5Shell;
+                    if(view.Data?.showBoard==true)view.SetBoardPresentation("AI 차례","AI 행동 결과를 표시하고 있습니다.",true);
+                    else if(view.rewardGrowth && view.rewardGrowth.activeSelf)view.summary.text="수령 완료 · AI 행동 결과를 표시하고 있습니다.";
+                    else if(view.Data!=null){view.Data.notice="AI 행동 결과를 표시하고 있습니다. 잠시 기다려 주세요.";view.Bind(view.Data);}
+                }
                 for(int i=1;i<screen.pawns.Length;i++)
                 {
                     int index=i;Vector2 start=screen.pawns[i].anchoredPosition,end=screen.PawnPosition(i,after.participants[i].position);
-                    if(start!=end) yield return Animate(.18f,t=>screen.pawns[index].anchoredPosition=Vector2.Lerp(start,end,t));
+                    if(start!=end) yield return Animate(ReducedMotion ? .025f : .18f,t=>screen.pawns[index].anchoredPosition=Vector2.Lerp(start,end,t));
                 }
             }
         }

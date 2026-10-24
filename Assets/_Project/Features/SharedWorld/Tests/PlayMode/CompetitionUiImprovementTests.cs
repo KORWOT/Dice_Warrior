@@ -163,10 +163,12 @@ namespace DiceWarrior.SharedWorld.Tests
             int round=app.Session.Snapshot.state.worldRound;yield return Click("choose:"+choice.id);
             Assert.That(app.IsPresenting,Is.True);Assert.That(Shell.notice.text,Does.Contain("AI 행동 결과"));
             yield return Wait();Assert.That(app.Session.Snapshot.state.worldRound,Is.EqualTo(round+1));
-            Assert.That(Shell.Data.mode,Is.EqualTo("board"));Assert.That(Shell.body.text,Does.Contain("직전 AI 행동 결과"));
-            foreach(var result in app.Session.Snapshot.state.lastRound)Assert.That(Shell.body.text,Does.Contain(result.name));
+            Assert.That(Shell.Data.mode,Is.EqualTo("board"));
             Assert.That(Shell.notice.text,Does.Contain("사건 해결"));
-            Assert.That(app.HandleBack(),Is.True);yield return null;yield return Click("abandon");yield return Click("abandon:");yield return Wait();
+            Assert.That(app.HandleBack(),Is.True);yield return null;
+            Assert.That(Shell.body.text,Does.Contain("직전 AI 행동 결과"));
+            foreach(var result in app.Session.Snapshot.state.lastRound)Assert.That(Shell.body.text,Does.Contain(result.name));
+            yield return Click("abandon");yield return Click("abandon:");yield return Wait();
             Assert.That(Human.eliminated,Is.True);Assert.That(Shell.Data.mode,Is.EqualTo("spectator"));
             yield return ReadOnlyRoundTrip();Assert.That(Find("advance:").button.interactable,Is.True);
         }
@@ -250,7 +252,7 @@ namespace DiceWarrior.SharedWorld.Tests
             appObject=new GameObject("Isolated UI account app");appObject.SetActive(false);app=appObject.AddComponent<CompetitionApp>();app.ui=ui;
             app.OpenAccount(AccountPath,path,definition,backend,()=>33);appObject.SetActive(true);yield return null;yield return Wait();
         }
-        CommonButtonView Find(string id)=>Shell.choices.Concat(Shell.tools).Concat(Shell.tabs).Concat(new[]{Shell.previous,Shell.next,Shell.back})
+        CommonButtonView Find(string id)=>Shell.choices.Concat(Shell.tools).Concat(Shell.tabs).Concat(new[]{Shell.previous,Shell.next,Shell.back,Shell.boardPrimary})
             .Single(x=>x.gameObject.activeInHierarchy && x.BoundId==id);
         IEnumerator Click(string id)
         {

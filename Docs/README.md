@@ -1,5 +1,6 @@
 # Dice Warrior 문서
 
+- [v5 주사위 리디자인](UI/V5Redesign/index.html): 고정 큐브 트레이·부분 리롤·이동·획득의 실제12상태. [PLAN](Plans/V5_UI_REDESIGN_12_PLAN.md) / [REPORT](Reports/V5_UI_REDESIGN_12_REPORT.md).
 현재 메인은 **고정12지명·인간1+AI3의 공동 모험**이다. 기존1인 모험판은 제거하고 전투·계정·과거 서버 기록에 필요한 공용 코드만 보존한다. 새 경기 순위는 시험 결과이며 영구 재화는 지급하지 않는다.
 
 **v5 반영 상태(2026-10-24):** 규칙·저장·화면·프리팹과 Title 연결을 완료했다. 새 게임은 v5를 사용하며 기존 v1~v4 경기는 당시 규칙으로 이어간다. .NET184개·Unity EditMode184개·신규 화면9개·기존 화면25개가 모두 통과했다. [검증 결과와 화면](Reports/V5_DICE_COMBAT_09_REPORT.md)을 참고한다.

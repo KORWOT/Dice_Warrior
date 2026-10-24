@@ -18,6 +18,7 @@ using Object=UnityEngine.Object;
 namespace DiceWarrior.SharedWorld.Tests
 {
     [Category("V5UiImprovement11")]
+    [Category("V5UiRedesign12")]
     public sealed class CompetitionCombatUiTests
     {
         GameObject root,cameraObject,eventObject;
@@ -26,7 +27,7 @@ namespace DiceWarrior.SharedWorld.Tests
         Camera camera;
         RenderTexture target;
         CompetitionDefinition definition;
-        readonly float[] samples={0,.15f,.25f,.4f,.5f,.75f,1};
+        readonly float[] samples={0,.05f,.1f,.15f,.2f,.25f,.3f,.35f,.4f,.45f,.5f,.55f,.6f,.65f,.7f,.75f,.8f,.85f,.9f,.95f,1};
         [UnitySetUp] public IEnumerator Setup()
         {
             definition=CompetitionContent.Load(AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/_Project/Features/SharedWorld/Content/shared-world-preview-5.json").text);
@@ -44,7 +45,7 @@ namespace DiceWarrior.SharedWorld.Tests
         [UnityTearDown] public IEnumerator Cleanup()
         {if(root)Object.Destroy(root);if(cameraObject)Object.Destroy(cameraObject);if(eventObject)Object.Destroy(eventObject);if(target){target.Release();Object.Destroy(target);}yield return null;}
 
-        [UnityTest] public IEnumerator AllDiceCountsAndHoldMasksStayInsideTheirLanesAtAnimationSamples()
+        [UnityTest] public IEnumerator AllDiceCountsAndHoldMasksKeepFixedSlotsAndProjectedMeshesInsideTheTray()
         {
             foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(720,1600),new Vector2Int(540,960)})
             {
@@ -68,6 +69,24 @@ namespace DiceWarrior.SharedWorld.Tests
                         var changed=LoopJson.Copy(state);var die=changed.participants[0].v5.selection.results[0];string command=die.held?"combat_release":"combat_hold";
                         CompetitionCommandRules.Apply(changed,command,die.dieInstanceId);yield return Sample(command,state,changed);
                     }
+                }
+            }
+        }
+
+        [UnityTest] public IEnumerator EveryPhysicalFaceUsesItsActualLayoutAndSettlesFacingThePlayer()
+        {
+            foreach(string hero in new[]{"wanderer","scholar","vanguard"})
+            {
+                var state=Combat(3,hero);CompetitionCommandRules.Apply(state,"combat_roll","");
+                for(int slot=0;slot<3;slot++)for(int index=0;index<6;index++)
+                {
+                    var p=state.participants[0];var definitions=CompetitionV5Content.Faces(state.definition,hero,p.dice[slot].definitionId);
+                    var result=p.v5.selection.results[slot];result.faceIndex=index;result.faceId=definitions[index].id;
+                    screen.v5Area.Snap(state);yield return null;Canvas.ForceUpdateCanvases();
+                    var cube=screen.v5Area.cubes[slot];Assert.That(cube.ResultFaceIndex,Is.EqualTo(index));Assert.That(cube.FrontFaceIndex,Is.EqualTo(index));
+                    Assert.That(cube.RevealResult,Is.True);Assert.That(cube.FaceId(index),Is.EqualTo(result.faceId));
+                    for(int face=0;face<6;face++)Assert.That(cube.FaceId(face),Is.EqualTo(definitions[face].id));
+                    Assert.That(screen.v5Area.dice[slot].label.text,Does.Contain(definitions[index].name));AssertGeometry();
                 }
             }
         }
@@ -124,21 +143,48 @@ namespace DiceWarrior.SharedWorld.Tests
 
         IEnumerator Sample(string kind,CompetitionState before,CompetitionState after)
         {
-            screen.v5Area.Snap(before);var sequence=screen.v5Area.Play(kind,before,after);Assert.That(sequence.MoveNext(),Is.True);
-            var animation=(IEnumerator)sequence.Current;
-            var frame=animation.GetType().GetFields(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).Select(f=>f.GetValue(animation)).OfType<Action<float>>().First();
-            foreach(float t in samples){frame(t);Canvas.ForceUpdateCanvases();AssertGeometry();yield return null;}
-            while(sequence.MoveNext()){}screen.v5Area.Snap(after);AssertGeometry();
+            var area=screen.v5Area;area.Snap(before);string original=LoopJson.Encode(after);
+            var positions=area.dice.Select(d=>((RectTransform)d.transform).anchoredPosition).ToArray();
+            var sequence=area.Play(kind,before,after);
+            while(sequence.MoveNext())
+            {
+                if(!(sequence.Current is IEnumerator animation))continue;
+                var frame=animation.GetType().GetFields(BindingFlags.Instance|BindingFlags.Public|BindingFlags.NonPublic).Select(f=>f.GetValue(animation)).OfType<Action<float>>().First();
+                foreach(float t in samples)
+                {
+                    frame(t);Canvas.ForceUpdateCanvases();AssertGeometry();
+                    for(int slot=0;slot<before.participants[0].dice.Count;slot++)
+                    {
+                        Assert.That(((RectTransform)area.dice[slot].transform).anchoredPosition,Is.EqualTo(positions[slot]));
+                        var result=before.participants[0].v5.selection.results.FirstOrDefault(r=>r.slotIndex==slot);
+                        if(kind=="combat_reroll" && result?.held==true)
+                        {Assert.That(area.cubes[slot].RollProgress,Is.EqualTo(1));Assert.That(area.cubes[slot].ResultFaceIndex,Is.EqualTo(result.faceIndex));Assert.That(area.cubes[slot].RevealResult,Is.True);}
+                    }
+                    if(area.DiceRolling && area.cubes.Any(c=>c.gameObject.activeInHierarchy && !c.RevealResult))
+                    {Assert.That(area.preview.text,Does.Contain("멈추면"));Assert.That(area.execute.button.interactable,Is.False);}
+                    yield return null;
+                }
+            }
+            area.Snap(after);AssertGeometry();Assert.That(LoopJson.Encode(after),Is.EqualTo(original));
         }
         void AssertGeometry()
         {
             var area=screen.v5Area;var visible=area.dice.Where(d=>d.gameObject.activeInHierarchy).ToArray();
             foreach(var card in visible)
             {
-                var rect=(RectTransform)card.transform;var lane=(RectTransform)rect.parent;var bounds=Bounds(rect,lane);var hint=lane==area.rollZone?area.rollHint:area.holdHint;
+                var rect=(RectTransform)card.transform;var lane=area.rollZone;var bounds=Bounds(rect,lane);
+                Assert.That(rect.parent,Is.SameAs(lane));Assert.That(area.holdZone.gameObject.activeSelf,Is.False);
                 Assert.That(bounds.xMin,Is.GreaterThanOrEqualTo(lane.rect.xMin-1));Assert.That(bounds.xMax,Is.LessThanOrEqualTo(lane.rect.xMax+1));
                 Assert.That(bounds.yMin,Is.GreaterThanOrEqualTo(lane.rect.yMin-1));Assert.That(bounds.yMax,Is.LessThanOrEqualTo(lane.rect.yMax+1));
-                Assert.That(bounds.Overlaps(Bounds(hint.rectTransform,lane)),Is.False,"Card must not cover lane guidance");
+                Assert.That(bounds.Overlaps(Bounds(area.rollHint.rectTransform,lane)),Is.False,"Slot must not cover tray guidance");
+                Assert.That(bounds.Overlaps(Bounds(area.holdHint.rectTransform,lane)),Is.False,"Slot must not cover hold count");
+                int slot=Array.IndexOf(area.dice,card);Assert.That(rect.anchoredPosition,Is.EqualTo(V5DiceAreaView.SlotPosition(slot,visible.Length)));
+                var cube=area.cubes[slot];var mesh=cube.canvasRenderer.GetMesh();Assert.That(mesh,Is.Not.Null);Assert.That(mesh.vertexCount,Is.GreaterThan(0));
+                var projected=mesh.vertices.Select(v=>(Vector2)lane.InverseTransformPoint(cube.transform.TransformPoint(v))).ToArray();
+                var projectedBounds=Rect.MinMaxRect(projected.Min(p=>p.x),projected.Min(p=>p.y),projected.Max(p=>p.x),projected.Max(p=>p.y));
+                Assert.That(projectedBounds.xMin,Is.GreaterThanOrEqualTo(bounds.xMin));Assert.That(projectedBounds.xMax,Is.LessThanOrEqualTo(bounds.xMax));
+                Assert.That(projectedBounds.yMax,Is.LessThanOrEqualTo(bounds.yMax));Assert.That(projectedBounds.yMin,Is.GreaterThanOrEqualTo(bounds.yMin));
+                Assert.That(projectedBounds.Overlaps(Bounds(card.label.rectTransform,lane)),Is.False,"Cube, shadow and lock must stay above the result label");
                 var safe=Bounds(rect,ui.safeArea);Assert.That(safe.xMin,Is.GreaterThanOrEqualTo(ui.safeArea.rect.xMin-1));Assert.That(safe.xMax,Is.LessThanOrEqualTo(ui.safeArea.rect.xMax+1));
                 Assert.That(safe.yMin,Is.GreaterThanOrEqualTo(ui.safeArea.rect.yMin-1));Assert.That(safe.yMax,Is.LessThanOrEqualTo(ui.safeArea.rect.yMax+1));
             }

@@ -14,7 +14,8 @@ namespace DiceWarrior.SharedWorld
         public string adventurerId,title,information;
         public DieSlot[] dice=Array.Empty<DieSlot>();
         public V5FaceResult[] results=Array.Empty<V5FaceResult>();
-        public Action close,leave,abandon,stats;
+        public Action close,leave,abandon,stats,motion;
+        public bool reducedMotion;
         // Only view-local state. Retaining this data while opening another detail view restores the query.
         public int selectedSlot,selectedFace=-1,detailPage;
         public float scrollPosition=1;
@@ -27,7 +28,7 @@ namespace DiceWarrior.SharedWorld
         public ScrollRect detailsScroll;
         public CommonButtonView[] tabs,cells;
         public V5FaceGraphic[] faces;
-        public CommonButtonView close,previous,next,leave,abandon,stats;
+        public CommonButtonView close,previous,next,leave,abandon,stats,motion;
         public int SelectedSlot { get; private set; }
         public int SelectedFace { get; private set; }
         public static Vector2Int Cell(int index)
@@ -48,6 +49,7 @@ namespace DiceWarrior.SharedWorld
             title.text=value.title;blocker.raycastTarget=true;
             close.Bind("close","닫기",null,"",V5DiceAreaView.Appearance,true,false,_=>data.close?.Invoke());
             BindOptional(leave,"leave","로비로 · 진행 유지",value.leave);BindOptional(abandon,"abandon","내 모험 포기",value.abandon);BindOptional(stats,"stats","현재 경기 능력치",value.stats);
+            BindOptional(motion,"motion","동작 줄이기: "+(value.reducedMotion?"켜짐":"꺼짐"),value.dice.Length==0?value.motion:null);
             if(managementHeading)managementHeading.gameObject.SetActive(value.leave!=null || value.abandon!=null);
             for(int i=0;i<tabs.Length;i++)
             {
@@ -103,7 +105,7 @@ namespace DiceWarrior.SharedWorld
         public void Unbind()
         {
             if(detailsScroll && scrollChanged!=null)detailsScroll.onValueChanged.RemoveListener(scrollChanged);scrollChanged=null;
-            foreach(var button in tabs.Concat(cells).Concat(new[]{close,previous,next,leave,abandon,stats}))if(button)button.Unbind();data=null;
+            foreach(var button in tabs.Concat(cells).Concat(new[]{close,previous,next,leave,abandon,stats,motion}))if(button)button.Unbind();data=null;
         }
     }
 }

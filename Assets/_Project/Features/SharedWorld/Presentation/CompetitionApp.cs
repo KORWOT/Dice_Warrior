@@ -21,6 +21,14 @@ namespace DiceWarrior.SharedWorld
         public bool IsPresenting=>busy;
         public bool IsOpen=>active;
         public bool InLobby=>lobby;
+        public bool ReducedMotion { get; private set; }
+        // Local to this app lifetime; no account or match checkpoint changes.
+        public void SetReducedMotion(bool value)
+        {
+            if(busy)return;
+            ReducedMotion=value;if(diceDetails!=null)diceDetails.reducedMotion=value;
+            if(active)Render();
+        }
         CompetitionStore store;
         AdventurerSelectionStore adventurerStore;
         AdventurerSelection adventurerSelection;
@@ -224,7 +232,8 @@ namespace DiceWarrior.SharedWorld
             var p=state?.participants[0];string hero=p?.adventurerId ?? adventurerSelection?.adventurerId ?? "wanderer";
             diceDetails=new V5DiceNetData {definition=d,adventurerId=hero,title=information?"전투 상세 · 현재 경기":candidates?"보상 후보 · 실제 6면":"주사위 · 실제 6면",
                 dice=information?Array.Empty<DieSlot>():candidates?d.combat.dice.Select((die,i)=>new DieSlot {instanceId="candidate-"+i,definitionId=die.id}).ToArray():p?.dice.ToArray() ?? new[]{new DieSlot {instanceId="lobby-die",definitionId=profile.startingDie}},
-                results=p?.v5?.selection?.results ?? Array.Empty<V5FaceResult>(),close=()=>{diceDetails=null;Render();}};
+                results=p?.v5?.selection?.results ?? Array.Empty<V5FaceResult>(),reducedMotion=ReducedMotion,
+                motion=()=>SetReducedMotion(!ReducedMotion),close=()=>{diceDetails=null;Render();}};
             if(information && p!=null)
             {
                 diceDetails.information="[적과 상성]\n"+CompetitionElementView.CombatSummary(d,p)+"\n\n"+V5DiceAreaView.PreviewText(CompetitionV5Skills.Preview(d,p))+

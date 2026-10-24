@@ -49,7 +49,7 @@ namespace DiceWarrior.SharedWorld.Tests
             if(target){target.Release();Object.Destroy(target);}yield return null;
             // Isolated checkpoints and captures are run evidence, retained under ignored artifacts.
         }
-        [Test] public void AuthoredV5HasIndependentAreasAndSixFaceNet()
+        [Test] public void AuthoredV5HasFixedCubeTrayAndSixFaceNet()
         {
             var screen=AssetDatabase.LoadAssetAtPath<CompetitionScreen>(PrefabPath);
             Assert.That(screen,Is.Not.Null);
@@ -60,7 +60,7 @@ namespace DiceWarrior.SharedWorld.Tests
                 Assert.That(binding,Is.Not.Null,"V5 requires authored "+field);
                 Assert.That(binding.objectReferenceValue,Is.Not.Null,"Run the approved UpgradeV5 authoring step: "+field);
             }
-            Assert.That(screen.v5Area.rollZone,Is.Not.SameAs(screen.v5Area.holdZone));Assert.That(screen.v5Area.dice.Length,Is.EqualTo(3));Assert.That(screen.v5Net.cells.Length,Is.EqualTo(6));
+            Assert.That(screen.v5Area.holdZone.gameObject.activeSelf,Is.False);Assert.That(screen.v5Area.cubes,Has.Length.EqualTo(3));Assert.That(screen.v5Area.dice.Length,Is.EqualTo(3));Assert.That(screen.v5Net.cells.Length,Is.EqualTo(6));
             foreach(var face in screen.v5Area.faces.Concat(screen.v5Net.faces))Assert.That(face.GetComponent<CanvasRenderer>(),Is.Not.Null,"Authored renderer required: "+HierarchyPath(face.transform));
             Assert.That(screen.buttons.Length,Is.EqualTo(8));Assert.That(screen.v5Net.blocker.raycastTarget,Is.True);
             Assert.That(screen.v5Net.blocker.color.a,Is.EqualTo(1f),"Information text requires an opaque backdrop.");
@@ -79,7 +79,7 @@ namespace DiceWarrior.SharedWorld.Tests
                 Assert.That(area.reroll.button.interactable,Is.False);Assert.That(area.execute.button.interactable,Is.False);
                 yield return Tap(area.roll);Assert.That(app.IsPresenting,Is.True);Assert.That(area.DiceRolling,Is.True);yield return Wait();
                 Assert.That(Human.v5.selection.results.Length,Is.EqualTo(count));Assert.That(area.dice.Count(d=>d.gameObject.activeInHierarchy),Is.EqualTo(count));
-                uint rng=Human.combatRng;yield return Tap(area.dice[0]);yield return Wait();Assert.That(area.dice[0].transform.parent,Is.EqualTo(area.holdZone));Assert.That(Human.combatRng,Is.EqualTo(rng));
+                uint rng=Human.combatRng;yield return Tap(area.dice[0]);yield return Wait();Assert.That(area.dice[0].transform.parent,Is.EqualTo(area.rollZone));Assert.That(Human.combatRng,Is.EqualTo(rng));
                 yield return Tap(area.dice[0]);yield return Wait();Assert.That(area.dice[0].transform.parent,Is.EqualTo(area.rollZone));
                 for(int i=0;i<count;i++){yield return Tap(area.dice[i]);yield return Wait();}
                 Assert.That(area.reroll.button.interactable,Is.False);Assert.That(area.execute.button.interactable,Is.True);
@@ -118,7 +118,7 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(app.IsPresenting,Is.False);Assert.That(Screen.v5Area.DiceRolling,Is.False);Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));
             yield return Tap(Screen.v5Area.dice[0]);saved=LoopJson.Encode(app.Session.Snapshot);Screen.v5Area.dice[0].button.onClick.Invoke();
             appObject.SendMessage("OnApplicationPause",true);yield return null;appObject.SendMessage("OnApplicationPause",false);yield return null;
-            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(Screen.v5Area.dice[0].transform.parent,Is.EqualTo(Screen.v5Area.holdZone));
+            Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(Screen.v5Area.dice[0].transform.parent,Is.EqualTo(Screen.v5Area.rollZone));
             yield return Tap(Screen.v5Area.reroll);saved=LoopJson.Encode(app.Session.Snapshot);appObject.SetActive(false);yield return null;appObject.SetActive(true);yield return null;
             Assert.That(LoopJson.Encode(app.Session.Snapshot),Is.EqualTo(saved));Assert.That(Screen.v5Area.DiceRolling,Is.False);
             SetFaces(V5FaceKind.Blank);Assert.That(Screen.v5Area.preview.text,Does.Contain("발동 기술 없음").And.Contain("적이 행동"));
@@ -195,7 +195,7 @@ namespace DiceWarrior.SharedWorld.Tests
                 Assert.That(Time.realtimeSinceStartup,Is.LessThan(deadline));
                 if(area.notice.text.StartsWith("적 행동 종료",StringComparison.Ordinal))
                 {enemyAction=true;AssertHealth(log.playerHpAfter,before.maxHp,0,log.enemyHpAfter,before.enemy.maxHp,0);}
-                else for(int i=0;i<log.skills.Count;i++)if(area.preview.text.StartsWith($"기술 {i+1} · {log.skills[i].name} ·",StringComparison.Ordinal))
+                else for(int i=0;i<log.skills.Count;i++)if(!string.IsNullOrEmpty(area.impact.text) && area.preview.text.StartsWith($"기술 {i+1} · {log.skills[i].name} ·",StringComparison.Ordinal))
                 {observed.Add(i);AssertHealth(log.playerHpBefore,before.maxHp,log.skills.Take(i+1).Sum(s=>s.block),log.skills[i].enemyHpAfter,before.enemy.maxHp,log.skills[i].enemyShieldAfter);}
                 yield return null;
             }

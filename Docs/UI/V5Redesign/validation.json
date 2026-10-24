@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "recordedDate": "2026-10-24",
+  "scope": "V5_UI_REDESIGN_12",
+  "note": "기존 실행 결과의 구조화 보존본. 커밋 준비에서 Unity 검사를 다시 실행하지 않았다. 실기기는 NOT_RUN. sourceSha256은 ignored 원본 로그의 바이트 해시다.",
+  "executions": [
+    {
+      "source": "artifacts/v5-ui-redesign-12/compile-final.json",
+      "sourceSha256": "38c68d85dd4e6e2490988c333df4aba02083a6188ab550f3baf60a01dfcf1486",
+      "command": "command recompile_status",
+      "result": {
+        "status": "completed",
+        "failed": false,
+        "errors": []
+      }
+    },
+    {
+      "source": "artifacts/v5-ui-redesign-12/tests-final.json",
+      "sourceSha256": "a9a50af44878731ca923417c73a9778b63797f11f1d265b43c309419218c6675",
+      "command": "command test_status",
+      "result": {
+        "status": "completed",
+        "duration": 52.66,
+        "summary": {
+          "total": 25,
+          "passed": 25,
+          "failed": 0,
+          "skipped": 0,
+          "inconclusive": 0
+        },
+        "results": [
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.AllDiceCountsAndHoldMasksKeepFixedSlotsAndProjectedMeshesInsideTheTray",
+            "Status": "Passed",
+            "Duration": 7.4851739,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.CardsUseStableIdentityAndPreviewGroupsComeFromTheActualPlanner",
+            "Status": "Passed",
+            "Duration": 0.0788284,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.DiceDetailsDistinguishRolledAndInspectedFacesAndRetainTheirLocalState",
+            "Status": "Passed",
+            "Duration": 0.3982664,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionCombatUiTests.EveryPhysicalFaceUsesItsActualLayoutAndSettlesFacingThePlayer",
+            "Status": "Passed",
+            "Duration": 0.3765905,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.ClosingDuringRollAndRerollResumesSavedResultWithoutRepeatingInput",
+            "Status": "Passed",
+            "Duration": 0.4710503,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.FailedRerollWriteKeepsCommittedFacesAndRetriesOnlyAfterStorageRecovers",
+            "Status": "Passed",
+            "Duration": 1.8235065,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.GrantedSecondAndThirdDiceAppearInNextCombatButFinalGearAddsNoDie",
+            "Status": "Passed",
+            "Duration": 4.1628075,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.ReducedMotionUsesIdenticalCommandsRandomStreamsAndCombatOutcome",
+            "Status": "Passed",
+            "Duration": 4.4946354,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.RollAndPartialRerollRevealTogetherWhileHeldPhysicalSlotStaysStill",
+            "Status": "Passed",
+            "Duration": 1.9450142,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionDiceRedesignTests.TravelAcrossStartShowsSixButMovesOnlyTwoCellsAndStopsForReward",
+            "Status": "Passed",
+            "Duration": 1.4380703,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.AccountPurchaseShowsPendingThenApprovedAndExplainsInsufficientOrFailedRequests",
+            "Status": "Passed",
+            "Duration": 0.1601319,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.ConsecutiveNextLoadoutSelectionsAndBackNeverReplaceOrAbandonTheSavedMatch",
+            "Status": "Passed",
+            "Duration": 0.4227275,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.EncounterCompletionShowsAiProgressThenCommittedResultsAndAllowsSafeAbandon",
+            "Status": "Passed",
+            "Duration": 2.8306173,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.LegacySoloRecordHoldsGrowthWithReasonAndNeverDispatchesPurchase",
+            "Status": "Passed",
+            "Duration": 0.1152311,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.LongKoreanCardsScrollAndReceiveRealPointerAtThreeSizesAndSyntheticSafeArea",
+            "Status": "Passed",
+            "Duration": 0.2146821,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionUiImprovementTests.ThreeRealLapsExposeEveryGearAndClaimExactlyOnceAfterReadOnlyNavigation",
+            "Status": "Passed",
+            "Duration": 2.9681678,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.AuthoredV5HasFixedCubeTrayAndSixFaceNet",
+            "Status": "Passed",
+            "Duration": 0.0329289,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BlankExecuteAndCancellationRestoreCommittedStateWithoutAnotherCommand",
+            "Status": "Passed",
+            "Duration": 0.5031143,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BottomControlsAndAllTextFitBothSafeAreaRatios",
+            "Status": "Passed",
+            "Duration": 1.3247945,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.ExecuteHealthBarsNumbersAndProtectionFollowEachSavedStep",
+            "Status": "Passed",
+            "Duration": 2.6658571,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.HoldBudgetAndWriteFailureHaveVisibleFeedbackAndKeepExecutionAvailable",
+            "Status": "Passed",
+            "Duration": 1.1555922,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.PointerSelectionSupportsOneTwoAndThreeDiceAndKeepsHeldDieStill",
+            "Status": "Passed",
+            "Duration": 11.1417873,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.RewardCandidateEntryAndLegacyResumeUseTheirOwnDefinitions",
+            "Status": "Passed",
+            "Duration": 0.2628697,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.SixFaceModalIsReadOnlyAndBlocksTheBattleBehindIt",
+            "Status": "Passed",
+            "Duration": 1.3114022,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.V5DetailsExposeClassCalculationEquipmentEffectsAndEnemyTagsWithoutMutatingState",
+            "Status": "Passed",
+            "Duration": 4.8241792,
+            "Message": null,
+            "StackTrace": null
+          }
+        ]
+      }
+    },
+    {
+      "source": "artifacts/v5-ui-redesign-12/legacy-final.json",
+      "sourceSha256": "1a5492c1161499af26cd995db2fdc611ed04a552414d1e0dbb38de43d7f1e161",
+      "command": "command test_status",
+      "result": {
+        "status": "completed",
+        "duration": 24.02,
+        "summary": {
+          "total": 25,
+          "passed": 25,
+          "failed": 0,
+          "skipped": 0,
+          "inconclusive": 0
+        },
+        "results": [
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen",
+            "Status": "Passed",
+            "Duration": 0.5625317,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredCompetitionScreenHasFourDistinctPawnSlots",
+            "Status": "Passed",
+            "Duration": 0.0347051,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredElementDetailsProvideSixReadableStatRows",
+            "Status": "Passed",
+            "Duration": 0.0257487,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery",
+            "Status": "Passed",
+            "Duration": 0.1006678,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable",
+            "Status": "Passed",
+            "Duration": 0.076082,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth",
+            "Status": "Passed",
+            "Duration": 0.2415016,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementApplicationResumesEachLegacyVersionUntilExplicitRestart",
+            "Status": "Passed",
+            "Duration": 3.2503657,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling",
+            "Status": "Passed",
+            "Duration": 4.2867323,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch",
+            "Status": "Passed",
+            "Duration": 1.5004357,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition",
+            "Status": "Passed",
+            "Duration": 0.23879,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExistingSoloPendingIsRetainedWithoutImplicitSubmission",
+            "Status": "Passed",
+            "Duration": 0.0581593,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExitPreservesAdventureAndNewGameRequiresConfirmation",
+            "Status": "Passed",
+            "Duration": 0.1536948,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch",
+            "Status": "Passed",
+            "Duration": 0.1503872,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.InterruptedMovementReopensSavedStateWithoutRepeatingAi",
+            "Status": "Passed",
+            "Duration": 0.0793823,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart",
+            "Status": "Passed",
+            "Duration": 0.1359424,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable",
+            "Status": "Passed",
+            "Duration": 0.0847011,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition",
+            "Status": "Passed",
+            "Duration": 0.0673302,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.NewGameProfileFailureKeepsSavedAdventureAvailableToResume",
+            "Status": "Passed",
+            "Duration": 0.1086395,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable",
+            "Status": "Passed",
+            "Duration": 0.1459788,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PendingGrowthReopensAndRetriesOnlyItsOriginalRequest",
+            "Status": "Passed",
+            "Duration": 0.0990031,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PointerRoundShowsDiceSkillsAndAllFourParticipants",
+            "Status": "Passed",
+            "Duration": 8.0787483,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible",
+            "Status": "Passed",
+            "Duration": 0.113722,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart",
+            "Status": "Passed",
+            "Duration": 0.1931784,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels",
+            "Status": "Passed",
+            "Duration": 4.1010688,
+            "Message": null,
+            "StackTrace": null
+          },
+          {
+            "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry",
+            "Status": "Passed",
+            "Duration": 0.0991284,
+            "Message": null,
+            "StackTrace": null
+          }
+        ]
+      }
+    },
+    {
+      "source": "artifacts/v5-ui-redesign-12/ratio-approved-final.json",
+      "sourceSha256": "2ab66ed283a0f7dbcd748b14ae9ac7f703f0c333ea0ee8651bddb5782d4be9db",
+      "command": "command run_script",
+      "result": {
+        "diagnostics": [],
+        "compileMs": 1133,
+        "executeMs": 985,
+        "assemblyName": "PipelineRunScript_V5UiRedesignCapture_132affe5bb644b05ab2befb37817410a",
+        "success": true,
+        "result": {
+          "checks": [
+            "390x844 safe area, board text, 41 numeric cube frames",
+            "360x640 safe area, board text, 41 numeric cube frames"
+          ]
+        }
+      }
+    },
+    {
+      "source": "artifacts/v5-ui-redesign-12/authoring-initial.json",
+      "sourceSha256": "e3f512b936a5987b8a0e90743889904645165bbea3e65de98878a1de2730eb1f",
+      "command": "command run_script",
+      "result": {
+        "diagnostics": [],
+        "compileMs": 2312,
+        "executeMs": 272,
+        "assemblyName": "PipelineRunScript_V5UiRedesignCapture_13a8ce28ff044bf597c40e4943f94e95",
+        "success": true,
+        "result": {
+          "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+          "guid": "ae62a590a196a5944815a56b969507cf",
+          "cubes": 3
+        }
+      }
+    },
+    {
+      "source": "artifacts/v5-ui-redesign-12/capture-final.json",
+      "sourceSha256": "67f75d54376eb4674ebfbd83cfb5af85a2cea2b045b394bfb5d63e7027f2aa93",
+      "command": "command run_script",
+      "result": {
+        "diagnostics": [],
+        "compileMs": 233,
+        "executeMs": 3084,
+        "assemblyName": "PipelineRunScript_V5UiRedesignCapture_df55b75c13b047319628ac40507b587a",
+        "success": true,
+        "result": {
+          "count": 12,
+          "path": "Docs/UI/V5Redesign/manifest.json"
+        }
+      }
+    },
+    {
+      "source": "artifacts/v5-ui-redesign-12/editor-approved-final.json",
+      "sourceSha256": "111e22b0dff356ab5a6bbbd6379e0f7223c1bbe0826a4a23c05217780474c1bd",
+      "command": "command editor_status",
+      "result": {
+        "status": "ready",
+        "compiling": false,
+        "domainReloadInProgress": false,
+        "playMode": "stopped",
+        "lastHeartbeat": "2026-10-24T08:47:45.0318694Z",
+        "projectPath": "D:\\UnityProject\\Dice_Warrior",
+        "unityVersion": "6000.6.0f1"
+      }
+    }
+  ],
+  "ratioScreenshots": [
+    {
+      "file": "Validation/board-390x844.png",
+      "sha256": "74522d5fbab6933071c86ec46ddea71ee655bef512a3377b7b4108274bd5eb4c"
+    },
+    {
+      "file": "Validation/combat-390x844.png",
+      "sha256": "14064d6e5b0ec0ff840e91d2eb8a748926fe0e825af7f0b92637c12a08df614f"
+    },
+    {
+      "file": "Validation/board-360x640.png",
+      "sha256": "f17507440dc391792c4050bc0c16c17b931e98510d4ae6f7551fde634252a9bd"
+    },
+    {
+      "file": "Validation/combat-360x640.png",
+      "sha256": "31ec5269b77fa9c0a0b5b2ae41b113b4b82113af50ae02ce146336f29946846f"
+    }
+  ]
+}
