@@ -13,7 +13,7 @@ namespace DiceWarrior.SharedWorld
 
         public static V4StatBreakdown Preview(CompetitionDefinition d, Profile profile, string id)
         {
-            if (!CompetitionV4Content.IsEnabled(d)) return null;
+            if (!CompetitionV4Content.UsesAttributes(d)) return null;
             if (profile == null || profile.growth < 0 || profile.growth > 1000) throw new ArgumentException("Invalid preview profile");
             var p = new ParticipantState { id = "preview", adventurerId = id, v4 = new V4ParticipantState { accountHp = profile.growth * 5 } };
             p.equipment[0] = profile.startingWeapon;
@@ -22,7 +22,7 @@ namespace DiceWarrior.SharedWorld
 
         public static V4StatBreakdown Describe(CompetitionDefinition d, ParticipantState p)
         {
-            if (!CompetitionV4Content.IsEnabled(d)) return null;
+            if (!CompetitionV4Content.UsesAttributes(d)) return null;
             if (p?.v4 == null || p.level < 1 || p.level > 1000000) throw new ArgumentException("Missing v4 participant");
             var a = d.v4.adventurers.Single(x => x.id == p.adventurerId);
             var modifiers = Bindings(d, p, CompetitionV4Content.Tags(d, p));
@@ -57,7 +57,7 @@ namespace DiceWarrior.SharedWorld
 
         public static void RefreshStats(CompetitionDefinition d, ParticipantState p)
         {
-            if (!CompetitionV4Content.IsEnabled(d)) return;
+            if (!CompetitionV4Content.UsesAttributes(d)) return;
             int previousMax = p.maxHp;
             var stats = CompetitionAttributes.Describe(d, p);
             p.maxHp = stats.maxHp; p.hp = Math.Min(p.maxHp, checked(p.hp + Math.Max(0, p.maxHp - previousMax)));
@@ -66,7 +66,7 @@ namespace DiceWarrior.SharedWorld
 
         public static void ValidateParticipant(CompetitionState state, ParticipantState p)
         {
-            if (!CompetitionV4Content.IsEnabled(state.definition)) { if (p.v4 != null) throw new ArgumentException("Legacy state contains v4 fields"); return; }
+            if (!CompetitionV4Content.UsesAttributes(state.definition)) { if (p.v4 != null) throw new ArgumentException("Legacy state contains v4 fields"); return; }
             if (p.v4 == null || p.growth != null || state.startingProfile.growth > 1000 || p.v4.accountHp != state.startingProfile.growth * 5 ||
                 p.level > 1000000 || p.xp >= p.level * 8 || (!p.isHuman && p.adventurerId != (p.aiPolicyId == "war" ? "wanderer" : p.aiPolicyId == "wisdom" ? "scholar" : "vanguard")))
                 throw new ArgumentException("Invalid v4 participant growth");

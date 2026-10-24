@@ -11,7 +11,7 @@ namespace DiceWarrior.SharedWorld
         public CompetitionScreen screen;
         public SymbolLoopPlayback human;
         public bool MovementRolling { get; private set; }
-        public bool DiceRolling=>MovementRolling || human.DiceRolling;
+        public bool DiceRolling=>MovementRolling || human.DiceRolling || (screen.v5Area && screen.v5Area.DiceRolling);
         public int VisiblePosition { get; private set; }
         static Run View(CompetitionState state,ParticipantState participant)
         {
@@ -24,7 +24,9 @@ namespace DiceWarrior.SharedWorld
         public void Snap(CompetitionState state)
         {
             MovementRolling=false;
-            human.Snap(state==null?null:View(state,state.participants[0]),state!=null && screen.board.activeSelf);
+            bool v5=state!=null && CompetitionV5Content.IsEnabled(state.definition);
+            human.Snap(state==null || (v5 && state.participants[0].phase==CompetitionPhase.Combat)?null:View(state,state.participants[0]),state!=null && screen.board.activeSelf);
+            if(v5 && screen.v5Area)screen.v5Area.Snap(state);
             for(int i=0;i<screen.pawns.Length;i++)
             {
                 screen.pawns[i].gameObject.SetActive(state!=null);
@@ -39,7 +41,12 @@ namespace DiceWarrior.SharedWorld
         public IEnumerator Play(string kind,CompetitionState before,CompetitionState after)
         {
             var p=before.participants[0];var next=after.participants[0];
-            if(kind=="travel")
+            if(CompetitionV5Content.IsEnabled(before.definition) && kind.StartsWith("combat_",StringComparison.Ordinal))
+            {
+                if(!screen.v5Area)throw new InvalidOperationException("V5 전투 영역의 authored 참조가 없습니다.");
+                yield return screen.v5Area.Play(kind,before,after);
+            }
+            else if(kind=="travel")
             {
                 human.numericDie.Configure(next.lastTravel);MovementRolling=true;human.cue.text="숫자 주사위를 굴리는 중…";
                 yield return Animate(.85f,t=>human.numericDie.Pose(t,0));MovementRolling=false;

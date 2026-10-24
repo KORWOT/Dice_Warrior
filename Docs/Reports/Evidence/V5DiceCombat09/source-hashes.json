@@ -1,0 +1,234 @@
+[
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-5.json",
+    "sha256": "84AC9F68AF364D9BBDEA1302F03BB0BD549DDBEBD24914018FAA93903A232602"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Content/shared-world-preview-5.json.meta",
+    "sha256": "4B3E2FEB3F7B742F76994AD0EA100BE89A0E17F70ADBFEE4152A02F0AC9C231A"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs",
+    "sha256": "9CADC0CD2D43E3BE1F24460D40BDCC0470CA8376D0A7402A4B2C83BEDB1068A3"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAi.cs.meta",
+    "sha256": "0C0EFC1B8160B8FAF16F4C734F688BABD54CCFBCAB613B366CEFDB2D2346A391"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAttributes.cs",
+    "sha256": "ECF0BF67356CEE0B9CA7D6A8AB0A913EBEE564AFC4F8AA4AAF29CB2FB6C9649C"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionAttributes.cs.meta",
+    "sha256": "151298681AD6244B40F01932595C29A9A4BC72A9D6B37235D81E8597C031CA71"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs",
+    "sha256": "AD7CCA6721A2A462629979B0E72CC841A36B86902ADA38AD264703FC88B856CF"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionCommandRules.cs.meta",
+    "sha256": "F3962DF5738431482960D2C585EAC2B272E47B913D2B40CB3C0E9E94BB02855C"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs",
+    "sha256": "FBA322020770F39BB3244134FBBB36755DFFE6D774330EF86E4067F8D7D238BC"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionContent.cs.meta",
+    "sha256": "1F654C49685D262B51F76E3C3EB62747E74E11567D42E0B158912F27EC43AE39"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionData.cs",
+    "sha256": "EE9B681A12D13DC7D3CE280E3A5481D4222E9FEA603897315D5342B0748893EA"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionData.cs.meta",
+    "sha256": "3224417EDAEBB370B22A920E1983364C646DFC6C4D79E8F74A0AFD4FFCE4F4B0"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionElements.cs",
+    "sha256": "B5EC1E43E26CC24FD766843A0379F9A27E3C4700CC9E5B37A59BFF4681D9C31C"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionElements.cs.meta",
+    "sha256": "880EF10F7AFD3E870F00EE9CB9A6313387379F288EEAE2D91C0E73AD6BC9639A"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs",
+    "sha256": "3D55A0FFD22ACFAFF70CD5F7104B38E783060B2842C869314B08C5AF6229C386"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionEncounterRules.cs.meta",
+    "sha256": "710903975D55025233051BFCE0311EC7619A5B120DB385E4EE9AC54621EAEF40"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs",
+    "sha256": "E59576802C2BA292A5BA4EBE074F19020BDDA97F69F6FD40EAF5C949720AF288"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionRules.cs.meta",
+    "sha256": "7F1D78F4134B302B2850BCBCD48DABF55D4A23E9C3A2EDAFCA49F38109C8FA24"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Content.cs",
+    "sha256": "27D7C61F84ED1322D823E504449FAFF3DFBBB64BFBDAC9EC9A824AE357B5EC13"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV4Content.cs.meta",
+    "sha256": "EFDB8C8E5B290BFB604219FB3D4CF2F07330CD2000EF5A1965EE40879F77BDCC"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Content.cs",
+    "sha256": "50878CFBAE964516E1E021C12DCD146778277BEEF3D4F7F83F5B6A824229B12A"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Content.cs.meta",
+    "sha256": "553A9E512501ACEE7929E83ABD071370DD97B3A72D0DE26C9E2B1EF875E004CC"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Data.cs",
+    "sha256": "29357222048849DB12314E0C865C010A3460472895406B3F12E644AE3B3DFB90"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Data.cs.meta",
+    "sha256": "26AEF8CF2ABA8C2FF94AE800F1CF619D0C199BBE5446604697019CE7F082A131"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Dice.cs",
+    "sha256": "1839B97C4C46D8A6081FBF637FD025DAE11FFB07085F2022EB3503413396CCE6"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Dice.cs.meta",
+    "sha256": "9CA304690F136B75FB8793DD9E8BD069C798621C0A691323AC50C6BAC9AFE4D5"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Skills.cs",
+    "sha256": "F79828F941C7E83E9FF8BB05116502C473291DC8925C7200E89DC02B9CD6A243"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Skills.cs.meta",
+    "sha256": "89C9F10E3969B3E59A4657D72EE0C4E1028F2BA9F7DCD98D1A2B5CF86A04794F"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs",
+    "sha256": "EBBBEDDC402110DB974046EA7A42D2F46801D1200574D3AA307423F27A5DF227"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Editor/CompetitionAuthoring.cs.meta",
+    "sha256": "0C3EF6DFB196A2E12BACA378EF362A77BD9D84F033150DFB72D3D3EF2DAF4474"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab",
+    "sha256": "D8556769AF0461BA28FAB23E3406F43E7902F158DF0C2DFEC122E432FA830308"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab.meta",
+    "sha256": "70DB33D1425CAE1C122A4A5EBDA1DA5F52F37E7266659849501F84C9C8508F04"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs",
+    "sha256": "A72D6AAC15D2430D8A1C0A1E4095A6DE62635BB3F96631A67E6E84AB64B02021"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionApp.cs.meta",
+    "sha256": "855AA31CABF32DB5DEDB2B093C23324E1B24C51742A42B659315F2BDC0EF4605"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionElementView.cs",
+    "sha256": "5C24FA25871F3C37C7E5EFA6478CB264D9F717E8DD58A6FC4B53FFC30E4EF994"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionElementView.cs.meta",
+    "sha256": "6A754A58BB726365C2C3A4B5BD5F394C5394F7B77ABEA8075EDFE86AC8EA35FA"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionPlayback.cs",
+    "sha256": "C500A38CD425B360CB912F532EFDE31309CF040FB5C37F62FD2FB93566FD491C"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionPlayback.cs.meta",
+    "sha256": "AA674040E18BE5B059E9275F797D28ADBC9E712B58ABE6821AD46652D9D3D67C"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs",
+    "sha256": "F7D4330951ADE6B90BD0793D9C4FEDEE608E63B7B08248A877E2034A529E6F13"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/CompetitionScreen.cs.meta",
+    "sha256": "8E5F61512E01B765F6EAB8B1020BB938CCAC43E204B6632AEA6B3AAB5BE97E4A"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs",
+    "sha256": "9EE278445432BE38B96B0DA347A310A0370FD57BDE058B027123E087CD5636A3"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs.meta",
+    "sha256": "50E51E6E10612DCE776F71902DF84919DBB5FF3A62E30D184B4402B6124CA860"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/V5DiceNetView.cs",
+    "sha256": "BC532AD6BE9A68037EA2B6E98DF2AC529F203027DB9B690693CD4BC00916786C"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/V5DiceNetView.cs.meta",
+    "sha256": "CC8A662766A7CD3286A82E7532B444DDE1AB5A56E7012855850F80B8E266A8C2"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/V5FaceGraphic.cs",
+    "sha256": "5752C82920E8F0BECDEB8FD8B7439DF71089A5431B12C19ED42768AD63119E17"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Presentation/V5FaceGraphic.cs.meta",
+    "sha256": "5EB64964A8F60E40BCC91F264A1F7DAC8D6C4D9E6C919F1152C03C21759D78BD"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs",
+    "sha256": "6A313E43C28E6BA1F17F34351E2F1294CA49023D8D8743789EA4D50E32B6ECE5"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Runtime/CompetitionStore.cs.meta",
+    "sha256": "4938687133C51812F27A70C8B040FDD458FFDB938F50B79DD6D1FA02A82A1F48"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5StoreTests.cs",
+    "sha256": "8F3DCFF93A019B24DDCFDE242020162D3B9F26586BA56E5F1356579B26C79396"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5StoreTests.cs.meta",
+    "sha256": "440F914B048103AB59CAFC3677500133A3361A206D68ED85BEC7593932F3B212"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5Tests.cs",
+    "sha256": "EA19ED3C79919695E850112FAD2C187F522D55768914210D475760EF1ED3B8BC"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5Tests.cs.meta",
+    "sha256": "1477C86A1B2387B8A86345D9505321F594905183B2246C1EB306839AFDE0C1EA"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionV5FlowTests.cs",
+    "sha256": "90BF152245C4DB352B8504DD17399929EBCEB085DA17E4703456CBE7F9AC561D"
+  },
+  {
+    "path": "Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionV5FlowTests.cs.meta",
+    "sha256": "027D6AD2C709B62643D973E3F2CD6C19FAA70B835B583BF17B6E99EE45D757DD"
+  },
+  {
+    "path": "Assets/_Project/Scenes/Title.unity",
+    "sha256": "CA2A560B7CCD51443F4426470453D6D5BE1A194755E49643A8FC907ED30E7E02"
+  },
+  {
+    "path": "Assets/_Project/Scenes/Title.unity.meta",
+    "sha256": "273B86A758ACDA5BD8CD8CF5D15F2BAEACB0986B4C25462CFEAA6170DB1E86E7"
+  },
+  {
+    "path": "Server/DiceWarrior.Competition.Tests/DiceWarrior.Competition.Tests.csproj",
+    "sha256": "C5ED92538C23B8D0A475693AD0001AA605E7EEF32A2459A636E34642921F477F"
+  },
+  {
+    "path": "Server/Tools/V5DiceCombatValidation.cs",
+    "sha256": "7180C3EAC4A6C15EAE43B8D0F99768436D2B4225928DE45485A759CB2B6E6085"
+  }
+]

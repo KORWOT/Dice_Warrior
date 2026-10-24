@@ -1,5 +1,8 @@
 # CompetitionPlayback.cs
 
+- V5_DICE_COMBAT_09: before.definition이 v5이고 명령이 combat_ 접두사이면 V5DiceAreaView.Play로만 재생한다. v5 전투를 기존 SymbolLoopPlayback의 Symbol/SkillId 해석에 넣지 않는다. legacy combat과 이동/AI 말 이동은 기존 경로를 유지한다.
+- V5 Snap/DiceRolling: 현재 v5 전투는 기존 전투 무대를 null로 Snap하고 Area의 확정 상태/위치/회전/배율/활성 얼굴을 복원한다. DiceRolling은 새 Area의 최초 굴림/리롤 표시 상태도 포함한다. 실행 연출은 굴림 상태를 켜지 않는다.
+
 - 역할: 공동 세계의 인간 이동과 AI 위치 결과를 재생하고 기존 기호/스킬 전투 연출을 재사용한다.
 - 핵심 동작: 숫자 결과 면 회전→인간의 칸별 이동→확정 AI 위치를 짧게 표시한다. 전투는 ParticipantState를 표시 전용 Run으로 변환해 SymbolLoopPlayback.Play에 전달한다. v2의 기본기+부분 조합도 확정된 SkillLog 순서 그대로 전달하며 본 어댑터에서 조합을 다시 판정하지 않는다. 기존 Run은 새 경기 저장/판정에 사용되지 않는다.
 - 입출력: Play(kind,before,after), Snap(state) → authored 네 말/주사위/전투 무대/문구. MovementRolling/DiceRolling/VisiblePosition은 검증용 표시 상태다.

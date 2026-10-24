@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "duration": 7.89,
+  "summary": {
+    "total": 9,
+    "passed": 6,
+    "failed": 3,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.AuthoredV5HasIndependentAreasAndSixFaceNet",
+      "Status": "Passed",
+      "Duration": 0.071478,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BlankExecuteAndCancellationRestoreCommittedStateWithoutAnotherCommand",
+      "Status": "Passed",
+      "Duration": 0.4473487,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BottomControlsAndAllTextFitBothSafeAreaRatios",
+      "Status": "Passed",
+      "Duration": 0.9462876,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.ExecuteHealthBarsNumbersAndProtectionFollowEachSavedStep",
+      "Status": "Passed",
+      "Duration": 1.6920721,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.HoldBudgetAndWriteFailureHaveVisibleFeedbackAndKeepExecutionAvailable",
+      "Status": "Passed",
+      "Duration": 0.8422031,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.PointerSelectionSupportsOneTwoAndThreeDiceAndKeepsHeldDieStill",
+      "Status": "Failed",
+      "Duration": 2.8720057,
+      "Message": "  Top raycast must reach Action 0\r\n  Expected: <Action 0 (UnityEngine.UI.Button)>\r\n  But was:  null\r\n",
+      "StackTrace": "at DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.Tap (FateDice.CommonButtonView button) [0x00037] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:246\r\nat DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.Click (System.String prefix) [0x0000d] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:237\r\nat DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests+<Combat>d__29.MoveNext () [0x00042] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:226\r\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@7a3849e09bd0\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:52\r\n"
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.RewardCandidateEntryAndLegacyResumeUseTheirOwnDefinitions",
+      "Status": "Failed",
+      "Duration": 0.0783548,
+      "Message": "  Top raycast must reach Close information\r\n  Expected: <Close information (UnityEngine.UI.Button)>\r\n  But was:  null\r\n",
+      "StackTrace": "at DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.Tap (FateDice.CommonButtonView button) [0x00037] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:246\r\nat DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests+<RewardCandidateEntryAndLegacyResumeUseTheirOwnDefinitions>d__24.MoveNext () [0x000c8] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:152\r\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@7a3849e09bd0\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:52\r\n"
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.SixFaceModalIsReadOnlyAndBlocksTheBattleBehindIt",
+      "Status": "Passed",
+      "Duration": 0.8795275,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.V5DetailsExposeClassCalculationEquipmentEffectsAndEnemyTagsWithoutMutatingState",
+      "Status": "Failed",
+      "Duration": 0.0378536,
+      "Message": "  Top raycast must reach Action 6\r\n  Expected: <Action 6 (UnityEngine.UI.Button)>\r\n  But was:  null\r\n",
+      "StackTrace": "at DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.Tap (FateDice.CommonButtonView button) [0x00037] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:246\r\nat DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.ReadDetailPages (System.String tab) [0x00096] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:206\r\nat DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests+<V5DetailsExposeClassCalculationEquipmentEffectsAndEnemyTagsWithoutMutatingState>d__25.MoveNext () [0x0005d] in D:\\UnityProject\\Dice_Warrior\\Assets\\_Project\\Features\\SharedWorld\\Tests\\PlayMode\\CompetitionV5FlowTests.cs:163\r\nat UnityEngine.TestTools.TestEnumerator+<Execute>d__8.MoveNext () [0x0003a] in .\\Library\\PackageCache\\com.unity.test-framework@7a3849e09bd0\\UnityEngine.TestRunner\\NUnitExtensions\\Attributes\\TestEnumerator.cs:52\r\n"
+    }
+  ]
+}

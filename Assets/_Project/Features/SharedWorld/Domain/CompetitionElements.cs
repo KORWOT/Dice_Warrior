@@ -27,11 +27,25 @@ namespace DiceWarrior.SharedWorld
         {
             var skill = d.combat.basics.Concat(d.combat.combos).Single(s => s.id == skillId);
             var definition = d.v4.skills.Single(s => s.skillId == skillId);
+            return SkillPreview(d, p, skill, definition, enemy);
+        }
+
+        public static V4SkillResult SkillPreview(CompetitionDefinition d, ParticipantState p, V5SkillDefinition skill, V4EnemyDefinition enemy = null)
+        {
+            if (!CompetitionV5Content.IsEnabled(d)) throw new ArgumentException("Expected v5 skill definition");
+            return SkillPreview(d, p, ToSkill(skill), skill.effect, enemy);
+        }
+
+        static Skill ToSkill(V5SkillDefinition skill) => new Skill { id = skill.id, name = skill.name, damage = skill.damage, block = skill.block };
+
+        static V4SkillResult SkillPreview(CompetitionDefinition d, ParticipantState p, Skill skill, V4SkillDefinition definition, V4EnemyDefinition enemy)
+        {
+            string skillId = skill.id;
             DamageType type = definition.damageType;
             var conversions = p.equipment.Where(id => id != null).Select(id => d.v4.gear.Single(g => g.gearId == id)).Where(g => g.conversion.HasValue).ToArray();
             if (conversions.Length > 1) throw new ArgumentException("Conflicting primary damage conversions");
             if (skill.damage > 0 && conversions.Length == 1) type = conversions[0].conversion.Value;
-            var tags = CompetitionV4Content.Tags(d, p, skillId, type, enemy);
+            var tags = CompetitionV4Content.Tags(d, p, skillId, type, enemy, definition);
             var modifiers = CompetitionAttributes.Bindings(d, p, tags).Where(m => m.target == "damage" || m.target == "block").ToArray();
             var stats = CompetitionAttributes.Describe(d, p).attributes;
             int affinity = Affinity(d, enemy, type);
@@ -45,6 +59,18 @@ namespace DiceWarrior.SharedWorld
 
         public static TurnLog Resolve(CompetitionDefinition d, ParticipantState participant, Symbol[] faces)
         {
+            var plan = SymbolCombat.Plan(d.combat, faces, true);
+            return ResolvePlanned(d, participant, plan, plan.Select(s => d.v4.skills.Single(v => v.skillId == s.id)).ToArray(), faces);
+        }
+
+        public static TurnLog ResolvePlanned(CompetitionDefinition d, ParticipantState participant, V5SkillDefinition[] plan)
+        {
+            if (!CompetitionV5Content.IsEnabled(d) || plan == null || plan.Length > 3) throw new ArgumentException("Invalid v5 skill plan");
+            return ResolvePlanned(d, participant, plan.Select(ToSkill).ToArray(), plan.Select(s => s.effect).ToArray(), Array.Empty<Symbol>());
+        }
+
+        static TurnLog ResolvePlanned(CompetitionDefinition d, ParticipantState participant, Skill[] plan, V4SkillDefinition[] definitions, Symbol[] faces)
+        {
             if (participant.enemy == null || participant.enemy.hp <= 0 || participant.hp <= 0 || participant.v4 == null)
                 throw new InvalidOperationException("Combat ended or missing v4 state");
             var p = LoopJson.Copy(participant);
@@ -54,20 +80,21 @@ namespace DiceWarrior.SharedWorld
             var log = new TurnLog { number = ++p.turn, faces = (Symbol[])faces.Clone(), intent = enemy.intent,
                 playerHpBefore = p.hp, enemyHpBefore = enemy.hp };
             int block = 0;
-            foreach (var skill in SymbolCombat.Plan(d.combat, faces, true))
+            for (int index = 0; index < plan.Length; ++index)
             {
+                var skill = plan[index];
                 var step = new SkillLog { skillId = skill.id, name = skill.name, status = "applied", enemyHpBefore = enemy.hp, enemyShieldBefore = enemy.shield };
                 log.skills.Add(step);
                 V4SkillResult result;
                 if (enemy.hp <= 0)
                 {
                     step.status = "enemy-defeated";
-                    var def = d.v4.skills.Single(s => s.skillId == skill.id);
+                    var def = definitions[index];
                     result = new V4SkillResult { skillId = skill.id, originalType = def.damageType, damageType = def.damageType, status = step.status };
                 }
                 else
                 {
-                    result = SkillPreview(d, p, skill.id, profile);
+                    result = SkillPreview(d, p, skill, definitions[index], profile);
                     int absorbed = Math.Min(enemy.shield, result.damageBeforeShield);
                     enemy.shield -= absorbed;
                     step.damage = Math.Min(enemy.hp, result.damageBeforeShield - absorbed); enemy.hp -= step.damage;

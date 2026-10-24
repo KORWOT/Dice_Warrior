@@ -12,3 +12,7 @@
 ## TAG_STAT_ELEMENT_05 직접 변경/관계
 
 nullable definition.v4와 participant.v4만 추가해 v1~v3 JSON/hash를 그대로 보존한다. 신규 자료는 CompetitionV4Data로 분리한다. 실제 상태는 정의·레벨·장비에서6스탯을 파생하고 typed 결과/enemyId/계정HP를 보존한다.
+
+## V5_DICE_COMBAT_09 직접 변경/관계
+
+definition.v5와 participant.v5를 각각 V5Definition/V5ParticipantState의 nullable 필드로 추가한다. null 직렬화를 생략하여 기존 v1~v4 JSON/hash를 보존한다. 신규 FaceId·선택·로그 DTO는 CompetitionV5Data에만 정의하며 기존 Symbol/Rules/Skill/TurnLog 필드는 변경하지 않는다.

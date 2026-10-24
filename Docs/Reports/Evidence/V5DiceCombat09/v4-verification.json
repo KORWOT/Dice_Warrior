@@ -1,0 +1,133 @@
+{
+  "Requested": 9,
+  "Completed": 9,
+  "VerificationSeconds": 2.2315948,
+  "Results": [
+    {
+      "seed": 1210450978,
+      "hero": "wanderer",
+      "Status": "PASS",
+      "StateHash": "879C6E0533E96C824B7C9D324481255771D1C8FB2019234245970B42BCC738B7",
+      "RngHash": "270A6D6DC1A44CFDB49ABA9DAC446E65141793F2EC4C5B0C6D5D2F0C7D7F03F6",
+      "CommandHash": "CD78CCA953B52B59F61849616A27AB124A96EA0696004A0A279C1A8F1BD57E92",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 1210450978,
+      "hero": "scholar",
+      "Status": "PASS",
+      "StateHash": "AEEED2F01AB6C67FDC124AA67F5F76B934C62F7AEB6BEC3E2862633BED7D7E93",
+      "RngHash": "A7448722D57448693030E98538D5919FAF1853FC72F214B3A4E6386D0106522C",
+      "CommandHash": "DB3345D16CAE1E29248182073701E47E1FC14DD10DDB87AA5072558F3C3C5D86",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 1210450978,
+      "hero": "vanguard",
+      "Status": "PASS",
+      "StateHash": "FF54F3CBDBB087452D96E579F25C81D937FD54FDD53892015481FB23D292F9E3",
+      "RngHash": "270A6D6DC1A44CFDB49ABA9DAC446E65141793F2EC4C5B0C6D5D2F0C7D7F03F6",
+      "CommandHash": "866D50E9E1DC2BC42FFE439173356FED9F5E257FCA8115C8FD331A8E54F04DC7",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 2632060435,
+      "hero": "wanderer",
+      "Status": "PASS",
+      "StateHash": "5E2700BBFE66D67D20EBB842E94323A39D9895ED81D23E2ED1BE0C8E64ED9F19",
+      "RngHash": "C953230A8823040CF000024EEB2198C35C96A3B87469DD2B1C42DEE0DDB981FC",
+      "CommandHash": "E23E95B37475E8B284C8CDDB32D77913CC4F9096F0EC066013818AE0F6555B67",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 2632060435,
+      "hero": "scholar",
+      "Status": "PASS",
+      "StateHash": "6EDDE44F48A314B233F1AE9665DD8FB29B65C67CC3ED4B7834189A2ADE3A0A38",
+      "RngHash": "6FC40074DB7C3409C7A9C21BF77AFD2ACE08066D6601EA319311A83973F8BC0F",
+      "CommandHash": "624C183435E1E2EE985A92E2F0E55FE056C3DACB5D619E9AEC9233DBC92999F5",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 2632060435,
+      "hero": "vanguard",
+      "Status": "PASS",
+      "StateHash": "9DD90FD112DE989773F5D429A6B66669E00F3C60AB62042532F43FC8BDBFAF9A",
+      "RngHash": "C953230A8823040CF000024EEB2198C35C96A3B87469DD2B1C42DEE0DDB981FC",
+      "CommandHash": "D20C41BA85B35E527829B17D0D33326A90B9F864651E97D915BACAB7EA8F9780",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 2032144611,
+      "hero": "wanderer",
+      "Status": "PASS",
+      "StateHash": "8B434674D4107A1CD1F3714656F2E32A226B9A658EBD2B2C051CAB19F626373A",
+      "RngHash": "E6A2E7BD539A544CBC12FEECD6AE714F89666D85DD21A5B99071727CA4B94520",
+      "CommandHash": "0D1B6E10C0D09D8D92849E0009D58C9662869E244AFF58A0D4578BCC3A3D8B93",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 2032144611,
+      "hero": "scholar",
+      "Status": "PASS",
+      "StateHash": "3887A706712F53268A03B3C7579A31D74D99ECD6110FE775D98A247ED6DF71C4",
+      "RngHash": "E6A2E7BD539A544CBC12FEECD6AE714F89666D85DD21A5B99071727CA4B94520",
+      "CommandHash": "C83416D851E071FB073E141D86BDCFB4DBE17981B88D7A702FB93539357B1B37",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    },
+    {
+      "seed": 2032144611,
+      "hero": "vanguard",
+      "Status": "PASS",
+      "StateHash": "7D0503779850EC3C9861722A262CD998E3E0C30DD1F9A3AF9BF6890C8981DBC1",
+      "RngHash": "E6A2E7BD539A544CBC12FEECD6AE714F89666D85DD21A5B99071727CA4B94520",
+      "CommandHash": "E3F30E8269F3BF83CFAE74FEA030D9CD124E834F9BCEE29D5EFBF489EA5FC5A9",
+      "Checks": [
+        "repeat-metrics",
+        "command-replay",
+        "restore-1-5-10-20",
+        "observer-off"
+      ]
+    }
+  ]
+}

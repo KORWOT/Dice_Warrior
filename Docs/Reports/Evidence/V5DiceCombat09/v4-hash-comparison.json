@@ -1,0 +1,65 @@
+[
+  {
+    "seed": 1210450978,
+    "hero": "wanderer",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 1210450978,
+    "hero": "scholar",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 1210450978,
+    "hero": "vanguard",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 2632060435,
+    "hero": "wanderer",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 2632060435,
+    "hero": "scholar",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 2632060435,
+    "hero": "vanguard",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 2032144611,
+    "hero": "wanderer",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 2032144611,
+    "hero": "scholar",
+    "state": true,
+    "rng": true,
+    "commands": true
+  },
+  {
+    "seed": 2032144611,
+    "hero": "vanguard",
+    "state": true,
+    "rng": true,
+    "commands": true
+  }
+]

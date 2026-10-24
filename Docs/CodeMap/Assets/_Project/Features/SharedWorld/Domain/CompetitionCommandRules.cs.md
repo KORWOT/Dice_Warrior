@@ -14,3 +14,7 @@
 v4 이동 시 enemyId/typed로그만 함께 비운다. 최종 장비 보상 후 파생스탯을 갱신하고 final 프로필을 연결한다. 세션 후보→검증→원자저장과 명시Restart 흐름은 그대로다.
 
 B0/C7 직접 사용처: 신규 MatchRunner는 Target/Apply를 유일한 경기 진행 경계로 사용하고 HumanDecisionPolicies/OutcomeCollector는 LegalChoices를 읽는다. 기존 명령/AI 코드 수정이나 서버 정산 연결은 없다.
+
+## V5_DICE_COMBAT_09 직접 변경/관계
+
+v5만 combat_roll/hold/release/reroll/execute를 V5Dice.Apply로 전달하고 구형 combat을 거절한다. Target은 기존 접두사를 유지하며 v5 선택 단계/턴/굴림/보관횟수만 추가한다. Apply는 v5 actionNumber2048에서 변이 전에 거절한다. 이동은 v5 선택/확정 로그와 공통 typed 상태를 비우며 최종 적은 같은 v4 프로필을 사용한다. 홀드별 진행 공간은 V5Dice가 예약하고 Session/Store의 실제 명령 수와 함께 검증된다.

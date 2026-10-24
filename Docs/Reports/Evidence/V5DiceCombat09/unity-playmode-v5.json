@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "duration": 18.37,
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "inconclusive": 0
+  },
+  "results": [
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.AuthoredV5HasIndependentAreasAndSixFaceNet",
+      "Status": "Passed",
+      "Duration": 0.1142236,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BlankExecuteAndCancellationRestoreCommittedStateWithoutAnotherCommand",
+      "Status": "Passed",
+      "Duration": 0.5653511,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.BottomControlsAndAllTextFitBothSafeAreaRatios",
+      "Status": "Passed",
+      "Duration": 0.9966039,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.ExecuteHealthBarsNumbersAndProtectionFollowEachSavedStep",
+      "Status": "Passed",
+      "Duration": 1.7839826,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.HoldBudgetAndWriteFailureHaveVisibleFeedbackAndKeepExecutionAvailable",
+      "Status": "Passed",
+      "Duration": 0.8648207,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.PointerSelectionSupportsOneTwoAndThreeDiceAndKeepsHeldDieStill",
+      "Status": "Passed",
+      "Duration": 9.4389986,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.RewardCandidateEntryAndLegacyResumeUseTheirOwnDefinitions",
+      "Status": "Passed",
+      "Duration": 0.2027728,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.SixFaceModalIsReadOnlyAndBlocksTheBattleBehindIt",
+      "Status": "Passed",
+      "Duration": 1.0037925,
+      "Message": null,
+      "StackTrace": null
+    },
+    {
+      "FullName": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests.V5DetailsExposeClassCalculationEquipmentEffectsAndEnemyTagsWithoutMutatingState",
+      "Status": "Passed",
+      "Duration": 3.3723223,
+      "Message": null,
+      "StackTrace": null
+    }
+  ]
+}

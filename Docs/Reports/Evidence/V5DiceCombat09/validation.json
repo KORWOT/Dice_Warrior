@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-24",
+  "status": "COMPLETE",
+  "dotnet": {
+    "passed": 184,
+    "failed": 0,
+    "skipped": 0,
+    "legacy": 119,
+    "v5": 65,
+    "evidence": "competition.trx"
+  },
+  "v4": {
+    "matches": 9,
+    "equalStateHashes": 9,
+    "equalRngHashes": 9,
+    "equalCommandHashes": 9
+  },
+  "externalCompiler": {
+    "sdk": "10.0.302",
+    "scope": "Historical initial and repair-1 source compilation; final Unity compile and runtime evidence supersede it",
+    "assemblies": [
+      {
+        "assembly": "SharedWorld.Runtime",
+        "result": "PASS",
+        "dllSha256": "772FA67B79EE280E8ADF4E567B4BF65407B45231A02277DB1BB55EA4FECE51F3",
+        "logSha256": "F2A48AC3F73EA0BDFFB645CF932CBB981DCBCEBAF7341D25936B005C5A5998F0"
+      },
+      {
+        "assembly": "SharedWorld.Editor",
+        "result": "PASS",
+        "dllSha256": "B3ADDD2E75AE6F14FC3A65C2E3011E035EA630562C4946A97CE087DF200100BC",
+        "logSha256": "B44FE5C95C308D41BA3329D5EF46B31C8AB673BE500B3C32922AEB7E862B8432"
+      },
+      {
+        "assembly": "SharedWorld.PlayMode.Tests",
+        "result": "PASS",
+        "dllSha256": "6CD6B202E8F9300626B4881941D8906E4063D376243B5F0D797A105683771D2A",
+        "logSha256": "52332FC86CCE7441A1040CC1C5FBB2F071FC1B957E924298A64EA2C3AF56E7F5"
+      }
+    ],
+    "warningCodes": [
+      "CS1701",
+      "CS2023"
+    ],
+    "unityImportOrRuntimeProven": false
+  },
+  "unity": {
+    "version": "6000.6.0f1",
+    "connection": "ready",
+    "authoring": "PASS",
+    "compile": "PASS",
+    "editMode": {
+      "total": 184,
+      "passed": 184,
+      "failed": 0,
+      "skipped": 0
+    },
+    "playModeV5": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "playModeLegacy": {
+      "total": 25,
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0
+    },
+    "newAssetMeta": 11,
+    "missingNewAssetMeta": 0,
+    "titleRulesVersion": "shared-world-preview-5",
+    "visualRatios": [
+      "720x1280",
+      "720x1600"
+    ],
+    "opaqueV5Modal": "PASS",
+    "androidDevice": "NOT_RUN",
+    "httpExplicitTests": "NOT_RUN_UNCHANGED_HTTP_OUT_OF_SCOPE"
+  },
+  "review": {
+    "initialBundles": 1,
+    "repairRoundsUsed": 4,
+    "repairRoundLimit": 4,
+    "additionalApproval": "one round for F05 API mismatch; one round for V5-NET-VIS-01 opaque modal",
+    "closedFindings": [
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "F05",
+      "V5-NET-VIS-01"
+    ],
+    "remainingRequiredFindings": []
+  },
+  "realUserSaveOrMockDbUsed": false,
+  "gitCommitOrPush": false,
+  "legacyTestChannel": {
+    "initialZeroRuns": "NOT_PASS",
+    "diagnosis": "Test Framework PlayerTestAssemblyProvider clears a non-null static assembly list on Play entry; LoadAssemblies then returns without loading when domain reload is disabled",
+    "resolution": "EditorUtility.RequestScriptReload, then existing fixture first: 25/25 PASS",
+    "packageOrSettingsChanged": false
+  },
+  "patchCheck": {
+    "rawExitCode": 2,
+    "unitySerializedEmptyFieldWarnings": 90,
+    "unexpectedWhitespaceWarnings": 0,
+    "note": "Editor-authored prefab empty m_Name/m_Text/iconId fields only; serialization was not manually rewritten"
+  }
+}

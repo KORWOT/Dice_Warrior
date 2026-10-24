@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SharedWorld.Runtime::DiceWarrior.SharedWorld.CompetitionApp
   ui: {fileID: 1598146368}
-  content: {fileID: 4900000, guid: 27a08a5aceba2804a8fd9321bf65aada, type: 3}
+  content: {fileID: 4900000, guid: b88aa8862d3e2274d9c247bd4dfe97ba, type: 3}
   combatConfig: {fileID: 11400000, guid: bed5ecc1c3993c742a78b4968c80d7e1, type: 2}
 --- !u!4 &1211099433
 Transform:

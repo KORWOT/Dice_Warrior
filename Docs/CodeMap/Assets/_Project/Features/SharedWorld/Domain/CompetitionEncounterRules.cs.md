@@ -12,3 +12,7 @@
 ## TAG_STAT_ELEMENT_05 직접 변경/관계
 
 v4 BeginCombat 뒤 선택사건ID를 전용 enemyId로 동결하고 typed 로그를 초기화한다. 장비교체는6스탯/파생HP를 갱신한다. 명시된5보물에 현재LUK/5 정수 보너스를 XP보다 먼저 한 번 지급한다. 사건 후보/고정 비용/난수 추첨은 바꾸지 않는다.
+
+## V5_DICE_COMBAT_09 직접 변경/관계
+
+BeginCombat은 v5 참가자의 확정 로그를 비우고 V5Dice.Begin으로 AwaitRoll을 만든다. 기존 Combat의 후반부만 FinishCombat으로 추출하여 v5 실행과 사망/처치/보상/제한턴/다음 적 intent 순서를 공유한다. v1~v4 최대64턴과 원래 굴림 소비는 유지하고 v5는 정의의20턴을 사용한다. 적 프로필·보물 행운 보상은 UsesAttributes를 통해 v5에도 동일하게 적용된다.

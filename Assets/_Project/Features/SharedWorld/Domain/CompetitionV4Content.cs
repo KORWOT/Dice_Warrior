@@ -11,11 +11,12 @@ namespace DiceWarrior.SharedWorld
         static string StatTarget(AttributeStat stat) => stat.ToString().ToLowerInvariant();
         public const string Version = "shared-world-preview-4";
         public static bool IsEnabled(CompetitionDefinition d) => d?.rulesVersion == Version;
+        public static bool UsesAttributes(CompetitionDefinition d) => IsEnabled(d) || CompetitionV5Content.IsEnabled(d);
         public static string ElementTag(DamageType type) => "element." + type.ToString().ToLowerInvariant();
 
         public static void Validate(CompetitionDefinition d)
         {
-            if (!IsEnabled(d)) { if (d.v4 != null) throw new ArgumentException("Legacy content contains v4 fields"); return; }
+            if (!UsesAttributes(d)) { if (d.v4 != null) throw new ArgumentException("Legacy content contains v4 fields"); return; }
             var v = d.v4;
             if (v == null || v.baseHp != 30 || v.hpPerConstitution != 6 || v.attributePerLevel != 1 || v.weaknessBasisPoints != 2000 ||
                 v.resistanceBasisPoints != 1500 || d.growth != null || d.adventurers.Any(a => a.stats != null)) throw new ArgumentException("Invalid v4 contract");
@@ -109,7 +110,17 @@ namespace DiceWarrior.SharedWorld
         }
         static bool TargetIs(AttributeStat stat, string target) => StatTarget(stat) == target;
 
-        public static TagSnapshot Tags(CompetitionDefinition d, ParticipantState p, string skillId = null, DamageType? type = null, V4EnemyDefinition enemy = null)
+        internal static void ValidateEffect(CompetitionDefinition d, V5SkillDefinition skill)
+        {
+            var effect = skill.effect;
+            if (effect == null || effect.skillId != skill.id || !Enum.IsDefined(typeof(DamageType), effect.damageType))
+                throw new ArgumentException("Invalid v5 skill effect");
+            Coefficients(effect.damageScaling, skill.damage > 0); Coefficients(effect.blockScaling, skill.block > 0);
+            RequireTags(d.v4, effect.identityTags, TagOwnerKind.Skill); RequireTags(d.v4, effect.grantedActionTags, TagOwnerKind.Action);
+        }
+
+        public static TagSnapshot Tags(CompetitionDefinition d, ParticipantState p, string skillId = null, DamageType? type = null, V4EnemyDefinition enemy = null,
+            V4SkillDefinition skillDefinition = null)
         {
             var grants = new List<TagGrant>(); var v = d.v4;
             Add(v.adventurers.Single(a => a.id == p.adventurerId).identityTags, TagOwnerKind.Source, "self", "adventurer", p.adventurerId);
@@ -122,7 +133,7 @@ namespace DiceWarrior.SharedWorld
                 }
             if (skillId != null)
             {
-                var s = v.skills.Single(x => x.skillId == skillId);
+                var s = skillDefinition ?? v.skills.Single(x => x.skillId == skillId);
                 Add(s.identityTags, TagOwnerKind.Skill, "skill", "skill", skillId);
                 Add(s.grantedActionTags, TagOwnerKind.Action, "action", "skill", skillId);
             }

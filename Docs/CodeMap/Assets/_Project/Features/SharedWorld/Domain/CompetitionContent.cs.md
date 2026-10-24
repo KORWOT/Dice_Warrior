@@ -14,3 +14,7 @@ B0/C7 직접 사용처: 신규 BalanceScenario.LoadDefinition은 v4 원본 바�
 ## TAG_STAT_ELEMENT_05 직접 변경/관계
 
 v4 버전을 별도로 허용하고 v4 3모험가 및 CompetitionV4Content.Validate를 호출한다. 기존 ValidateGrowth와 v3 산식은 그대로이며 새 버전을 RGB 검사로 보내지 않는다.
+
+## V5_DICE_COMBAT_09 직접 변경/관계
+
+UsesAttributes를 통해 v5를 허용하고 같은3모험가 및 v4 수치 메타데이터를 검증한 뒤 CompetitionV5Content.Validate를 호출한다. 신규 shared-world-preview-5.json만 추가하며 기존 정의를 승격하거나 v1~v4 JSON·골든·공용 값 자체를 수정하지 않는다.

@@ -1,0 +1,105 @@
+{
+  "diagnostics": [],
+  "compileMs": 213,
+  "executeMs": 194,
+  "assemblyName": "PipelineRunScript_V5DiceCombatValidation_5edc880fff2c41db9e23b6154d654cc4",
+  "success": true,
+  "result": {
+    "suites": [
+      {
+        "name": "Dice_Warrior",
+        "state": "Runnable",
+        "count": 39
+      },
+      {
+        "name": "D:/UnityProject/Dice_Warrior/Library/ScriptAssemblies/SharedWorld.PlayMode.Tests.dll",
+        "state": "Runnable",
+        "count": 39
+      },
+      {
+        "name": "DiceWarrior",
+        "state": "Runnable",
+        "count": 39
+      },
+      {
+        "name": "DiceWarrior.SharedWorld",
+        "state": "Runnable",
+        "count": 39
+      },
+      {
+        "name": "DiceWarrior.SharedWorld.Tests",
+        "state": "Runnable",
+        "count": 39
+      },
+      {
+        "name": "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests",
+        "state": "Runnable",
+        "count": 25
+      },
+      {
+        "name": "DiceWarrior.SharedWorld.Tests.CompetitionHttpFlowTests",
+        "state": "Explicit",
+        "count": 5
+      },
+      {
+        "name": "DiceWarrior.SharedWorld.Tests.CompetitionV5FlowTests",
+        "state": "Runnable",
+        "count": 9
+      }
+    ],
+    "selected": [
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredCompetitionScreenHasFourDistinctPawnSlots",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredElementDetailsProvideSixReadableStatRows",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementApplicationResumesEachLegacyVersionUntilExplicitRestart",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExistingSoloPendingIsRetainedWithoutImplicitSubmission",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExitPreservesAdventureAndNewGameRequiresConfirmation",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.InterruptedMovementReopensSavedStateWithoutRepeatingAi",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.NewGameProfileFailureKeepsSavedAdventureAvailableToResume",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PendingGrowthReopensAndRetriesOnlyItsOriginalRequest",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PointerRoundShowsDiceSkillsAndAllFourParticipants",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry"
+    ],
+    "selectedWithExplicit": [
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AdventurerSelectionChangesOnlyNextMatchAndPersistsAcrossReopen",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredCompetitionScreenHasFourDistinctPawnSlots",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.AuthoredElementDetailsProvideSixReadableStatRows",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAccountAndCompetitionRemainUnchangedAndExposeRecovery",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.CorruptAdventurerPreferenceKeepsCurrentAdventureAvailable",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.DirectAccountEntryPreservesOwnershipAndFreezesLatestGrowth",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementApplicationResumesEachLegacyVersionUntilExplicitRestart",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementCombatDisplaysFrozenAffinityAndResumesWithoutRerolling",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementDetailPagesFitAllSkillsTagsAndSourcesWithoutChangingMatch",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ElementSelectionShowsSixStatsAndKeepsJsonCombatDefinition",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExistingSoloPendingIsRetainedWithoutImplicitSubmission",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ExitPreservesAdventureAndNewGameRequiresConfirmation",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.GrownAdventurerShowsThreeDiceAllSkillsAndEquipmentWithoutChangingMatch",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.InterruptedMovementReopensSavedStateWithoutRepeatingAi",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LegacyMatchKeepsOldRulesUntilConfirmedGrowthRestart",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.LocalAccountWriteFailureKeepsApprovedGrowthPendingAndRetryable",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.MainLobbyOffersLoadoutAndReturnsToTheSameCompetition",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.NewGameProfileFailureKeepsSavedAdventureAvailableToResume",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.OldActiveAdventureIsPreservedWhileNewLoadoutAndMatchRemainAvailable",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PendingGrowthReopensAndRetriesOnlyItsOriginalRequest",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PointerRoundShowsDiceSkillsAndAllFourParticipants",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.PortraitAndInsetSafeAreaKeepPlacesParticipantsAndActionsVisible",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.RgbSavedMatchKeepsItsDetailsUntilConfirmedElementRestart",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.ThreeDicePlayBasicThenPairComboWithDistinctSkillLabels",
+      "DiceWarrior.SharedWorld.Tests.CompetitionFlowTests.UnavailableServerKeepsLobbyAndAllowsExplicitProfileRetry"
+    ]
+  }
+}

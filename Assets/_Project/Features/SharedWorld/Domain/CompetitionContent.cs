@@ -21,7 +21,7 @@ namespace DiceWarrior.SharedWorld
 
         public static void Validate(CompetitionDefinition d)
         {
-            if (d == null || (d.rulesVersion != RulesVersion && d.rulesVersion != LegacyVersion && d.rulesVersion != StatsVersion && !CompetitionV4Content.IsEnabled(d)) || d.aiVersion != AiVersion || d.scoreVersion != ScoreVersion ||
+            if (d == null || (d.rulesVersion != RulesVersion && d.rulesVersion != LegacyVersion && d.rulesVersion != StatsVersion && !CompetitionV4Content.UsesAttributes(d)) || d.aiVersion != AiVersion || d.scoreVersion != ScoreVersion ||
                 d.maxRounds < 1 || d.maxRounds > 30 || d.maxCombatTurns < 1 || d.maxCombatTurns > 64 || d.lapsToFinish != 3 || d.finalHonor < 0)
                 throw new ArgumentException("Unsupported competition definition");
             LoopRules.ValidateRules(d.combat);
@@ -51,7 +51,7 @@ namespace DiceWarrior.SharedWorld
                         throw new ArgumentException("Every place and stage needs choices including a free legal option");
                 }
             }
-            if (d.adventurers == null || d.adventurers.Length < (CompetitionStats.IsEnabled(d) || CompetitionV4Content.IsEnabled(d) ? 3 : 4) || d.adventurers.Any(a => a == null || string.IsNullOrWhiteSpace(a.id) || string.IsNullOrWhiteSpace(a.name)) ||
+            if (d.adventurers == null || d.adventurers.Length < (CompetitionStats.IsEnabled(d) || CompetitionV4Content.UsesAttributes(d) ? 3 : 4) || d.adventurers.Any(a => a == null || string.IsNullOrWhiteSpace(a.id) || string.IsNullOrWhiteSpace(a.name)) ||
                 d.adventurers.Select(a => a.id).Distinct().Count() != d.adventurers.Length || !d.adventurers.Any(a => a.id == "wanderer"))
                 throw new ArgumentException("Invalid adventurers");
             if (d.policies == null || d.policies.Length != 3 || d.policies.Any(p => p == null || string.IsNullOrWhiteSpace(p.id) ||
@@ -61,6 +61,7 @@ namespace DiceWarrior.SharedWorld
                 throw new ArgumentException("Invalid AI policies");
             ValidateGrowth(d);
             CompetitionV4Content.Validate(d);
+            CompetitionV5Content.Validate(d);
         }
 
         static void ValidateGrowth(CompetitionDefinition d)

@@ -35,6 +35,7 @@ namespace DiceWarrior.SharedWorld
         Coroutine presentation;
         int width,height,detailPage;
         Rect safeArea;
+        V5DiceNetData diceDetails;
 
         void Start()
         {
@@ -63,7 +64,7 @@ namespace DiceWarrior.SharedWorld
         {
             if(!content || !combatConfig) throw new InvalidOperationException("공동 세계 콘텐츠 연결을 확인해 주세요.");
             var result=CompetitionContent.Load(content.text);
-            if(!CompetitionV4Content.IsEnabled(result)) result.combat=combatConfig.CreateRules();
+            if(!CompetitionV4Content.IsEnabled(result) && !CompetitionV5Content.IsEnabled(result)) result.combat=combatConfig.CreateRules();
             return result;
         }
         public void OpenHttp(HttpBackendSettings settings,string persistentRoot)
@@ -91,12 +92,12 @@ namespace DiceWarrior.SharedWorld
         public void Open(string path,CompetitionDefinition rules,Profile startingProfile,Func<uint> seeds=null)
         {
             if(Account!=null) throw new InvalidOperationException("연결된 계정을 로컬 프로필로 대체할 수 없습니다.");
-            active=opened=true;lobby=true;menu="";definition=LoopJson.Copy(rules);profile=LoopJson.Copy(startingProfile);seedSource=seeds;
+            active=opened=true;lobby=true;menu="";diceDetails=null;definition=LoopJson.Copy(rules);profile=LoopJson.Copy(startingProfile);seedSource=seeds;
             store=new CompetitionStore(path);OpenAdventurers(path);LoadCompetition();Render();
         }
         void OpenAdventurers(string path)
         {
-            adventurerStore=CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition)?new AdventurerSelectionStore(Path.Combine(Path.GetDirectoryName(path),"adventurer-selection.json"),definition.adventurers.Select(a=>a.id).ToArray()):null;
+            adventurerStore=CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition) || CompetitionV5Content.IsEnabled(definition)?new AdventurerSelectionStore(Path.Combine(Path.GetDirectoryName(path),"adventurer-selection.json"),definition.adventurers.Select(a=>a.id).ToArray()):null;
             ReadAdventurer();
         }
         void ReadAdventurer()
@@ -204,11 +205,30 @@ namespace DiceWarrior.SharedWorld
         void CancelPresentation()
         {
             if(presentation!=null) { StopCoroutine(presentation);presentation=null;busy=false;if(ui) ui.SetInputLocked(false); }
+            if(ui && ui.ActiveScreen is CompetitionScreen screen) screen.playback.Snap(Session?.Snapshot.state);
         }
         public void Close()
         {
             if(busy && presentation==null) return;
-            CancelPresentation();lobby=true;menu="";confirmAbandon=false;confirmNewGame=false;Render();
+            CancelPresentation();lobby=true;menu="";diceDetails=null;confirmAbandon=false;confirmNewGame=false;Render();
+        }
+        void ShowDiceDetails(bool candidates=false,bool information=false)
+        {
+            if(busy)return;var state=lobby?null:Session?.Snapshot.state;var d=state?.definition ?? definition;
+            if(!CompetitionV5Content.IsEnabled(d))return;
+            var p=state?.participants[0];string hero=p?.adventurerId ?? adventurerSelection?.adventurerId ?? "wanderer";
+            diceDetails=new V5DiceNetData {definition=d,adventurerId=hero,title=information?"전투 정보 · 확정 상태 조회":candidates?"보상 후보 · 주사위 6면":"주사위 · 실제 6면",
+                dice=information?Array.Empty<DieSlot>():candidates?d.combat.dice.Select((die,i)=>new DieSlot {instanceId="candidate-"+i,definitionId=die.id}).ToArray():p?.dice.ToArray() ?? new[]{new DieSlot {instanceId="lobby-die",definitionId=profile.startingDie}},
+                results=p?.v5?.selection?.results ?? Array.Empty<V5FaceResult>(),close=()=>{diceDetails=null;Render();}};
+            if(information && p!=null)
+            {
+                diceDetails.information=CompetitionElementView.CombatSummary(d,p)+"\n\n발동 예상\n"+V5DiceAreaView.PreviewText(CompetitionV5Skills.Preview(d,p))+
+                    "\n\n이번 선택: 보관/해제 "+(p.v5.selection?.holdChanges ?? 0)+"/12 · 전투 행동 최대 20턴\n보관·해제 제한 이후에도 리롤·실행은 가능합니다."+
+                    (p.lastTurn==null?"":"\n\n마지막 실행\n"+string.Join("\n",p.lastTurn.skills.Select(s=>s.name+" · "+(s.status=="enemy-defeated"?"처치 후 생략":$"HP 피해 {s.enemyHpBefore-s.enemyHpAfter} / 흡수 {s.enemyShieldBefore-s.enemyShieldAfter} / 보호 {s.block}")))+$"\n적 행동: {(p.lastTurn.retaliation?"있음":"없음")} · 받은 HP 피해 {p.lastTurn.retaliationDamage}");
+                diceDetails.leave=Close;diceDetails.abandon=()=>{diceDetails=null;confirmAbandon=true;Render();};
+                diceDetails.stats=()=>{diceDetails=null;menu="stats";detailPage=0;Render();};
+            }
+            Render();
         }
         void Reload() { LoadCompetition();lobby=true;Render(); }
         void InspectBackup()
@@ -244,7 +264,7 @@ namespace DiceWarrior.SharedWorld
             var data=new CompetitionScreenData {title="DICE WARRIOR · 공동 모험",subtitle="인간 1 + AI 3 · 경기 성장 보상은 검증 전까지 0",state=lobby?null:state,
                 status="같은 세계 · 각자의 모험",detail="",history="",onClose=CancelPresentation};
             var labels=new List<string>();var actions=new List<Action>();var enabled=new List<bool>();
-            bool modern=CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition);
+            bool modern=CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition) || CompetitionV5Content.IsEnabled(definition);
             void Add(string label,Action action,bool available=true) { labels.Add(label);actions.Add(()=>{if(!busy) action();});enabled.Add(available && !busy); }
             void Cmd(string label,string kind,string arg="",bool available=true)=>Add(label,()=>Dispatch(kind,arg),available);
             if(confirmNewGame)
@@ -296,7 +316,7 @@ namespace DiceWarrior.SharedWorld
             }
             else if(menu=="adventurers" && modern)
             {
-                if(CompetitionV4Content.IsEnabled(definition)) CompetitionElementView.Roster(data,definition,profile,adventurerSelection?.adventurerId);
+                if(CompetitionV4Content.IsEnabled(definition) || CompetitionV5Content.IsEnabled(definition)) CompetitionElementView.Roster(data,definition,profile,adventurerSelection?.adventurerId);
                 else CompetitionGrowthView.Roster(data,definition,profile,adventurerSelection?.adventurerId);
                 data.status="다음 모험 준비";data.detail="진행 중인 모험가와 경기 기록은 그대로 유지됩니다.";
                 foreach(var adventurer in definition.adventurers)
@@ -312,7 +332,7 @@ namespace DiceWarrior.SharedWorld
                 var shown=lobby?null:state?.participants[0];
                 var shownDefinition=shown==null?definition:state.definition;
                 data.status=shown==null?"다음 모험 준비":"현재 경기의 동결된 성장";
-                if(CompetitionV4Content.IsEnabled(shownDefinition))
+                if(CompetitionV4Content.IsEnabled(shownDefinition) || CompetitionV5Content.IsEnabled(shownDefinition))
                 {
                     int pages=CompetitionElementView.Details(data,shownDefinition,profile,shown,adventurerSelection?.adventurerId ?? "wanderer",menu,detailPage);
                     detailPage=Math.Max(0,Math.Min(detailPage,pages-1));
@@ -364,6 +384,7 @@ namespace DiceWarrior.SharedWorld
                         Add("계정 관리",()=>{menu="account";Render();});
                     }
                     Add("경기 백업 확인",InspectBackup);
+                    if(CompetitionV5Content.IsEnabled(definition)) Add("출전 주사위 6면",()=>ShowDiceDetails());
                 }
             }
             else
@@ -384,10 +405,14 @@ namespace DiceWarrior.SharedWorld
                     {
                         case CompetitionPhase.Map:Cmd("이동 주사위 굴리기","travel");break;
                         case CompetitionPhase.Combat:
+                            if(CompetitionV5Content.IsEnabled(state.definition))
+                            {
+                                data.v5Combat=true;data.v5Command=Dispatch;data.v5DiceInfo=()=>ShowDiceDetails();data.v5CombatInfo=()=>ShowDiceDetails(information:true);data.v5Notice=notice;break;
+                            }
                             data.detail=$"{p.enemy.name} · HP {p.enemy.hp}/{p.enemy.maxHp}\n"+(CompetitionV4Content.IsEnabled(state.definition)?CompetitionElementView.CombatSummary(state.definition,p):p.message);
                             Cmd("기호 주사위 굴리기","combat");break;
                         case CompetitionPhase.Encounter:
-                            data.detail=CompetitionV4Content.IsEnabled(state.definition)?string.Join("\n",p.offer.choices.Select(c=>CompetitionElementView.EncounterSummary(state.definition,c))):
+                            data.detail=CompetitionV4Content.IsEnabled(state.definition) || CompetitionV5Content.IsEnabled(state.definition)?string.Join("\n",p.offer.choices.Select(c=>CompetitionElementView.EncounterSummary(state.definition,c))):
                                 state.definition.world.places[p.position].name+" · 사건 선택\n"+string.Join(" / ",p.offer.choices.Select(c=>c.description));
                             foreach(var choice in p.offer.choices)
                             {
@@ -399,16 +424,21 @@ namespace DiceWarrior.SharedWorld
                             data.detail=$"{p.completedLaps+1}바퀴 완주 · 개인 보상\n골드 +{state.definition.combat.lapGold} / XP +{state.definition.combat.lapXp} / HP +{state.definition.combat.lapHeal}";
                             if(p.completedLaps<state.definition.lapsToFinish-1) foreach(var die in state.definition.combat.dice) Cmd(die.name+" 주사위 추가","lap",die.id);
                             else foreach(var gear in state.definition.combat.gear) Cmd(gear.name,"lap",gear.id);
+                            if(CompetitionV5Content.IsEnabled(state.definition))Add("주사위 상세 보기",()=>ShowDiceDetails(p.completedLaps<state.definition.lapsToFinish-1));
                             break;
                         case CompetitionPhase.Complete:Cmd("다음 AI 라운드","advance");break;
                     }
-                    Add("모험 종료",Close);if(!p.finished && !p.eliminated) Add("모험 포기",()=>{confirmAbandon=true;Render();});
-                    Add("능력치 상세",()=>{menu="stats";detailPage=0;Render();});
+                    if(!data.v5Combat)
+                    {
+                        Add("모험 종료",Close);if(!p.finished && !p.eliminated) Add("모험 포기",()=>{confirmAbandon=true;Render();});
+                        Add("능력치 상세",()=>{menu="stats";detailPage=0;Render();});
+                    }
                 }
             }
             if(!string.IsNullOrEmpty(notice)) data.history=notice;
             if(lobby && adventurerError!="") data.history=adventurerError;
             data.labels=labels.ToArray();data.actions=actions.ToArray();data.enabled=enabled.ToArray();
+            data.v5NetData=diceDetails;
             if(data.labels.Length>8) throw new InvalidOperationException("화면 선택지는 8개를 초과할 수 없습니다.");
             ui.Show<CompetitionScreen>(data);
         }

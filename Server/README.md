@@ -4,6 +4,8 @@ Unity와 별도 프로세스의 ASP.NET Core HTTP + SQLite 서버다. M0~M3 권�
 
 공동 세계 C0~C5는 새 `SharedWorld.Core` 순수 도메인을 `DiceWarrior.Competition.Shared`에서 동일 소스로 컴파일하고 `DiceWarrior.Competition.Tests`에서 검사한다. 기존 호스트의 v1 콘텐츠/HTTP/SQLite/계측은 변경하지 않는다. 새 경기는 기존 프로필 조회만 사용하며 시작/AI/순위는 별도 로컬 시험 기록이고 지급액은0이다. 새 권한 시작 티켓·AI 재현·정산 API는 C6 후속으로, 현재 API에 새 경기 로그를 제출하지 않는다. [공동 세계 PLAN](../Docs/Plans/SHARED_WORLD_COMPETITION_01_PLAN.md)을 따른다.
 
+v5 굴림·보관·리롤·실행도 같은 순수 Core와 별도 로컬 체크포인트를 사용한다. 테스트 프로젝트는 신규 v5 정본을 추가로 링크하며 HTTP 계약은 변경하지 않는다. [V5 PLAN](../Docs/Plans/V5_DICE_COMBAT_09_PLAN.md) / [검증 REPORT](../Docs/Reports/V5_DICE_COMBAT_09_REPORT.md)를 따른다. 아래 B0/C7 실행은 여전히 동결 v4 정본 전용이며 v5 밸런스 시뮬레이터가 아니다.
+
 ## 실행
 
 ### B0/C7 오프라인 밸런스 실험

@@ -32,9 +32,10 @@ namespace DiceWarrior.SharedWorld
             if (c.kind == EncounterKind.Heal && p.hp == p.maxHp) score = 0;
             if (c.kind == EncounterKind.Gear && p.equipment.Contains(c.rewardId)) score = 0;
             if (c.kind == EncounterKind.Die && p.dice[0].definitionId == c.rewardId) score = 0;
-            if (CompetitionV4Content.IsEnabled(state.definition))
+            if (CompetitionV4Content.UsesAttributes(state.definition))
             {
-                if (c.kind == EncounterKind.Combat) score += CompetitionElements.MatchupScore(state.definition, p, c.id);
+                if (c.kind == EncounterKind.Combat) score += CompetitionV5Content.IsEnabled(state.definition) ?
+                    CompetitionV5Skills.MatchupScore(state.definition, p, c.id) : CompetitionElements.MatchupScore(state.definition, p, c.id);
                 if (state.definition.v4.treasureEncounterIds.Contains(c.id)) score += Math.Min(2, CompetitionAttributes.Describe(state.definition, p).attributes.luck / 5);
             }
             return score;
@@ -47,12 +48,20 @@ namespace DiceWarrior.SharedWorld
             CompetitionCommandRules.ApplyParticipant(state, p, "travel", "");
             bool ended = false;
             // A legal board action is travel + one choice/lap + at most maxCombatTurns rolls.
-            for (int actions = 0; actions < state.definition.maxCombatTurns + 3 && !ended; ++actions)
+            int actionLimit = CompetitionV5Content.IsEnabled(state.definition) ? state.definition.maxCombatTurns * 6 + 3 : state.definition.maxCombatTurns + 3;
+            for (int actions = 0; actions < actionLimit && !ended; ++actions)
             {
                 switch (p.phase)
                 {
                     case CompetitionPhase.Encounter: ended = CompetitionCommandRules.ApplyParticipant(state, p, "choose", Choose(state, p)); break;
-                    case CompetitionPhase.Combat: ended = CompetitionCommandRules.ApplyParticipant(state, p, "combat", ""); break;
+                    case CompetitionPhase.Combat:
+                        if (CompetitionV5Content.IsEnabled(state.definition))
+                        {
+                            string command = CompetitionV5Dice.AiCommand(p, out string argument);
+                            ended = CompetitionCommandRules.ApplyParticipant(state, p, command, argument);
+                        }
+                        else ended = CompetitionCommandRules.ApplyParticipant(state, p, "combat", "");
+                        break;
                     case CompetitionPhase.LapReward: ended = CompetitionCommandRules.ApplyParticipant(state, p, "lap", p.completedLaps < 2 ? state.startingProfile.startingDie : "aegis"); break;
                     default: ended = true; break;
                 }

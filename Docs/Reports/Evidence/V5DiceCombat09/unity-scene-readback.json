@@ -1,0 +1,12 @@
+{
+  "output": null,
+  "diagnostics": [],
+  "success": true,
+  "result": {
+    "areaFaces": 3,
+    "netFaces": 6,
+    "renderers": 9,
+    "version": "shared-world-preview-5",
+    "dirty": false
+  }
+}

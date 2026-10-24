@@ -19,6 +19,7 @@ namespace DiceWarrior.SharedWorld
         public AiPolicyDefinition[] policies;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public CompetitionGrowthDefinition growth;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public CompetitionV4Definition v4;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public V5Definition v5;
     }
     [Serializable] public sealed class WorldDefinition
     {
@@ -107,6 +108,7 @@ namespace DiceWarrior.SharedWorld
         public string message;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public ParticipantGrowthState growth;
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public V4ParticipantState v4;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public V5ParticipantState v5;
     }
     [Serializable] public sealed class ParticipantSummary
     {

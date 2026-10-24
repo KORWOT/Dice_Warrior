@@ -1,5 +1,9 @@
 # CompetitionScreen.cs
 
+- V5_DICE_COMBAT_09: CompetitionScreenData의 v5Combat/v5Command/v5DiceInfo/v5CombatInfo/v5Notice 및 v5NetData를 추가했다. authored v5Area/v5Net 필드가 필요한 상태에서 없으면 명시 오류다.
+- V5 표시 수명: v5 전투에만 기존 content 전체를 숨기고 독립 Area를 바인딩한다. 상세/로비/구형 경기는 기존 content를 다시 표시한다. Net은 형제 중 마지막 authored 모달이며 배경 raycast로 뒤 입력을 차단한다. 원래 보드/버튼 8개/성장 필드는 보존한다.
+- 바인딩 순서: 기존 Playback.Snap 후 Area.Bind로 실패 notice와 콜백을 최종 적용한다. Unbind는 기존 버튼과 새 두 뷰의 콜백을 해제한다. 런타임 UI 생성은 없다.
+
 - 역할: authored 12개 장소/4개 말/참가자 행/사건 선택지/AI 요약을 표시한다.
 - GROWTH_04: growthMode가 있으면 보드/전투/주사위/연출 cue를 숨기고 작성된 Growth details 패널을 표시한다. adventurers는 카드3개, stats는 RGB3행+출처, skills/legacy는 긴 텍스트 영역을 바인딩한다. 필수 패널 누락은 조용히 우회하지 않고 오류다. 다음 Bind에서 원래 화면을 복구한다.
 - TAG_STAT_ELEMENT_05: attributes 모드는 별도 authored attributeRows/attributeValues[6]/attributeSources[6]/attributeBody를 사용한다. v3 RGB3행은 그대로 유지하고 다른 상세 모드로 전환할 때6행을 숨긴다. element-text는 페이지가 분리된 기존 긴 텍스트 영역이다.6행 필수 연결 누락은 명시 오류이며 런타임 자산 생성으로 우회하지 않는다.

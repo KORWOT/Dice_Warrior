@@ -6,7 +6,7 @@ using DiceWarrior.SymbolLoop;
 
 namespace DiceWarrior.SharedWorld
 {
-    // Read-only v4 views. Preview participants are detached display inputs, never saved or rolled.
+    // Read-only typed views. Preview participants are detached display inputs, never saved or rolled.
     public static class CompetitionElementView
     {
         static readonly AttributeStat[] Stats=(AttributeStat[])Enum.GetValues(typeof(AttributeStat));
@@ -43,7 +43,14 @@ namespace DiceWarrior.SharedWorld
             }
             data.growthMode="element-text";
             var pages=new List<string>();string title;
-            if(section=="skills") { title="주사위 · 기술의 타입과 계수";SkillPages(pages,definition,shown); }
+            if(CompetitionV5Content.IsEnabled(definition))
+            {
+                if(section=="skills") {title="주사위 · V5 기술의 계산 근거";V5SkillPages(pages,definition,shown);}
+                else if(section=="elements") {title="속성 · 현재 적과 피해 저항";V5ElementPages(pages,definition,shown);}
+                else if(section=="tags") {title="태그 · 소유 대상과 출처";V5TagPages(pages,definition,shown);}
+                else {title="효과 출처 · 장비와 적용 조건";V5ModifierPages(pages,definition,shown,value);}
+            }
+            else if(section=="skills") { title="주사위 · 기술의 타입과 계수";SkillPages(pages,definition,shown); }
             else if(section=="elements") { title="속성 · 약점과 저항";pages.Add(ElementText(definition,shown)); }
             else if(section=="tags") { title="태그 · 소유 대상과 출처";TagPages(pages,definition,shown); }
             else { title="효과 출처 · 적용 조건";ModifierPages(pages,definition,shown,value); }
@@ -65,6 +72,98 @@ namespace DiceWarrior.SharedWorld
                 foreach(var face in dice[index].faces.Distinct()) {faces[index]=face;Visit(index+1);}
             }
             Visit(0);return definition.combat.basics.Concat(definition.combat.combos).Where(s=>ids.Contains(s.id)).ToArray();
+        }
+        static V5SkillDefinition[] PossibleV5(CompetitionDefinition d,ParticipantState p)
+        {
+            var faces=p.dice.Select(die=>CompetitionV5Content.Faces(d,p.adventurerId,die.definitionId)).ToArray();
+            var results=p.dice.Select((die,i)=>new V5FaceResult {dieInstanceId=die.instanceId,slotIndex=i}).ToArray();var ids=new HashSet<string>(StringComparer.Ordinal);
+            void Visit(int slot)
+            {
+                if(slot==results.Length){foreach(var skill in CompetitionV5Skills.Plan(d,p,results))ids.Add(skill.id);return;}
+                for(int i=0;i<6;i++){results[slot].faceIndex=i;results[slot].faceId=faces[slot][i].id;Visit(slot+1);}
+            }
+            Visit(0);return d.v5.skills.Where(s=>ids.Contains(s.id)).ToArray();
+        }
+        static void V5SkillPages(List<string> pages,CompetitionDefinition d,ParticipantState p)
+        {
+            var stats=CompetitionAttributes.Describe(d,p).attributes;
+            pages.Add("보유 주사위 · 각 6면의 실제 순서\n"+string.Join("\n",p.dice.Select((die,i)=>$"{i+1}. "+d.combat.dice.Single(x=>x.id==die.definitionId).name+"\n"+
+                string.Join(" / ",CompetitionV5Content.Faces(d,p.adventurerId,die.definitionId).Select(f=>f.name))))+
+                "\n\n다음 페이지: 가능한 공용·전용 기술의 단독 예상\n현재 선택의 연속 예상은 전투 정보에서 확인합니다.\n꽝은 기술에 기여하지 않으며 모두 꽝이어도 적은 행동합니다.");
+            foreach(var skill in PossibleV5(d,p))
+            {
+                var result=CompetitionElements.SkillPreview(d,p,skill,CompetitionElements.Enemy(d,p));
+                var used=Stats.Where(s=>skill.effect.damageScaling.Get(s)>0 || skill.effect.blockScaling.Get(s)>0);
+                var lines=new List<string>{skill.name+" · "+CompetitionElements.TypeName(result.damageType),
+                    string.Join(" + ",skill.faceIds.Select(id=>CompetitionV5Content.Face(d,id).name)),
+                    "단독 예상 · 다른 기술 적용 전 · "+(p.enemy==null?"중립 대상":"현재 적 상성"),
+                    "현재 능력치: "+string.Join(" / ",used.Select(s=>CompetitionAttributes.Label(s)+" "+stats.Get(s))),""};
+                if(skill.damage>0)lines.Add($"피해 기본 {skill.damage} + {CompetitionElements.ScalingText(skill.effect.damageScaling)}");
+                if(skill.block>0)lines.Add($"보호 기본 {skill.block} + {CompetitionElements.ScalingText(skill.effect.blockScaling)}");
+                lines.Add(ConversionText(result)+AffinityText(result.affinityBasisPoints));
+                lines.Add($"보호막 전 피해 {result.damageBeforeShield} / 생성 보호 {result.block}");
+                lines.Add("계산: (기본 + 능력치 계수 + 고정 보정)\n× (1 + 비율 보정) × 최종 배율 × 상성\n중간 반올림 없음 · 최종 반올림 1회");
+                lines.Add("보정의 수치·장비·출처는 ‘효과 출처’에서 확인");pages.Add(string.Join("\n",lines));
+            }
+        }
+        static void V5ElementPages(List<string> pages,CompetitionDefinition d,ParticipantState p)
+        {
+            var enemy=CompetitionElements.Enemy(d,p);
+            var lines=new List<string>{enemy==null?"현재 전투 상대 없음":p.enemy.name};
+            if(enemy!=null)
+            {
+                lines.Add($"HP {p.enemy.hp}/{p.enemy.maxHp} · 보호 {p.enemy.shield}");
+                lines.Add($"기준 공격 {p.enemy.attack} · 의도 "+(p.enemy.intent==Intent.Defend?"방어":p.enemy.intent==Intent.Heavy?"강공격":"공격"));
+                lines.Add(EnemyText(d,enemy));lines.Add("\n적 태그 · 전투 대상");
+                foreach(string id in enemy.identityTags)lines.Add(d.v4.tags.Single(t=>t.id==id).name+" · "+id);
+            }
+            lines.Add("\n태그는 분류이며 수치 효과와 별개입니다.");pages.Add(string.Join("\n",lines));
+            lines=new List<string>{"내 피해 저항"};foreach(DamageType type in Enum.GetValues(typeof(DamageType)))lines.Add(CompetitionElements.TypeName(type)+"  "+Percent(CompetitionElements.Resistance(d,p,type)));
+            lines.Add("\n면은 기술 조합, 피해 타입은 상성을 결정합니다.\n치명타 0% · 회피 0%");
+            if(p.v4.lastTurn!=null)
+            {
+                lines.Add("\n마지막 전투 · 저장된 결과");
+                foreach(var result in p.v4.lastTurn.skills)lines.Add(d.v5.skills.Single(s=>s.id==result.skillId).name+" · "+CompetitionElements.TypeName(result.damageType)+
+                    (result.status=="applied"?$" · HP 피해 {result.damageApplied}":" · 처치 후 생략"));
+            }
+            pages.Add(string.Join("\n",lines));
+        }
+        static void V5TagPages(List<string> pages,CompetitionDefinition d,ParticipantState p)
+        {
+            foreach(var skill in PossibleV5(d,p))
+            {
+                var enemy=CompetitionElements.Enemy(d,p);var result=CompetitionElements.SkillPreview(d,p,skill,enemy);
+                var snapshot=CompetitionV4Content.Tags(d,p,skill.id,result.damageType,enemy,skill.effect);var raw=snapshot.Raw;var effective=snapshot.Effective;
+                for(int offset=0;offset<Math.Max(1,raw.Count);offset+=3)
+                {
+                    var lines=new List<string>{skill.name+" · 현재 상태 미리보기","태그는 분류이며 효과 수치와 별개입니다.",""};
+                    foreach(var grant in raw.Skip(offset).Take(3))
+                    {
+                        bool active=effective.Any(g=>g.ownerKind==grant.ownerKind && g.ownerId==grant.ownerId && g.tagId==grant.tagId && g.sourceKind==grant.sourceKind && g.sourceId==grant.sourceId && g.ordinal==grant.ordinal);
+                        lines.Add((active?"[유효] ":"[비활성] ")+d.v4.tags.Single(t=>t.id==grant.tagId).name+" · "+Owner(grant.ownerKind));
+                        lines.Add(grant.tagId);lines.Add("출처: "+Source(d,grant.sourceKind,grant.sourceId));lines.Add("");
+                    }
+                    pages.Add(string.Join("\n",lines));
+                }
+            }
+        }
+        static void V5ModifierPages(List<string> pages,CompetitionDefinition d,ParticipantState p,V4StatBreakdown value)
+        {
+            pages.Add("장착 장비\n"+string.Join("\n",p.equipment.Select((id,i)=>new[]{"무기","방어구","장신구"}[i]+": "+
+                (id==null?"없음":d.combat.gear.Single(g=>g.id==id).name.Split(new[]{" · "},StringSplitOptions.None)[0])))+
+                "\n\n고유 능력\n"+value.passiveName+"\n"+value.passiveDescription+"\n\n다음 페이지: 현재 조건에서 적용되는 기술별 보정\n같은 태그가 여러 번 있어도 보정은 중복 지급되지 않습니다.");
+            foreach(var skill in PossibleV5(d,p))
+            {
+                var result=CompetitionElements.SkillPreview(d,p,skill,CompetitionElements.Enemy(d,p));
+                var modifiers=value.modifiers.Concat(result.modifiers).GroupBy(m=>m.sourceKind+"/"+m.sourceId+"/"+m.id+"/"+m.target).Select(g=>g.First()).ToArray();
+                for(int offset=0;offset<Math.Max(1,modifiers.Length);offset+=3)
+                {
+                    var lines=new List<string>{skill.name+" · "+CompetitionElements.TypeName(result.damageType)+" · 현재 조건",$"보호막 전 피해 {result.damageBeforeShield} / 생성 보호 {result.block}",""};
+                    foreach(var modifier in modifiers.Skip(offset).Take(3))
+                    {lines.Add(Source(d,modifier.sourceKind,modifier.sourceId));lines.Add(Target(modifier.target)+" "+Amount(modifier));lines.Add("규칙: "+modifier.id);lines.Add("");}
+                    if(modifiers.Length==0)lines.Add("현재 조건에 적용되는 추가 보정 없음");pages.Add(string.Join("\n",lines));
+                }
+            }
         }
         static void SkillPages(List<string> pages,CompetitionDefinition definition,ParticipantState p)
         {

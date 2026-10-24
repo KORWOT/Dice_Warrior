@@ -16,7 +16,114 @@ namespace DiceWarrior.SharedWorld.Editor
         public const string ScenePath="Assets/_Project/Scenes/Title.unity";
         public const string PrefabPath="Assets/_Project/Features/SharedWorld/Prefabs/CompetitionScreen.prefab";
         public const string ContentPath="Assets/_Project/Features/SharedWorld/Content/shared-world-preview-4.json";
+        public const string V5ContentPath="Assets/_Project/Features/SharedWorld/Content/shared-world-preview-5.json";
         static Font font;
+        [MenuItem("Dice Warrior/Upgrade Shared World V5")]
+        public static void UpgradeV5()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stop play first");
+            for(int i=0;i<SceneManager.sceneCount;i++)if(SceneManager.GetSceneAt(i).isDirty)throw new InvalidOperationException("Unsaved scene");
+            font=AssetDatabase.LoadAssetAtPath<Font>("Assets/_Project/Shared/UI/Fonts/Pretendard/Pretendard-Regular.ttf");
+            var content=AssetDatabase.LoadAssetAtPath<TextAsset>(V5ContentPath);
+            if(!font || !content || !AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath))throw new InvalidOperationException("Missing approved V5 authoring input");
+            var definition=CompetitionContent.Load(content.text);
+            if(!CompetitionV5Content.IsEnabled(definition))throw new InvalidOperationException("Expected validated V5 content");
+            var root=PrefabUtility.LoadPrefabContents(PrefabPath);
+            try
+            {
+                var screen=root.GetComponent<CompetitionScreen>();
+                if(!screen || !screen.content || screen.buttons.Length!=8)throw new InvalidOperationException("Legacy screen bindings must be preserved");
+                if(!screen.v5Area)
+                {
+                    if(root.transform.Find("V5 Combat"))throw new InvalidOperationException("Unbound V5 Combat subtree; inspect before authoring");
+                    screen.v5Area=BuildV5Area(root.transform);
+                }
+                if(!screen.v5Net)
+                {
+                    if(root.transform.Find("V5 Information"))throw new InvalidOperationException("Unbound V5 Information subtree; inspect before authoring");
+                    screen.v5Net=BuildV5Net(root.transform);
+                }
+                var areaFaces=screen.v5Area.faces;var netFaces=screen.v5Net.faces;
+                if(areaFaces==null || areaFaces.Length!=3 || netFaces==null || netFaces.Length!=6 ||
+                    areaFaces.Any(face=>!face || !face.transform.IsChildOf(screen.v5Area.transform)) ||
+                    netFaces.Any(face=>!face || !face.transform.IsChildOf(screen.v5Net.transform)) ||
+                    areaFaces.Concat(netFaces).Distinct().Count()!=9)throw new InvalidOperationException("Expected nine owned V5 faces");
+                foreach(var face in areaFaces.Concat(netFaces))
+                    if(!face.GetComponent<CanvasRenderer>())face.gameObject.AddComponent<CanvasRenderer>();
+                screen.v5Net.blocker.color=new Color(.015f,.025f,.045f,1f);
+                screen.v5Area.gameObject.SetActive(false);screen.v5Net.gameObject.SetActive(false);
+                if(!PrefabUtility.SaveAsPrefabAsset(root,PrefabPath))throw new IOException("V5 prefab save failed");
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+            var scene=EditorSceneManager.OpenScene(ScenePath,OpenSceneMode.Single);
+            var app=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<CompetitionApp>(true)).Single();
+            app.content=content;PrefabUtility.RecordPrefabInstancePropertyModifications(app);EditorUtility.SetDirty(app);EditorSceneManager.MarkSceneDirty(scene);
+            if(!EditorSceneManager.SaveScene(scene,ScenePath))throw new IOException("V5 Title reference save failed");
+        }
+        static V5DiceAreaView BuildV5Area(Transform parent)
+        {
+            var root=Panel(parent,"V5 Combat",0,0,720,1280,new Color(.025f,.055f,.085f));Stretch(root);
+            var view=root.gameObject.AddComponent<V5DiceAreaView>();
+            view.layout=Panel(root,"Combat layout",0,0,720,1140,Color.clear);TopCenter(view.layout,720,1140);
+            var layout=view.layout;
+            view.heading=Text(layout,"Combat heading","",23,30,16,660,40);
+            view.enemy=Text(layout,"Enemy HP","",25,30,70,660,50);view.intent=Text(layout,"Enemy intent","",20,30,123,660,48);
+            view.player=Text(layout,"Player HP","",24,30,180,660,42);
+            view.enemyFill=Health(layout,"Enemy health",390,175,new Color(.94f,.4f,.42f));view.playerFill=Health(layout,"Player health",30,175,new Color(.25f,.85f,.68f));
+            view.diceInfo=V5Button(layout,"Dice info",30,224,320,60);view.combatInfo=V5Button(layout,"Combat info",370,224,320,60);
+            view.rollZone=Panel(layout,"Roll zone",30,300,660,240,new Color(.06f,.13f,.18f));
+            view.holdZone=Panel(layout,"Hold zone",30,562,660,240,new Color(.12f,.13f,.18f));
+            view.rollHint=Text(view.rollZone,"Roll guidance","굴림 영역",18,18,12,624,40);view.holdHint=Text(view.holdZone,"Hold guidance","보관 영역",18,18,12,624,40);
+            view.dice=new CommonButtonView[3];view.faces=new V5FaceGraphic[3];
+            for(int i=0;i<3;i++)
+            {
+                view.dice[i]=V5Button(view.rollZone,"Die slot "+i,20+i*210,58,200,170);
+                view.faces[i]=FaceGraphic(view.dice[i].transform,"Face",60,12,80,80);
+                SetRect(view.dice[i].label.rectTransform,4,103,192,63);view.dice[i].label.fontSize=17;RecordButton(view.dice[i]);
+            }
+            view.roll=V5Button(layout,"Initial roll",220,400,280,88);
+            view.preview=Text(layout,"Skill preview","",22,30,824,660,133);view.preview.color=new Color(.97f,.86f,.61f);
+            view.notice=Text(layout,"Selection feedback","",19,30,967,660,168);
+            view.footer=Panel(root,"Safe area footer",0,0,720,112,Color.clear);
+            view.footer.anchorMin=view.footer.anchorMax=new Vector2(.5f,0);view.footer.pivot=new Vector2(.5f,0);view.footer.anchoredPosition=new Vector2(0,12);
+            view.reroll=V5Button(view.footer,"Reroll",30,0,320,88);view.execute=V5Button(view.footer,"Execute",370,0,320,88);
+            return view;
+        }
+        static V5DiceNetView BuildV5Net(Transform parent)
+        {
+            var root=Panel(parent,"V5 Information",0,0,720,1280,new Color(.015f,.025f,.045f,1f));Stretch(root);
+            var view=root.gameObject.AddComponent<V5DiceNetView>();view.blocker=root.GetComponent<Image>();view.blocker.raycastTarget=true;
+            view.layout=Panel(root,"Information layout",0,0,720,1280,Color.clear);view.layout.anchorMin=view.layout.anchorMax=view.layout.pivot=new Vector2(.5f,.5f);view.layout.anchoredPosition=Vector2.zero;
+            var layout=view.layout;view.title=Text(layout,"Information title","",27,30,26,660,70);
+            view.tabs=new CommonButtonView[3];for(int i=0;i<3;i++)view.tabs[i]=V5Button(layout,"Die tab "+i,30+i*224,112,212,65);
+            view.net=Panel(layout,"Connected six face net",40,190,640,474,Color.clear);view.cells=new CommonButtonView[6];view.faces=new V5FaceGraphic[6];
+            for(int i=0;i<6;i++)
+            {
+                var cell=V5DiceNetView.Cell(i);view.cells[i]=V5Button(view.net,"Face index "+i,cell.x*158,cell.y*158,154,154);
+                view.faces[i]=FaceGraphic(view.cells[i].transform,"Face identity",44,5,66,66);
+                SetRect(view.cells[i].label.rectTransform,3,77,148,48);view.cells[i].label.fontSize=16;RecordButton(view.cells[i]);
+            }
+            view.description=Text(layout,"Face and skill details","",18,30,680,660,330);
+            view.previous=V5Button(layout,"Previous details",30,1020,320,62);view.next=V5Button(layout,"Next details",370,1020,320,62);
+            view.leave=V5Button(layout,"Leave combat",30,1100,212,62);view.abandon=V5Button(layout,"Abandon combat",254,1100,212,62);view.stats=V5Button(layout,"Combat stats",478,1100,212,62);
+            view.close=V5Button(layout,"Close information",30,1190,660,66);
+            return view;
+        }
+        static void TopCenter(RectTransform rect,float width,float height)
+        {rect.anchorMin=rect.anchorMax=new Vector2(.5f,1);rect.pivot=new Vector2(.5f,1);rect.anchoredPosition=Vector2.zero;rect.sizeDelta=new Vector2(width,height);}
+        static CommonButtonView V5Button(Transform parent,string name,float x,float y,float width,float height)
+        {
+            var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Shared/UI/Prefabs/CommonButtonView.prefab");
+            if(!prefab)throw new InvalidOperationException("Missing CommonButtonView");
+            var button=(GameObject)PrefabUtility.InstantiatePrefab(prefab,parent);button.name=name;SetRect((RectTransform)button.transform,x,y,width,height);
+            var view=button.GetComponent<CommonButtonView>();view.label.font=font;view.label.fontSize=21;view.label.alignment=TextAnchor.MiddleCenter;
+            view.label.resizeTextForBestFit=false;view.label.raycastTarget=false;view.label.supportRichText=false;Stretch(view.label.rectTransform);
+            view.label.rectTransform.offsetMin=new Vector2(8,4);view.label.rectTransform.offsetMax=new Vector2(-8,-4);view.background.raycastTarget=true;RecordButton(view);return view;
+        }
+        static void RecordButton(CommonButtonView view)
+        {PrefabUtility.RecordPrefabInstancePropertyModifications(view.transform);PrefabUtility.RecordPrefabInstancePropertyModifications(view.label);PrefabUtility.RecordPrefabInstancePropertyModifications(view.label.rectTransform);PrefabUtility.RecordPrefabInstancePropertyModifications(view.background);}
+        static V5FaceGraphic FaceGraphic(Transform parent,string name,float x,float y,float width,float height)
+        {var go=new GameObject(name,typeof(RectTransform),typeof(CanvasRenderer),typeof(V5FaceGraphic));go.transform.SetParent(parent,false);SetRect((RectTransform)go.transform,x,y,width,height);var graphic=go.GetComponent<V5FaceGraphic>();graphic.raycastTarget=false;return graphic;}
         [MenuItem("Dice Warrior/Build Shared World Main")]
         public static void Build()
         {

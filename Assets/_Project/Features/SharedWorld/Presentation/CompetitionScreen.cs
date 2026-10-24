@@ -16,6 +16,11 @@ namespace DiceWarrior.SharedWorld
         public Action[] actions=Array.Empty<Action>();
         public bool[] enabled=Array.Empty<bool>();
         public Action onClose;
+        public bool v5Combat;
+        public string v5Notice;
+        public Action<string,string> v5Command;
+        public Action v5DiceInfo,v5CombatInfo;
+        public V5DiceNetData v5NetData;
     }
     public sealed class CompetitionScreen : BaseUI<CompetitionScreenData>
     {
@@ -33,6 +38,8 @@ namespace DiceWarrior.SharedWorld
         public GameObject attributeRows;
         public Text attributeBody;
         public Text[] attributeValues,attributeSources;
+        public V5DiceAreaView v5Area;
+        public V5DiceNetView v5Net;
         public static Color ParticipantColor(int index)=>new[]{new Color(1,.84f,.43f),new Color(1,.47f,.47f),new Color(.47f,.76f,1),new Color(.72f,.59f,1)}[index];
         void OnRectTransformDimensionsChange()
         {
@@ -48,6 +55,10 @@ namespace DiceWarrior.SharedWorld
         protected override void OnBind(CompetitionScreenData data)
         {
             OnRectTransformDimensionsChange();
+            if((data.v5Combat && !v5Area) || (data.v5NetData!=null && !v5Net))throw new InvalidOperationException("V5 화면의 authored 참조를 연결해야 합니다.");
+            content.gameObject.SetActive(!data.v5Combat);
+            if(v5Area) v5Area.gameObject.SetActive(data.v5Combat);
+            if(v5Net) {v5Net.gameObject.SetActive(data.v5NetData!=null);if(data.v5NetData!=null)v5Net.Bind(data.v5NetData);else v5Net.Unbind();}
             title.text=data.title;subtitle.text=data.subtitle;status.text=data.status;detail.text=data.detail;history.text=data.history;
             var state=data.state;
             bool combat=state!=null && state.participants[0].phase==CompetitionPhase.Combat && !state.finished;
@@ -86,6 +97,7 @@ namespace DiceWarrior.SharedWorld
                 for(int i=0;i<cardTexts.Length;i++) cardTexts[i].text=i<data.adventurerCards.Length?data.adventurerCards[i]:"";
             }
             playback.human.cue.gameObject.SetActive(!growth);
+            if(data.v5Combat)v5Area.Bind(data.state,data.v5Command,data.v5DiceInfo,data.v5CombatInfo,data.v5Notice);
             for(int i=0;i<buttons.Length;i++)
             {
                 bool used=i<data.labels.Length;buttons[i].gameObject.SetActive(used);
@@ -96,6 +108,6 @@ namespace DiceWarrior.SharedWorld
                 },allowed,false,_=>data.actions[index]());
             }
         }
-        protected override void OnUnbind() { Data?.onClose?.Invoke();foreach(var button in buttons) button.Unbind(); }
+        protected override void OnUnbind() { Data?.onClose?.Invoke();foreach(var button in buttons) button.Unbind();if(v5Area)v5Area.Unbind();if(v5Net)v5Net.Unbind(); }
     }
 }

@@ -17,7 +17,7 @@ namespace DiceWarrior.SharedWorld
             for (int i = 0; i < 4; ++i)
             {
                 string id = i == 0 ? "human" : "ai-" + i;
-                var adventurer = i == 0 ? definition.adventurers.Single(a => a.id == adventurerId) : CompetitionStats.IsEnabled(definition) || CompetitionV4Content.IsEnabled(definition) ?
+                var adventurer = i == 0 ? definition.adventurers.Single(a => a.id == adventurerId) : CompetitionStats.IsEnabled(definition) || CompetitionV4Content.UsesAttributes(definition) ?
                     definition.adventurers.Single(a => a.id == AiAdventurer(definition.policies[i - 1].id)) : definition.adventurers[i];
                 var p = new ParticipantState { id = id, adventurerId = adventurer.id, name = adventurer.name, isHuman = i == 0,
                     aiPolicyId = i == 0 ? null : definition.policies[i - 1].id, sponsorId = i == 0 ? "플레이어의 후원자" : definition.policies[i - 1].sponsorName,
@@ -33,11 +33,12 @@ namespace DiceWarrior.SharedWorld
                 }
                 p.dice.Add(new DieSlot { instanceId = matchId + ":" + id + ":starter", definitionId = profile.startingDie });
                 p.equipment[0] = profile.startingWeapon;
-                if (CompetitionV4Content.IsEnabled(definition))
+                if (CompetitionV4Content.UsesAttributes(definition))
                 {
                     p.v4 = new V4ParticipantState { accountHp = profile.growth * 5 };
                     CompetitionAttributes.RefreshStats(definition, p); p.hp = p.maxHp;
                 }
+                if (CompetitionV5Content.IsEnabled(definition)) p.v5 = new V5ParticipantState();
                 state.participants[i] = p;
             }
             Validate(state);
@@ -96,6 +97,7 @@ namespace DiceWarrior.SharedWorld
                 }
                 else if (p.growth != null) throw new ArgumentException("Legacy participant cannot contain RGB growth");
                 CompetitionAttributes.ValidateParticipant(state, p);
+                CompetitionV5Content.ValidateParticipant(state, p);
             }
         }
         public static ParticipantState Human(CompetitionState state) => state.participants[0];
@@ -115,7 +117,7 @@ namespace DiceWarrior.SharedWorld
             p.xp += amount;
             while (p.xp >= p.level * 8)
             {
-                if (CompetitionV4Content.IsEnabled(definition))
+                if (CompetitionV4Content.UsesAttributes(definition))
                 {
                     p.xp -= p.level * 8; ++p.level;
                     CompetitionAttributes.RefreshStats(definition, p); continue;
@@ -135,6 +137,7 @@ namespace DiceWarrior.SharedWorld
         internal static void Eliminate(ParticipantState p, string reason)
         {
             p.eliminated = true; p.phase = CompetitionPhase.Complete; p.message = reason;
+            if (p.v5 != null) p.v5.selection = null;
         }
     }
 }

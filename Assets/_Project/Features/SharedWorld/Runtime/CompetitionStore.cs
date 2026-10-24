@@ -145,6 +145,8 @@ namespace DiceWarrior.SharedWorld
                 return;
             }
             CompetitionRules.Validate(document.state);
+            if (CompetitionV5Content.IsEnabled(document.state.definition) && document.state.actionNumber != document.commands.Count)
+                throw new InvalidOperationException("v5 행동 번호와 저장된 명령 수가 일치하지 않습니다.");
             var ids = new System.Collections.Generic.HashSet<string>(StringComparer.Ordinal);
             long previousRevision = 0;
             for (int i = 0; i < document.commands.Count; i++)

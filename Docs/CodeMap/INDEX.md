@@ -2,7 +2,7 @@
 
 기준: [GDD v0.3](../Dice_Warrior_GDD_v0.3.md), [교체 PLAN](../Plans/SYMBOL_LOOP_REPLACEMENT_PLAN.md).
 구형 기능 코드 요약은 [v1 이력](../Archive/v1/CodeMap/INDEX.md)으로 이동했다.
-Unity 프로젝트 소유 C# 65개, Server C# 39개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
+Unity 프로젝트 소유 C# 75개, Server C# 40개와 일회성 정리 도구 1개의 요약을 유지한다. 독립 서버 경계는 [M0~M3 PLAN](../Plans/STANDALONE_MOCK_SERVER_01_PLAN.md), 계측·비용은 [M4 PLAN](../Plans/STANDALONE_MOCK_METRICS_04_PLAN.md), 공동 세계 규칙은 [C0~C5 PLAN](../Plans/SHARED_WORLD_COMPETITION_01_PLAN.md), 메인 진입은 [MAIN_02 PLAN](../Plans/SHARED_WORLD_MAIN_02_PLAN.md), 종료·새 게임·부분 조합은 [FLOW_COMBO_03 PLAN](../Plans/SHARED_WORLD_FLOW_COMBO_03_PLAN.md), 보존된 RGB 성장 개편은 [GROWTH_04 PLAN](../Plans/GOD_ADVENTURER_GROWTH_04_PLAN.md), 현행 태그·6스탯·속성은 [TAG_STAT_ELEMENT_05 PLAN](../Plans/TAG_STAT_ELEMENT_05_PLAN.md), 최신 회귀·실제 HTTP 여정 검증은 [NEXT_PHASE_06 PLAN](../Plans/NEXT_PHASE_06_VALIDATION_BALANCE_GOD_POWER_PLAN.md)을 따른다.
 
 ## 비권위 밸런스 실험 B0/C7
 
@@ -23,6 +23,26 @@ Unity 프로젝트 소유 C# 65개, Server C# 39개와 일회성 정리 도구 1
 | 통계·결측·출력 검사 | [StatisticsTests](Server/DiceWarrior.BalanceSim.Tests/StatisticsTests.cs.md) |
 
 직접 흐름: Program → BalanceScenario/MatchRunner → 기존 CompetitionRules/CommandRules, 명령 전후 OutcomeCollector → 결과 DTO → Statistics/ReportWriter. 제품 코드/AI/콘텐츠/서버 정산으로 역참조하지 않는다.
+
+## v5 주사위 선택 전투
+
+[PLAN](../Plans/V5_DICE_COMBAT_09_PLAN.md) · [REPORT](../Reports/V5_DICE_COMBAT_09_REPORT.md). 새 경기 전용 규칙이며 구형 v1~v4 저장은 당시 정의로 재개한다.
+
+| 역할 | 요약 |
+|---|---|
+| 필수 DTO·물리면/선택·로그 | [CompetitionV5Data](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Data.cs.md) |
+| face/owner/6면/recipe 검증 | [CompetitionV5Content](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Content.cs.md) |
+| 굴림·보관·리롤/20턴·명령 예약 | [CompetitionV5Dice](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Dice.cs.md) |
+| 3→2→1 계획·순수 프리뷰·효과 | [CompetitionV5Skills](Assets/_Project/Features/SharedWorld/Domain/CompetitionV5Skills.cs.md) |
+| 굴림/보관 두 영역·확정 연출 | [V5DiceAreaView](Assets/_Project/Features/SharedWorld/Presentation/V5DiceAreaView.cs.md) |
+| 6면 전개도·물리면/상세 | [V5DiceNetView](Assets/_Project/Features/SharedWorld/Presentation/V5DiceNetView.cs.md) |
+| 공용/전용/꽝 도형 표시 | [V5FaceGraphic](Assets/_Project/Features/SharedWorld/Presentation/V5FaceGraphic.cs.md) |
+| 규칙·RNG·계획·AI·예약 검사 | [CompetitionV5Tests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5Tests.cs.md) |
+| 실제 저장·실패/재시도·구형/용량 | [CompetitionV5StoreTests](Assets/_Project/Features/SharedWorld/Tests/EditMode/CompetitionV5StoreTests.cs.md) |
+| authored UI·포인터·재개/화면 | [CompetitionV5FlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionV5FlowTests.cs.md) |
+| 검사 채널 읽기 전용 진단 | [V5DiceCombatValidation](Server/Tools/V5DiceCombatValidation.cs.md) |
+
+직접 흐름: CompetitionApp → 기존 Session 후보 저장 → CompetitionCommandRules → V5Dice/Skills → 기존 Elements 효과 계산 → Store. 화면은 committed Snapshot과 순수 Preview를 읽고 취소/복귀 시 Snap한다. CompetitionAuthoring이 기존 프리팹에 참조를 추가한다. 새 서버 정산 API를 호출하지 않는다.
 
 ## 공동 모험 메인 SharedWorld 코드
 
@@ -67,7 +87,7 @@ Unity 프로젝트 소유 C# 65개, Server C# 39개와 일회성 정리 도구 1
 | 실제 HTTP 여정 검사 | [CompetitionHttpFlowTests](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFlowTests.cs.md) | 독립 Mock 프로필·v4 여정·보상0·오류/재시작 복구 |
 | HTTP 검증 환경 | [CompetitionHttpFixture](Assets/_Project/Features/SharedWorld/Tests/PlayMode/CompetitionHttpFixture.cs.md) | 격리 root/endpoint·실제 전송·포인터·증거·소유 UI 정리 |
 
-직접 흐름: Title → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI → 버전별 SymbolCombat 또는 CompetitionElements → CompetitionStore. 계정은 CompetitionAccount → GameBackendCoordinator → LoopSession/LoopStore/HttpGameBackend로 분리한다. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/계정 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain15개를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
+직접 흐름: Title → CompetitionApp → CompetitionSession → CompetitionCommandRules → 참가자별 사건/AI → 버전별 SymbolCombat 또는 CompetitionElements/V5Skills → CompetitionStore. 계정은 CompetitionAccount → GameBackendCoordinator → LoopSession/LoopStore/HttpGameBackend로 분리한다. SharedWorld.Runtime만 SymbolLoop.Runtime의 표시/계정 기능을 참조하고 역참조는 없다. 서버 DiceWarrior.Competition.Shared는 Domain 폴더를 동일 소스로 링크하며 어셈블리 이름은 Unity와 같은 SharedWorld.Core다. 새 권한 정산 API는 C6 후속이다.
 
 ## 기존 SymbolLoop 및 독립 서버
 

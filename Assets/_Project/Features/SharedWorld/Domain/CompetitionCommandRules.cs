@@ -10,12 +10,17 @@ namespace DiceWarrior.SharedWorld
         {
             if (state == null) throw new ArgumentNullException(nameof(state));
             var p = CompetitionRules.Human(state);
-            return FormattableString.Invariant($"{state.matchId}|{p.id}|{state.worldRound}|{state.actionNumber}|{p.completedLaps}|{p.position}|{p.phase}|{p.offer?.id}|{p.turn}");
+            string target = FormattableString.Invariant($"{state.matchId}|{p.id}|{state.worldRound}|{state.actionNumber}|{p.completedLaps}|{p.position}|{p.phase}|{p.offer?.id}|{p.turn}");
+            var selection = p.v5?.selection;
+            return !CompetitionV5Content.IsEnabled(state.definition) ? target : target + FormattableString.Invariant(
+                $"|v5|{selection?.phase}|{selection?.combatTurnSequence}|{selection?.rollSequence}|{selection?.holdChanges}");
         }
 
         public static void Apply(CompetitionState state, string kind, string arg)
         {
             if (state == null || state.finished) throw new InvalidOperationException("이미 끝났거나 존재하지 않는 경기입니다.");
+            if (CompetitionV5Content.IsEnabled(state.definition) && state.actionNumber >= BackendProtocol.MaxCommands)
+                throw new InvalidOperationException("경기 명령 보관 한도에 도달했습니다.");
             arg = arg ?? "";
             var p = CompetitionRules.Human(state);
             bool roundEnded;
@@ -43,7 +48,8 @@ namespace DiceWarrior.SharedWorld
                     Empty(arg);
                     if (p.phase != CompetitionPhase.Map) throw new InvalidOperationException("보드 이동 차례가 아닙니다.");
                     p.lastTravel = 1 + CompetitionRandom.Next(ref p.travelRng, 6); p.lastTurn = null; p.offer = null; p.enemy = null; p.encounterTurns = 0;
-                    if (CompetitionV4Content.IsEnabled(state.definition)) { p.v4.enemyId = null; p.v4.lastTurn = null; }
+                    if (CompetitionV4Content.UsesAttributes(state.definition)) { p.v4.enemyId = null; p.v4.lastTurn = null; }
+                    if (p.v5 != null) { p.v5.selection = null; p.v5.lastTurn = null; }
                     if (p.position + p.lastTravel >= state.definition.world.places.Length)
                     {
                         p.position = 0; p.phase = CompetitionPhase.LapReward; p.message = "한 바퀴 완주! 보상을 받으세요.";
@@ -55,7 +61,11 @@ namespace DiceWarrior.SharedWorld
                     }
                     return false;
                 case "choose": return CompetitionEncounterRules.Choose(state, p, arg);
-                case "combat": Empty(arg); return CompetitionEncounterRules.Combat(state, p);
+                case "combat":
+                    if (CompetitionV5Content.IsEnabled(state.definition)) throw new InvalidOperationException("v5 전투는 굴림과 실행을 구분합니다.");
+                    Empty(arg); return CompetitionEncounterRules.Combat(state, p);
+                case "combat_roll": case "combat_hold": case "combat_release": case "combat_reroll": case "combat_execute":
+                    return CompetitionV5Dice.Apply(state, p, kind, arg);
                 case "lap": return ClaimLap(state, p, arg);
                 case "abandon":
                     Empty(arg); CompetitionRules.Eliminate(p, "모험을 포기했습니다."); return true;
@@ -84,7 +94,7 @@ namespace DiceWarrior.SharedWorld
             p.equipment[gear.slot] = gear.id;
             CompetitionAttributes.RefreshStats(state.definition, p);
             CompetitionEncounterRules.BeginCombat(p, "순환의 수호자", rules.bossHp, rules.bossAttack, true);
-            if (CompetitionV4Content.IsEnabled(state.definition)) { p.v4.enemyId = "final"; p.v4.lastTurn = null; }
+            if (CompetitionV4Content.UsesAttributes(state.definition)) { p.v4.enemyId = "final"; p.v4.lastTurn = null; }
             return false;
         }
 

@@ -1,5 +1,10 @@
 # CompetitionApp.cs
 
+- V5_DICE_COMBAT_09: 새 v5 정의의 JSON combat을 SO로 덮지 않는다. v5도 모험가 선택/6스탯 공용 표시를 사용하되 기존 경기의 전투/상세는 항상 state.definition으로 분기한다. v4 저장을 v5 로비에서 이어도 기존 UI/단일 combat 명령이 유지된다.
+- V5 입력/정보: combat_roll/hold/release/reroll/execute를 같은 Dispatch의 원자 저장 후 재생 경계에 연결한다. v5 전투에는 전용 HUD 콜백을 넘기며 종료/포기/능력치 상세는 전투 정보 모달로 이동한다. 로비 출전 주사위, 경기 보유 슬롯, 완주 보상 후보에서 V5DiceNetData를 만든다. 정보 조회는 Session 명령을 실행하지 않는다.
+- V5 상세: CompetitionElementView.Details가 버전에 따라 6스탯/주사위·스킬/속성·상성/태그/효과 출처 5탭을 표시한다. v5 전용 기술은 별도 v5 Plan/SkillPreview(effect)/Tags(effect) 경로를 사용하며 v4 Symbol/SkillId 조회를 거치지 않는다. 실제 6면 모달은 로비·보상·전투 진입에서 계속 사용한다. 탭5+앞뒤2+복귀1로 최대8 버튼을 지킨다.
+- 취소: disable/pause/Close/화면 해제는 코루틴을 중단하고 입력 잠금을 해제한 뒤 Session의 확정 사본으로 Playback.Snap한다. 재추첨/재명령은 없다. 저장 실패 notice는 전용 HUD에 전달한다.
+
 - 역할: Title에서 공동 모험 로비를 직접 열고 계정·출전 선택·경기 저장·표시 수명을 연결한다. 구형 1인 화면/App에 의존하지 않는다.
 - TAG_STAT_ELEMENT_05: v4 로더는 검증된 JSON combat을 기존 SO로 덮지 않는다. 모험가 선호는 v3/v4에서 열지만 계산 API는 버전별로 분리한다. v4의 Roster/상세/전투 상성 문구는 CompetitionElementView에 위임하고, 구형 저장 상세는 그 state.definition으로 기존 GrowthView를 호출한다. 상세5탭+이전/다음+뒤로는 최대8버튼이며 detailPage는 탭 전환/상세 진입 때0으로 초기화한다.
 - GROWTH_04: v3 로비는 모험가 선택/출전 능력치를 추가하고 성장 구매/프로필 재확인을 계정 관리로 모아 최대8버튼을 유지한다. 별도 AdventurerSelectionStore를 경기 폴더에 열고 새 게임 직전 다시 읽은 ID를 Session.Start/Restart에 전달한다. 구형 현재 경기 상세는 state.definition을 사용하며 새 v3 선택을 소급 적용하지 않는다.

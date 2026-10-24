@@ -66,7 +66,7 @@ namespace DiceWarrior.SharedWorld
             if (choice.kind == EncounterKind.Combat)
             {
                 BeginCombat(p, choice.label, choice.enemyHp, choice.enemyAttack, false);
-                if (CompetitionV4Content.IsEnabled(state.definition)) { p.v4.enemyId = choice.id; p.v4.lastTurn = null; }
+                if (CompetitionV4Content.UsesAttributes(state.definition)) { p.v4.enemyId = choice.id; p.v4.lastTurn = null; }
                 return false;
             }
             if (choice.kind == EncounterKind.Gear)
@@ -89,6 +89,7 @@ namespace DiceWarrior.SharedWorld
             p.enemy = new Enemy { name = name, hp = hp, maxHp = hp, attack = attack, boss = boss,
                 intent = (Intent)CompetitionRandom.Next(ref p.combatRng, 3) };
             p.message = name + "에 도전합니다.";
+            if (p.v5 != null) { p.v5.lastTurn = null; CompetitionV5Dice.Begin(p); }
         }
 
         internal static bool Combat(CompetitionState state, ParticipantState p)
@@ -97,7 +98,14 @@ namespace DiceWarrior.SharedWorld
             var rules = state.definition.combat;
             var faces = p.dice.Select(d => rules.dice.Single(x => x.id == d.definitionId))
                 .Select(d => d.faces[CompetitionRandom.Next(ref p.combatRng, 6)]).ToArray();
-            CompetitionCombat.Resolve(state.definition, p, faces); ++p.encounterTurns;
+            CompetitionCombat.Resolve(state.definition, p, faces);
+            return FinishCombat(state, p);
+        }
+
+        internal static bool FinishCombat(CompetitionState state, ParticipantState p)
+        {
+            var rules = state.definition.combat;
+            ++p.encounterTurns;
             if (p.hp <= 0) { CompetitionRules.Eliminate(p, "전투에서 탈락했습니다."); return true; }
             if (p.enemy.hp <= 0)
             {
@@ -123,7 +131,7 @@ namespace DiceWarrior.SharedWorld
 
         static void Reward(CompetitionState state, ParticipantState p, EncounterChoice choice)
         {
-            if (CompetitionV4Content.IsEnabled(state.definition) && state.definition.v4.treasureEncounterIds.Contains(choice.id))
+            if (CompetitionV4Content.UsesAttributes(state.definition) && state.definition.v4.treasureEncounterIds.Contains(choice.id))
                 p.gold = checked(p.gold + CompetitionAttributes.Describe(state.definition, p).attributes.luck / 5);
             p.gold += choice.gold; CompetitionRules.AddXp(state.definition, p, choice.xp);
             CompetitionRules.Honor(p, p.offer.id + ":honor", choice.label, choice.honor);
