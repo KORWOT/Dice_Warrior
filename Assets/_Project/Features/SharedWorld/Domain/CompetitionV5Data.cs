@@ -62,6 +62,9 @@ namespace DiceWarrior.SharedWorld
         public V5PreviewSkill[] skills = Array.Empty<V5PreviewSkill>();
         public bool noOp;
         public string status;
+        public int playerHpBefore, playerHpAfter, enemyHpBefore, enemyHpAfter, enemyShieldAfter;
+        public int damageApplied, shieldAbsorbed, block, retaliationDamage;
+        public bool retaliation, enemyDefeated, playerDefeated, turnLimitDefeat;
     }
     public sealed class V5PlannedSkill
     {

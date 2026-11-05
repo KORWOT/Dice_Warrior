@@ -11,3 +11,12 @@
 - 사용하는 쪽·관계 근거: CompetitionScreen.Bind, CompetitionPlayback.Play/Snap, CompetitionAuthoring.BuildV5Area, CompetitionCombatUiAuthoring.Upgrade, CompetitionV5FlowTests/CompetitionCombatUiTests가 직접 호출/참조한다. DieLabel/Marker는 Net이 같은 주사위 식별을 표시할 때 재사용한다.
 - 상태/수명: App가 저장 후 코루틴과 전체 입력 잠금을 소유한다. Snap은 Cube 결과·회전/강조·고정 슬롯·전투 장면을 확정 상태로 복구한다. footer는 화면 safe area 하단에 독립 고정하며 본문과 같은 배율을 쓴다. ReducedMotion은 App의 로컬 보기 설정에서 전달되며 경기 저장에 넣지 않는다. Unbind는 콜백을 제거한다.
 - 검수 주의: runtime GameObject 생성 없음. 필수 authored3슬롯/3큐브/전투장면/preview3행/feedbackScroll이 필요하다. 슬롯200×248·cube160×180·352높이 트레이와 작은 메시 투영/도약이 경계 전제다. UI13은 행의 실제 가시성/상태전환과628×56·22폰트 텍스트 범위를 확인해야 하며 숨긴 호환 preview.text 검사만으로 화면 검수를 대신하지 않는다.20번째 행동·보호 초기화·살아 있는 적만 반격·리롤/보관제한은 실제 규칙을 안내한다. 실제 터치/취소/여러비율·안전영역·투영 메시/그림자/잠금 프레임 검증은 메인의 Unity 실행 결과를 따른다. 설계단위를 실제기기dp로 주장하지 않는다.
+
+## UI15 전투 판단·직접 메뉴
+
+- UI 전용 `turnSummary`가 같은 Preview의 총 HP 피해/흡수/이번 보호, 받을 HP 피해와 내 HP 전후를 표시한다. 기준은 승리 보상·레벨 회복 전이며 사망/적 처치/턴 제한을 구분한다. `intent`에는 기존 CombatSummary의 적 타입·약점·저항 첫 줄을 함께 표시한다.
+- `Bind`의 마지막 optional `showMenu`와 authored `menu` 버튼(`adventure-menu`)은 App의 관리 메뉴 콜백이다. 명령을 새로 만들지 않으며 LockInput/Unbind에서 기존 버튼과 함께 잠금/해제한다.
+- 첫 굴림·부분 리롤의 미공개 구간에는 합계 예상도 대기 문구로 바꾼다. 실행 중에는 예상 합계 대신 확정 로그 처리 안내를 보여주며 종료 Snap에서 해당 상태로 돌아간다. 새 표시를 위해 별도 RNG·피해 산식·보상 계산을 만들지 않는다.
+- authoring은 menu/turnSummary를 연결해야 한다. 직접 포인터 복귀·기존 큐브/기술 행과 예측 텍스트 경계·실제 resolver 결과는 UI15 검사/촬영 대상이다.
+
+- UI15 수정1: 축소 장면의 Pawn/Enemy 중심을 y60, 크기56으로 맞춰 y92 이름과 분리하며 실제 효과 이동도 같은 중심을 사용한다.

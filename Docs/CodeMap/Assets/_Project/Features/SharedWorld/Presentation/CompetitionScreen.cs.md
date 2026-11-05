@@ -28,3 +28,8 @@
 - V5_UI_IMPROVEMENT_11: v5 보드의 숫자 주사위 라벨은 이동 주사위·1~6칸으로 표시한다. 공유 SymbolLoop/구형 정의의 표시는 변경하지 않는다.
 
 - UI12 R03: 이동 D6의 모든 회전 투영 경계와 제목 간격을 확보하도록 v5 전용 numeric rect를 (260,62,140,140)으로 조정한다. Legacy 크기와 GUID는 불변이다.
+
+## UI15 직접 메뉴 계약
+
+- `CompetitionScreenData.v5Menu` Action을 기존 Area.Bind의 마지막 인자로 전달한다. App의 busy/관리 경계가 콜백을 소유하고 Screen은 명령을 직접 생성하지 않는다.
+- v5 전투·Shell의 authored 참조를 사용하며 기존 CaptureLegacyGeometry/RestoreLegacyGeometry와 v1~v4 렌더 분기는 유지한다. 결과 패널·이동 트레이의 표시 조정은 Shell의 책임이다.

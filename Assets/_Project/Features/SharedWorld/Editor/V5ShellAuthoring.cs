@@ -14,7 +14,7 @@ namespace DiceWarrior.SharedWorld.Editor
         public static void Upgrade(CompetitionScreen screen)
         {
             if(!screen || !screen.content)throw new InvalidOperationException("Expected authored CompetitionScreen content");
-            if(screen.v5Shell){EnsureLayout(screen.v5Shell);return;}
+            if(screen.v5Shell){EnsureLayout(screen.v5Shell);EnsureRecent(screen);return;}
             if(screen.content.Find("V5 Main Shell"))throw new InvalidOperationException("Unbound V5 Main Shell; inspect before authoring");
             var font=AssetDatabase.LoadAssetAtPath<Font>(FontPath);var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(ButtonPath);
             if(!font || !prefab)throw new InvalidOperationException("Missing shared UI authoring input");
@@ -46,6 +46,7 @@ namespace DiceWarrior.SharedWorld.Editor
             view.back=Button(root,"Return to previous screen",font,prefab,30,1164,660,96);
             var footer=screen.content.Find("Preview footer");view.legacyFooter=footer?footer.gameObject:null;
             EnsureLayout(view);
+            EnsureRecent(screen);
             root.gameObject.SetActive(false);
         }
         static void EnsureLayout(V5ShellView view)
@@ -57,6 +58,21 @@ namespace DiceWarrior.SharedWorld.Editor
             var rect=Rect(view.scrollContent,name,4,8,652,120);rect.SetAsFirstSibling();rect.gameObject.AddComponent<CanvasRenderer>();
             view.contextBackground=rect.gameObject.AddComponent<Image>();view.contextBackground.color=new Color(0x1C/255f,0x2B/255f,0x42/255f,.55f);view.contextBackground.raycastTarget=false;
             rect.gameObject.SetActive(false);
+        }
+        static void EnsureRecent(CompetitionScreen screen)
+        {
+            var view=screen.v5Shell;view.travelTray=screen.playback.human.tray;
+            if(view.recentPanel)return;
+            if(view.transform.Find("Recent committed result"))throw new InvalidOperationException("Unbound recent result; inspect before authoring.");
+            var root=Rect(view.transform,"Recent committed result",30,866,660,224);root.gameObject.AddComponent<CanvasRenderer>();
+            var panel=root.gameObject.AddComponent<Image>();panel.color=new Color(.11f,.17f,.26f);panel.raycastTarget=false;view.recentPanel=root.gameObject;
+            var font=view.heading.font;
+            view.recentHeading=Label(root,"Recent heading",font,21,16,10,628,30);
+            view.recentText=Label(root,"Recent summary",font,18,16,45,432,92);
+            view.boardStatus=Label(root,"Persistent board status",font,17,16,146,432,66);
+            view.recentButton=Button(root,"Read committed results",font,AssetDatabase.LoadAssetAtPath<GameObject>(ButtonPath),470,106,174,96);
+            view.recentButton.label.fontSize=19;Record(view.recentButton);root.gameObject.SetActive(false);
+            EditorUtility.SetDirty(view);PrefabUtility.RecordPrefabInstancePropertyModifications(view);
         }
         static RectTransform Rect(Transform parent,string name,float x,float y,float width,float height)
         {var go=new GameObject(name,typeof(RectTransform));go.transform.SetParent(parent,false);var rect=(RectTransform)go.transform;SetRect(rect,x,y,width,height);return rect;}

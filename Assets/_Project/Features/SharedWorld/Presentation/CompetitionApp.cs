@@ -123,7 +123,7 @@ namespace DiceWarrior.SharedWorld
         }
         void LoadCompetition()
         {
-            Session=null;
+            ClearV5Feedback();Session=null;
             try { Session=new CompetitionSession(store,definition);notice="";competitionError=""; }
             catch(Exception error) { competitionError=notice=error.Message; }
         }
@@ -151,7 +151,7 @@ namespace DiceWarrior.SharedWorld
         void StartMatch()=>StartMatch(false);
         async void StartMatch(bool replaceActive)
         {
-            if(busy || Session==null) return;busy=true;Render();
+            if(busy || Session==null) return;ClearV5Feedback();busy=true;Render();
             try
             {
                 if(Account!=null)
@@ -168,7 +168,7 @@ namespace DiceWarrior.SharedWorld
                 string adventurer=adventurerSelection?.adventurerId ?? "wanderer";
                 if(replaceActive) Session.Restart(LoopJson.Copy(profile),seed,id,adventurer);
                 else Session.Start(LoopJson.Copy(profile),seed,id,adventurer);
-                lobby=false;menu="";notice="";v5LastChange="";suspendedV5Net=null;managementV5Net=null;
+                lobby=false;menu="";notice="";suspendedV5Net=null;managementV5Net=null;
             }
             catch(Exception error) { if(this) notice=error.Message; }
             finally { busy=false;if(this) Render(); }
@@ -186,6 +186,7 @@ namespace DiceWarrior.SharedWorld
         }
         void Resume()
         {
+            ClearV5Feedback();
             try { Session.Reload();lobby=false;menu="";notice=""; }
             catch(Exception error) { Session=null;notice=error.Message; }
             Render();
@@ -194,9 +195,9 @@ namespace DiceWarrior.SharedWorld
         {
             if(busy || Session==null) return;busy=true;var before=Session.Snapshot.state;
             try { Session.Execute(Session.Prepare(kind,arg));notice="";confirmAbandon=false;if(kind=="abandon" && UseV5Ui){menu="";managementV5Net=null;} }
-            catch(Exception error) { notice=error.Message;busy=false;Render();return; }
-            var after=Session.Snapshot.state;
-            if(UseV5Ui)v5LastChange=V5ChangeSummary(before,after,kind);
+            catch(Exception error) { ClearV5Feedback();notice=error.Message;busy=false;Render();return; }
+            var saved=Session.Snapshot;var after=saved.state;
+            if(UseV5Ui)RememberV5Feedback(before,saved,kind);
             if(!isActiveAndEnabled || !active || paused) { busy=false;return; }
             if(before!=null && after!=null && ui.ActiveScreen is CompetitionScreen screen)
             { ui.SetInputLocked(true);presentation=StartCoroutine(Present(screen.playback.Play(kind,before,after)));return; }
@@ -223,7 +224,7 @@ namespace DiceWarrior.SharedWorld
         public void Close()
         {
             if(busy && presentation==null) return;
-            CancelPresentation();lobby=true;menu="";diceDetails=null;suspendedV5Net=null;managementV5Net=null;v5DetailsReturn="";confirmAbandon=false;confirmNewGame=false;Render();
+            CancelPresentation();ClearV5Feedback();lobby=true;menu="";diceDetails=null;suspendedV5Net=null;managementV5Net=null;v5DetailsReturn="";confirmAbandon=false;confirmNewGame=false;Render();
         }
         void ShowDiceDetails(bool candidates=false,bool information=false)
         {
@@ -258,6 +259,7 @@ namespace DiceWarrior.SharedWorld
         }
         void Restore()
         {
+            ClearV5Feedback();
             try { if(Session==null) { store.RestoreBackup();Session=new CompetitionSession(store,definition); } else Session.RestoreBackup();notice="경기 백업을 복원했습니다.";confirmRestore=false;lobby=true;menu="";diceDetails=null;suspendedV5Net=null;managementV5Net=null;v5DetailsReturn=""; }
             catch(Exception error) { notice=error.Message; }
             Render();
@@ -275,7 +277,7 @@ namespace DiceWarrior.SharedWorld
         public void Render()
         {
             if(!active || !ui || !isActiveAndEnabled || paused) return;
-            var state=Session?.Snapshot.state;
+            var snapshot=Session?.Snapshot;var state=snapshot?.state;ValidateV5Feedback(snapshot);
             if(UseV5Ui) { RenderV5(state);return; }
             var data=new CompetitionScreenData {title="DICE WARRIOR · 공동 모험",subtitle="인간 1 + AI 3 · 경기 성장 보상은 검증 전까지 0",state=lobby?null:state,
                 status="같은 세계 · 각자의 모험",detail="",history="",onClose=CancelPresentation};

@@ -28,3 +28,12 @@ v5 로비·출전·계정·사건·완주·결과·상세를 위한 authored 중
 빈 action ID는 공용 버튼 계약 위반이다. tools4/tabs5를 초과하면 명시 오류이며, 후보 수는 로컬 페이지로 제한 없이 조회한다. primary 화면의 tools는2개까지이고 primary와 뒤로/동일ID 선택을 함께 전달하면 오류다. compactChoices는 로비에만 사용한다. UI13 contextBackground는 V5ShellAuthoring 업그레이드로 연결해야 한다. back는 Action만 받으므로 요청 중 동작 제한은 호출자가 콜백을 감싸거나 null로 제공한다. 상세 모달이 열린 동안 실제 raycast 차폐는 v5Net이 담당한다. 선택/탭/스크롤은 게임 상태를 변경하지 않으며 invoke의 권한·중복 방어는 기존 App 경계에 남긴다.
 
 - UI12 R01: ShowDiceGrowth는 확정 지급 이후임을 헤더/요약에도 표시한다. 이전 보상 선택의 미지급 문구를 남기지 않는다.
+
+## UI15 최근 확정 결과
+
+- `V5ShellData`에 recentTitle/recentBody/boardStatus/recentAction을 추가했다. 모두 App이 전달하는 UI 전용 값이며 저장 DTO가 아니다.
+- authored recentPanel/heading/text/status/recentButton과 기존 이동 주사위 travelTray를 바인딩한다. 보상/성장 상세와 AI 조회를 고정 진행 버튼 위의 같은 공간에서 보여준다. 읽기 버튼은 App이 전달한 콜백만 실행한다.
+- 보드의 지속 상태는 일시 notice와 별도 Text다. 실제 진행은 기존 choices[0]/boardPrimary로 유지하며 결과 확인을 필수 중간 단계로 만들지 않는다. 다른 화면과 Unbind에서는 결과 패널/콜백을 해제한다.
+- V5ShellAuthoring이 기존 프리팹에 참조를 연결하며, CompetitionPlayback의 SetBoardPresentation과 같이 사용한다. 이동·AI 처리 중 가시성과 입력 잠금은 UI15 직접 회귀에서 확인한다.
+
+- UI15 수정1: recentTitle이 있을 때만 결과 패널을 사용하고 최초 보드는 D6를 유지한다. SetBoardPresentation은 travel 명령의 실제 이동 중에만 결과를 숨기며, 관전 AI 진행 중에는 종료 사유/남은 인원을 유지하고 조회 버튼만 잠근다.

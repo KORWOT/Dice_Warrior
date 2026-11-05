@@ -1,5 +1,9 @@
 # CompetitionV5UiText.cs
 
+- UI15 입출력: CombatOutcome(before,after,command)는 같은 경기의 연속 확정 action에 한해 전투 실행 종료 또는 포기에서만 CompetitionV5Outcome(title/body/details)를 반환한다. 이동/굴림/보관/해제/리롤·진행 중 전투·다른 경기는 null이다. body는 HP/골드/명예/LV/남은XP 전후를3줄로 표시하고 details는 HP가 보상·레벨 회복 후 확정값임을 설명한다. 계산/지급 API를 호출하지 않는다.
+- UI15 순수 조회: SavedResult는 현재 저장 수치와 message만 표시해 과거 델타를 추정하지 않는다. BoardStatus는 개인 종료 이유/남은 인원과 전체 종료 사유를 독립 투영한다. AiResults는 lastRound의 이동/HP 전후/명예/완주/종료 상태만 표시하며 비어 있으면 기록 없음이다. App.V5Ui의 recent-results와 보드·전체 결과가 실제 호출자이며 EditMode 순수 회귀와 PlayMode 저장/복귀 검사가 경계를 확인한다.
+- UI15 상태/수명: CompetitionV5Outcome은 이 표시 파일 안의 일반 클래스이며 checkpoint 필드가 아니다. 보관·폐기·revision 검사는 App이 소유한다. 원본 상태·정의·난수를 변경하지 않으며 실제 검증/화면 크기 근거는 V5_COMBAT_FEEDBACK_15_REPORT를 따른다.
+
 - UI13: 사건 설명이 선택 제목으로 시작하면 그 접두어와 구분자만 제거하고 비용/조건/추가 효과는 그대로 표시한다. 결과 참가자 사이 빈 줄로 순위 묶음을 구분한다. App의 완주 후보는 Lap 설명만 사용하여 그 안에 포함된 Die/Gear의6면·장비비교를 중복하지 않는다. 지급 투영과 수치는 변경하지 않는다.
 
 - 역할: v5 카드/상세/결과 화면의 순수 한국어 설명 생성. Unity API나 외부 저장/서버를 사용하지 않는다.

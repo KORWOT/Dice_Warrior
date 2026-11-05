@@ -12,3 +12,7 @@
 ## V5_UI_IMPROVEMENT_11
 
 V5PlannedSkill은 skill 정의와 dieSlotIndices를 가진 순간 조회 DTO다. V5PreviewSkill에도 같은 슬롯 배열을 추가했다. Participant/Selection/CombatLog 저장 스키마는 불변이며 정의 복사나 명령 기록에 이 두 표시 DTO를 넣지 않는다. CompetitionV5Skills.PlanSteps/Preview가 생산하고 전투 표시와 신규 순수 투영 검사가 소비한다.
+
+## V5_COMBAT_FEEDBACK_15
+
+V5CombatPreview는 한 턴의 양쪽 HP 전후, 적 행동 후 보호막, 총 HP 피해·흡수·보호·받을 HP 피해, 적 행동 여부와 처치/사망/제한 턴 탈락을 추가로 제공한다. HP는 승리 보상·레벨업 회복 전 resolver 결과다. `retaliation`은 방어를 포함한 적 행동 여부이며 실제 HP 감소는 `retaliationDamage`로 구분한다. Selection 없음/AwaitRoll은 상태 `await-roll`과 빈 기술/기본값만 반환한다. 저장 DTO에는 추가하지 않으며 V5DiceAreaView의 실행 전 판단 표시가 소비한다.

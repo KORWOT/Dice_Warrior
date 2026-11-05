@@ -1,0 +1,168 @@
+{
+  "task": "UI15",
+  "date": "2026-10-25",
+  "status": "PASS",
+  "correctionRoundsUsed": 2,
+  "correctionRoundsLimit": 2,
+  "dotnetCompetition": {
+    "total": 235,
+    "passed": 235,
+    "failed": 0,
+    "skipped": 0,
+    "evidence": "artifacts/v5-combat-feedback-15/competition-round1.trx",
+    "sha256": "dfc0d5521eeedd62e0f230af6affd9473d28bd3f7033937560519a6604fbf323"
+  },
+  "unity": {
+    "ui-round2.json": {
+      "summary": {
+        "total": 29,
+        "passed": 29,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0
+      },
+      "duration": 68.43,
+      "sha256": "2fa4f8d008f3bad7f9c497084f013638f3848c5f8aaef92ae9eef3287935c10c"
+    },
+    "legacy-final.json": {
+      "summary": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0
+      },
+      "duration": 23.7,
+      "sha256": "3e7ccc11a25cab8202c9a61c95f9876ab0a7fd2069ffb29331fa4b1d834ae48b"
+    },
+    "editmode-final.json": {
+      "summary": {
+        "total": 235,
+        "passed": 235,
+        "failed": 0,
+        "skipped": 0,
+        "inconclusive": 0
+      },
+      "duration": 21.87,
+      "sha256": "f17b9750f4a0ef3be3e09c9cb829d65d63ae23c5dbdcdb9a3b4b84c9dc2eaa1f"
+    }
+  },
+  "captureEvidence": {
+    "capture-round2.json": {
+      "sha256": "cae55d9344619684dd69d24e7a9dcb04d7d510068029ce966d7ebaa95fad7898"
+    },
+    "ratio-round2.json": {
+      "sha256": "14a1f59cd6b4c6d6bb2b194002418a17904faa5bd26dee06fc461a89c419a13e"
+    }
+  },
+  "mainScreens": 8,
+  "ratioScreens": 8,
+  "screens": [
+    {
+      "file": "01-combat-ready.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "be5498a9262034e239f7b6031d2b2dc7bf83901676c14a1a3c823670132267e2"
+    },
+    {
+      "file": "02-combat-preview.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "80c128030f0f22be8a251d4a84121d3c1504051bc5a6e3aae9818a9ec1c7904d"
+    },
+    {
+      "file": "03-combat-info.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "a5cae7b1884dae37315e1c820d4a0881a8b1c633cde0ddd0bfc099627d87959b"
+    },
+    {
+      "file": "04-direct-menu.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "d9b0596dacf9dde1467f03a6bd54ad447064200e1196a89638639fc42a7561fc"
+    },
+    {
+      "file": "05-victory-growth.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "d480934b09bf182c5ea9374d634ad3bfd414aa293fa3228eaa715b537acbb640"
+    },
+    {
+      "file": "06-ai-results.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "94ae3af3d07dde230838cfda5885b1eb2051fc97d9faeca02d7f46fb1e024115"
+    },
+    {
+      "file": "07-spectator.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "9c4a59439ae49002c5ee66fbf620d19ff33a432b13f0a9ac6e76bc075b0311cf"
+    },
+    {
+      "file": "08-results.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "39ffc11890789ad5f5af9a3591cff7d37fdb8df0ed68731ec163c756ffe26b6e"
+    },
+    {
+      "file": "Validation/ai-results-360x640.png",
+      "width": 360,
+      "height": 640,
+      "sha256": "ab53c5f25aad9044f7a659229f4ad349bb6e16a6b92cec11a295a254e07fc5dd"
+    },
+    {
+      "file": "Validation/ai-results-390x844.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "6099fd64a6afb860b12e6edb853fcef1688092fd1d70cdc4e943a719a644f704"
+    },
+    {
+      "file": "Validation/combat-360x640.png",
+      "width": 360,
+      "height": 640,
+      "sha256": "95e19d9757d6ec2b43a286dbcce3a1b688a8cf2478dc74e5013adbdf777bb2ea"
+    },
+    {
+      "file": "Validation/combat-390x844.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "c214acfb8222f8f5b64a502f43dfd837c13f4b563df45cb04f369e5198fbdd04"
+    },
+    {
+      "file": "Validation/spectator-360x640.png",
+      "width": 360,
+      "height": 640,
+      "sha256": "1911f190c004ec08704cc10000e6af47177039066df50ec7f22878cec9279046"
+    },
+    {
+      "file": "Validation/spectator-390x844.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "e88b06836e1cf0832b7ab72ff60a27dd7604bfb36b1d6a811e80f16bbdfc5589"
+    },
+    {
+      "file": "Validation/victory-360x640.png",
+      "width": 360,
+      "height": 640,
+      "sha256": "dbf8f9bb82994f23ed33f6f81b68a43ed2d8a008fe6b98f1cc04a49f8bc6a1af"
+    },
+    {
+      "file": "Validation/victory-390x844.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "79dc498b81144b987d9620f3008169899b4d9da6178d737f9fb99ff28f370a92"
+    }
+  ],
+  "visualReview": "16 final images inspected; bounded text/controls; main result buttons also checked by actual image pixels and PlayMode render target",
+  "fixture": "Actual authored prefab in Editor PreviewScene with isolated legal checkpoint; specified dice/HP/near-level XP fixtures; actual execute/save/reward/AI commands. No real user save.",
+  "notRun": [
+    "Physical mobile device touch and GPU",
+    "Real safe area and system text scaling",
+    "Long real-user playthrough",
+    "HTTP/Firebase/server settlement"
+  ],
+  "prefabGuid": "ae62a590a196a5944815a56b969507cf",
+  "userState": "Preserved; detailed hashes and allowed file set in artifacts/v5-combat-feedback-15/integrity.json"
+}

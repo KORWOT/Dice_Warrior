@@ -23,6 +23,8 @@ public static class V5UiRedesignCapture
     const string Evidence="artifacts/v5-ui-redesign-12/run-01";
     const string LayoutOutput="Docs/UI/V5Layout";
     const string LayoutEvidence="artifacts/v5-ui-layout-13/run-01";
+    const string FeedbackOutput="Docs/UI/V5Feedback";
+    const string FeedbackEvidence="artifacts/v5-combat-feedback-15/captures";
     public static object Upgrade()
     {
         if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Stopped Editor required");
@@ -149,6 +151,52 @@ public static class V5UiRedesignCapture
         }
         File.WriteAllText(Path.Combine(LayoutEvidence,"ratio-audit.json"),JsonConvert.SerializeObject(checks,Formatting.Indented));return new {checks};
     }
+    public static async Task<object> FeedbackCapture()
+    {
+        var rows=new List<object>();Directory.CreateDirectory(FeedbackOutput);
+        using(var c=new Context(5,720,1280,false,FeedbackEvidence))
+        {
+            c.OpenLocal();c.Click("새 모험 시작");c.SetCombat(3);
+            rows.Add(await c.Capture("01-combat-ready","전투 준비 · 모험 메뉴 직접 진입","isolated legal three-dice fixture; no roll result",true,FeedbackOutput));
+            c.Cmd("combat_roll");c.SetFaces("arcane","arcane","sword");
+            c.Edit(d=>{var p=d.state.participants[0];p.enemy.attack=16;p.enemy.intent=Intent.Heavy;p.hp=p.maxHp-12;});
+            rows.Add(await c.Capture("02-combat-preview","실행 전 · 총 피해와 HP 예상","physical face fixture; actual deterministic resolver; heavy enemy intent",true,FeedbackOutput));
+            c.Tap(c.Screen.v5Area.combatInfo);rows.Add(await c.Capture("03-combat-info","적 상성·기술·행동 제한","actual read-only information callback",true,FeedbackOutput));c.Tap(c.Screen.v5Net.close);
+            c.Tap(c.Screen.v5Area.menu);rows.Add(await c.Capture("04-direct-menu","전투에서 모험 메뉴로 바로 이동","direct production callback; checkpoint preserved",true,FeedbackOutput));c.Tap(c.Screen.v5Shell.back);
+            c.MakeFeedbackVictory();rows.Add(await c.Capture("05-victory-growth","승리 · 보상과 성장 확정 요약","isolated near-level-up fixture then actual execute/save/reward/AI processing",true,FeedbackOutput));
+            c.Tap(c.Screen.v5Shell.recentButton);rows.Add(await c.Capture("06-ai-results","확정 보상과 직전 AI 행동 조회","actual read-only result callback; all AI records scrollable",true,FeedbackOutput));c.Tap(c.Screen.v5Shell.back);
+            c.Click("모험 메뉴");c.Click("내 모험 포기");c.Click("내 모험 포기 확정");
+            rows.Add(await c.Capture("07-spectator","개인 종료 · 남은 AI 진행","actual abandon command; persistent reason and remaining participants",true,FeedbackOutput));
+            int guard=0;while(!c.app.Session.Snapshot.state.finished && guard++<31)c.Tap(c.Screen.v5Shell.boardPrimary);
+            if(!c.app.Session.Snapshot.state.finished)throw new InvalidOperationException("Feedback capture did not finish the match");
+            rows.Add(await c.Capture("08-results","최종 순위와 결과 조회","actual AI advance commands; no rank injection",true,FeedbackOutput));
+        }
+        File.WriteAllText(Path.Combine(FeedbackOutput,"manifest.json"),JsonConvert.SerializeObject(rows,Formatting.Indented));
+        return new {count=rows.Count,path=FeedbackOutput+"/manifest.json"};
+    }
+    public static async Task<object> FeedbackRatioAudit()
+    {
+        var checks=new List<string>();
+        foreach(var size in new[]{new Vector2Int(390,844),new Vector2Int(360,640)})
+        using(var c=new Context(5,size.x,size.y,true,FeedbackEvidence))
+        {
+            c.OpenLocal();c.Click("새 모험 시작");c.SetCombat(3);c.Cmd("combat_roll");c.SetFaces("arcane","arcane","sword");
+            await c.Capture("combat-"+size.x+"x"+size.y,"전투 예상 비율 검수","synthetic safe area",true,FeedbackEvidence);
+            var area=c.Screen.v5Area;CheckText(area.intent);CheckText(area.turnSummary);CheckBounds(area.turnSummary.transform,c.ui.Root.safeArea,"turn forecast");
+            foreach(var row in area.previewRows)if(row.gameObject.activeInHierarchy)CheckText(row);
+            foreach(var button in new[]{area.menu,area.combatInfo,area.diceInfo,area.execute,area.reroll}){CheckBounds(button.transform,c.ui.Root.safeArea,"combat button");CheckText(button.label);}
+            c.MakeFeedbackVictory();await c.Capture("victory-"+size.x+"x"+size.y,"승리 결과 비율 검수","synthetic safe area; actual victory command",true,FeedbackEvidence);
+            var shell=c.Screen.v5Shell;
+            foreach(var text in new[]{shell.recentHeading,shell.recentText,shell.boardStatus})CheckText(text);
+            CheckBounds(shell.recentPanel.transform,c.ui.Root.safeArea,"recent result");CheckBounds(shell.recentButton.transform,c.ui.Root.safeArea,"AI results action");
+            c.Tap(shell.recentButton);await c.Capture("ai-results-"+size.x+"x"+size.y,"AI 결과 비율 검수","synthetic safe area; read-only scroll",true,FeedbackEvidence);CheckBounds(shell.back.transform,c.ui.Root.safeArea,"results back");c.Tap(shell.back);
+            c.Click("모험 메뉴");c.Click("내 모험 포기");c.Click("내 모험 포기 확정");
+            await c.Capture("spectator-"+size.x+"x"+size.y,"관전자 비율 검수","synthetic safe area; actual abandon command",true,FeedbackEvidence);
+            foreach(var text in new[]{shell.recentHeading,shell.recentText,shell.boardStatus})CheckText(text);
+            checks.Add(size.x+"x"+size.y+" combat forecast/menu, victory, AI result scroll, spectator status");
+        }
+        File.WriteAllText(Path.Combine(FeedbackEvidence,"ratio-audit.json"),JsonConvert.SerializeObject(checks,Formatting.Indented));return new {checks};
+    }
     static void CheckBounds(Transform target,RectTransform parent,string label)
     {if(!Contains(parent.rect,Bounds((RectTransform)target,parent)))throw new InvalidOperationException("Safe area overflow: "+label);}
     static void CheckText(Text text)
@@ -229,6 +277,16 @@ public static class V5UiRedesignCapture
             Edit(d=>{var p=d.state.participants[0];for(int i=0;i<kinds.Length;i++)
             {var faces=CompetitionV5Content.Faces(d.state.definition,p.adventurerId,p.dice[i].definitionId);var key=kinds[i];int index=Array.FindIndex(faces,f=>key=="blank"?f.kind==V5FaceKind.Blank:key=="arcane"?f.name=="비전":f.name=="검격");if(index<0)throw new InvalidOperationException("Missing physical face "+key+" in "+string.Join(",",faces.Select(f=>f.id)));p.v5.selection.results[i].faceIndex=index;p.v5.selection.results[i].faceId=faces[index].id;}});
         }
+        public void MakeFeedbackVictory()
+        {
+            int level=app.Session.Snapshot.state.participants[0].level;
+            Edit(d=>{var p=d.state.participants[0];p.enemy.hp=1;p.enemy.shield=0;p.hp=p.maxHp-12;p.xp=p.level*8-1;
+                var offered=p.offer.choices.Single(x=>x.id==p.offer.selectedChoiceId);var original=d.state.definition.encounters.Single(x=>x.id==offered.id);
+                offered.gold=original.gold;offered.xp=original.xp;offered.honor=original.honor;});
+            Tap(Screen.v5Area.execute);
+            if(app.Session.Snapshot.state.participants[0].phase==CompetitionPhase.Combat || app.Session.Snapshot.state.participants[0].level<=level || !Screen.v5Shell.recentPanel.activeSelf)
+                throw new InvalidOperationException("Expected committed victory feedback");
+        }
         public async Task<object> Capture(string id,string title,string setup,bool render=true,string destination=null)
         {
             ui.Root.safeArea.anchorMin=inset?new Vector2(.03f,.04f):Vector2.zero;ui.Root.safeArea.anchorMax=inset?new Vector2(.97f,.96f):Vector2.one;ui.Root.safeArea.offsetMin=ui.Root.safeArea.offsetMax=Vector2.zero;
@@ -236,9 +294,23 @@ public static class V5UiRedesignCapture
             Canvas.ForceUpdateCanvases();
             if(render)app.Render();
             Canvas.ForceUpdateCanvases();
-            EditorApplication.QueuePlayerLoopUpdate();await Task.Delay(100);Canvas.ForceUpdateCanvases();camera.Render();
+            EditorApplication.QueuePlayerLoopUpdate();await Task.Delay(100);Canvas.ForceUpdateCanvases();
+            camera.Render();
             var previous=RenderTexture.active;RenderTexture.active=target;var texture=new Texture2D(target.width,target.height,TextureFormat.RGB24,false);
-            try{texture.ReadPixels(new Rect(0,0,target.width,target.height),0,0);texture.Apply();Directory.CreateDirectory(destination??Output);File.WriteAllBytes(Path.Combine(destination??Output,id+".png"),texture.EncodeToPNG());}
+            try{texture.ReadPixels(new Rect(0,0,target.width,target.height),0,0);texture.Apply();
+                if(destination==FeedbackOutput && id=="08-results")
+                {
+                    foreach(var tool in Screen.v5Shell.tools.Where(x=>x.gameObject.activeInHierarchy))
+                    {
+                        var corners=new Vector3[4];tool.label.rectTransform.GetWorldCorners(corners);
+                        var points=corners.Select(x=>RectTransformUtility.WorldToScreenPoint(camera,x)).ToArray();
+                        int x=Mathf.FloorToInt(points.Min(v=>v.x)),y=Mathf.FloorToInt(points.Min(v=>v.y));
+                        int width=Mathf.CeilToInt(points.Max(v=>v.x))-x,height=Mathf.CeilToInt(points.Max(v=>v.y))-y;
+                        if(texture.GetPixels(x,y,width,height).Count(pixel=>pixel.r>.63f&&pixel.g>.63f&&pixel.b>.57f)<=5)
+                            throw new InvalidOperationException("Missing rendered result button label: "+tool.BoundId);
+                    }
+                }
+                Directory.CreateDirectory(destination??Output);File.WriteAllBytes(Path.Combine(destination??Output,id+".png"),texture.EncodeToPNG());}
             finally{RenderTexture.active=previous;Object.DestroyImmediate(texture);}
             var foreground=Screen.v5Net.gameObject.activeInHierarchy?Screen.v5Net.transform:Screen.transform;
             return new {id,title,setup,width=target.width,height=target.height,file=id+".png",modal=Screen.v5Net.gameObject.activeInHierarchy,buttons=foreground.GetComponentsInChildren<CommonButtonView>().Where(b=>b.gameObject.activeInHierarchy).Select(b=>new {text=b.label.text,enabled=b.button.interactable}).ToArray(),text=foreground.GetComponentsInChildren<Text>().Where(t=>t.gameObject.activeInHierarchy&&!string.IsNullOrEmpty(t.text)).Select(t=>t.text).ToArray()};

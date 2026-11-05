@@ -24,18 +24,24 @@ namespace DiceWarrior.SharedWorld.Editor
             var font=view.heading.font;view.GetComponent<Image>().color=new Color(.063f,.106f,.176f);
             Rect(view.heading.rectTransform,30,12,470,36);Style(view.heading,20);
             Rect(view.enemy.rectTransform,30,58,455,40);Style(view.enemy,21);Health(view.enemyFill,30,108,660);
-            Rect(view.intent.rectTransform,30,127,660,28);Style(view.intent,18);
-            Button(view.combatInfo,510,6,180,96,18);
-            view.battleStage=Panel(view.layout,"V5 battle stage",30,164,660,144,new Color(.08f,.13f,.21f));
-            view.heroGlyph=Glyph(view.battleStage,"Adventurer",LoopGlyph.Pawn,130,84,76,76,new Color(.32f,.84f,.8f));
-            view.enemyGlyph=Glyph(view.battleStage,"Enemy",LoopGlyph.Enemy,530,84,76,76,new Color(.94f,.48f,.38f));
-            view.effectGlyph=Glyph(view.battleStage,"Skill effect",LoopGlyph.Sword,330,84,60,60,new Color(.95f,.74f,.36f));view.effectGlyph.gameObject.SetActive(false);
-            view.stageHeroName=Text(view.battleStage,"Adventurer name",font,16,20,122,190,22);view.stageHeroName.alignment=TextAnchor.MiddleCenter;
-            view.stageEnemyName=Text(view.battleStage,"Enemy name",font,16,450,122,190,22);view.stageEnemyName.alignment=TextAnchor.MiddleCenter;
+            Rect(view.intent.rectTransform,30,127,660,48);Style(view.intent,17);
+            if(!view.menu)
+            {
+                var existing=view.layout.Find("Direct adventure menu");
+                if(existing)view.menu=existing.GetComponent<CommonButtonView>();
+                else {var go=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Shared/UI/Prefabs/CommonButtonView.prefab"),view.layout);go.name="Direct adventure menu";view.menu=go.GetComponent<CommonButtonView>();view.menu.label.font=font;}
+            }
+            Button(view.menu,510,6,180,96,18);
+            view.battleStage=Panel(view.layout,"V5 battle stage",30,182,660,116,new Color(.08f,.13f,.21f));
+            view.heroGlyph=Glyph(view.battleStage,"Adventurer",LoopGlyph.Pawn,130,60,56,56,new Color(.32f,.84f,.8f));
+            view.enemyGlyph=Glyph(view.battleStage,"Enemy",LoopGlyph.Enemy,530,60,56,56,new Color(.94f,.48f,.38f));
+            view.effectGlyph=Glyph(view.battleStage,"Skill effect",LoopGlyph.Sword,330,60,40,40,new Color(.95f,.74f,.36f));view.effectGlyph.gameObject.SetActive(false);
+            view.stageHeroName=Text(view.battleStage,"Adventurer name",font,16,20,92,190,22);view.stageHeroName.alignment=TextAnchor.MiddleCenter;
+            view.stageEnemyName=Text(view.battleStage,"Enemy name",font,16,450,92,190,22);view.stageEnemyName.alignment=TextAnchor.MiddleCenter;
             view.stageAction=Text(view.battleStage,"Current skill",font,18,188,8,284,32);view.stageAction.alignment=TextAnchor.MiddleCenter;
-            view.impact=Text(view.battleStage,"Actual impact",font,16,215,100,230,44);view.impact.alignment=TextAnchor.MiddleCenter;
-            Rect(view.player.rectTransform,30,322,660,32);Style(view.player,21);Health(view.playerFill,30,360,660);
-            Rect(view.rollZone,30,376,660,352);view.rollZone.GetComponent<Image>().color=new Color(.11f,.17f,.26f);
+            view.impact=Text(view.battleStage,"Actual impact",font,16,215,72,230,44);view.impact.alignment=TextAnchor.MiddleCenter;
+            Rect(view.player.rectTransform,30,310,660,28);Style(view.player,21);Health(view.playerFill,30,346,660);
+            Rect(view.rollZone,30,362,660,352);view.rollZone.GetComponent<Image>().color=new Color(.11f,.17f,.26f);
             view.holdHint.transform.SetParent(view.rollZone,false);view.holdZone.gameObject.SetActive(false);
             Rect(view.rollHint.rectTransform,18,12,624,34);Rect(view.holdHint.rectTransform,18,49,624,26);Style(view.rollHint,21);Style(view.holdHint,16);
             view.cubes=new V5DieGraphic[3];
@@ -49,17 +55,19 @@ namespace DiceWarrior.SharedWorld.Editor
                 Rect(button.label.rectTransform,5,176,190,68);Style(button.label,16);button.label.alignment=TextAnchor.MiddleCenter;
                 RecordButton(button);Record(view.faces[i]);Record(view.cubes[i]);
             }
-            view.previewHeading=Text(view.layout,"Skill preview heading",font,24,30,748,660,36);view.previewHeading.text="발동 예상";
+            view.previewHeading=Text(view.layout,"Skill preview heading",font,22,30,722,660,28);view.previewHeading.text="발동 예상";
             view.previewRows=new Text[3];view.previewRowPanels=new Image[3];
             for(int i=0;i<3;i++)
             {
-                var panel=Panel(view.layout,"Skill preview row "+(i+1),30,792+i*80,660,72,new Color(.11f,.17f,.26f));
-                view.previewRowPanels[i]=panel.GetComponent<Image>();view.previewRows[i]=Text(panel,"Skill summary",font,22,16,8,628,56);
+                var panel=Panel(view.layout,"Skill preview row "+(i+1),30,754+i*68,660,62,new Color(.11f,.17f,.26f));
+                view.previewRowPanels[i]=panel.GetComponent<Image>();view.previewRows[i]=Text(panel,"Skill summary",font,20,16,6,628,50);
                 panel.gameObject.SetActive(false);Record(view.previewRows[i]);
             }
-            Rect(view.preview.rectTransform,46,802,628,216);Style(view.preview,22);
+            Rect(view.preview.rectTransform,46,764,628,184);Style(view.preview,22);
+            view.turnSummary=Text(view.layout,"Turn outcome preview",font,18,30,962,660,70);
             Button(view.diceInfo,30,1040,200,96,18);
-            view.feedbackScroll=Scroll(view.layout,"Combat feedback scroll",view.notice,246,1040,444,96);Style(view.notice,16);
+            Button(view.combatInfo,250,1040,200,96,18);
+            view.feedbackScroll=Scroll(view.layout,"Combat feedback scroll",view.notice,470,1040,220,96);Style(view.notice,16);
             view.roll.transform.SetParent(view.footer,false);Button(view.roll,30,0,660,96,24);
             Button(view.reroll,30,0,242,96,21);Button(view.execute,290,0,400,96,24);
             foreach(var value in new UnityEngine.Object[]{view.stageHeroName,view.stageEnemyName,view.stageAction,view.impact,view.rollZone.GetComponent<Image>(),view.GetComponent<Image>()})Record(value);

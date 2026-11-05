@@ -12,3 +12,14 @@
 
 - RatioAudit:390×844/360×640과3%/4%가상안전영역에서 실제 보드·D6트레이·CTA 경계/보드 글자 높이/이동 D6 41투영프레임의 제목 비충돌을 검사하고 artifacts에 추가 비율 사진4장과 결과를 기록한다.
 - Capture 배치 순서: 가상 안전영역 적용→Canvas.ForceUpdateCanvases→요청된 app.Render→Canvas 갱신 후 촬영한다. PreviewScene의 이전 rect로 배율이 계산되는 것을 방지한다. render=false는 재Bind를 생략하여 실제 연출의 샘플 프레임을 보존한다. R04 수정·사용자 승인 추가1회에서 두 비율·총82프레임 및 사진4장 확인 PASS. 증거와 실기기 NOT_RUN은 REPORT에 기록한다.
+
+## UI15 주요 화면과 비율
+
+- `FeedbackCapture`는 Docs/UI/V5Feedback에 전투 준비/예상/정보/직접 메뉴/승리 성장/AI 조회/관전/최종 결과8장과 manifest를 작성한다. 기존 UI12/UI13 캡처 경로는 덮어쓰지 않는다.
+- `MakeFeedbackVictory`는 고유한 격리 fixture에 레벨업 직전 XP/적 HP1을 설정한 후 실제 App 버튼·Session 저장·승리/AI 처리를 사용한다. 지급/순위를 직접 주입하지 않는다. 시험 상태와 실제 사용자 플레이를 구분한다.
+- `FeedbackRatioAudit`는390×844/360×640 및3%/4% 모의 안전영역에서 예상/직접 메뉴, 최근 결과/AI 조회/관전의 텍스트/경계와 사진8장을 확인한다. Evidence는 artifacts/v5-combat-feedback-15/captures 아래에만 작성한다.
+- 실제 시간·포인터·저장 불변은 PlayMode 검사가 담당하고 이 도구는 PreviewScene에 작성된 프리팹을 렌더한다. 파일 생성과 직접 시각 확인·실기기 검증을 각각 보고한다.
+
+- UI15 수정1: 승리 촬영 fixture는 selected offer의 골드/XP/명예를 현재 원본 EncounterDefinition에서 복사한다. 기본0 보상 fixture를 성장 사례로 잘못 표시하지 않으며 실제 execute 후 레벨 증가가 없으면 촬영을 실패시킨다.
+
+- UI15 수정2: 최종 결과의 두 헤더 버튼은 이미지의 실제 밝은 글자 픽셀이 없으면 캡처 실패로 처리한다. 미리보기에서 보인 누락은 보존된 초기 PNG와 새 경로로 연 최종 PNG에서 동일한 글자 픽셀478개로 확인되어 실제 파일 결함으로 재현되지 않았다. 촬영용 Text 강제 재초기화는 채택하지 않는다. 실제 PlayMode의 같은 경로도 픽셀 검사를 통과했다.

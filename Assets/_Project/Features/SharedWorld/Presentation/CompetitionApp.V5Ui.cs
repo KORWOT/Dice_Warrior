@@ -9,12 +9,31 @@ namespace DiceWarrior.SharedWorld
     public sealed partial class CompetitionApp
     {
         string v5DetailsReturn="",v5LastChange="";
+        CompetitionV5Outcome v5RecentOutcome;
+        string v5FeedbackMatchId;
+        long v5FeedbackRevision=-1;
+        int v5FeedbackGeneration;
         V5DiceNetData suspendedV5Net,managementV5Net;
+        void ClearV5Feedback()
+        {v5LastChange="";v5RecentOutcome=null;v5FeedbackMatchId=null;v5FeedbackRevision=-1;}
+        void RememberV5Feedback(CompetitionState before,CompetitionDocument saved,string kind)
+        {
+            ClearV5Feedback();
+            if(saved?.state==null)return;
+            v5FeedbackMatchId=saved.state.matchId;v5FeedbackRevision=saved.revision;v5FeedbackGeneration=saved.generation;
+            v5RecentOutcome=CompetitionV5UiText.CombatOutcome(before,saved.state,kind);
+            v5LastChange=V5ChangeSummary(before,saved.state,kind);
+        }
+        void ValidateV5Feedback(CompetitionDocument current)
+        {
+            if(v5FeedbackRevision>=0 && (current?.state==null || current.state.matchId!=v5FeedbackMatchId ||
+                current.revision!=v5FeedbackRevision || current.generation!=v5FeedbackGeneration))ClearV5Feedback();
+        }
         bool UseV5Ui=>CompetitionV5Content.IsEnabled(!lobby && Session?.Snapshot.state!=null?Session.Snapshot.state.definition:definition);
         static bool IsDetails(string value)=>value=="stats" || value=="skills" || value=="elements" || value=="tags" || value=="effects";
         void OpenV5Details(string section="stats",V5DiceNetData fromNet=null)
         {v5DetailsReturn=menu;suspendedV5Net=fromNet;diceDetails=null;menu=section;detailPage=0;Render();}
-        void V5Menu(string value){menu=value;diceDetails=null;if(value=="adventure")managementV5Net=null;Render();}
+        void V5Menu(string value){if(busy)return;menu=value;diceDetails=null;if(value=="adventure")managementV5Net=null;Render();}
         void OpenV5Management(V5DiceNetData fromNet)
         {managementV5Net=fromNet;diceDetails=null;menu="adventure";Render();}
         public bool HandleBack()
@@ -184,14 +203,21 @@ namespace DiceWarrior.SharedWorld
                     Add("details","능력치 상세","현재 경기의 확정 능력치",()=>OpenV5Details());Tool("backup","경기 백업 확인",InspectBackup);Back();
                     Tool("motion","동작 줄이기: "+(ReducedMotion?"켜짐":"꺼짐"),()=>SetReducedMotion(!ReducedMotion));
                 }
+                else if(menu=="recent-results")
+                {
+                    shell.mode="recent-results";shell.title="최근 결과 · 읽기 전용";shell.summary="저장된 결과 조회 · 보상과 모험 진행은 유지됩니다.";
+                    shell.body=(v5RecentOutcome?.details ?? ((string.IsNullOrEmpty(v5LastChange)?"":v5LastChange+"\n\n")+CompetitionV5UiText.SavedResult(state)))+
+                        "\n\n"+CompetitionV5UiText.BoardStatus(state)+"\n\n"+CompetitionV5UiText.AiResults(state);Back();
+                }
                 else if(state.finished)
                 {
                     shell.mode="results";shell.title="경기 결과 · 나의 "+p.rank+"위";shell.summary=V5EndReason(state);shell.body=CompetitionV5UiText.Results(state)+"\n\n영구 재화 지급 0 · 현재 공동 경기 순위 보상은 없습니다.";
-                    shell.primary=Item("lobby","로비로","현재 경기 결과를 보존합니다.",Close);Tool("details","능력치 상세",()=>OpenV5Details());
+                    if(v5RecentOutcome!=null)shell.body=v5RecentOutcome.details+"\n\n"+shell.body;
+                    shell.primary=Item("lobby","로비로","현재 경기 결과를 보존합니다.",Close);Tool("details","능력치 상세",()=>OpenV5Details());Tool("ai-results","AI 결과 보기",()=>V5Menu("recent-results"));
                 }
                 else if(p.phase==CompetitionPhase.Combat)
                 {
-                    data.shell=null;data.v5Combat=true;data.v5Command=Dispatch;data.v5DiceInfo=()=>ShowDiceDetails();data.v5CombatInfo=()=>ShowDiceDetails(information:true);data.v5Notice=V5Notice();
+                    data.shell=null;data.v5Combat=true;data.v5Command=Dispatch;data.v5DiceInfo=()=>ShowDiceDetails();data.v5CombatInfo=()=>ShowDiceDetails(information:true);data.v5Menu=()=>V5Menu("adventure");data.v5Notice=V5Notice();
                 }
                 else if(p.phase==CompetitionPhase.Encounter)
                 {
@@ -214,6 +240,12 @@ namespace DiceWarrior.SharedWorld
                     shell.mode=p.phase==CompetitionPhase.Complete?"spectator":"board";shell.showBoard=true;
                     shell.title=p.phase==CompetitionPhase.Complete?"내 모험 종료 · 남은 경기 진행":"공동 모험 · 내 차례";
                     shell.summary+=$"\nHP {p.hp}/{p.maxHp} · 골드 {p.gold} · LV {p.level} · XP {p.xp}";
+                    shell.boardStatus=CompetitionV5UiText.BoardStatus(state);
+                    if(v5RecentOutcome!=null){shell.recentTitle=v5RecentOutcome.title;shell.recentBody=v5RecentOutcome.body;}
+                    else if(state.lastRound.Count>0 || p.finished || p.eliminated)
+                    {shell.recentTitle="저장된 최근 결과";shell.recentBody=CompetitionV5UiText.SavedResult(state);}
+                    if(v5RecentOutcome!=null || state.lastRound.Count>0 || p.finished || p.eliminated)
+                        shell.recentAction=Item("ai-results","AI 결과 보기","내 결과와 직전 AI 행동을 조회합니다.",()=>V5Menu("recent-results"));
                     if(p.phase==CompetitionPhase.Complete)
                         Command("다음 AI 라운드",$"내 결과: {(p.eliminated?"탈락":"완료")} · "+p.message+$"\n남은 모험가 {state.participants.Count(x=>!x.finished&&!x.eliminated)}명","advance");
                     else Command("이동 주사위 굴리기","현재 "+d.world.places[p.position].name+$" · 다음 목표 {p.completedLaps+1}바퀴 완주","travel");

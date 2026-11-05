@@ -57,6 +57,13 @@ namespace DiceWarrior.SharedWorld
             var copy = LoopJson.Copy(p);
             var log = CompetitionElements.ResolvePlanned(d, copy, plan);
             return new V5CombatPreview { noOp = plan.Length == 0, status = plan.Length == 0 ? "no-op" : "ready",
+                playerHpBefore = log.playerHpBefore, playerHpAfter = log.playerHpAfter,
+                enemyHpBefore = log.enemyHpBefore, enemyHpAfter = log.enemyHpAfter, enemyShieldAfter = copy.enemy.shield,
+                damageApplied = log.enemyHpBefore - log.enemyHpAfter,
+                shieldAbsorbed = log.skills.Sum(skill => skill.enemyShieldBefore - skill.enemyShieldAfter),
+                block = log.playerBlock, retaliation = log.retaliation, retaliationDamage = log.retaliationDamage,
+                enemyDefeated = log.enemyHpAfter <= 0, playerDefeated = log.playerHpAfter <= 0,
+                turnLimitDefeat = log.playerHpAfter > 0 && log.enemyHpAfter > 0 && p.encounterTurns + 1 >= d.maxCombatTurns,
                 skills = plan.Select((skill, i) => new V5PreviewSkill { skillId = skill.id, name = skill.name,
                     dieSlotIndices = steps[i].dieSlotIndices,
                     damageType = copy.v4.lastTurn.skills[i].damageType, damageApplied = copy.v4.lastTurn.skills[i].damageApplied,

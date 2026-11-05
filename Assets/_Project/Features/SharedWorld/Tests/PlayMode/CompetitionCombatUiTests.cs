@@ -171,6 +171,8 @@ namespace DiceWarrior.SharedWorld.Tests
                         Assert.That(area.preview.gameObject.activeInHierarchy,Is.True);
                         Assert.That(area.previewRows.All(x=>!x.gameObject.activeInHierarchy && string.IsNullOrEmpty(x.text)),Is.True,"Unrevealed skill rows must not retain the new result.");
                         Assert.That(area.previewRowPanels.All(x=>!x.gameObject.activeInHierarchy),Is.True);
+                        Assert.That(area.turnSummary.text,Does.Not.Contain("받을 HP 피해"),"Forecast must not disclose unrevealed reroll results.");
+                        Assert.That(area.menu.button.interactable,Is.False,"Direct menu follows the existing presentation lock.");
                     }
                     yield return null;
                 }
@@ -201,10 +203,15 @@ namespace DiceWarrior.SharedWorld.Tests
             for(int i=0;i<visible.Length;i++)for(int j=i+1;j<visible.Length;j++)
                 Assert.That(Bounds((RectTransform)visible[i].transform,area.layout).Overlaps(Bounds((RectTransform)visible[j].transform,area.layout)),Is.False,"Dice cards must not overlap");
             AssertPreviewGeometry();
+            Assert.That(Bounds(area.heroGlyph.rectTransform,area.battleStage).Overlaps(Bounds(area.stageHeroName.rectTransform,area.battleStage)),Is.False,"Hero glyph must not obscure its name.");
+            Assert.That(Bounds(area.enemyGlyph.rectTransform,area.battleStage).Overlaps(Bounds(area.stageEnemyName.rectTransform,area.battleStage)),Is.False,"Enemy glyph must not obscure its name.");
         }
         void AssertPreviewRows(CompetitionState state)
         {
             var area=screen.v5Area;var p=state.participants[0];var steps=CompetitionV5Skills.PlanSteps(state.definition,p,p.v5.selection.results);
+            Assert.That(area.turnSummary.text,Does.Contain("받을 HP 피해").And.Contain("승리 보상/레벨 회복 전"));
+            var actual=LoopJson.Copy(state);CompetitionCommandRules.Apply(actual,"combat_execute","");
+            Assert.That(area.turnSummary.text,Does.Contain("받을 HP 피해 "+actual.participants[0].lastTurn.retaliationDamage));
             Assert.That(area.previewRows,Has.Length.EqualTo(3));Assert.That(area.previewRowPanels,Has.Length.EqualTo(3));
             Assert.That(area.previewRows.Count(x=>x.gameObject.activeInHierarchy),Is.EqualTo(steps.Length));
             Assert.That(area.previewRowPanels.Count(x=>x.gameObject.activeInHierarchy),Is.EqualTo(steps.Length));
@@ -223,6 +230,9 @@ namespace DiceWarrior.SharedWorld.Tests
             var area=screen.v5Area;var safe=Bounds(ui.safeArea,area.layout);var heading=Bounds(area.previewHeading.rectTransform,area.layout);
             Assert.That(area.previewHeading.preferredHeight,Is.LessThanOrEqualTo(area.previewHeading.rectTransform.rect.height+1),"Preview heading must fit.");
             Assert.That(heading.Overlaps(Bounds(area.rollZone,area.layout)),Is.False,"Preview heading must follow the dice tray.");
+            var outcome=Bounds(area.turnSummary.rectTransform,area.layout);
+            AssertContained(outcome,safe,"Turn outcome preview");
+            Assert.That(area.turnSummary.preferredHeight,Is.LessThanOrEqualTo(area.turnSummary.rectTransform.rect.height+1),"Turn outcome text must fit.");
             Rect? previous=null;
             for(int i=0;i<area.previewRows.Length;i++)
             {
@@ -231,7 +241,8 @@ namespace DiceWarrior.SharedWorld.Tests
                 AssertContained(bounds,safe,"Preview skill panel");AssertContained(Bounds(text.rectTransform,area.layout),bounds,"Preview skill text");
                 Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),"A skill's two-line result must fit.");
                 Assert.That(bounds.Overlaps(heading) || bounds.Overlaps(Bounds(area.rollZone,area.layout)),Is.False,"Skill rows must not overlap the title or dice tray.");
-                foreach(var control in new[]{area.roll,area.reroll,area.execute,area.diceInfo,area.combatInfo})
+                Assert.That(bounds.Overlaps(outcome),Is.False,"Skills and total outcome must have separate space.");
+                foreach(var control in new[]{area.roll,area.reroll,area.execute,area.diceInfo,area.combatInfo,area.menu})
                     if(control.gameObject.activeInHierarchy)Assert.That(bounds.Overlaps(Bounds((RectTransform)control.transform,area.layout)),Is.False,"Skill rows must not cover "+control.BoundId);
                 Assert.That(bounds.Overlaps(Bounds(area.notice.rectTransform,area.layout)),Is.False,"Skill rows must not cover action guidance.");
                 if(previous.HasValue)Assert.That(bounds.yMax,Is.LessThanOrEqualTo(previous.Value.yMin),"Skill rows must remain in execution order without overlap.");

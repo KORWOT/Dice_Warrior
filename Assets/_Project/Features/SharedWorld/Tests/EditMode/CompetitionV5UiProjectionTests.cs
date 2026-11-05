@@ -105,7 +105,111 @@ namespace DiceWarrior.SharedWorld.Tests
         {
             var type = typeof(CompetitionV5UiText);
             Assert.That(type, Is.Not.Null, "Pure UI descriptions must be exercised without Unity or external state.");
-            return (string)type.GetMethod(method).Invoke(null, args);
+            var api = type.GetMethod(method);
+            Assert.That(api, Is.Not.Null, "The UI must expose the pure " + method + " projection.");
+            return (string)api.Invoke(null, args);
+        }
+
+        static object Outcome(CompetitionState before, CompetitionState after, string command)
+        {
+            var api = typeof(CompetitionV5UiText).GetMethod("CombatOutcome");
+            Assert.That(api, Is.Not.Null, "Confirmed combat outcomes must be projected from the saved before/after states.");
+            return api.Invoke(null, new object[] { before, after, command });
+        }
+        static string OutcomePart(object outcome, string field) => (string)outcome.GetType().GetField(field).GetValue(outcome);
+
+        [Test] public void ConfirmedVictoryReportsActualRewardsAndLevelRecoveryWithoutMutatingStates()
+        {
+            var before = CompetitionV5Tests.Selected("face.common.sword"); var p = before.participants[0];
+            p.hp -= 7; p.xp = 7; p.enemy.hp = 1; p.enemy.name = "검증 늑대";
+            var reward = p.offer.choices[0]; reward.gold = 13; reward.xp = 5; reward.honor = 4;
+            string original = LoopJson.Encode(before);
+            var after = LoopJson.Copy(before); CompetitionCommandRules.Apply(after, "combat_execute", "");
+            string confirmed = LoopJson.Encode(after); var awarded = after.participants[0];
+            var result = Outcome(before, after, "combat_execute");
+            Assert.That(OutcomePart(result, "title"), Does.Contain("승리").And.Contain("검증 늑대"));
+            string body = OutcomePart(result, "body");
+            Assert.That(body, Does.Contain($"HP {p.hp}/{p.maxHp} → {awarded.hp}/{awarded.maxHp}"));
+            Assert.That(body, Does.Contain($"골드 {p.gold} → {awarded.gold}"));
+            Assert.That(body, Does.Contain("(+13)")); Assert.That(body, Does.Contain("명예 0 → 4"));
+            Assert.That(body, Does.Contain("LV 1 → 2").And.Contain("남은 XP 7 → 4"));
+            Assert.That(body.Split('\n').Length, Is.LessThanOrEqualTo(3));
+            Assert.That(OutcomePart(result, "details"), Does.Contain("보상·레벨 회복 반영 후"));
+            Assert.That(LoopJson.Encode(before), Is.EqualTo(original)); Assert.That(LoopJson.Encode(after), Is.EqualTo(confirmed));
+        }
+
+        [TestCase("travel")] [TestCase("combat_roll")] [TestCase("combat_hold")] [TestCase("combat_release")] [TestCase("combat_reroll")]
+        public void NonExecutionCommandsNeverReuseAnOldVictory(string command)
+        {
+            var before = CompetitionV5Tests.Selected("face.common.sword"); before.participants[0].enemy.hp = 1;
+            var after = LoopJson.Copy(before); CompetitionCommandRules.Apply(after, "combat_execute", "");
+            Assert.That(Outcome(before, after, command), Is.Null);
+        }
+
+        [Test] public void OngoingCombatAndDifferentMatchesCannotProduceACompletedOutcome()
+        {
+            var before = CompetitionV5Tests.Selected("face.blank"); var after = LoopJson.Copy(before);
+            CompetitionCommandRules.Apply(after, "combat_execute", "");
+            Assert.That(Outcome(before, after, "combat_execute"), Is.Null);
+            before.participants[0].enemy.hp = 1; after = LoopJson.Copy(before);
+            after.participants[0].phase = CompetitionPhase.Map; after.participants[0].enemy.hp = 0; after.matchId = "another-match";
+            Assert.That(Outcome(before, after, "combat_execute"), Is.Null);
+        }
+
+        [TestCase(false)] [TestCase(true)]
+        public void ConfirmedDefeatDistinguishesDeathFromTurnLimitAndKeepsSpectatorReason(bool turnLimit)
+        {
+            var before = CompetitionV5Tests.Selected("face.blank"); var p = before.participants[0];
+            if (turnLimit) { p.encounterTurns = 19; p.v5.selection.combatTurnSequence = 20; }
+            else { p.hp = 1; p.enemy.attack = 1000; }
+            var after = LoopJson.Copy(before); CompetitionCommandRules.Apply(after, "combat_execute", "");
+            var result = Outcome(before, after, "combat_execute");
+            Assert.That(OutcomePart(result, "title"), Does.Contain("탈락").And.Contain(turnLimit ? "턴 제한" : "HP 소진"));
+            Assert.That(OutcomePart(result, "details"), Does.Contain(after.participants[0].message));
+            string original = LoopJson.Encode(after); string status = Text("BoardStatus", after);
+            Assert.That(status, Does.Contain(after.participants[0].message).And.Contain("남은 모험가"));
+            Assert.That(LoopJson.Encode(after), Is.EqualTo(original));
+            CompetitionCommandRules.Apply(after, "advance", "");
+            Assert.That(Text("BoardStatus", after), Does.Contain(p.hp == 1 ? "전투에서 탈락했습니다." : "전투 제한 턴에 도달해 탈락했습니다."));
+        }
+
+        [Test] public void FinalTrialAndAbandonUseActualCompletionRatherThanGenericVictory()
+        {
+            var before = CompetitionV5Tests.Selected("face.common.sword", "face.blank", "face.blank"); var p = before.participants[0];
+            p.completedLaps = 3; p.claimed.Add(before.matchId + ":" + p.id + ":lap:3");
+            p.enemy.hp = 1; p.enemy.boss = true; p.v4.enemyId = "final";
+            var after = LoopJson.Copy(before); CompetitionCommandRules.Apply(after, "combat_execute", "");
+            Assert.That(OutcomePart(Outcome(before, after, "combat_execute"), "title"), Does.Contain("최종 시련 성공"));
+            Assert.That(Text("BoardStatus", after), Does.Contain("최종 시련 성공").And.Contain("남은 모험가"));
+            var abandoned = LoopJson.Copy(before); CompetitionCommandRules.Apply(abandoned, "abandon", "");
+            Assert.That(OutcomePart(Outcome(before, abandoned, "abandon"), "title"), Does.Contain("포기").And.Not.Contain("승리"));
+        }
+
+        [Test] public void SavedOutcomeAndAiLookupOnlyUsePersistedFactsWithoutInventingHumanDeltas()
+        {
+            var state = CompetitionV5Tests.Selected("face.common.sword"); state.participants[0].enemy.hp = 1;
+            CompetitionCommandRules.Apply(state, "combat_execute", "");
+            string original = LoopJson.Encode(state); string saved = Text("SavedResult", state); string ai = Text("AiResults", state);
+            Assert.That(saved, Does.Contain("현재 저장 상태").And.Not.Contain("→"));
+            Assert.That(saved, Does.Contain("HP " + state.participants[0].hp).And.Contain("명예 " + state.participants[0].honor));
+            foreach (var record in state.lastRound)
+            {
+                Assert.That(ai, Does.Contain(record.name).And.Contain(record.message));
+                Assert.That(ai, Does.Contain($"HP {record.hpBefore} → {record.hpAfter}"));
+                Assert.That(ai, Does.Contain("명예 +" + record.honorGained));
+            }
+            Assert.That(LoopJson.Encode(state), Is.EqualTo(original));
+            state.lastRound.Clear();
+            Assert.That(Text("AiResults", state), Does.Contain("기록이 없습니다").And.Not.Contain("획득"));
+        }
+
+        [Test] public void SpectatorStatusReportsOverallCompletionSeparatelyFromRecentAiActivity()
+        {
+            var state = CompetitionV5Tests.Combat();
+            CompetitionCommandRules.Apply(state, "abandon", "");
+            state.finished = true; state.endReason = "round-limit";
+            string status = Text("BoardStatus", state);
+            Assert.That(status, Does.Contain("모험을 포기했습니다.").And.Contain("라운드 제한").And.Contain("경기 종료"));
         }
 
         [Test] public void TextShowsActualSixFacesAndRegisteredNamesWithoutMutatingDefinition()

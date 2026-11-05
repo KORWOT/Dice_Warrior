@@ -19,3 +19,9 @@ V5_UI_LAYOUT_FLOW_13의 `EnsureLayout`은 기존/신규 Shell 모두에 `scrollC
 사용 대상: AssetDatabase·PrefabUtility.InstantiatePrefab/RecordPrefabInstancePropertyModifications, CompetitionScreen/V5ShellView, CommonButtonView, Unity uGUI. 사용하는 쪽: 메인의 승인된 prefab-only 업그레이드 실행. 기존 CompetitionAuthoring.UpgradeV5와 달리 Title을 건드리지 않는다.
 
 반드시 main이 Play/dirty 상태를 확인하고 허용된 CompetitionScreen.prefab에만 호출한다. 기존 GUID/로컬 노드/공용 자산을 재생성하지 않는다. 이 코드 작성만으로 실제 자산 반영이나 모바일 검증 PASS가 되지 않는다.
+
+## UI15 최근 결과 패널
+
+- Upgrade의 신규/기존 Shell 경로 모두 `EnsureRecent`를 호출한다. `Recent committed result` 패널과 제목/요약/지속 상태/조회 버튼을 추가하고 기존 playback.human.tray를 travelTray로 연결한다.
+- 같은 이름의 미연결 노드는 오류로 중단하며 이미 연결된 패널은 재생성하지 않는다. Runtime에서 GameObject를 생성하거나 기존 Legacy 구조를 대체하지 않는다.
+- 최근 결과의 내용과 콜백은 App/Shell이 소유하고 이 authoring은 참조·배치만 연결한다. 다른 프리팹/Scene/공용 자산 저장은 하지 않는다.

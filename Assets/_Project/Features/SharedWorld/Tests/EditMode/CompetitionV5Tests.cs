@@ -212,6 +212,135 @@ namespace DiceWarrior.SharedWorld.Tests
             Assert.That(p.v5.lastTurn.plannedSkillIds, Is.EqualTo(preview.skills.Select(s => s.skillId)));
         }
 
+        [TestCase(Intent.Attack, 10, 0)]
+        [TestCase(Intent.Heavy, 15, 0)]
+        [TestCase(Intent.Defend, 0, 10)]
+        public void PreviewTurnOutcomeIncludesEnemyActionEvenWhenEveryFaceIsBlank(Intent intent, int damage, int shieldAfter)
+        {
+            var state = Selected("face.blank", "face.blank", "face.blank"); var p = state.participants[0];
+            p.hp = 50; p.enemy.attack = 10; p.enemy.intent = intent;
+            var preview = CompetitionV5Skills.Preview(state.definition, p);
+            Assert.That(preview.noOp, Is.True); Assert.That(preview.status, Is.EqualTo("no-op"));
+            Assert.That(preview.skills, Is.Empty);
+            Assert.That(new[] { preview.playerHpBefore, preview.playerHpAfter, preview.enemyHpBefore, preview.enemyHpAfter },
+                Is.EqualTo(new[] { 50, 50 - damage, 1000, 1000 }));
+            Assert.That(new[] { preview.damageApplied, preview.shieldAbsorbed, preview.block, preview.retaliationDamage, preview.enemyShieldAfter },
+                Is.EqualTo(new[] { 0, 0, 0, damage, shieldAfter }));
+            Assert.That(preview.retaliation, Is.True);
+            Assert.That(preview.enemyDefeated || preview.playerDefeated || preview.turnLimitDefeat, Is.False);
+            AssertPreviewTurnOutcomeMatchesExecutionAndIsPure(state, preview);
+        }
+
+        [TestCase("face.common.sword", "face.blank", 10, 2, 0)]
+        [TestCase("face.common.fire", "face.blank", 5, 2, 0)]
+        [TestCase("face.common.sword", "face.common.staff", 15, 2, 0)]
+        [TestCase("face.common.shield", "face.blank", 0, 0, 8)]
+        public void PreviewTurnOutcomeUsesActualAffinityAbsorptionAndProtection(string first, string second, int damage, int absorbed, int block)
+        {
+            var state = Selected(first, second); var p = state.participants[0];
+            Assert.That(p.equipment[0], Is.EqualTo("blade"));
+            // The starter blade adds 2 steel damage: slash 12 and resisted arc-slash 17 before shield absorption.
+            p.hp = 50; p.enemy.attack = 10; p.enemy.shield = 2;
+            var preview = CompetitionV5Skills.Preview(state.definition, p);
+            Assert.That(preview.status, Is.EqualTo("ready"));
+            Assert.That(new[] { preview.damageApplied, preview.shieldAbsorbed, preview.block, preview.retaliationDamage, preview.enemyShieldAfter },
+                Is.EqualTo(new[] { damage, absorbed, block, 10 - block, 0 }));
+            Assert.That(preview.enemyHpAfter, Is.EqualTo(1000 - damage));
+            Assert.That(preview.playerHpAfter, Is.EqualTo(40 + block));
+            AssertPreviewTurnOutcomeMatchesExecutionAndIsPure(state, preview);
+        }
+
+        [Test] public void PreviewTurnOutcomeCombinesHeavyAttackResistanceAndProtection()
+        {
+            var state = Selected("face.common.shield"); var p = state.participants[0];
+            p.hp = 50; p.enemy.attack = 20; p.enemy.intent = Intent.Heavy;
+            var hero = state.definition.v4.adventurers.Single(a => a.id == p.adventurerId);
+            hero.bindings = hero.bindings.Concat(new[] { new V4Binding { id = "preview-resistance", target = "resistance",
+                stackGroup = "preview-resistance", amount = 5000, anyOf = new[] { new TagQuery {
+                    ownerKind = TagOwnerKind.DamageComponent, ownerId = "damage", any = new[] { "element.physical" } } } } }).ToArray();
+            CompetitionRules.Validate(state);
+            var preview = CompetitionV5Skills.Preview(state.definition, p);
+            // Heavy 20 + 10, physical resistance 50%, then this turn's protection 8.
+            Assert.That(new[] { preview.block, preview.retaliationDamage, preview.playerHpAfter }, Is.EqualTo(new[] { 8, 7, 43 }));
+            AssertPreviewTurnOutcomeMatchesExecutionAndIsPure(state, preview);
+        }
+
+        [Test] public void PreviewTurnOutcomeStopsAtKillAndExcludesVictoryLevelRecovery()
+        {
+            var state = Selected("face.common.sword", "face.common.staff", "face.common.shield"); var p = state.participants[0];
+            p.hp = 20; p.enemy.hp = 1; p.enemy.shield = 2; p.enemy.attack = 100;
+            p.xp = 7; p.offer.choices[0].xp = 1;
+            var preview = CompetitionV5Skills.Preview(state.definition, p);
+            Assert.That(new[] { preview.playerHpBefore, preview.playerHpAfter, preview.enemyHpBefore, preview.enemyHpAfter },
+                Is.EqualTo(new[] { 20, 20, 1, 0 }));
+            Assert.That(new[] { preview.damageApplied, preview.shieldAbsorbed, preview.block, preview.retaliationDamage },
+                Is.EqualTo(new[] { 1, 2, 0, 0 }));
+            Assert.That(preview.enemyDefeated, Is.True); Assert.That(preview.retaliation, Is.False);
+            Assert.That(preview.playerDefeated || preview.turnLimitDefeat, Is.False);
+            Assert.That(preview.skills[1].status, Is.EqualTo("enemy-defeated"));
+            AssertPreviewTurnOutcomeMatchesExecutionAndIsPure(state, preview);
+            CompetitionCommandRules.Apply(state, "combat_execute", "");
+            Assert.That(p.level, Is.EqualTo(2));
+            Assert.That(p.hp, Is.EqualTo(26), "Victory level recovery is outside the pre-reward HP preview.");
+            Assert.That(p.lastTurn.playerHpAfter, Is.EqualTo(preview.playerHpAfter));
+        }
+
+        [TestCase(18, false, false, false)]
+        [TestCase(19, false, false, true)]
+        [TestCase(19, true, false, false)]
+        [TestCase(18, false, true, false)]
+        [TestCase(19, false, true, false)]
+        public void PreviewTurnOutcomeDistinguishesSurvivalDeathAndLastTurnVictory(int completedTurns, bool kill, bool dies, bool turnLimit)
+        {
+            var state = Selected(kill ? "face.common.sword" : "face.blank"); var p = state.participants[0];
+            p.encounterTurns = completedTurns; p.turn = completedTurns; p.v5.selection.combatTurnSequence = completedTurns + 1;
+            p.hp = dies ? 3 : 50; p.enemy.attack = 10; p.enemy.hp = kill ? 1 : 1000;
+            CompetitionRules.Validate(state);
+            var preview = CompetitionV5Skills.Preview(state.definition, p);
+            Assert.That(preview.enemyDefeated, Is.EqualTo(kill));
+            Assert.That(preview.playerDefeated, Is.EqualTo(dies));
+            Assert.That(preview.turnLimitDefeat, Is.EqualTo(turnLimit));
+            Assert.That(preview.playerHpAfter, Is.EqualTo(dies ? 0 : kill ? 50 : 40));
+            if (dies) Assert.That(preview.retaliationDamage, Is.EqualTo(3), "HP damage is capped to the remaining HP.");
+            AssertPreviewTurnOutcomeMatchesExecutionAndIsPure(state, preview);
+        }
+
+        [TestCase(false)] [TestCase(true)]
+        public void PreviewTurnOutcomeDoesNotExposeValuesBeforeRoll(bool missingSelection)
+        {
+            var state = Combat(); var p = state.participants[0];
+            if (missingSelection) p.v5.selection = null;
+            string before = LoopJson.Encode(state);
+            var preview = CompetitionV5Skills.Preview(state.definition, p);
+            Assert.That(preview.status, Is.EqualTo("await-roll")); Assert.That(preview.skills, Is.Empty);
+            Assert.That(new[] { preview.playerHpBefore, preview.playerHpAfter, preview.enemyHpBefore, preview.enemyHpAfter,
+                preview.enemyShieldAfter, preview.damageApplied, preview.shieldAbsorbed, preview.block, preview.retaliationDamage },
+                Is.All.Zero);
+            Assert.That(preview.noOp || preview.retaliation || preview.enemyDefeated || preview.playerDefeated || preview.turnLimitDefeat, Is.False);
+            Assert.That(LoopJson.Encode(state), Is.EqualTo(before));
+        }
+
+        static void AssertPreviewTurnOutcomeMatchesExecutionAndIsPure(CompetitionState state, V5CombatPreview preview)
+        {
+            string before = LoopJson.Encode(state), expectedPreview = LoopJson.Encode(preview);
+            for (int i = 0; i < 3; ++i)
+                Assert.That(LoopJson.Encode(CompetitionV5Skills.Preview(state.definition, state.participants[0])), Is.EqualTo(expectedPreview));
+            Assert.That(LoopJson.Encode(state), Is.EqualTo(before), "Preview preserves definition, HP, logs, selection, every RNG and commands.");
+            var executed = LoopJson.Copy(state);
+            CompetitionCommandRules.Apply(executed, "combat_execute", "");
+            var actual = executed.participants[0]; var log = actual.lastTurn;
+            Assert.That(new[] { preview.playerHpBefore, preview.playerHpAfter, preview.enemyHpBefore, preview.enemyHpAfter },
+                Is.EqualTo(new[] { log.playerHpBefore, log.playerHpAfter, log.enemyHpBefore, log.enemyHpAfter }));
+            Assert.That(new[] { preview.damageApplied, preview.shieldAbsorbed, preview.block, preview.retaliationDamage, preview.enemyShieldAfter },
+                Is.EqualTo(new[] { log.skills.Sum(s => s.damage), log.skills.Sum(s => s.enemyShieldBefore - s.enemyShieldAfter),
+                    log.playerBlock, log.retaliationDamage, actual.enemy.shield }));
+            Assert.That(preview.retaliation, Is.EqualTo(log.retaliation));
+            Assert.That(preview.enemyDefeated, Is.EqualTo(log.enemyHpAfter <= 0));
+            Assert.That(preview.playerDefeated, Is.EqualTo(log.playerHpAfter <= 0));
+            Assert.That(preview.playerDefeated || preview.turnLimitDefeat, Is.EqualTo(actual.eliminated));
+            Assert.That(LoopJson.Encode(state), Is.EqualTo(before));
+        }
+
         [Test] public void DuplicatePhysicalFacesStayDistinctBySlotInstanceAndFaceIndex()
         {
             var state = Combat(3); var p = state.participants[0];

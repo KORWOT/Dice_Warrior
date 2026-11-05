@@ -14,8 +14,10 @@ namespace DiceWarrior.SharedWorld
     public sealed class V5ShellData
     {
         public string mode,title,summary,body,notice;
+        public string recentTitle,recentBody,boardStatus;
         public bool showBoard,compactChoices;
         public V5ShellAction primary;
+        public V5ShellAction recentAction;
         public V5ShellAction[] choices=Array.Empty<V5ShellAction>(),tools=Array.Empty<V5ShellAction>(),tabs=Array.Empty<V5ShellAction>();
         public Action back;
     }
@@ -34,6 +36,9 @@ namespace DiceWarrior.SharedWorld
         public GameObject rewardGrowth;
         public Text rewardGrowthLabel;
         public V5DieGraphic[] rewardDice;
+        public GameObject recentPanel,travelTray;
+        public Text recentHeading,recentText,boardStatus;
+        public CommonButtonView recentButton;
         V5ShellData data;
         int page;
         string mode;
@@ -52,6 +57,8 @@ namespace DiceWarrior.SharedWorld
         {
             if(value==null)throw new ArgumentNullException(nameof(value));
             if(rewardGrowth)rewardGrowth.SetActive(false);
+            if(recentPanel)recentPanel.SetActive(false);
+            if(recentButton)recentButton.Unbind();
             if(choices==null || choices.Length!=6 || choiceDetails==null || choiceDetails.Length!=6 || tools==null || tools.Length!=4 || tabs==null || tabs.Length!=5 || !scroll || !viewport || !scrollContent)
                 throw new InvalidOperationException("V5 주요 화면의 authored 연결을 확인해 주세요.");
             if(value.tools.Length>tools.Length || value.tabs.Length>tabs.Length)
@@ -191,11 +198,27 @@ namespace DiceWarrior.SharedWorld
             SetRect((RectTransform)boardPrimary.transform,30,1160,660,96);boardPrimary.gameObject.SetActive(true);
             BindButton(boardPrimary,value.choices[0],PrimaryStyle);boardPrimary.label.color=Ink;
             notice.text=string.IsNullOrEmpty(value.notice)?value.choices[0].detail??"":value.notice;
+            BindRecent(value);
+        }
+        void BindRecent(V5ShellData value)
+        {
+            if(!recentPanel || !recentHeading || !recentText || !boardStatus || !recentButton || !travelTray)
+                throw new InvalidOperationException("V5 최근 결과 표시를 authoring으로 연결해 주세요.");
+            bool shown=!string.IsNullOrEmpty(value.recentTitle);
+            recentPanel.SetActive(shown);travelTray.SetActive(!shown);
+            recentHeading.text=value.recentTitle??"";recentText.text=value.recentBody??"";boardStatus.text=value.boardStatus??"";
+            recentButton.gameObject.SetActive(shown && value.recentAction!=null);
+            if(value.recentAction!=null)BindButton(recentButton,value.recentAction,ToolStyle);
         }
         // Playback updates only presentation. The original action/ID remains the App-owned command path.
         public void SetBoardPresentation(string stage,string detail,bool busy)
         {
             if(data==null || !data.showBoard || !boardPrimary)return;
+            bool moving=busy && data.choices[0].id.StartsWith("travel",StringComparison.Ordinal);
+            if(moving){recentPanel.SetActive(false);travelTray.SetActive(true);}
+            else BindRecent(data);
+            if(busy && recentButton.gameObject.activeSelf)
+            {recentButton.button.interactable=false;recentButton.group.interactable=false;recentButton.group.blocksRaycasts=false;}
             var action=data.choices[0];
             BindButton(boardPrimary,new V5ShellAction {id=action.id,label=string.IsNullOrEmpty(stage)?action.label:stage,enabled=action.enabled&&!busy,invoke=action.invoke},PrimaryStyle);
             boardPrimary.label.color=busy?Muted:Ink;
@@ -238,6 +261,7 @@ namespace DiceWarrior.SharedWorld
         {
             data=null;mode=null;page=0;
             if(rewardGrowth)rewardGrowth.SetActive(false);
+            if(recentPanel)recentPanel.SetActive(false);if(recentButton)recentButton.Unbind();
             if(choices!=null)foreach(var button in choices)if(button)button.Unbind();
             if(tools!=null)foreach(var button in tools)if(button)button.Unbind();
             if(tabs!=null)foreach(var button in tabs)if(button)button.Unbind();

@@ -12,3 +12,7 @@
 ## V5_UI_IMPROVEMENT_11
 
 PlanSteps의 선택 루프를 Plan/Preview/Execute가 공유한다. 반복 기호도 첫 미사용 물리 슬롯을 소비하고, 반환 슬롯은 원래 인덱스 오름차순이다. 빈 면을 제외해도 뒤 슬롯을 재번호화하지 않는다. Preview.skills의 슬롯은 같은 단계에 연결되며 실행 로그/저장 DTO는 확장하지 않는다. V5DiceAreaView와 CompetitionV5UiProjectionTests가 이 연결을 사용한다. 신규 검사는 3모험가 × 6³ 물리 결과에서 비어 있지 않은 슬롯의 정확한 1회 배정과 실제 실행 순서를 대조한다.
+
+## V5_COMBAT_FEEDBACK_15
+
+Preview가 동일 resolver의 TurnLog에서 양쪽 HP 전후·총 피해·흡수·보호·받을 HP 피해/적 행동을, 복제 참가자에서 적 행동 후 보호막을 읽는다. 흡수는 기술별 보호막 감소의 합이므로 턴 끝 보호막 해제와 적 방어의 새 보호막을 피해 흡수로 세지 않는다. 모두 꽝도 적 행동 결과를 제공하고 선처치 뒤 생략 기술의 보호는 합산되지 않는다. 사망과 처치를 먼저 판정한 뒤 적과 플레이어가 모두 살아 있고 이번 행동이 maxCombatTurns에 닿을 때만 turnLimitDefeat다. FinishCombat/보상/새 적 의도 RNG를 실행하지 않아 승리 후 레벨 회복은 포함하지 않는다. 새 값은 V5DiceAreaView의 실행 전 표시로 연결되며 CompetitionV5Tests가 실제 명령 로그·전체 원본 JSON 불변과 대조한다.

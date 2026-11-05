@@ -20,7 +20,7 @@ namespace DiceWarrior.SharedWorld
         public bool v5Combat,reducedMotion;
         public string v5Notice;
         public Action<string,string> v5Command;
-        public Action v5DiceInfo,v5CombatInfo;
+        public Action v5DiceInfo,v5CombatInfo,v5Menu;
         public V5DiceNetData v5NetData;
         public V5ShellData shell;
     }
@@ -124,7 +124,7 @@ namespace DiceWarrior.SharedWorld
                 for(int i=0;i<cardTexts.Length;i++) cardTexts[i].text=i<data.adventurerCards.Length?data.adventurerCards[i]:"";
             }
             playback.human.cue.gameObject.SetActive(!growth);
-            if(data.v5Combat)v5Area.Bind(data.state,data.v5Command,data.v5DiceInfo,data.v5CombatInfo,data.v5Notice);
+            if(data.v5Combat)v5Area.Bind(data.state,data.v5Command,data.v5DiceInfo,data.v5CombatInfo,data.v5Notice,data.v5Menu);
             for(int i=0;i<buttons.Length;i++)
             {
                 bool used=!shell && i<data.labels.Length;buttons[i].gameObject.SetActive(used);

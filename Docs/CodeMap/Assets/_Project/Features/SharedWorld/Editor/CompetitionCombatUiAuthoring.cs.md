@@ -7,3 +7,11 @@
 - 사용하는 쪽·관계 근거: 메인 작성 프리팹 업그레이드 호출이 Upgrade에 열린 Screen을 전달한다. CompetitionCombatUiTests가 실제 작성된 배치/포인터/프레임 경계를 검증한다.
 - 상태/수명: 명시 호출 동안만 프리팹 contents를 수정한다. 저장과 Unload는 호출자 소유다. 기존 노드를 임의 삭제·재생성하지 않으며 동일 이름의 scroll/제목이 있으면 재사용한다.
 - 검수 주의: 편집 코드 실행과 실제 프리팹 저장/PlayMode PASS를 구분한다.96은720설계단위이며 실제dp 검증이 아니다. UI13은 트레이 바깥 위치와 작은 장면 배치만 바꾸며 큐브 내부 크기·SlotPosition은 변경하지 않는다. Cube 메시의 전체 회전/도약/그림자와 실제 예상3행/좁은 화면 경계는 PlayMode 샘플과 캡처로 확인한다. Net.menu callback과 원본 data 복귀는 App에서 연결한다. information의 내용 기반 크기는 V5DiceNetView가 적용하고6면 배치로 복원한다.
+
+## UI15 예상 합계와 관리 진입
+
+- 기존 Area 안에 `Direct adventure menu` 공용 버튼 instance와 `Turn outcome preview` Text를 멱등 추가한다. 전투 정보/6면은 하단 보조 영역, 모험 메뉴는 상단으로 분리한다.
+- 주사위 큐브의 내부 크기·SlotPosition은 유지한다. 적 타입/상성을 위한2줄,3기술 행, 총 피해/HP 예상3줄을 배치하고 기존 실패 안내 ScrollRect를 유지한다.
+- 새 참조는 같은 CompetitionScreen.prefab에만 기록한다. 저장은 기존 호출자가 수행하며 공용 버튼·폰트·Title을 저장하지 않는다. 실제 최종 좌표/경계 증거는 UI15 REPORT/갤러리를 따른다.
+
+- UI15 수정1: 장면116높이에 맞춰 Pawn/Enemy56크기·중심y60, 효과40크기와 이름y92를 함께 배치한다. Runtime ResetStage/EffectFrame과 같은 기준이다.

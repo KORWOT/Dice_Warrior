@@ -1,5 +1,7 @@
 # CompetitionApp.cs
 
+- UI15: Dispatch는 Session.Execute의 원자 저장 성공 후 before와 확정 CompetitionDocument를 RememberV5Feedback에 넘긴다. 실패에서는 최근 UI 전후 요약을 폐기하고 기존 오류를 표시한다. Render는 현재 matchId/revision/generation과 요약 수명을 비교한다. Load/새 경기 시도/재개/Close/복원 시도의 요약은 해제하며 재개는 저장된 현재 상태·AI 기록만 투영한다. 저장 DTO·명령·RNG·재화 계산은 변경하지 않는다. 실제 저장 불변/복귀/실패 검사는 UI15 REPORT를 따른다.
+
 - UI13: 정보→모험 메뉴는 같은 V5DiceNetData를 보관·복원하는 OpenV5Management 콜백을 사용한다. 로컬 Open/새 경기/Close/포기 확정/경기 백업 복원 성공에서 UI 조회 참조를 해제한다. 복원 실패·확인 취소는 원조회 복귀를 보존한다. 경기 복원 후 이전 전투 정보가 로비 위에 다시 열리지 않도록 메뉴도 함께 닫는다.
 
 - V5_UI_IMPROVEMENT_11: partial App.V5Ui에서 전용 Shell을 구성하고 기존 Render는 보존 경기 경로로 남긴다. HandleBack은 InputSystem Escape(모바일 뒤로 포함)를 받아 조회 닫기/확인 취소/모험 메뉴 열기만 수행한다. 출전·모험가 선택은 즉시 저장하고 같은 선택 화면에 남으며, 성장 구매 성공은 실제 전후 프로필 차이를 표시한다. v5 포기 확정 후 개인 종료/AI 진행 화면으로 돌아간다. 검증/자산 상태는 V5_UI_IMPROVEMENT_11_REPORT를 따른다.

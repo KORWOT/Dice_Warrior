@@ -6,9 +6,72 @@ using System.Text.RegularExpressions;
 
 namespace DiceWarrior.SharedWorld
 {
+    // Ephemeral presentation text, never included in a competition checkpoint.
+    public sealed class CompetitionV5Outcome
+    {
+        public string title, body, details;
+    }
+
     // Read-only descriptions of the saved definition and shared rule projections.
     public static class CompetitionV5UiText
     {
+        public static CompetitionV5Outcome CombatOutcome(CompetitionState before, CompetitionState after, string command)
+        {
+            if (before == null || after == null || before.matchId != after.matchId || after.actionNumber != before.actionNumber + 1)
+                return null;
+            var a = CompetitionRules.Human(before); var b = CompetitionRules.Human(after);
+            string title;
+            if (command == "abandon" && !a.eliminated && b.eliminated) title = "내 모험 포기";
+            else if (command == "combat_execute" && a.phase == CompetitionPhase.Combat && b.phase != CompetitionPhase.Combat)
+            {
+                if (b.eliminated) title = b.hp <= 0 ? "전투 탈락 · HP 소진" : "전투 탈락 · 턴 제한";
+                else if (b.trialSucceeded && !a.trialSucceeded) title = "최종 시련 성공";
+                else if (b.enemy != null && b.enemy.hp <= 0) title = "전투 승리";
+                else return null;
+                if (!string.IsNullOrEmpty(a.enemy?.name)) title += " · " + a.enemy.name;
+            }
+            else return null;
+            string body = $"HP {a.hp}/{a.maxHp} → {b.hp}/{b.maxHp}\n" +
+                $"골드 {a.gold} → {b.gold} ({Signed(b.gold - a.gold)}) · 명예 {a.honor} → {b.honor} ({Signed(b.honor - a.honor)})\n" +
+                $"LV {a.level} → {b.level} · 남은 XP {a.xp} → {b.xp}";
+            return new CompetitionV5Outcome { title = title, body = body,
+                details = title + "\n" + b.message + "\n\n" + body + "\nHP는 보상·레벨 회복 반영 후 확정값입니다. XP는 레벨업 후 남은 값입니다." };
+        }
+
+        public static string SavedResult(CompetitionState state)
+        {
+            var p = CompetitionRules.Human(state);
+            return "현재 저장 상태 · " + p.message + $"\nHP {p.hp}/{p.maxHp} · 골드 {p.gold} · 명예 {p.honor}\nLV {p.level} · 남은 XP {p.xp}";
+        }
+
+        public static string BoardStatus(CompetitionState state)
+        {
+            var p = CompetitionRules.Human(state);
+            string status = p.eliminated ? "내 결과: 탈락 · " + p.message : p.finished ? "내 결과: 완료 · " + p.message : "";
+            if (state.finished)
+                return (status.Length == 0 ? "" : status + "\n") + "경기 종료 · " + Friendly(state.definition, state.endReason);
+            if (p.eliminated || p.finished)
+                return status + $"\n남은 모험가 {state.participants.Count(x => !x.finished && !x.eliminated)}명 · 다음 AI 라운드로 진행";
+            return "현재 " + state.definition.world.places[p.position].name + $" · 다음 목표 {p.completedLaps + 1}바퀴 완주";
+        }
+
+        public static string AiResults(CompetitionState state)
+        {
+            if (state.lastRound.Count == 0) return "저장된 AI 행동 기록이 없습니다.";
+            var lines = new List<string> { "[직전 AI 행동 결과]", "저장된 마지막 행동만 표시합니다." };
+            foreach (var record in state.lastRound)
+            {
+                lines.Add("");
+                lines.Add(record.name + " · " + (record.eliminated ? "탈락" : record.finished ? "완료" : "진행 중"));
+                lines.Add(record.message);
+                lines.Add(state.definition.world.places[record.fromPosition].name + " → " + state.definition.world.places[record.toPosition].name + $" · 이동 주사위 {record.travel}");
+                lines.Add($"HP {record.hpBefore} → {record.hpAfter} · 명예 {Signed(record.honorGained)} · 완주 {record.completedLaps}");
+            }
+            return Friendly(state.definition, string.Join("\n", lines));
+        }
+
+        static string Signed(int value) => (value >= 0 ? "+" : "") + value.ToString(CultureInfo.InvariantCulture);
+
         public static string Die(CompetitionDefinition d, string hero, string dieId)
         {
             var die = d.combat.dice.Single(value => value.id == dieId);

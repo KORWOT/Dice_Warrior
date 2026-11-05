@@ -296,6 +296,82 @@ namespace DiceWarrior.SharedWorld.Tests
             AssertCheckpoint(restored,restoredDisk);
         }
 
+        [UnityTest,Category("V5CombatFeedback15")]
+        public IEnumerator CombatMenuIsDirectAndPreservesTheSelectedDiceThroughLobbyAndResume()
+        {
+            yield return Click("new");yield return Wait();bool rerolled=false;int steps=0;
+            Assert.That(Screen.playback.human.tray.activeInHierarchy,Is.True,"New board must keep the travel die before any result.");
+            Assert.That(Shell.recentPanel.activeSelf,Is.False);
+            while(Human.phase!=CompetitionPhase.Combat){Assert.That(++steps,Is.LessThan(150));FastStep(ref rerolled);}
+            app.Render();yield return null;yield return Tap(Screen.v5Area.roll);yield return Wait();
+            yield return Tap(Screen.v5Area.dice[0]);yield return Wait();
+            string before=LoopJson.Encode(app.Session.Snapshot),disk=ReadCheckpoint();
+            var direct=Screen.v5Area.GetComponentsInChildren<CommonButtonView>(false).SingleOrDefault(x=>x.BoundId=="adventure-menu");
+            Assert.That(direct,Is.Not.Null,"Combat must expose its own adventure menu without opening information.");
+            yield return Tap(direct);Assert.That(Shell.Data.mode,Is.EqualTo("menu"));AssertCheckpoint(before,disk);
+            yield return Tap(Shell.back);yield return null;Assert.That(Screen.v5Area.gameObject.activeInHierarchy,Is.True);AssertCheckpoint(before,disk);
+            yield return Tap(direct);yield return Click("leave");yield return Click("resume");yield return null;
+            Assert.That(Screen.v5Area.gameObject.activeInHierarchy,Is.True);AssertCheckpoint(before,disk);
+            Assert.That(Screen.v5Area.cubes[0].Held,Is.True);
+        }
+
+        [UnityTest,Category("V5CombatFeedback15")]
+        public IEnumerator VictoryFeedbackAiDetailsAndSpectatorRoundsUseOnlyCommittedResults()
+        {
+            yield return Click("new");yield return Wait();app.SetReducedMotion(true);bool rerolled=false;int steps=0;
+            while(Human.phase!=CompetitionPhase.Combat){Assert.That(++steps,Is.LessThan(150));FastStep(ref rerolled);}
+            app.Render();yield return null;CompetitionState before=null;
+            while(Human.phase==CompetitionPhase.Combat)
+            {
+                Assert.That(++steps,Is.LessThan(190));
+                if(Human.v5.selection.phase==V5SelectionPhase.AwaitRoll){yield return Tap(Screen.v5Area.roll);yield return Wait();}
+                before=app.Session.Snapshot.state;yield return Tap(Screen.v5Area.execute);yield return Wait();
+            }
+            var after=app.Session.Snapshot.state;Assert.That(Human.eliminated,Is.False);
+            Assert.That(Shell.recentHeading.text,Does.Contain("전투 승리"));Assert.That(Shell.recentPanel.activeInHierarchy,Is.True);
+            Assert.That(Shell.recentText.text,Does.Contain($"골드 {before.participants[0].gold} → {Human.gold}").And.Contain($"LV {before.participants[0].level} → {Human.level}"));
+            Assert.That(Screen.playback.human.tray.activeSelf,Is.False);
+            string saved=LoopJson.Encode(app.Session.Snapshot),disk=ReadCheckpoint();
+            yield return Tap(Shell.recentButton);Assert.That(Shell.Data.mode,Is.EqualTo("recent-results"));
+            Assert.That(Shell.body.text,Does.Contain("HP는 보상·레벨 회복 반영 후"));
+            foreach(var ai in after.lastRound)Assert.That(Shell.body.text,Does.Contain(ai.name).And.Contain(ai.message));
+            yield return Tap(Shell.back);yield return null;AssertCheckpoint(saved,disk);
+            foreach(var size in new[]{new Vector2Int(720,1280),new Vector2Int(390,844),new Vector2Int(360,640)})
+            {
+                Resize(size.x,size.y);yield return null;Canvas.ForceUpdateCanvases();app.Render();yield return null;
+                AssertInside(Bounds((RectTransform)Shell.recentPanel.transform),Bounds(ui.Root.safeArea),"Recent result panel");
+                foreach(var text in new[]{Shell.recentHeading,Shell.recentText,Shell.boardStatus})
+                    Assert.That(text.preferredHeight,Is.LessThanOrEqualTo(text.rectTransform.rect.height+1),text.name);
+                AssertPointer(Shell.recentButton);AssertPointer(Shell.boardPrimary);
+            }
+            app.Close();yield return null;yield return Click("resume");yield return null;
+            Assert.That(Shell.recentHeading.text,Is.EqualTo("저장된 최근 결과"));AssertCheckpoint(saved,disk);
+            Assert.That(Shell.recentText.text,Does.Not.Contain("→"),"Resume must not invent the unavailable before-state.");
+            yield return Click("menu");yield return Click("abandon");yield return Click("abandon:");yield return Wait();
+            app.SetReducedMotion(false);
+            int advances=0;
+            while(!app.Session.Snapshot.state.finished)
+            {
+                Assert.That(Shell.Data.mode,Is.EqualTo("spectator"));Assert.That(Shell.boardStatus.text,Does.Contain("탈락").And.Contain("남은 모험가"));
+                int commands=app.Session.Snapshot.commands.Count;
+                yield return Tap(Shell.recentButton);yield return Tap(Shell.back);yield return null;
+                Assert.That(app.Session.Snapshot.commands.Count,Is.EqualTo(commands));
+                Assert.That(++advances,Is.LessThanOrEqualTo(definition.maxRounds));yield return Tap(Shell.boardPrimary);
+                if(app.IsPresenting)
+                {
+                    Assert.That(Shell.recentPanel.activeInHierarchy,Is.True,"AI processing keeps the human end-state visible.");
+                    Assert.That(Shell.boardStatus.text,Does.Contain("탈락").And.Contain("남은 모험가"));
+                    Assert.That(Screen.playback.human.tray.activeSelf,Is.False,"AI processing must not expose the human travel die.");
+                    Assert.That(Shell.recentButton.button.interactable,Is.False);
+                }
+                yield return Wait();
+            }
+            Assert.That(advances,Is.GreaterThan(1));Assert.That(Shell.Data.mode,Is.EqualTo("results"));
+            yield return null;Canvas.ForceUpdateCanvases();
+            foreach(var tool in Shell.tools.Where(x=>x.gameObject.activeInHierarchy)){AssertPointer(tool);AssertVisibleButtonLabel(tool);}
+            yield return Tap(Shell.boardPrimary);Assert.That(app.InLobby,Is.True);
+        }
+
         IEnumerator LayoutLobby(Vector2Int size,string primaryId)
         {
             Resize(size.x,size.y);yield return null;
@@ -419,6 +495,18 @@ namespace DiceWarrior.SharedWorld.Tests
         {
             Assert.That(inner.xMin,Is.GreaterThanOrEqualTo(outer.xMin-1),context);Assert.That(inner.xMax,Is.LessThanOrEqualTo(outer.xMax+1),context);
             Assert.That(inner.yMin,Is.GreaterThanOrEqualTo(outer.yMin-1),context);Assert.That(inner.yMax,Is.LessThanOrEqualTo(outer.yMax+1),context);
+        }
+        void AssertVisibleButtonLabel(CommonButtonView button)
+        {
+            camera.Render();var rect=Bounds(button.label.rectTransform);var previous=RenderTexture.active;RenderTexture.active=target;
+            int x=Mathf.FloorToInt(rect.xMin),y=Mathf.FloorToInt(rect.yMin),width=Mathf.CeilToInt(rect.xMax)-x,height=Mathf.CeilToInt(rect.yMax)-y;
+            var texture=new Texture2D(width,height,TextureFormat.RGB24,false);
+            try
+            {
+                texture.ReadPixels(new Rect(x,y,width,height),0,0);texture.Apply();
+                Assert.That(texture.GetPixels32().Count(pixel=>pixel.r>160 && pixel.g>160 && pixel.b>145),Is.GreaterThan(5),"Rendered label pixels missing: "+button.BoundId);
+            }
+            finally{RenderTexture.active=previous;Object.Destroy(texture);}
         }
         IEnumerator Capture(string name)
         {

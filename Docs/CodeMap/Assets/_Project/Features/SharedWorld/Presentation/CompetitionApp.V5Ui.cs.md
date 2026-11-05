@@ -1,5 +1,8 @@
 # CompetitionApp.V5Ui.cs
 
+- UI15 확정 피드백: v5RecentOutcome과 기존 v5LastChange는 UI 전용이며 확정 문서의 matchId/revision/generation에 묶인다. 보드 recentTitle/recentBody는 전투 승리·사망·턴 제한·최종 시련·포기의 확정 전후를 최대3줄로 전달한다. 요약이 없으면 현재 저장 수치만 사용한다. boardStatus는 최근 알림과 별도로 개인 종료 이유/남은 인원을 유지한다. AI 상세는 state.lastRound의 기록만 사용하며 없는 변화량은 만들지 않는다.
+- UI15 조회/복귀: 보드 recentAction의 ai-results는 recent-results 메뉴에서 내 긴 요약+직전 AI 기록을 읽는다. Back은 동일 보드/관전/전체 결과로 돌아가며 명령을 실행하지 않는다. 전체 종료 화면에도 이번 확정 전투 요약을 포함하고 AI 조회를 제공한다. 전투 ScreenData.v5Menu는 모험 메뉴를 바로 열며 V5Menu의 busy 검사로 연출 입력 잠금을 지킨다. 기존 정보창→메뉴→정보창 복귀는 보존한다.
+
 - UI13: 로비 primary는 진행 중이면 이어하기, 없거나 완료면 새 모험이다. 새 모험 교체의 기존 확인을 유지하고 보조 선택은 compactChoices로2열, 조회/설정은헤더로 전달한다. 설정·저장 복구에 백업 확인/동작 줄이기를 모으며 Back은로비다. 결과 로비 복귀도 primary로 고정한다. 사건/보상의 실제 지급·선택 즉시확정 계약은 변경하지 않는다.
 - UI13 조회 수명: 정보→모험 관리 진입의 원래 V5DiceNetData를 managementV5Net에 보관한다. 관리에서능력치/포기취소를 거친Back은원래정보/스크롤로복귀하고, Close·새경기·포기확정·로컬Open은참조를해제한다. 이 필드는UI로컬이며저장DTO/Session/RNG를 변경하지 않는다. 일반 보드→모험 메뉴는 기존처럼Back으로보드에복귀한다.
 
